@@ -385,31 +385,51 @@ h4 {
     cursor: pointer;
 }
 
-/* Base styles for usage badges */
-.usage-badge-base {
-    padding: 4px 23px;
-    border-radius: 5px;
-    font-size: 13px;
-    display: inline-block;
-    color: #333;
+/* --- Styles for the Usage Column Bars --- */
+.usage-bar-container {
+    position: relative; /* Needed for absolute positioning of text */
+    width: 70px; /* Fixed width for the bar */
+    height: 25px; /* Height of the bar */
+    border-radius: 10px; /* Rounded corners for the bar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensure text/content stays within bounds */
 }
 
-/* Styles for low usage (yellow) */
-.usage-badge-low {
-    background-color: #FFFACD;
+.usage-bar-text {
+    position: absolute; /* Position text on top of the bar */
+    color: black; /* Black font color for the text */
+    font-size: 0.85em; /* Adjust font size as needed */
+    z-index: 1; /* Ensure text is above the background color */
+    white-space: nowrap; /* Prevent text from wrapping */
 }
 
-/* Styles for high usage (green) */
-.usage-badge-high {
-    background-color: #b0e9e49c;
+/* Specific background colors for the usage bars */
+.bg-usage-low {
+    /* Previously: background-color: #ff8a80; (red/orange) */
+    background: linear-gradient(to right, #ffe6e6, #f9d3d3); /* Very light red to light red */
 }
 
+.bg-usage-medium {
+    /* Previously: background-color: #ffe082; (yellow/orange) */
+    background: linear-gradient(to right, #fffacd, #f5efb3); /* Very light yellow to light yellow */
+}
+
+.bg-usage-high {
+    /* Previously: background-color: #74e493; (green/blue) */
+    background: linear-gradient(to right, #e8f5e9, #ddf6de); /* Very light green to light green */
+}
+
+
+/* --- Existing Styles (Preserved) --- */
 .red-bg{
-    border-radius: 14px;
+    border-radius: 10px; /* Keeping your current 14px radius for these */
     background-color: rgb(222 139 139 / 49%);
-    color: #de1515;
+    color: #df4141;
     padding: 4px;
     display: inline-block;
+    font-size: 0.85em;
 }
 
 /* Styles for the license trend icons */

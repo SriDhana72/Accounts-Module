@@ -563,260 +563,267 @@ if (closedTicketsCountSpan) {
 
 // Function to render the application table rows based on provided data
 function renderApplicationTable(data) {
-console.log('Starting to render application table with', data.length, 'items');
-
-if (!applicationTableBody) {
-    console.error("Application table body element (applicationTableBody) not found!");
-    return;
-}
-
-// Clear any existing rows in the table body, including previously expanded rows
-applicationTableBody.innerHTML = '';
-expandedRowId = null; // Reset expanded row state
-
-// If no data, display a message
-if (data.length === 0) {
-    const noDataRow = document.createElement('tr');
-    noDataRow.innerHTML = `<td colspan="8" class="text-center py-4 text-muted">No data available for this category.</td>`;
-    applicationTableBody.appendChild(noDataRow);
-    return;
-}
-
-// Loop through each item (app) in the data array
-data.forEach((app) => {
-    // Create a new table row element for the main application entry
-    const row = document.createElement('tr');
-    row.setAttribute('data-app-id', app.id);
-    row.className = 'clickable-row';
-
-    // Determine competitor display
-    let competitorsHtml = 'None';
-    if (app.competitors && app.competitors.length > 0) {
-        competitorsHtml = app.competitors.map(comp => `<span class="red-bg">${comp}</span>`).join(' ');
+    console.log('Starting to render application table with', data.length, 'items');
+    
+    if (!applicationTableBody) {
+        console.error("Application table body element (applicationTableBody) not found!");
+        return;
     }
-
-    // Determine license trend icon and color
-    let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`; // Default: no change
-    if (app.license.includes('Downgraded')) {
-        licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
-    } else if (app.license.includes('Upgraded')) {
-        licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+    
+    // Clear any existing rows in the table body, including previously expanded rows
+    applicationTableBody.innerHTML = '';
+    expandedRowId = null; // Reset expanded row state
+    
+    // If no data, display a message
+    if (data.length === 0) {
+        const noDataRow = document.createElement('tr');
+        noDataRow.innerHTML = `<td colspan="8" class="text-center py-4 text-muted">No data available for this category.</td>`;
+        applicationTableBody.appendChild(noDataRow);
+        return;
     }
-
-    // --- UPDATED LOGIC FOR USAGE DISPLAY: PERCENTAGE TO TEXT ---
-let usageDisplayText = '';
-let usageDisplayClass = 'text-dark'; // Default text color
-
-if (app.usage < 20) {
-    usageDisplayText = 'Low';
-    usageDisplayClass = 'text-danger fw-bold'; // Using Bootstrap classes for red and bold
-} else if (app.usage >= 20 && app.usage <= 40) {
-    usageDisplayText = 'Medium';
-    usageDisplayClass = 'text-warning fw-bold'; // Using Bootstrap classes for orange/yellow and bold
-} else { // Above 40
-    usageDisplayText = 'High';
-    usageDisplayClass = 'text-success fw-bold'; // Using Bootstrap classes for green and bold
-}
-// --- END UPDATED LOGIC ---
-
-    row.innerHTML = `
-        <td><span class="expand-toggle-arrow">▼</span></td> <!-- Initial arrow state -->
-        <td style="min-width: 200px;">
-            ${app.application}<br><small>${app.category}</small>
-        </td>
-        <td><span class="${usageDisplayClass}">${usageDisplayText}</span></td>
-        <td>${app.seats}</td>
-        <td>${licenseTrendIconHtml} ${app.license}</td>
-        <td>${competitorsHtml}</td>
-        <td>N/A</td> <!-- Zoho Options always N/A as per original HTML -->
-        <td><i class="bi bi-exclamation-triangle text-danger"></i></td>
-    `;
-
-    // Add click event listener for row expansion/collapse
-    row.addEventListener('click', (event) => {
-        // Prevent event from bubbling up if clicked on the action icon
-        if (event.target.tagName === 'I' && event.target.classList.contains('bi-exclamation-triangle')) {
-            return;
+    
+    // Loop through each item (app) in the data array
+    data.forEach((app) => {
+        // Create a new table row element for the main application entry
+        const row = document.createElement('tr');
+        row.setAttribute('data-app-id', app.id);
+        row.className = 'clickable-row';
+    
+        // Determine competitor display
+        let competitorsHtml = 'None';
+        if (app.competitors && app.competitors.length > 0) {
+            competitorsHtml = app.competitors.map(comp => `<span class="red-bg">${comp}</span>`).join(' ');
         }
-
-        const appId = app.id;
-        const currentExpandedId = expandedRowId;
-        const arrowSpan = row.querySelector('.expand-toggle-arrow');
-
-        // If clicking on the currently expanded row, collapse it
-        if (appId === currentExpandedId) {
-            const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
-            if (expandedRowElement) {
-                expandedRowElement.remove();
+    
+        // Determine license trend icon and color
+        let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`; // Default: no change
+        if (app.license.includes('Downgraded')) {
+            licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+        } else if (app.license.includes('Upgraded')) {
+            licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+        }
+    
+        // --- NEW LOGIC FOR USAGE DISPLAY: Bar with text overlay ---
+        let usageDisplayText = '';
+        let usageBackgroundColorClass = ''; // This will hold our new background color class
+    
+        if (app.usage < 20) {
+            usageDisplayText = 'Low';
+            usageBackgroundColorClass = 'bg-usage-low';
+        } else if (app.usage >= 20 && app.usage <= 40) {
+            usageDisplayText = 'Medium';
+            usageBackgroundColorClass = 'bg-usage-medium';
+        } else { // Above 40
+            usageDisplayText = 'High';
+            usageBackgroundColorClass = 'bg-usage-high';
+        }
+    
+        // New HTML structure for the usage cell
+        const usageHtml = `
+            <div class="usage-bar-container ${usageBackgroundColorClass}">
+                <span class="usage-bar-text">${usageDisplayText}</span>
+            </div>
+        `;
+        // --- END NEW LOGIC ---
+    
+        row.innerHTML = `
+            <td><span class="expand-toggle-arrow">▼</span></td> <!-- Initial arrow state -->
+            <td style="min-width: 200px;">
+                ${app.application}<br><small>${app.category}</small>
+            </td>
+            <td>${usageHtml}</td> <!-- UPDATED: Now uses the new usageHtml -->
+            <td>${app.seats}</td>
+            <td>${licenseTrendIconHtml} ${app.license}</td>
+            <td>${competitorsHtml}</td>
+            <td>N/A</td> <!-- Zoho Options always N/A as per original HTML -->
+            <td><i class="bi bi-exclamation-triangle text-danger"></i></td>
+        `;
+    
+        // Add click event listener for row expansion/collapse
+        row.addEventListener('click', (event) => {
+            // Prevent event from bubbling up if clicked on the action icon
+            if (event.target.tagName === 'I' && event.target.classList.contains('bi-exclamation-triangle')) {
+                return;
             }
-            expandedRowId = null; // Reset expanded state
-            if (arrowSpan) arrowSpan.textContent = '▼'; // Change arrow to down
-        } else {
-            // Collapse any previously expanded row
-            if (currentExpandedId !== null) {
-                const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
-                if (previousExpandedRowElement) {
-                    previousExpandedRowElement.remove();
+    
+            const appId = app.id;
+            const currentExpandedId = expandedRowId;
+            const arrowSpan = row.querySelector('.expand-toggle-arrow');
+    
+            // If clicking on the currently expanded row, collapse it
+            if (appId === currentExpandedId) {
+                const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
+                if (expandedRowElement) {
+                    expandedRowElement.remove();
                 }
-                const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
-                if (previousArrow) previousArrow.textContent = '▼'; // Change previous arrow to down
-            }
-
-            // Expand the new row
-            const expandedRow = document.createElement('tr');
-            expandedRow.className = 'expanded-row';
-            expandedRow.setAttribute('data-parent-app-id', appId); // Link expanded row to its parent
-
-            // --- START NEW EXPANDED ROW CONTENT ---
-            let monthlyDataHtml = app.monthlyData.map(month => {
-                let changeIcon = '';
-                let changeClass = 'text-muted'; // Default for no change or '0'
-                if (month.change.includes('+')) {
-                    changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                    changeClass = 'text-success';
-                } else if (month.change.includes('-')) {
-                    changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                    changeClass = 'text-danger';
+                expandedRowId = null; // Reset expanded state
+                if (arrowSpan) arrowSpan.textContent = '▼'; // Change arrow to down
+            } else {
+                // Collapse any previously expanded row
+                if (currentExpandedId !== null) {
+                    const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
+                    if (previousExpandedRowElement) {
+                        previousExpandedRowElement.remove();
+                    }
+                    const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
+                    if (previousArrow) previousArrow.textContent = '▼'; // Change previous arrow to down
+                }
+    
+                // Expand the new row
+                const expandedRow = document.createElement('tr');
+                expandedRow.className = 'expanded-row';
+                expandedRow.setAttribute('data-parent-app-id', appId); // Link expanded row to its parent
+    
+                // --- START NEW EXPANDED ROW CONTENT ---
+                let monthlyDataHtml = app.monthlyData.map(month => {
+                    let changeIcon = '';
+                    let changeClass = 'text-muted'; // Default for no change or '0'
+                    if (month.change.includes('+')) {
+                        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                        changeClass = 'text-success';
+                    } else if (month.change.includes('-')) {
+                        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                        changeClass = 'text-danger';
+                    } else {
+                         changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    }
+                    return `
+                        <tr>
+                            <td>${month.month}</td>
+                            <td>${month.seats}</td>
+                            <td class="${changeClass}">${changeIcon}</td> <!-- ONLY ICON IS RENDERED HERE -->
+                        </tr>
+                    `;
+                }).join('');
+    
+                let competitorIntegrationsContent = '';
+                if (app.competitors && app.competitors.length > 0) {
+                    competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
                 } else {
-                     changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    competitorIntegrationsContent = `No competitor integrations detected.`;
                 }
-                return `
-                    <tr>
-                        <td>${month.month}</td>
-                        <td>${month.seats}</td>
-                        <td class="${changeClass}">${changeIcon}</td> <!-- ONLY ICON IS RENDERED HERE -->
-                    </tr>
-                `;
-            }).join('');
-
-            let competitorIntegrationsContent = '';
-            if (app.competitors && app.competitors.length > 0) {
-                competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
-            } else {
-                competitorIntegrationsContent = `No competitor integrations detected.`;
-            }
-
-            let anomaliesHtml = '';
-            const detectedAnomalies = [];
-
-            // Re-evaluate anomalies for the expanded row based on the new filter logic
-            // Check Critical Issues
-            if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
-              // Determine specific critical sub-conditions if needed for display here
-              const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-              if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-                  detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
-              }
-              if (app.usage < 20 && app.license.includes('Downgraded')) {
-                  detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
-              }
-              let totalRecentDecline = 0;
-              const startIndex = app.monthlyData.length - 3;
-              const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-              if (relevantMonths.length === 3) {
-                  relevantMonths.forEach(month => {
-                      const change = parseInt(month.change);
-                      if (change < 0) {
-                          totalRecentDecline += change;
-                      }
-                  });
-              }
-              if (totalRecentDecline <= -3) {
-                  detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
-              }
-            }
-
-            // Check Warning Signs (only if not already a Critical Issue for display in expanded row)
-            if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
-              // Determine specific warning sub-conditions for display
-              const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
-              
-              if ((app.usage >= 20 && app.usage <= 50) || (app.seats < 30)) {
-                  detectedAnomalies.push(`<li>Low to Moderate Usage / Low Seats</li>`);
-              }
-              if (app.license.includes('Downgraded')) { // If it's a warning sign, it's a downgraded license
-                  detectedAnomalies.push(`<li>Downgraded License</li>`);
-              }
-              if (app.competitors && app.competitors.length > 0) {
-                  detectedAnomalies.push(`<li>Competitor Integrations Present</li>`);
-              }
-              if (latestZohoConversion === 'Low') {
-                  detectedAnomalies.push(`<li>Low Zoho Conversion Opportunities</li>`);
-              }
-            }
-
-
-            if (detectedAnomalies.length > 0) {
-                anomaliesHtml = `
-                    <p class="mb-1 fw-bold text-danger">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
-                    </p>
-                    <ul class="list-unstyled small ps-3">
-                        ${detectedAnomalies.join('')}
-                    </ul>
-                `;
-            } else {
-                anomaliesHtml = `
-                    <p class="mb-1 fw-bold text-success">
-                        <i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
-                    </p>
-                `;
-            }
-
-
-            expandedRow.innerHTML = `
-                <td colspan="8">
-                    <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
-                        <!-- Left Column: Usage & License History -->
-                        <div class="col-md-4 p-2">
-                            <h6 class="mb-2 fw-bold">Usage & License History</h6>
-                            <div class="table-responsive">
-                                <table class="table table-sm monthly-data-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Month</th>
-                                            <th>Seats</th>
-                                            <th>Change</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${monthlyDataHtml}
-                                    </tbody>
-                                </table>
+    
+                let anomaliesHtml = '';
+                const detectedAnomalies = [];
+    
+                // Re-evaluate anomalies for the expanded row based on the new filter logic
+                // Check Critical Issues
+                if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
+                  // Determine specific critical sub-conditions if needed for display here
+                  const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+                  if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+                      detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
+                  }
+                  if (app.usage < 20 && app.license.includes('Downgraded')) {
+                      detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
+                  }
+                  let totalRecentDecline = 0;
+                  const startIndex = app.monthlyData.length - 3;
+                  const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+                  if (relevantMonths.length === 3) {
+                      relevantMonths.forEach(month => {
+                          const change = parseInt(month.change);
+                          if (change < 0) {
+                              totalRecentDecline += change;
+                          }
+                      });
+                  }
+                  if (totalRecentDecline <= -3) {
+                      detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
+                  }
+                }
+    
+                // Check Warning Signs (only if not already a Critical Issue for display in expanded row)
+                if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
+                  // Determine specific warning sub-conditions for display
+                  const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
+                  
+                  if ((app.usage >= 20 && app.usage <= 50) || (app.seats < 30)) {
+                      detectedAnomalies.push(`<li>Low to Moderate Usage / Low Seats</li>`);
+                  }
+                  if (app.license.includes('Downgraded')) { // If it's a warning sign, it's a downgraded license
+                      detectedAnomalies.push(`<li>Downgraded License</li>`);
+                  }
+                  if (app.competitors && app.competitors.length > 0) {
+                      detectedAnomalies.push(`<li>Competitor Integrations Present</li>`);
+                  }
+                  if (latestZohoConversion === 'Low') {
+                      detectedAnomalies.push(`<li>Low Zoho Conversion Opportunities</li>`);
+                  }
+                }
+    
+    
+                if (detectedAnomalies.length > 0) {
+                    anomaliesHtml = `
+                        <p class="mb-1 fw-bold text-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
+                        </p>
+                        <ul class="list-unstyled small ps-3">
+                            ${detectedAnomalies.join('')}
+                        </ul>
+                    `;
+                } else {
+                    anomaliesHtml = `
+                        <p class="mb-1 fw-bold text-success">
+                            <i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
+                        </p>
+                    `;
+                }
+    
+    
+                expandedRow.innerHTML = `
+                    <td colspan="8">
+                        <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
+                            <!-- Left Column: Usage & License History -->
+                            <div class="col-md-4 p-2">
+                                <h6 class="mb-2 fw-bold">Usage & License History</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm monthly-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Month</th>
+                                                <th>Seats</th>
+                                                <th>Change</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${monthlyDataHtml}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+    
+                            <!-- Middle Column: Competitor Integrations -->
+                            <div class="col-md-4 p-2 border-start border-end">
+                                <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
+                                <p class="small text-muted mb-0">
+                                    ${competitorIntegrationsContent}
+                                </p>
+                            </div>
+    
+                            <!-- Right Column: Zoho Conversion Opportunities & Anomalies -->
+                            <div class="col-md-4 p-2">
+                                <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h6>
+                                <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
+                                ${anomaliesHtml}
                             </div>
                         </div>
-
-                        <!-- Middle Column: Competitor Integrations -->
-                        <div class="col-md-4 p-2 border-start border-end">
-                            <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
-                            <p class="small text-muted mb-0">
-                                ${competitorIntegrationsContent}
-                            </p>
-                        </div>
-
-                        <!-- Right Column: Zoho Conversion Opportunities & Anomalies -->
-                        <div class="col-md-4 p-2">
-                            <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h6>
-                            <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
-                            ${anomaliesHtml}
-                        </div>
-                    </div>
-                </td>
-            `;
-            // --- END NEW EXPANDED ROW CONTENT ---
-
-            // Insert expanded row after the clicked row
-            row.insertAdjacentElement('afterend', expandedRow);
-            expandedRowId = appId; // Set new expanded state
-            if (arrowSpan) arrowSpan.textContent = '▲'; // Change current arrow to up
-        }
+                    </td>
+                `;
+                // --- END NEW EXPANDED ROW CONTENT ---
+    
+                // Insert expanded row after the clicked row
+                row.insertAdjacentElement('afterend', expandedRow);
+                expandedRowId = appId; // Set new expanded state
+                if (arrowSpan) arrowSpan.textContent = '▲'; // Change current arrow to up
+            }
+        });
+    
+        // Append the main row to the table body
+        applicationTableBody.appendChild(row);
     });
-
-    // Append the main row to the table body
-    applicationTableBody.appendChild(row);
-});
-}
-
+    }
+    
 // Function to render the Ticket Details table
 function renderTicketDetailsTable() {
     if (!ticketDetailsTableBody) {
