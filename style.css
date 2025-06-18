@@ -61,16 +61,16 @@ body {
 
 /* Ticket Details Card Styles */
 #deskTicketsCard {
-    background: linear-gradient(140deg, #ffffff, #ecd3cd); /* Same gradient as other cards */
+    background-color: #e0edf9; /* NEW: Solid light blue/gray background */
     border: 1px solid #e9ecef;
     border-radius: 35px;
-    padding: 5px;
+    padding: 5px; /* Keeping your existing padding value */
     min-height: 145px;
     flex-basis: calc(20% - 15px);
     max-width: calc(20% - 15px);
     min-width: 150px;
     min-height: 120px;
-    padding: 8px;
+    padding: 8px; /* Keeping your existing padding value */
     flex-grow: 1;
     flex-shrink: 1;
     transition: all 0.3s ease;
@@ -225,23 +225,21 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: center; /* This centers children horizontally */
+    text-align: center; /* This centers inline-block/text content within the card */
 
     /* Box styling */
-    background: linear-gradient(140deg, #ffffff, #ecd3cd);
-    color: #212529;
+    background-color: #e0edf9; /* NEW: Solid light blue/gray background from screenshot */
+    color: #212529; /* Keep your existing text color */
 
-    border: 1px solid #e9ecef;
-    border-radius: 35px;
-    padding: 5px;
-    min-height: 145px;
+    border: 1px solid #e9ecef; /* Keep your existing border */
+    border-radius: 35px; /* Keep your existing border-radius */
+    padding: 1rem; /* Consolidated padding for better spacing */
+    min-height: 145px; /* Consistent height for all cards */
     
-    flex-basis: calc(20% - 15px);
+    flex-basis: calc(20% - 15px); /* Responsive width */
     max-width: calc(20% - 15px);
-    min-width: 150px;
-    min-height: 120px;
-    padding: 8px;
+    min-width: 150px; /* Ensures they don't get too small */
 
     flex-grow: 1;
     flex-shrink: 1;
@@ -315,17 +313,25 @@ h4 {
     background-color: #f0f0f0;
 }
 .btns.active {
-    background-color: black;
+    background-color:#5592f3;
     color: white;
-    border-color: black;
+    border-color:  #4285f4;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btns.active:hover {
-    background-color: #333;
-    border-color: #333;
+    background-color: #618ded; /* A slightly darker blue for hover */
+    border-color: #3367d6;
+}
+/* --- NEW: Styles for icons and images within ACTIVE buttons --- */
+.btns.active .bi {
+    color: white !important; /* Forces Font Awesome icons to be white */
 }
 
+.btns.active img {
+    filter: brightness(0) invert(1); /* Converts image colors to white */
+}
+/* --- END NEW --- */
 .btns .bi {
     margin-right: 4px;
     font-size: 1em !important; /* General rule for button icons */
@@ -399,7 +405,7 @@ h4 {
 }
 
 .red-bg{
-    border-radius: 5px;
+    border-radius: 14px;
     background-color: rgb(222 139 139 / 49%);
     color: #de1515;
     padding: 4px;
