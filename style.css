@@ -355,7 +355,7 @@ h4 {
 
 #applicationTable thead th {
     background-color: #e9ecef; /* Re-added for consistency with overall table header */
-    color: #495057;
+    color: #1a1d1f;
     font-weight: 600;
     padding: 12px 20px;
     border-bottom: 1px solid #dee2e6;
@@ -449,6 +449,12 @@ h4 {
 
 .trend-neutral {
     color: #6c757d;
+}
+
+/* Specific alignment for the 'Usage' header (third th) */
+#applicationTable thead th:nth-child(3) {
+    text-align: left; /* Keep it left-aligned as it's almost correct */
+    padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
 }
 
 /* --- Styles for Expanded Row Details --- */
@@ -565,15 +571,15 @@ h4 {
 
 .monthly-data-table th {
     background-color: #f0f2f5;
-    font-size: 0.9em; /* Increased font size */
+    font-size: 0.9em; 
     padding: 8px 12px;
-    color: #000; /* Changed font color to black */
+    color: #000; 
 }
 
 .monthly-data-table td {
-    font-size: 0.9em; /* Increased font size */
+    font-size: 0.9em; 
     padding: 8px 12px;
-    color: #000; /* Changed font color to black */
+    color: #000; 
 }
 
 .monthly-data-container h6 {
