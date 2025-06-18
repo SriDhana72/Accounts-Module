@@ -1,0 +1,983 @@
+/* General Body and Container Styles */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background for the whole page */
+    color: #333;
+}
+
+.container-fluid {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.container-section {
+    background-color: #f5f5f5; /* Very subtle grey background for the main widget container */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+}
+
+/* Ticket Counts Styles */
+.ticket-counts-labels {
+    font-weight: bold;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.ticket-counts-labels span {
+    margin: 0 0.3rem;
+}
+
+.ticket-counts-labels .vertical-bar {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+.ticket-counts-numbers {
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-counts-numbers span {
+    min-width: 40px;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Add a wrapper for better alignment */
+.ticket-counts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+}
+
+/* Ticket Details Card Styles */
+#deskTicketsCard {
+    background: linear-gradient(140deg, #ffffff, #ecd3cd); /* Same gradient as other cards */
+    border: 1px solid #e9ecef;
+    border-radius: 35px;
+    padding: 5px;
+    min-height: 145px;
+    flex-basis: calc(20% - 15px);
+    max-width: calc(20% - 15px);
+    min-width: 150px;
+    min-height: 120px;
+    padding: 8px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
+}
+
+#deskTicketsCard:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+}
+
+#deskTicketsCard p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+    font-size: 0.7em;
+    color: #212529;
+    white-space: nowrap;
+}
+
+#deskTicketsCard p i {
+    margin-right: 5px;
+    font-size: 1.2em !important;
+    font-weight: bold;
+    color: #212529;
+}
+
+#deskTicketsCard strong {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.ticket-counts-labels {
+    font-weight: bold;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.ticket-counts-labels span {
+    margin: 0 0.3rem;
+}
+
+.ticket-counts-labels .vertical-bar {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+.ticket-counts-numbers {
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-counts-numbers span {
+    min-width: 40px;
+    text-align: center;
+    line-height: 1;
+}
+
+.ticket-counts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+}
+
+/* Table styles for ticket details */
+.ticket-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.ticket-details-table th,
+.ticket-details-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#ticketDetailsTable thead th { /* Specific to Ticket Details Table header */
+    background-color: #e9ecef; /* Set to light grey to match other table headers */
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+}
+
+.ticket-details-table td {
+    color: #495057;
+}
+
+/* Specific column widths */
+.ticket-details-table th:first-child,
+.ticket-details-table td:first-child {
+    width: 25%;
+    padding-right: 0.2rem;
+}
+
+.ticket-details-table th:nth-child(2),
+.ticket-details-table td:nth-child(2) {
+    width: 13%;
+    padding-right: 0.3rem;
+}
+
+.ticket-details-table th:nth-child(3),
+.ticket-details-table td:nth-child(3) {
+    width: 13%;
+    padding-left: 0.3rem;
+    padding-right: 0.2rem;
+}
+
+.ticket-details-table th:nth-child(4),
+.ticket-details-table td:nth-child(4) {
+    width: 30%;
+}
+
+/* Removed h1 styling as the element is removed */
+/* h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 5px;
+} */
+
+.container-section > p {
+    font-size: 1em;
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+hr {
+    border-top: 1px solid #e0e0e0;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+h4 {
+    color: #212529;
+}
+
+/* --- Styles for the Top Five Summary Cards (Critical Issues, Warning Signs, etc.) --- */
+.card-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    /* Box styling */
+    background: linear-gradient(140deg, #ffffff, #ecd3cd);
+    color: #212529;
+
+    border: 1px solid #e9ecef;
+    border-radius: 35px;
+    padding: 5px;
+    min-height: 145px;
+    
+    flex-basis: calc(20% - 15px);
+    max-width: calc(20% - 15px);
+    min-width: 150px;
+    min-height: 120px;
+    padding: 8px;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
+}
+
+.card-section:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+}
+
+.card-section p:first-child {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+    font-size: 0.7em;
+    color: #212529;
+    white-space: nowrap;
+}
+
+.card-section p:first-child i {
+    margin-right: 5px;
+    font-size: 1.2em !important; /* General rule for card icons */
+    font-weight: bold;
+    color: #212529;
+}
+
+.card-section strong:not(:first-child) {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.card-section p:last-child {
+    font-size: 0.65em;
+    color: #212529;
+    margin-bottom: 0;
+}
+
+.container-section > div:first-of-type {
+    margin-bottom: 0;
+}
+
+
+/* --- Styles for the Filter Buttons (All Apps, Downgrades, etc.) --- */
+.Buttons-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.btns {
+    background-color: white;
+    border: 1px solid grey;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    color: #495057;
+    white-space: nowrap;
+}
+.btns:hover {
+    background-color: #f0f0f0;
+}
+.btns.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btns.active:hover {
+    background-color: #333;
+    border-color: #333;
+}
+
+.btns .bi {
+    margin-right: 4px;
+    font-size: 1em !important; /* General rule for button icons */
+}
+
+/* --- Styles for the Main Application Table --- */
+#applicationTableContainer {
+    display: block;
+    margin-top: 5px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    background-color: #fcfcfc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+#applicationTable {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#applicationTable thead th {
+    background-color: #e9ecef; /* Re-added for consistency with overall table header */
+    color: #495057;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    text-align: left;
+}
+
+#applicationTable thead th:first-child {
+    padding-left: 12px;
+    padding-right: 0;
+    width: 30px;
+    text-align: center;
+}
+
+#applicationTable tbody tr td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+#applicationTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#applicationTable tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+/* Base styles for usage badges */
+.usage-badge-base {
+    padding: 4px 23px;
+    border-radius: 5px;
+    font-size: 13px;
+    display: inline-block;
+    color: #333;
+}
+
+/* Styles for low usage (yellow) */
+.usage-badge-low {
+    background-color: #FFFACD;
+}
+
+/* Styles for high usage (green) */
+.usage-badge-high {
+    background-color: #b0e9e49c;
+}
+
+.red-bg{
+    border-radius: 5px;
+    background-color: rgb(222 139 139 / 49%);
+    color: #de1515;
+    padding: 4px;
+    display: inline-block;
+}
+
+/* Styles for the license trend icons */
+.license-trend-icon {
+    font-size: 1.1em;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.trend-positive {
+    color: #28a745;
+}
+
+.trend-negative {
+    color: #dc3545;
+}
+
+.trend-neutral {
+    color: #6c757d;
+}
+
+/* --- Styles for Expanded Row Details --- */
+.detail-row td {
+    padding: 0 !important;
+    border-bottom: none !important;
+}
+
+.dropdown-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fcfcfc;
+    border-top: 1px solid #e9ecef;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.dropdown-section {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 250px;
+    max-width: calc(33.33% - 15px);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.middle-column-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.middle-column-section p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    color: #555;
+}
+.middle-column-section strong {
+    font-size: 1em;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+
+.dropdown-section strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1em;
+    color: #333;
+    font-weight: 600;
+}
+
+.dropdown-section p,
+.dropdown-section ul {
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.dropdown-section ul {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.dropdown-section li {
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 0.9em;
+}
+
+.details-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.details-section li {
+    background-color: #f0f2f5;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    border: 1px solid #e0e2e5;
+    font-size: 0.9em;
+    color: #495057;
+    display: flex;
+    align-items: center;
+}
+.details-section li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* Usage & License History (div-based columns) */
+.expanded-content .table-responsive {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.monthly-data-table th {
+    background-color: #f0f2f5;
+    font-size: 0.9em; /* Increased font size */
+    padding: 8px 12px;
+    color: #000; /* Changed font color to black */
+}
+
+.monthly-data-table td {
+    font-size: 0.9em; /* Increased font size */
+    padding: 8px 12px;
+    color: #000; /* Changed font color to black */
+}
+
+.monthly-data-container h6 {
+    font-size: 1em;
+    margin-bottom: 10px;
+    padding-left: 0;
+    color: #212529;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.monthly-data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.8fr;
+    gap: 5px 15px;
+    font-size: 0.9em;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.monthly-data-row {
+    display: contents;
+}
+
+.monthly-data-col {
+    padding: 3px 0;
+    color: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.monthly-data-header .monthly-data-col {
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
+    color: #333;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.monthly-data-col .bi {
+    font-size: 1.1em;
+}
+
+
+/* --- Specific Styling for Anomaly Section within Expanded Row --- */
+.anomaly-block {
+    padding: 0px;
+    border-radius: 0px;
+    margin-top: 0px;
+    font-size: 0.95em;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.anomaly-heading-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #212529;
+    font-size: 1em;
+}
+
+.anomaly-heading-line i {
+    font-size: 1.2em;
+    color: #dc3545 !important;
+    vertical-align: middle;
+    transform: translateY(-0.08em);
+}
+
+/* Styling for the anomaly details list */
+.anomaly-details-list {
+    list-style: disc;
+    padding-left: 25px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.anomaly-details-list li {
+    font-size: 0.9em;
+    color: #8B4513;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+.anomaly-details-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* For "No anomalies detected" paragraph */
+.anomaly-details {
+    color: #8B4513 !important;
+    font-weight: 500;
+    padding-left: 26px;
+    line-height: 1.3;
+    font-size: 0.85em;
+}
+
+.critical-anomaly-block {
+    /* color: #721c24; */
+}
+
+.warning-anomaly-block {
+    /* color: #856404; */
+}
+
+.no-anomaly-block {
+    background-color: transparent !important;
+    border: none !important;
+    color: #383d41;
+}
+
+
+/* --- Styling for Zoho Opportunities Section within Expanded Row --- */
+.zoho-opportunities-section {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.zoho-opportunities-section strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 1em;
+}
+
+.zoho-opportunity-value {
+    font-weight: 500;
+    color: #212529 !important;
+    font-size: 0.85em;
+    display: block;
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 992px) {
+    .dropdown-section {
+        max-width: 100%;
+        flex-basis: 100%;
+        margin-bottom: 15px;
+    }
+
+    .dropdown-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .card-section {
+        flex-basis: calc(50% - 15px);
+        max-width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .card-section {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .monthly-data-grid {
+        grid-template-columns: 1fr 1fr 0.8fr;
+        font-size: 0.8em;
+    }
+
+    .table thead th,
+    .table tbody tr td {
+        padding: 8px 10px;
+    }
+
+    .table thead th:first-child,
+    .table tbody tr td:first-child {
+        padding-left: 8px;
+        padding-right: 0;
+    }
+
+    .monthly-data-table th,
+    .monthly-data-table td {
+        font-size: 0.7em;
+    }
+}
+
+.container-section hr + div {
+    margin-bottom: 0 !important;
+}
+
+.account-details-main-box {
+    box-sizing: border-box;
+    position: relative;
+    padding: 20px;
+    padding-right: 120px;
+    background-color: #f0f0f0 !important; /* Changed to a more visible off-white */
+    border-radius: 35px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    border: 1px solid #e0e0e0;
+    
+    background-image: linear-gradient(to right,
+        #ea4335 0%, #ea4335 25%,
+        #34a853 25%, #34a853 50%,
+        #4285f4 50%, #4285f4 75%,
+        #fbbc05 75%, #fbbc05 100%
+    );
+    background-size: 100% 2px;
+    background-repeat: no-repeat;
+    background-position: top;
+    
+    overflow: hidden; 
+}
+
+
+/* NEW HEALTH SCORE WIDGET STYLES */
+.health-score-widget {
+    /* Adjusted padding, but keep absolute positioning */
+    padding: 1rem;
+    display: flex; /* Ensure it's a flex container for its children */
+    align-items: center; /* Vertically align items in the center */
+}
+
+.health-score-circle {
+    width: 60px; /* Size of the circle */
+    height: 60px; /* Size of the circle */
+    border-radius: 50%; /* Makes it a perfect circle */
+    color: white; /* Text color inside the circle */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease-in-out; /* Smooth transition for color changes */
+    /* Set a default gradient here to ensure it's not grey initially */
+    background: linear-gradient(135deg, #74e493, #38c172); /* Default to green */
+}
+
+/* Gradient Color Classes */
+.health-score-green-gradient {
+    background: linear-gradient(135deg, #74e493, #38c172); /* Light green gradient */
+}
+
+.health-score-yellow-gradient {
+    background: linear-gradient(135deg, #ffe082, #ffb300); /* Light yellow gradient */
+}
+
+.health-score-red-gradient {
+    background: linear-gradient(135deg, #ff8a80, #e53935); /* Light red gradient */
+}
+
+
+.speedometer-widget {
+    padding: 1rem !important;
+}
+
+.account-details-main-box h5.fw-bold {
+    font-size: 1.8rem;
+}
+
+.account-details-main-box p.small.text-secondary {
+    font-size: 1rem;
+    max-width: none;
+}
+
+.account-info-content {
+    width: 100%;
+}
+
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.status-open {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-in-progress {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-closed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* NEW: Specific styles for the Ticket Details Table */
+#ticketDetailsTable thead th,
+#ticketDetailsTable tbody td {
+    padding: 12px 20px;
+    vertical-align: middle;
+    text-align: left;
+}
+
+#ticketDetailsTable thead th {
+    background-color: #e9ecef; /* Changed to light grey for consistency */
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+#ticketDetailsTable tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Adjust column widths for Ticket Details Table */
+#ticketDetailsTable th:nth-child(1),
+#ticketDetailsTable td:nth-child(1) {
+    width: 30%;
+    min-width: 180px;
+}
+
+#ticketDetailsTable th:nth-child(2),
+#ticketDetailsTable td:nth-child(2) {
+    width: 20%;
+    min-width: 100px;
+}
+
+#ticketDetailsTable th:nth-child(3),
+#ticketDetailsTable td:nth-child(3) {
+    width: 20%;
+    min-width: 100px;
+    text-align: left;
+}
+
+#ticketDetailsTable th:nth-child(4),
+#ticketDetailsTable td:nth-child(4) {
+    width: 30%;
+    min-width: 150px;
+}
+/* Specific size override for Competitor Exposure card icon */
+.card-section p:first-child .bi-link-45deg {
+    font-size: 1.9em !important; /* Adjusted size */
+}
+
+/* Specific size override for Competitor Exposure button icon */
+.btns .bi-link-45deg {
+    font-size: 1.7em !important; /* Adjusted size */
+}
+
+/* Specific size override for Warning Signs card icon */
+.card-section p:first-child .bi-exclamation-triangle {
+    font-size: 1.7em !important; /* Adjusted size to match competitor card icon */
+}
+
+/* Specific size override for Anomalies button icon */
+.btns .bi-exclamation-triangle {
+    font-size: 1.5em !important; /* Adjusted size to match competitor button icon */
+}
+
+/* Specific size override for Critical Issues card icon */
+.card-section p:first-child .bi-exclamation-circle {
+    font-size: 1.7em !important; /* Adjusted size to match other card icons */
+}
+
+/* Specific size override for Downgrade Risks card icon */
+.card-section p:first-child .bi-graph-down-arrow {
+    font-size: 1.7em !important; /* Adjusted size to match other card icons */
+}
+
+/* Specific size override for Downgrades button icon */
+.btns .bi-graph-down-arrow {
+    font-size: 1.5em !important; /* Adjusted size to match other button icons */
+}
+/* --- Desk Tickets Card Specific Colors --- */
+.open-label { /* Only apply red to the 'Open' label */
+    color: #dc3545; /* Bootstrap's 'danger' red */
+    font-weight: bold;
+}
+
+.closed-label { /* Only apply green to the 'Closed' label */
+    color: #28a745; /* Bootstrap's 'success' green */
+    font-weight: bold;
+}
+
+/* Ensure the numbers are black and bold */
+#deskTicketsCard .ticket-counts-numbers span {
+    color: #212529; /* Black color (matching Bootstrap's text-dark) */
+    font-size: 1.3em; /* Keep it prominent if desired, or adjust */
+    font-weight: 700; /* Ensure numbers are bold */
+}
+
+/* Optional: You can remove or keep this if you want the labels slightly smaller than the numbers */
+/* .ticket-counts-labels span {
+    font-size: 0.9em;
+} */
+
+/* Custom Active Card Border Styles */
+.card-highlight-border {
+    border: 3px solid; /* Thicker, thin border line for cards */
+    border-radius: 10px; /* Assuming your cards have some border-radius */
+    box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.25); /* Subtle shadow for visual pop */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Specific Border Colors matching card themes */
+
+/* Critical Issues (red/danger) */
+.card-border-critical {
+    border-color: #dc3545 !important; /* Bootstrap danger red */
+}
+
+/* Warning Signs (yellow/warning) */
+.card-border-warning {
+    border-color: #ffc107 !important; /* Bootstrap warning yellow */
+}
+
+/* Competitor Exposure (blue/info or primary) */
+.card-border-competitor {
+    border-color: #0dcaf0 !important; /* Bootstrap info cyan */
+}
+
+/* Downgrade Risks (purple/custom, matching your screenshot) */
+.card-border-downgrade {
+    border-color: #8A2BE2 !important; /* A shade of purple from your screenshot */
+}
+
+/* Desk Tickets (gray/secondary) */
+.card-border-tickets {
+    border-color: #6c757d !important; /* Bootstrap secondary gray */
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Health Overview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-fluid px-4 py-3">
+        <div class="container-section">
+            <!-- NEW: Single full-width container for top section -->
+            <!-- Removed 'rounded' class here to allow custom border-radius from CSS -->
+            <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
+                <!-- Left Side: Account Details Content -->
+                <div class="account-info-content">
+                    <h5 class="fw-bold mb-1 text-primary d-inline-block">Global Innovations Inc.</h5>
+                    <!-- Added vertical bar and Account Owner text - now bold, larger, and black -->
+                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <!-- Changed fs-6 to fs-5 -->
+                    <span class="fw-bold text-dark fs-6">Account Owner</span>
+                    <p class="text-muted small mb-2">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
+                    </p>
+
+                    <div class="d-flex align-items-center mb-1">
+                        <i class="bi bi-person-fill text-success me-2"></i>
+                        <span class="small">50 Active Subscriptions</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-person-x-fill text-danger me-2"></i>
+                        <span class="small">12 Inactive Subscriptions</span>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="text-warning fs-5">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i> <!-- One empty star for 4/5 -->
+                        </span>
+                        <span class="ms-2 text-muted small">5/12/2025</span>
+                    </div>
+
+                    <!-- CORRECTED ORDER: Business Category followed by Executive Summary -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="fw-bold me-1">Business Category:</span>
+                        <span class="small text-dark">Software & Technology</span>
+                    </div>
+
+                    <!-- UPDATED: Executive Summary Heading and Paragraph on Same Line, reverted text length -->
+                    <div class="d-flex align-items-baseline mb-2">
+                        <h6 class="fw-bold text-dark me-1 mb-0 flex-shrink-0">Executive Summary:</h6>
+                        <p class="small text-dark mb-0 flex-grow-1">
+                            This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- UPDATED: Health Score Widget with Corrected Tickmark Alignment -->
+                <div class="health-score-widget position-absolute top-0 end-0 p-3 d-flex align-items-center">
+                    <div id="healthScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center me-2">
+                        <span id="healthScoreValue" class="fw-bold text-white fs-4">87</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-start">
+                        <span class="fw-bold text-dark mb-0">Health Score</span>
+                        <div class="d-flex align-items-center"> <!-- New div for "Excellent" and tickmark -->
+                            <span id="healthScoreStatus" class="fw-bold text-dark small">Excellent</span>
+                            <i id="healthScoreCheck" class="bi bi-check-circle-fill text-success ms-1 fs-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END NEW: Single full-width container -->
+
+            <div>
+                <!-- Changed 'row g-3' to 'd-flex flex-wrap justify-content-around g-3' for better flex control -->
+                <div class="d-flex flex-wrap justify-content-around g-3">
+                    <div class="card-section" id="criticalIssuesCard">
+                        <!-- REMOVE SPACE BEFORE "Critical Issues" -->
+                        <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
+                        <strong>Critical Issues</strong></p>
+                        <strong id="criticalIssuesCount">2</strong>
+                        <p>Requires immediate Attention</p>
+                    </div>
+                    <div class="card-section" id="warningSignsCard">
+                        <!-- REMOVE SPACE BEFORE "Warning Signs" -->
+                        <p><i class="bi bi-exclamation-triangle fs-4 me-2" style="color: #84800b;"></i><strong>Warning Signs</strong></p>
+                        <strong id="warningSignsCount">2</strong>
+                        <p>Potential risks to monitor</p>
+                    </div>
+                    <div class="card-section" id="competitorExposureCard">
+                        <!-- REMOVE SPACE BEFORE "Competitor Exposure" -->
+                        <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 2em;"></i><strong>Competitor Exposure</strong></p>
+                        <strong id="competitorExposureCount">6</strong>
+                        <p>Competitor products in use</p>
+                    </div>
+                    <div class="card-section" id="downgradeRisksCard">
+                        <!-- REMOVE SPACE BEFORE "Downgrade Risks" -->
+                        <p><i class="bi bi-graph-down-arrow fs-4 me-2" style="color: #8A2BE2;"></i><strong>Downgrade Risks</strong></p>
+                        <strong id="downgradeRisksCount">2</strong>
+                        <p>Requires immediate Attention</p>
+                    </div>
+                    <div class="card-section" id="deskTicketsCard">
+                        <p>
+                            <!-- Image already has me-2, so remove space if any here -->
+                            <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;"><strong>Desk Tickets</strong>
+                        </p>
+                        <div class="ticket-counts-wrapper">
+                            <div class="ticket-counts-labels d-flex justify-content-between align-items-center">
+                                <span class="open-label">Open</span>
+                                <span class="vertical-bar">|</span>
+                                <span class="closed-label">Closed</span>
+                            </div>
+                            <div class="ticket-counts-numbers d-flex justify-content-between">
+                                <span id="openTicketsCount" class="open-count"></span>
+                                <span id="closedTicketsCount" class="closed-count"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 style="font-weight: 600; margin-bottom: 0;">Subscriptions Analysis</h4>
+                <div class="Buttons-section">
+                    <button class="btn btn-light btns active" id="allAppsBtn">
+                        All Apps (<span id="allAppsCount">15</span>)
+                    </button>
+                    <button class="btn btn-light btns" id="downgradesBtn">
+                        <i class="bi bi-graph-down-arrow fs-5" style="color: #8A2BE2;"></i>
+                        Downgrades (<span id="downgradesCount">8</span>)
+                    </button>
+                    <button class="btn btn-light btns" id="competitorsBtn">
+                        <i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 1.5em;"></i>
+                        Competitors (<span id="competitorsCount">6</span>)
+                    </button>
+                    <button class="btn btn-light btns" id="anomaliesBtn">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Anomalies (<span id="anomaliesCount">4</span>)
+                    </button>
+                    <!-- UPDATED: Ticket Details Button - Image size increased -->
+                    <button class="btn btn-light btns" id="ticketDetailsBtn">
+                        <!-- Removed me-2 class from the img tag -->
+                        <img src="https://store-images.s-microsoft.com/image/apps.23689.d8f59d8c-be9e-4657-b976-48e22ee6c059.f8c2c73c-e2bb-4dae-8f3d-3364079924e7.9f27bad6-64d3-4256-b028-183afbaca844.png" alt="desk icon" style="width: 24px; height: 24px; vertical-align: middle;">
+                        Ticket Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Application Table Container -->
+        <div id="applicationTableContainer" class="table-responsive">
+            <table class="table" id="applicationTable">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th style="min-width: 200px;">Applications</th>
+                        <th>Usage</th>
+                        <th>Seats</th>
+                        <th>License Trend</th>
+                        <th>Competitors</th>
+                        <th>Zoho Options</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applicationTableBody">
+                    <!-- Table rows will be dynamically inserted here by script.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NEW: Ticket Details Table Container (initially hidden) -->
+        <div id="ticketDetailsTableContainer" class="table-responsive" style="display: none;">
+            <table class="table ticket-details-table" id="ticketDetailsTable">
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Open Status</th>
+                        <th>Closed Status</th>
+                        <th>Department</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="ticketDetailsTableBody">
+                    <!-- Dummy data will be inserted here by script.js -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <script src="healthScore.js"></script> <!-- ADDED THIS LINE -->
+    <script src="script.js"></script>
+</body>
+</html>
