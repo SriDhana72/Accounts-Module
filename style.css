@@ -1,4 +1,4 @@
-/* General Body and Container Styles */
+    /* General Body and Container Styles */
 body {
 font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 background-color: #f8f9fa; /* Light background for the whole page */
@@ -1022,4 +1022,29 @@ width: 100%; /* Take full width */
 justify-content: flex-start; /* Align tags to left */
 margin-left: 0;
 }
+}
+.needHelp {
+width: 100px;
+height: 100px;
+border-radius: 8px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+display: none;
+}
+.need-help-button {
+    background-color: #5592f3;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+    margin-top: 10px; /* Space below the image */
+    display: block; /* Make it a block element to take full width of its container if needed, or inline-block if next to image */
+    text-align: center;
+}
+
+.need-help-button:hover {
+    background-color: #4285f4;
 }

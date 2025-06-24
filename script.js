@@ -1,4 +1,10 @@
 // Dummy data for the application table
+setTimeout(function() {
+    const element = document.querySelector('.needHelp'); 
+    if (element) {
+      element.style.display = 'block'; 
+    }
+  }, 1000);
 const appData = [
 {
 id: 1,
