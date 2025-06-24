@@ -1,1015 +1,1025 @@
 /* General Body and Container Styles */
 body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f8f9fa; /* Light background for the whole page */
-    color: #333;
+font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+background-color: #f8f9fa; /* Light background for the whole page */
+color: #333;
 }
 
 .container-fluid {
-    padding-top: 30px;
-    padding-bottom: 30px;
+padding-top: 30px;
+padding-bottom: 30px;
 }
 
 .container-section {
-    background-color: #f5f5f5; /* Very subtle grey background for the main widget container */
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-    border: 1px solid #e9ecef;
+background-color: #f5f5f5; /* Very subtle grey background for the main widget container */
+padding: 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+margin-bottom: 30px;
+border: 1px solid #e9ecef;
 }
 
 /* Ticket Counts Styles */
 .ticket-counts-labels {
-    font-weight: bold;
-    font-size: 0.9rem;
-    line-height: 1.2;
+font-weight: bold;
+font-size: 0.9rem;
+line-height: 1.2;
 }
 
 .ticket-counts-labels span {
-    margin: 0 0.3rem;
+margin: 0 0.3rem;
 }
 
 .ticket-counts-labels .vertical-bar {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #6c757d;
+font-size: 0.9rem;
+font-weight: bold;
+color: #6c757d;
+}
+/* Specific colors for Open and Closed labels */
+.ticket-counts-labels .open-label {
+color: #dc3545; /* Red for Open */
+}
+
+.ticket-counts-labels .closed-label {
+color: #28a745; /* Green for Closed */
 }
 
 .ticket-counts-numbers {
-    margin-top: 0.25rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+margin-top: 0.25rem;
+font-weight: 500;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .ticket-counts-numbers span {
-    min-width: 40px;
-    text-align: center;
-    line-height: 1;
+min-width: 40px;
+text-align: center;
+line-height: 1;
+font-size: 1.4em; /* Make numbers significantly larger - REDUCED FROM 1.5EM TO 1.4EM */
 }
 
 /* Add a wrapper for better alignment */
 .ticket-counts-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 1rem;
+display: flex;
+flex-direction: column;
+align-items: stretch;
+margin-top: 1rem;
 }
 
 /* Ticket Details Card Styles */
 #deskTicketsCard {
-    background-color: #e0edf9; /* NEW: Solid light blue/gray background */
-    border: 1px solid #e9ecef;
-    border-radius: 35px;
-    padding: 5px; /* Keeping your existing padding value */
-    min-height: 145px;
-    flex-basis: calc(20% - 15px);
-    max-width: calc(20% - 15px);
-    min-width: 150px;
-    min-height: 120px;
-    padding: 8px; /* Keeping your existing padding value */
-    flex-grow: 1;
-    flex-shrink: 1;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-    cursor: pointer;
+background-color: #e0edf9; /* NEW: Solid light blue/gray background */
+border: 1px solid #e9ecef;
+border-radius: 35px;
+padding: 5px; /* Keeping your existing padding value */
+min-height: 145px;
+flex-basis: calc(20% - 15px);
+max-width: calc(20% - 15px);
+min-width: 150px;
+min-height: 120px;
+padding: 8px; /* Keeping your existing padding value */
+flex-grow: 1;
+flex-shrink: 1;
+transition: all 0.3s ease;
+box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+cursor: pointer;
 }
 
 #deskTicketsCard:hover {
-    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
-    transform: translateY(-2px);
+box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+transform: translateY(-2px);
 }
 
 #deskTicketsCard p {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2px;
-    font-size: 0.7em;
-    color: #212529;
-    white-space: nowrap;
+display: flex;
+align-items: center;
+margin-bottom: 2px;
+font-size: 0.7em;
+color: #212529;
+white-space: nowrap;
 }
 
 #deskTicketsCard p i {
-    margin-right: 5px;
-    font-size: 1.2em !important;
-    font-weight: bold;
-    color: #212529;
+margin-right: 5px;
+font-size: 1.2em !important;
+font-weight: bold;
+color: #212529;
 }
 
 #deskTicketsCard strong {
-    font-size: 1.3em;
-    font-weight: 700;
-    color: #212529;
-    line-height: 1;
-    margin-bottom: 5px;
-    display: block;
+font-size: 1.3em;
+font-weight: 700;
+color: #212529;
+line-height: 1;
+margin-bottom: 5px;
+display: block;
 }
 
 .ticket-counts-labels {
-    font-weight: bold;
-    font-size: 0.9rem;
-    line-height: 1.2;
+font-weight: bold;
+font-size: 0.9rem;
+line-height: 1.2;
 }
 
 .ticket-counts-labels span {
-    margin: 0 0.3rem;
+margin: 0 0.3rem;
 }
 
 .ticket-counts-labels .vertical-bar {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #6c757d;
+font-size: 0.9rem;
+font-weight: bold;
+color: #6c757d;
 }
 
 .ticket-counts-numbers {
-    margin-top: 0.25rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+margin-top: 0.25rem;
+font-size: 0.95rem;
+font-weight: 500;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .ticket-counts-numbers span {
-    min-width: 40px;
-    text-align: center;
-    line-height: 1;
+min-width: 40px;
+text-align: center;
+line-height: 1;
 }
 
-.ticket-counts-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 1rem;
-}
-
-/* Table styles for ticket details */
-.ticket-details-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.ticket-details-table th,
+/* The `ticket-details-table td` rule for content color and font size */
 .ticket-details-table td {
-    padding: 0.3rem 0.5rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
+padding: 15px 20px; /* Increased vertical padding to 15px */
+text-align: left;
+border-bottom: 1px solid #dee2e6;
+color: black;
+font-size: 0.9em; /* Matches the font size for application table cells */
 }
 
+/* `ticketDetailsTable thead th` rule for header color and font size */
 #ticketDetailsTable thead th { /* Specific to Ticket Details Table header */
-    background-color: #e9ecef; /* Set to light grey to match other table headers */
-    font-weight: 600;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+background-color: #e9ecef; /* Set to light grey to match other table headers */
+font-weight: 600;
+color: black; /* Changed to black */
+font-size: 0.95em; /* Set consistent header font size */
+border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+white-space: nowrap; /* Prevent header text from wrapping */
+padding: 12px 20px; /* Make padding consistent with main table headers */
 }
 
-.ticket-details-table td {
-    color: #495057;
+/* Specific column widths for Ticket Details Table */
+#ticketDetailsTable th:nth-child(1),
+#ticketDetailsTable td:nth-child(1) {
+width: 5%; /* Expand Arrow Column */
+min-width: 40px; /* Slightly increase min-width for arrow column */
+text-align: center; /* Center the arrow in the header */
 }
 
-/* Specific column widths */
-.ticket-details-table th:first-child,
-.ticket-details-table td:first-child {
-    width: 25%;
-    padding-right: 0.2rem;
+#ticketDetailsTable th:nth-child(2),
+#ticketDetailsTable td:nth-child(2) {
+width: 35%; /* Department column - Increased for more space */
+min-width: 150px;
 }
 
-.ticket-details-table th:nth-child(2),
-.ticket-details-table td:nth-child(2) {
-    width: 13%;
-    padding-right: 0.3rem;
+#ticketDetailsTable th:nth-child(3),
+#ticketDetailsTable td:nth-child(3) {
+width: 15%; /* Open Status column */
+min-width: 80px;
 }
 
-.ticket-details-table th:nth-child(3),
-.ticket-details-table td:nth-child(3) {
-    width: 13%;
-    padding-left: 0.3rem;
-    padding-right: 0.2rem;
+#ticketDetailsTable th:nth-child(4),
+#ticketDetailsTable td:nth-child(4) {
+width: 15%; /* Closed Status column */
+min-width: 80px;
 }
 
-.ticket-details-table th:nth-child(4),
-.ticket-details-table td:nth-child(4) {
-    width: 30%;
+#ticketDetailsTable th:nth-child(5),
+#ticketDetailsTable td:nth-child(5) {
+width: 30%; /* Open Ticket Ownership column - Adjusted to balance */
+min-width: 120px;
+text-align: left;
 }
 
 /* Removed h1 styling as the element is removed */
 /* h1 {
-    font-size: 2.2em;
-    font-weight: 700;
-    color: #212529;
-    margin-bottom: 5px;
+font-size: 2.2em;
+font-weight: 700;
+color: #212529;
+margin-bottom: 5px;
 } */
 
 .container-section > p {
-    font-size: 1em;
-    color: #6c757d;
-    margin-bottom: 25px;
+font-size: 1em;
+color: #6c757d;
+margin-bottom: 25px;
 }
 
 hr {
-    border-top: 1px solid #e0e0e0;
-    margin-top: 30px;
-    margin-bottom: 30px;
+border-top: 1px solid #e0e0e0;
+margin-top: 30px;
+margin-bottom: 30px;
 }
 
 h4 {
-    color: #212529;
+color: #212529;
 }
 
 /* --- Styles for the Top Five Summary Cards (Critical Issues, Warning Signs, etc.) --- */
 .card-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* This centers children horizontally */
-    text-align: center; /* This centers inline-block/text content within the card */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center; /* This centers children horizontally */
+text-align: center; /* This centers inline-block/text content within the card */
 
-    /* Box styling */
-    background-color: #e0edf9; /* NEW: Solid light blue/gray background from screenshot */
-    color: #212529; /* Keep your existing text color */
+/* Box styling */
+background-color: #e0edf9; /* NEW: Solid light blue/gray background from screenshot */
+color: #212529; /* Keep your existing text color */
 
-    border: 1px solid #e9ecef; /* Keep your existing border */
-    border-radius: 35px; /* Keep your existing border-radius */
-    padding: 1rem; /* Consolidated padding for better spacing */
-    min-height: 145px; /* Consistent height for all cards */
-    
-    flex-basis: calc(20% - 15px); /* Responsive width */
-    max-width: calc(20% - 15px);
-    min-width: 150px; /* Ensures they don't get too small */
+border: 1px solid #e9ecef; /* Keep your existing border */
+border-radius: 35px; /* Keep your existing border-radius */
+padding: 1rem; /* Consolidated padding for better spacing */
+min-height: 145px; /* Consistent height for all cards */
 
-    flex-grow: 1;
-    flex-shrink: 1;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-    cursor: pointer;
+flex-basis: calc(20% - 15px); /* Responsive width */
+max-width: calc(20% - 15px);
+min-width: 150px; /* Ensures they don't get too small */
+
+flex-grow: 1;
+flex-shrink: 1;
+transition: all 0.3s ease;
+box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+cursor: pointer;
 }
 
 .card-section:hover {
-    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
-    transform: translateY(-2px);
+box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+transform: translateY(-2px);
 }
 
 .card-section p:first-child {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2px;
-    font-size: 0.7em;
-    color: #212529;
-    white-space: nowrap;
+display: flex;
+align-items: center;
+margin-bottom: 2px;
+font-size: 0.7em;
+color: #212529;
+white-space: nowrap;
 }
 
-.card-section p:first-child i {
-    margin-right: 5px;
-    font-size: 1.2em !important; /* General rule for card icons */
-    font-weight: bold;
-    color: #212529;
+#deskTicketsCard p i {
+margin-right: 5px;
+font-size: 1.2em !important;
+font-weight: bold;
+color: #212529;
 }
 
 .card-section strong:not(:first-child) {
-    font-size: 1.3em;
-    font-weight: 700;
-    color: #212529;
-    line-height: 1;
-    margin-bottom: 5px;
-    display: block;
+font-size: 1.3em;
+font-weight: 700;
+color: #212529;
+line-height: 1;
+margin-bottom: 5px;
+display: block;
 }
 
 .card-section p:last-child {
-    font-size: 0.65em;
-    color: #212529;
-    margin-bottom: 0;
+font-size: 0.65em;
+color: #212529;
+margin-bottom: 0;
 }
 
 .container-section > div:first-of-type {
-    margin-bottom: 0;
+margin-bottom: 0;
 }
 
 
 /* --- Styles for the Filter Buttons (All Apps, Downgrades, etc.) --- */
 .Buttons-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 5px;
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 5px;
 }
 
 .btns {
-    background-color: white;
-    border: 1px solid grey;
-    margin: 0;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 0.95em;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-    color: #495057;
-    white-space: nowrap;
+background-color: white;
+border: 1px solid grey;
+margin: 0;
+padding: 5px 10px;
+border-radius: 8px;
+font-size: 0.95em;
+font-weight: 500;
+transition: all 0.2s ease-in-out;
+color: #495057;
+white-space: nowrap;
 }
 .btns:hover {
-    background-color: #f0f0f0;
+background-color: #f0f0f0;
 }
 .btns.active {
-    background-color:#5592f3;
-    color: white;
-    border-color:  #4285f4;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+background-color:#5592f3;
+color: white;
+border-color:  #4285f4;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btns.active:hover {
-    background-color: #618ded; /* A slightly darker blue for hover */
-    border-color: #3367d6;
+background-color: #618ded; /* A slightly darker blue for hover */
+border-color: #3367d6;
 }
 /* --- NEW: Styles for icons and images within ACTIVE buttons --- */
 .btns.active .bi {
-    color: white !important; /* Forces Font Awesome icons to be white */
+color: white !important; /* Forces Font Awesome icons to be white */
 }
 
 .btns.active img {
-    filter: brightness(0) invert(1); /* Converts image colors to white */
+filter: brightness(0) invert(1); /* Converts image colors to white */
 }
 /* --- END NEW --- */
 .btns .bi {
-    margin-right: 4px;
-    font-size: 1em !important; /* General rule for button icons */
+margin-right: 4px;
+font-size: 1em !important; /* General rule for button icons */
 }
 
 /* --- Styles for the Main Application Table --- */
 #applicationTableContainer {
-    display: block;
-    margin-top: 5px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #dee2e6;
-    background-color: #fcfcfc;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+display: block;
+margin-top: 5px;
+border-radius: 8px;
+overflow: hidden;
+border: 1px solid #dee2e6;
+background-color: #fcfcfc;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 #applicationTable {
-    width: 100%;
-    margin-bottom: 0;
+width: 100%;
+margin-bottom: 0;
 }
 
 #applicationTable thead th {
-    background-color: #e9ecef; /* Re-added for consistency with overall table header */
-    color: #1a1d1f;
-    font-weight: 600;
-    padding: 12px 20px;
-    border-bottom: 1px solid #dee2e6;
-    vertical-align: middle;
-    text-align: left;
+background-color: #e9ecef; /* Re-added for consistency with overall table header */
+color: #1a1d1f;
+font-weight: 600;
+font-size: 0.95em; /* Set consistent header font size */
+padding: 12px 20px;
+border-bottom: 1px solid #dee2e6;
+vertical-align: middle;
+text-align: left;
 }
 
 #applicationTable thead th:first-child {
-    padding-left: 12px;
-    padding-right: 0;
-    width: 30px;
-    text-align: center;
+padding-left: 12px;
+padding-right: 0;
+width: 30px;
+text-align: center;
 }
 
 #applicationTable tbody tr td {
-    padding: 12px 20px;
-    border-bottom: 1px solid #e9ecef;
-    vertical-align: middle;
+padding: 12px 20px;
+border-bottom: 1px solid #e9ecef;
+vertical-align: middle;
+font-size: 0.9em; /* Set consistent font size for table body cells */
 }
 
 #applicationTable tbody tr:last-child td {
-    border-bottom: none;
+border-bottom: none;
 }
 
 #applicationTable tbody tr:hover {
-    background-color: #f8f9fa;
-    cursor: pointer;
+background-color: #f8f9fa;
+cursor: pointer;
 }
 
 /* --- Styles for the Usage Column Bars --- */
 .usage-bar-container {
-    position: relative; /* Needed for absolute positioning of text */
-    width: 70px; /* Fixed width for the bar */
-    height: 25px; /* Height of the bar */
-    border-radius: 10px; /* Rounded corners for the bar */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Ensure text/content stays within bounds */
+position: relative; /* Needed for absolute positioning of text */
+width: 70px; /* Fixed width for the bar */
+height: 25px; /* Height of the bar */
+border-radius: 10px; /* Rounded corners for the bar */
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden; /* Ensure text/content stays within bounds */
 }
 
 .usage-bar-text {
-    position: absolute; /* Position text on top of the bar */
-    color: black; /* Black font color for the text */
-    font-size: 0.85em; /* Adjust font size as needed */
-    z-index: 1; /* Ensure text is above the background color */
-    white-space: nowrap; /* Prevent text from wrapping */
+position: absolute; /* Position text on top of the bar */
+color: black; /* Black font color for the text */
+font-size: 0.85em; /* Adjust font size as needed */
+z-index: 1; /* Ensure text is above the background color */
+white-space: nowrap; /* Prevent text from wrapping */
 }
 
 /* Specific background colors for the usage bars */
 .bg-usage-low {
-    /* Previously: background-color: #ff8a80; (red/orange) */
-    background: linear-gradient(to right, #ffe6e6, #f9d3d3); /* Very light red to light red */
+/* Previously: background-color: #ff8a80; (red/orange) */
+background: linear-gradient(to right, #ffe6e6, #f9d3d3); /* Very light red to light red */
 }
 
 .bg-usage-medium {
-    /* Previously: background-color: #ffe082; (yellow/orange) */
-    background: linear-gradient(to right, #fffacd, #f5efb3); /* Very light yellow to light yellow */
+/* Previously: background-color: #ffe082; (yellow/orange) */
+background: linear-gradient(to right, #fffacd, #f5efb3); /* Very light yellow to light yellow */
 }
 
 .bg-usage-high {
-    /* Previously: background-color: #74e493; (green/blue) */
-    background: linear-gradient(to right, #e8f5e9, #ddf6de); /* Very light green to light green */
+/* Previously: background-color: #74e493; (green/blue) */
+background: linear-gradient(to right, #e8f5e9, #ddf6de); /* Very light green to light green */
 }
 
 
 /* --- Existing Styles (Preserved) --- */
 .red-bg{
-    border-radius: 10px; /* Keeping your current 14px radius for these */
-    background-color: rgb(222 139 139 / 49%);
-    color: #df4141;
-    padding: 4px;
-    display: inline-block;
-    font-size: 0.85em;
+border-radius: 10px; /* Keeping your current 14px radius for these */
+background-color: rgb(222 139 139 / 49%);
+color: #df4141;
+padding: 4px;
+display: inline-block;
+font-size: 0.85em;
 }
 
 /* Styles for the license trend icons */
 .license-trend-icon {
-    font-size: 1.1em;
-    margin-right: 5px;
-    vertical-align: middle;
+font-size: 1.1em;
+margin-right: 5px;
+vertical-align: middle;
 }
 
 .trend-positive {
-    color: #28a745;
+color: #28a745;
 }
 
 .trend-negative {
-    color: #dc3545;
+color: #dc3545;
 }
 
 .trend-neutral {
-    color: #6c757d;
+color: #6c757d;
 }
 
 /* Specific alignment for the 'Usage' header (third th) */
 #applicationTable thead th:nth-child(3) {
-    text-align: left; /* Keep it left-aligned as it's almost correct */
-    padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
+text-align: left; /* Keep it left-aligned as it's almost correct */
+padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
 }
 
 /* --- Styles for Expanded Row Details --- */
 .detail-row td {
-    padding: 0 !important;
-    border-bottom: none !important;
+padding: 0 !important;
+border-bottom: none !important;
 }
 
 .dropdown-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 15px;
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #fcfcfc;
-    border-top: 1px solid #e9ecef;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: flex-start;
+padding: 15px;
+gap: 20px;
+width: 100%;
+box-sizing: border-box;
+background-color: #fcfcfc;
+border-top: 1px solid #e9ecef;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;
+box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
 .dropdown-section {
-    background-color: #ffffff;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 0;
-    flex: 1;
-    min-width: 250px;
-    max-width: calc(33.33% - 15px);
-    box-sizing: border-box;
-    text-align: left;
+background-color: #ffffff;
+border: 1px solid #e9ecef;
+border-radius: 8px;
+padding: 20px;
+margin-bottom: 0;
+flex: 1;
+min-width: 250px;
+max-width: calc(33.33% - 15px);
+box-sizing: border-box;
+text-align: left;
 }
 
 .middle-column-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: flex-start;
 }
 .middle-column-section p {
-    margin-bottom: 0.5rem;
-    font-size: 0.9em;
-    color: #555;
+margin-bottom: 0.5rem;
+font-size: 0.9em;
+color: #555;
 }
 .middle-column-section strong {
-    font-size: 1em;
-    color: #333;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+font-size: 1em;
+color: #333;
+font-weight: 600;
+margin-bottom: 0.25rem;
 }
 
 
 .dropdown-section strong {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 1em;
-    color: #333;
-    font-weight: 600;
+display: block;
+margin-bottom: 0.25rem;
+font-size: 1em;
+color: #333;
+font-weight: 600;
 }
 
 .dropdown-section p,
 .dropdown-section ul {
-    margin-bottom: 0.5rem;
-    font-size: 0.9em;
-    color: #555;
+margin-bottom: 0.5rem;
+font-size: 0.9em;
+color: #555;
 }
 
 .dropdown-section ul {
-    list-style-type: disc;
-    padding-left: 25px;
-    margin-top: 10px;
-    margin-bottom: 15px;
+list-style-type: disc;
+padding-left: 25px;
+margin-top: 10px;
+margin-bottom: 15px;
 }
 
 .dropdown-section li {
-    margin-bottom: 5px;
-    color: #333;
-    font-size: 0.9em;
+margin-bottom: 5px;
+color: #333;
+font-size: 0.9em;
 }
 
 .details-section ul {
-    list-style: none;
-    padding-left: 0;
+list-style: none;
+padding-left: 0;
 }
 
 .details-section li {
-    background-color: #f0f2f5;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    border: 1px solid #e0e2e5;
-    font-size: 0.9em;
-    color: #495057;
-    display: flex;
-    align-items: center;
+background-color: #f0f2f5;
+padding: 8px 12px;
+margin-bottom: 6px;
+border-radius: 4px;
+border: 1px solid #e0e2e5;
+font-size: 0.9em;
+color: #495057;
+display: flex;
+align-items: center;
 }
 .details-section li:last-child {
-    margin-bottom: 0;
+margin-bottom: 0;
 }
 
 
 /* Usage & License History (div-based columns) */
 .expanded-content .table-responsive {
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    overflow: hidden;
-    max-height: 200px;
-    overflow-y: auto;
+border: 1px solid #e9ecef;
+border-radius: 8px;
+overflow: hidden;
+max-height: 200px;
+overflow-y: auto;
 }
 
+
 .monthly-data-table th {
-    background-color: #f0f2f5;
-    font-size: 0.9em; 
-    padding: 8px 12px;
-    color: #000; 
+background-color: #f0f2f5;
+font-size: 0.9em; 
+padding: 8px 12px;
+color: #000; 
 }
 
 .monthly-data-table td {
-    font-size: 0.9em; 
-    padding: 8px 12px;
-    color: #000; 
+font-size: 0.9em; 
+padding: 8px 12px;
+color: #000; 
 }
 
 .monthly-data-container h6 {
-    font-size: 1em;
-    margin-bottom: 10px;
-    padding-left: 0;
-    color: #212529;
-    font-weight: 600;
-    margin-top: 0;
+font-size: 1em;
+margin-bottom: 10px;
+padding-left: 0;
+color: #212529;
+font-weight: 600;
+margin-top: 0;
 }
 
 .monthly-data-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 0.8fr;
-    gap: 5px 15px;
-    font-size: 0.9em;
-    line-height: 1.4;
-    text-align: center;
+display: grid;
+grid-template-columns: 1fr 1fr 0.8fr;
+gap: 5px 15px;
+font-size: 0.9em;
+line-height: 1.4;
+text-align: center;
 }
 
 .monthly-data-row {
-    display: contents;
+display: contents;
 }
 
 .monthly-data-col {
-    padding: 3px 0;
-    color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+padding: 3px 0;
+color: #555;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 .monthly-data-header .monthly-data-col {
-    font-weight: 600;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
-    color: #333;
-    background-color: #e9ecef;
-    border-radius: 4px;
+font-weight: 600;
+border-bottom: 2px solid #ddd;
+padding-bottom: 8px;
+color: #333;
+background-color: #e9ecef;
+border-radius: 4px;
 }
 
 .monthly-data-col .bi {
-    font-size: 1.1em;
+font-size: 1.1em;
 }
 
 
 /* --- Specific Styling for Anomaly Section within Expanded Row --- */
 .anomaly-block {
-    padding: 0px;
-    border-radius: 0px;
-    margin-top: 0px;
-    font-size: 0.95em;
-    line-height: 1.4;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    background-color: transparent !important;
-    border: none !important;
+padding: 0px;
+border-radius: 0px;
+margin-top: 0px;
+font-size: 0.95em;
+line-height: 1.4;
+display: flex;
+flex-direction: column;
+gap: 5px;
+background-color: transparent !important;
+border: none !important;
 }
 
 .anomaly-heading-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    color: #212529;
-    font-size: 1em;
+display: flex;
+align-items: center;
+gap: 8px;
+font-weight: 600;
+color: #212529;
+font-size: 1em;
 }
 
 .anomaly-heading-line i {
-    font-size: 1.2em;
-    color: #dc3545 !important;
-    vertical-align: middle;
-    transform: translateY(-0.08em);
+font-size: 1.2em;
+color: #dc3545 !important;
+vertical-align: middle;
+transform: translateY(-0.08em);
 }
 
 /* Styling for the anomaly details list */
 .anomaly-details-list {
-    list-style: disc;
-    padding-left: 25px;
-    margin-top: 5px;
-    margin-bottom: 0;
+list-style: disc;
+padding-left: 25px;
+margin-top: 5px;
+margin-bottom: 0;
 }
 
 .anomaly-details-list li {
-    font-size: 0.9em;
-    color: #8B4513;
-    font-weight: bold;
-    margin-bottom: 3px;
+font-size: 0.9em;
+color: #8B4513;
+font-weight: bold;
+margin-bottom: 3px;
 }
 .anomaly-details-list li:last-child {
-    margin-bottom: 0;
+margin-bottom: 0;
 }
 
 /* For "No anomalies detected" paragraph */
 .anomaly-details {
-    color: #8B4513 !important;
-    font-weight: 500;
-    padding-left: 26px;
-    line-height: 1.3;
-    font-size: 0.85em;
+color: #8B4513 !important;
+font-weight: 500;
+padding-left: 26px;
+line-height: 1.3;
+font-size: 0.85em;
 }
 
 .critical-anomaly-block {
-    /* color: #721c24; */
+/* color: #721c24; */
 }
 
 .warning-anomaly-block {
-    /* color: #856404; */
+/* color: #856404; */
 }
 
 .no-anomaly-block {
-    background-color: transparent !important;
-    border: none !important;
-    color: #383d41;
+background-color: transparent !important;
+border: none !important;
+color: #383d41;
 }
 
 
 /* --- Styling for Zoho Opportunities Section within Expanded Row --- */
 .zoho-opportunities-section {
-    margin-top: 0;
-    margin-bottom: 15px;
+margin-top: 0;
+margin-bottom: 15px;
 }
 .zoho-opportunities-section strong {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-size: 1em;
+display: block;
+margin-bottom: 8px;
+color: #333;
+font-size: 1em;
 }
 
 .zoho-opportunity-value {
-    font-weight: 500;
-    color: #212529 !important;
-    font-size: 0.85em;
-    display: block;
+font-weight: 500;
+color: #212529 !important;
+font-size: 0.85em;
+display: block;
 }
 
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 992px) {
-    .dropdown-section {
-        max-width: 100%;
-        flex-basis: 100%;
-        margin-bottom: 15px;
-    }
+.dropdown-section {
+max-width: 100%;
+flex-basis: 100%;
+margin-bottom: 15px;
+}
 
-    .dropdown-content {
-        flex-direction: column;
-        gap: 15px;
-    }
+.dropdown-content {
+flex-direction: column;
+gap: 15px;
+}
 
-    .card-section {
-        flex-basis: calc(50% - 15px);
-        max-width: calc(50% - 15px);
-    }
+.card-section {
+flex-basis: calc(50% - 15px);
+max-width: calc(50% - 15px);
+}
 }
 
 @media (max-width: 768px) {
-    .card-section {
-        flex-basis: 100%;
-        max-width: 100%;
-    }
+.card-section {
+flex-basis: 100%;
+max-width: 100%;
+}
 
-    .monthly-data-grid {
-        grid-template-columns: 1fr 1fr 0.8fr;
-        font-size: 0.8em;
-    }
+.monthly-data-grid {
+grid-template-columns: 1fr 1fr 0.8fr;
+font-size: 0.8em;
+}
 
-    .table thead th,
-    .table tbody tr td {
-        padding: 8px 10px;
-    }
+.table thead th,
+.table tbody tr td {
+padding: 8px 10px;
+}
 
-    .table thead th:first-child,
-    .table tbody tr td:first-child {
-        padding-left: 8px;
-        padding-right: 0;
-    }
+.table thead th:first-child,
+.table tbody tr td:first-child {
+padding-left: 8px;
+padding-right: 0;
+}
 
-    .monthly-data-table th,
-    .monthly-data-table td {
-        font-size: 0.7em;
-    }
+.monthly-data-table th,
+.monthly-data-table td {
+font-size: 0.7em;
+}
 }
 
 .container-section hr + div {
-    margin-bottom: 0 !important;
+margin-bottom: 0 !important;
 }
 
 .account-details-main-box {
-    box-sizing: border-box;
-    position: relative;
-    padding: 20px;
-    padding-right: 120px;
-    background-color: #f0f0f0 !important; /* Changed to a more visible off-white */
-    border-radius: 35px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+box-sizing: border-box;
+position: relative;
+padding: 20px;
+padding-right: 120px;
+background-color: #f0f0f0 !important; /* Changed to a more visible off-white */
+border-radius: 35px;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 
-    border: 1px solid #e0e0e0;
-    
-    background-image: linear-gradient(to right,
-        #ea4335 0%, #ea4335 25%,
-        #34a853 25%, #34a853 50%,
-        #4285f4 50%, #4285f4 75%,
-        #fbbc05 75%, #fbbc05 100%
-    );
-    background-size: 100% 2px;
-    background-repeat: no-repeat;
-    background-position: top;
-    
-    overflow: hidden; 
+border: 1px solid #e0e0e0;
+
+background-image: linear-gradient(to right,
+#ea4335 0%, #ea4335 25%,
+#34a853 25%, #34a853 50%,
+#4285f4 50%, #4285f4 75%,
+#fbbc05 75%, #fbbc05 100%
+);
+background-size: 100% 2px;
+background-repeat: no-repeat;
+background-position: top;
+
+overflow: hidden; 
 }
 
 
 /* NEW HEALTH SCORE WIDGET STYLES */
 .health-score-widget {
-    /* Adjusted padding, but keep absolute positioning */
-    padding: 1rem;
-    display: flex; /* Ensure it's a flex container for its children */
-    align-items: center; /* Vertically align items in the center */
+/* Adjusted padding, but keep absolute positioning */
+padding: 1rem;
+display: flex; /* Ensure it's a flex container for its children */
+align-items: center; /* Vertically align items in the center */
 }
 
 .health-score-circle {
-    width: 60px; /* Size of the circle */
-    height: 60px; /* Size of the circle */
-    border-radius: 50%; /* Makes it a perfect circle */
-    color: white; /* Text color inside the circle */
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    transition: background-color 0.3s ease-in-out; /* Smooth transition for color changes */
-    /* Set a default gradient here to ensure it's not grey initially */
-    background: linear-gradient(135deg, #74e493, #38c172); /* Default to green */
+width: 60px; /* Size of the circle */
+height: 60px; /* Size of the circle */
+border-radius: 50%; /* Makes it a perfect circle */
+color: white; /* Text color inside the circle */
+font-weight: bold;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+transition: background-color 0.3s ease-in-out; /* Smooth transition for color changes */
+/* Set a default gradient here to ensure it's not grey initially */
+background: linear-gradient(135deg, #74e493, #38c172); /* Default to green */
 }
 
 /* Gradient Color Classes */
 .health-score-green-gradient {
-    background: linear-gradient(135deg, #74e493, #38c172); /* Light green gradient */
+background: linear-gradient(135deg, #74e493, #38c172); /* Light green gradient */
 }
 
 .health-score-yellow-gradient {
-    background: linear-gradient(135deg, #ffe082, #ffb300); /* Light yellow gradient */
+background: linear-gradient(135deg, #ffe082, #ffb300); /* Light yellow gradient */
 }
 
 .health-score-red-gradient {
-    background: linear-gradient(135deg, #ff8a80, #e53935); /* Light red gradient */
+background: linear-gradient(135deg, #ff8a80, #e53935); /* Light red gradient */
 }
 
 
 .speedometer-widget {
-    padding: 1rem !important;
+padding: 1rem !important;
 }
 
 .account-details-main-box h5.fw-bold {
-    font-size: 1.8rem;
+font-size: 1.8rem;
 }
 
 .account-details-main-box p.small.text-secondary {
-    font-size: 1rem;
-    max-width: none;
+font-size: 1rem;
+max-width: none;
 }
 
 .account-info-content {
-    width: 100%;
+width: 100%;
 }
 
 .status-badge {
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.85em;
-    font-weight: 600;
-    color: white;
-    display: inline-block;
-    white-space: nowrap;
+padding: 3px 8px;
+border-radius: 5px;
+font-size: 0.85em;
+font-weight: 600;
+color: white;
+display: inline-block;
+white-space: nowrap;
 }
 
 .status-open {
-    background-color: #f8d7da;
-    color: #721c24;
+background-color: #f8d7da;
+color: #721c24;
 }
 
 .status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+background-color: #fff3cd;
+color: #856404;
 }
 
 .status-in-progress {
-    background-color: #d1ecf1;
-    color: #0c5460;
+background-color: #d1ecf1;
+color: #0c5460;
 }
 
 .status-closed {
-    background-color: #d4edda;
-    color: #155724;
+background-color: #d4edda;
+color: #155724;
 }
 
 /* NEW: Specific styles for the Ticket Details Table */
-#ticketDetailsTable thead th,
-#ticketDetailsTable tbody td {
-    padding: 12px 20px;
-    vertical-align: middle;
-    text-align: left;
+/* These rules were moved to consolidate above. Keep this block empty or remove if no new rules are added. */
+
+
+/* Styles for Expanded Ticket Details Row */
+.ticket-detail-expanded-row td {
+padding: 0 !important;
+border-bottom: none !important;
 }
 
-#ticketDetailsTable thead th {
-    background-color: #e9ecef; /* Changed to light grey for consistency */
-    font-weight: 600;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6;
+.ticket-dropdown-content {
+display: flex;
+flex-direction: column; /* Stack sections vertically */
+padding: 15px;
+width: 100%;
+box-sizing: border-box;
+background-color: #fcfcfc;
+border-top: 1px solid #e9ecef;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;
+box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+gap: 15px; /* Spacing between sections */
 }
 
-#ticketDetailsTable tbody tr:hover {
-    background-color: #f8f9fa;
+.ticket-dropdown-section {
+background-color: #ffffff;
+border: 1px solid #e9ecef;
+border-radius: 8px;
+padding: 15px;
+text-align: left;
 }
 
-/* Adjust column widths for Ticket Details Table */
-#ticketDetailsTable th:nth-child(1),
-#ticketDetailsTable td:nth-child(1) {
-    width: 30%;
-    min-width: 180px;
+.ticket-dropdown-section strong {
+display: block;
+margin-bottom: 5px;
+font-size: 1em;
+color: #333;
+font-weight: 600;
 }
 
-#ticketDetailsTable th:nth-child(2),
-#ticketDetailsTable td:nth-child(2) {
-    width: 20%;
-    min-width: 100px;
+.ticket-list {
+list-style: none;
+padding-left: 0;
+margin-top: 10px;
 }
 
-#ticketDetailsTable th:nth-child(3),
-#ticketDetailsTable td:nth-child(3) {
-    width: 20%;
-    min-width: 100px;
-    text-align: left;
+.ticket-item {
+display: flex;
+flex-wrap: wrap; /* Allow tags to wrap */
+align-items: center;
+background-color: #f0f2f5;
+padding: 8px 12px;
+margin-bottom: 6px;
+border-radius: 4px;
+border: 1px solid #e0e2e5;
+font-size: 0.9em;
+color: #495057;
+line-height: 1.4;
 }
 
-#ticketDetailsTable th:nth-child(4),
-#ticketDetailsTable td:nth-child(4) {
-    width: 30%;
-    min-width: 150px;
-}
-/* Specific size override for Competitor Exposure card icon */
-.card-section p:first-child .bi-link-45deg {
-    font-size: 1.9em !important; /* Adjusted size */
+.ticket-item:last-child {
+margin-bottom: 0;
 }
 
-/* Specific size override for Competitor Exposure button icon */
-.btns .bi-link-45deg {
-    font-size: 1.7em !important; /* Adjusted size */
+.ticket-id {
+font-weight: bold;
+margin-right: 8px;
+white-space: nowrap; /* Prevent ID from breaking */
 }
 
-/* Specific size override for Warning Signs card icon */
-.card-section p:first-child .bi-exclamation-triangle {
-    font-size: 1.7em !important; /* Adjusted size to match competitor card icon */
+.ticket-summary {
+flex-grow: 1; /* Allow summary to take available space */
+margin-right: 10px;
 }
 
-/* Specific size override for Anomalies button icon */
-.btns .bi-exclamation-triangle {
-    font-size: 1.5em !important; /* Adjusted size to match competitor button icon */
+.ticket-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+margin-top: 5px; /* Space between summary and tags if it wraps */
+margin-left: auto; /* Push tags to the right */
+justify-content: flex-end; /* Align tags to the right when wrapping */
 }
 
-/* Specific size override for Critical Issues card icon */
-.card-section p:first-child .bi-exclamation-circle {
-    font-size: 1.7em !important; /* Adjusted size to match other card icons */
+.ticket-tag {
+background-color: #e9ecef;
+color: #495057;
+padding: 3px 7px;
+border-radius: 15px;
+font-size: 0.75em;
+white-space: nowrap;
+text-transform: capitalize;
 }
 
-/* Specific size override for Downgrade Risks card icon */
-.card-section p:first-child .bi-graph-down-arrow {
-    font-size: 1.7em !important; /* Adjusted size to match other card icons */
+/* Specific tag colors (optional, but good for visual distinction) */
+.tag-escalation { background-color: #f8d7da; color: #721c24; } /* Light red */
+.tag-risk-alert { background-color: #f8d7da; color: #721c24; } /* Light red */
+.tag-frustrated { background-color: #f8d7da; color: #721c24; } /* Light red */
+
+.tag-training { background-color: #d4edda; color: #155724; } /* Light green */
+.tag-question { background-color: #d1ecf1; color: #0c5460; } /* Light blue/cyan */
+.tag-request { background-color: #d1ecf1; color: #0c5460; } /* Light blue/cyan */
+.tag-neutral { background-color: #e2e3e5; color: #383d41; } /* Light grey */
+.tag-resolved { background-color: #d4edda; color: #155724; } /* Light green for resolved */
+.tag-completed { background-color: #d4edda; color: #155724; } /* Light green for completed */
+
+
+/* Arrow styling for ticket table */
+.ticket-expand-toggle-arrow {
+display: inline-block;
+width: 1.2em; /* Ensure consistent width */
+text-align: center;
+font-size: 0.8em;
+transition: transform 0.2s ease;
+cursor: pointer;
 }
 
-/* Specific size override for Downgrades button icon */
-.btns .bi-graph-down-arrow {
-    font-size: 1.5em !important; /* Adjusted size to match other button icons */
-}
-/* --- Desk Tickets Card Specific Colors --- */
-.open-label { /* Only apply red to the 'Open' label */
-    color: #dc3545; /* Bootstrap's 'danger' red */
-    font-weight: bold;
+/* Rotate arrow when expanded */
+tr.expanded .ticket-expand-toggle-arrow {
+transform: rotate(180deg);
 }
 
-.closed-label { /* Only apply green to the 'Closed' label */
-    color: #28a745; /* Bootstrap's 'success' green */
-    font-weight: bold;
+/* Responsive adjustments for ticket dropdown content */
+@media (max-width: 768px) {
+.ticket-item {
+flex-direction: column; /* Stack summary and tags on small screens */
+align-items: flex-start;
 }
-
-/* Ensure the numbers are black and bold */
-#deskTicketsCard .ticket-counts-numbers span {
-    color: #212529; /* Black color (matching Bootstrap's text-dark) */
-    font-size: 1.3em; /* Keep it prominent if desired, or adjust */
-    font-weight: 700; /* Ensure numbers are bold */
+.ticket-summary {
+margin-right: 0;
+margin-bottom: 5px; /* Space between summary and tags */
 }
-
-/* Optional: You can remove or keep this if you want the labels slightly smaller than the numbers */
-/* .ticket-counts-labels span {
-    font-size: 0.9em;
-} */
-
-/* Custom Active Card Border Styles */
-.card-highlight-border {
-    border: 3px solid; /* Thicker, thin border line for cards */
-    border-radius: 10px; /* Assuming your cards have some border-radius */
-    box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.25); /* Subtle shadow for visual pop */
-    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.ticket-tags {
+width: 100%; /* Take full width */
+justify-content: flex-start; /* Align tags to left */
+margin-left: 0;
 }
-
-/* Specific Border Colors matching card themes */
-
-/* Critical Issues (red/danger) */
-.card-border-critical {
-    border-color: #dc3545 !important; /* Bootstrap danger red */
-}
-
-/* Warning Signs (yellow/warning) */
-.card-border-warning {
-    border-color: #ffc107 !important; /* Bootstrap warning yellow */
-}
-
-/* Competitor Exposure (blue/info or primary) */
-.card-border-competitor {
-    border-color: #0dcaf0 !important; /* Bootstrap info cyan */
-}
-
-/* Downgrade Risks (purple/custom, matching your screenshot) */
-.card-border-downgrade {
-    border-color: #8A2BE2 !important; /* A shade of purple from your screenshot */
-}
-
-/* Desk Tickets (gray/secondary) */
-.card-border-tickets {
-    border-color: #6c757d !important; /* Bootstrap secondary gray */
 }
