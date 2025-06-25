@@ -1,4 +1,4 @@
-    /* General Body and Container Styles */
+/* General Body and Container Styles */
 body {
 font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 background-color: #f8f9fa; /* Light background for the whole page */
@@ -56,7 +56,7 @@ align-items: center;
 min-width: 40px;
 text-align: center;
 line-height: 1;
-font-size: 1.4em; /* Make numbers significantly larger - REDUCED FROM 1.5EM TO 1.4EM */
+font-size: 1.5em; /* KEPT AT 1.5EM */
 }
 
 /* Add a wrapper for better alignment */
@@ -69,21 +69,22 @@ margin-top: 1rem;
 
 /* Ticket Details Card Styles */
 #deskTicketsCard {
-background-color: #e0edf9; /* NEW: Solid light blue/gray background */
-border: 1px solid #e9ecef;
-border-radius: 35px;
-padding: 5px; /* Keeping your existing padding value */
-min-height: 145px;
-flex-basis: calc(20% - 15px);
-max-width: calc(20% - 15px);
-min-width: 150px;
-min-height: 120px;
-padding: 8px; /* Keeping your existing padding value */
-flex-grow: 1;
-flex-shrink: 1;
-transition: all 0.3s ease;
-box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-cursor: pointer;
+    /* Liquid Glass Effect */
+    background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Applied liquid glass */
+    border: 1px solid #e9ecef;
+    border-radius: 35px;
+    padding: 5px; /* Keeping your existing padding value */
+    min-height: 145px;
+    flex-basis: calc(20% - 15px);
+    max-width: calc(20% - 15px);
+    min-width: 150px;
+    min-height: 120px;
+    padding: 8px; /* Keeping your existing padding value */
+    flex-grow: 1;
+    flex-shrink: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
 }
 
 #deskTicketsCard:hover {
@@ -95,7 +96,7 @@ transform: translateY(-2px);
 display: flex;
 align-items: center;
 margin-bottom: 2px;
-font-size: 0.7em;
+font-size: 0.7em; /* Kept at 0.7em */
 color: #212529;
 white-space: nowrap;
 }
@@ -108,7 +109,7 @@ color: #212529;
 }
 
 #deskTicketsCard strong {
-font-size: 1.3em;
+font-size: 1.3em; /* Kept at 1.3em */
 font-weight: 700;
 color: #212529;
 line-height: 1;
@@ -158,13 +159,14 @@ font-size: 0.9em; /* Matches the font size for application table cells */
 
 /* `ticketDetailsTable thead th` rule for header color and font size */
 #ticketDetailsTable thead th { /* Specific to Ticket Details Table header */
-background-color: #e9ecef; /* Set to light grey to match other table headers */
-font-weight: 600;
-color: black; /* Changed to black */
-font-size: 0.95em; /* Set consistent header font size */
-border-bottom: 2px solid #dee2e6; /* Stronger border for header */
-white-space: nowrap; /* Prevent header text from wrapping */
-padding: 12px 20px; /* Make padding consistent with main table headers */
+    /* Liquid Glass Effect - Lighter version */
+    background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
+    font-weight: 600;
+    color: black; /* Changed to black */
+    font-size: 0.95em; /* Set consistent header font size */
+    border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+    white-space: nowrap; /* Prevent header text from wrapping */
+    padding: 12px 20px; /* Make padding consistent with main table headers */
 }
 
 /* Specific column widths for Ticket Details Table */
@@ -232,8 +234,8 @@ justify-content: center;
 align-items: center; /* This centers children horizontally */
 text-align: center; /* This centers inline-block/text content within the card */
 
-/* Box styling */
-background-color: #e0edf9; /* NEW: Solid light blue/gray background from screenshot */
+/* Box styling - Updated to liquid glass */
+background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Liquid Glass Effect */
 color: #212529; /* Keep your existing text color */
 
 border: 1px solid #e9ecef; /* Keep your existing border */
@@ -256,6 +258,38 @@ cursor: pointer;
 box-shadow: 0 5px 12px rgba(0,0,0,0.10);
 transform: translateY(-2px);
 }
+
+/* Active border styling for cards - SOLID COLORS matching icons */
+.card-section.active-highlight {
+    border: 2px solid #c0c0c0; /* Default subtle grey border for active state */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Stronger shadow when active */
+    border-radius: 35px; /* Ensure border-radius is applied */
+}
+
+/* Specific solid borders for each card type matching icon colors */
+.card-border-critical.active-highlight {
+    border-color: #d96873; /* Red from text-danger */
+}
+
+.card-border-warning.active-highlight {
+    border-color: #e5c976; /* Yellow from style */
+}
+
+.card-border-competitor.active-highlight {
+    border-color: #73a0d0; /* Primary blue from text-primary */
+}
+
+.card-border-downgrade.active-highlight {
+    border-color: #cb6060; /* Maroon from style */
+}
+
+/* Targeted rule for Desk Tickets card border when active */
+#deskTicketsCard.active-highlight {
+    border: 2px solid #67d2c7; /* Explicitly set full border property for Desk Tickets */
+}
+
 
 .card-section p:first-child {
 display: flex;
@@ -357,15 +391,21 @@ width: 100%;
 margin-bottom: 0;
 }
 
+#applicationTable thead {
+    /* Liquid Glass Effect applied to thead */
+    background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
+}
+
 #applicationTable thead th {
-background-color: #e9ecef; /* Re-added for consistency with overall table header */
-color: #1a1d1f;
-font-weight: 600;
-font-size: 0.95em; /* Set consistent header font size */
-padding: 12px 20px;
-border-bottom: 1px solid #dee2e6;
-vertical-align: middle;
-text-align: left;
+    /* Reset background for th, as it's now on thead */
+    background: transparent; 
+    color: #1a1d1f;
+    font-weight: 600;
+    font-size: 0.95em; /* Set consistent header font size */
+    padding: 12px 20px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    text-align: left;
 }
 
 #applicationTable thead th:first-child {
@@ -1023,13 +1063,28 @@ justify-content: flex-start; /* Align tags to left */
 margin-left: 0;
 }
 }
+/* Applying background directly to the image itself might be covered by the image pixels if the image is opaque. */
 .needHelp {
 width: 100px;
 height: 100px;
 border-radius: 8px;
 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-display: none;
+display: block; /* Ensures the image is treated as a block element */
+/* Removed background-color here as it's better applied to the parent div for visual effect */
 }
+
+/* Apply background to the parent container for the GIF and button */
+#additional-image-widget {
+    background-color: #e0e0e0; /* Grey background for the entire widget area */
+    border-radius: 10px; /* Slightly rounded corners for the widget area */
+    padding: 1rem; /* Adjust padding as needed */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Consistent shadow */
+    /* Ensure existing position-absolute styles are maintained */
+    position: absolute;
+    top: 70px;
+    right: 0; /* Changed from 'end-0' to 'right: 0' for direct CSS */
+}
+
 .need-help-button {
     background-color: #5592f3;
     color: white;

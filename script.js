@@ -1,10 +1,10 @@
 // Dummy data for the application table
 setTimeout(function() {
-    const element = document.querySelector('.needHelp'); 
-    if (element) {
-      element.style.display = 'block'; 
-    }
-  }, 1000);
+const element = document.querySelector('.needHelp'); 
+if (element) {
+element.style.display = 'block'; 
+}
+}, 1000);
 const appData = [
 {
 id: 1,
@@ -1082,7 +1082,7 @@ if (applicationTableHeader) {
     applicationTableHeader.style.display = 'none';
     console.log('Hiding application table header.');
 }
-console.log('Hiding and clearing applicationTableContainer content.');
+console.log('Hiding and clearing applicationTableContainer.');
 }
 // Hide ticketDetailsTableContainer with style.display = 'none'
 if (ticketDetailsTableContainer) {
@@ -1202,7 +1202,7 @@ downgradeRisksCard,
 deskTicketsCard
 ];
 
-// Remove highlight from all cards first
+// Remove all specific border classes from all cards first
 allCards.forEach(card => {
 if (card) {
     card.classList.remove('active-highlight',
@@ -1210,27 +1210,40 @@ if (card) {
                           'card-border-warning',
                           'card-border-competitor',
                           'card-border-downgrade',
-                          'card-border-tickets');
+                          'card-border-tickets'); // Ensure this is also removed
 }
 });
 
-// Add highlight to the active card if an ID is provided
+// Add highlight and specific color class to the active card if an ID is provided
 if (activeCardElementId) {
 const activeCard = document.getElementById(activeCardElementId);
 if (activeCard) {
-    activeCard.classList.add('active-highlight');
-    // Add specific color class based on card ID
+    activeCard.classList.add('active-highlight'); // Adds the general active styles
+    // Log to console to check if classes are being added
+    console.log(`Adding active-highlight to: ${activeCardElementId}`);
+
+    // Add specific border class based on card ID
     if (activeCardElementId === 'criticalIssuesCard') {
         activeCard.classList.add('card-border-critical');
+        console.log(`Adding card-border-critical to: ${activeCardElementId}`);
     } else if (activeCardElementId === 'warningSignsCard') {
         activeCard.classList.add('card-border-warning');
+        console.log(`Adding card-border-warning to: ${activeCardElementId}`);
     } else if (activeCardElementId === 'competitorExposureCard') {
         activeCard.classList.add('card-border-competitor');
+        console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
     } else if (activeCardElementId === 'downgradeRisksCard') {
         activeCard.classList.add('card-border-downgrade');
+        console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
     } else if (activeCardElementId === 'deskTicketsCard') {
-        activeCard.classList.add('card-border-tickets');
+        // For Desk Tickets, the border style is now applied directly to #deskTicketsCard.active-highlight
+        // So, just adding active-highlight is enough. The specific border-color class is no longer strictly needed
+        // for its effect, but keeping it in for consistency with the removal logic.
+        // activeCard.classList.add('card-border-tickets'); // This specific class is now redundant for applying border-color
+        console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
     }
+    // Log all classes on the element after modification
+    console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
 }
 }
 }
@@ -1322,7 +1335,7 @@ downgradeRisksCard.style.cursor = 'pointer'; // Make card clickable visually
 if (deskTicketsCard) {
 deskTicketsCard.addEventListener('click', () => {
   switchTab('ticket-details');
-  highlightActiveCard(null); // Clear card highlight
+  highlightActiveCard('deskTicketsCard'); // Highlight this card
 });
 deskTicketsCard.style.cursor = 'pointer'; // Make card clickable visually
 }
