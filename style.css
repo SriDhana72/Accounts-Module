@@ -1317,3 +1317,17 @@ display: block; /* Ensures the image is treated as a block element */
     margin-right: 5px; /* Space between arrow and text */
     vertical-align: middle; /* Align with text */
 }
+
+/* Keyframes for zoom animation */
+@keyframes zoom-in-out {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); } /* Increased zoom for more visibility */
+    100% { transform: scale(1); }
+}
+
+/* Apply animation to the magnifying glass icon */
+.subscriptions-analysis-icon {
+    animation: zoom-in-out 2s infinite alternate; /* 2s duration, infinite loop, alternates direction */
+    margin-right: 4px; /* Reduced margin for closer proximity */
+    vertical-align: middle; /* Align with text */
+}

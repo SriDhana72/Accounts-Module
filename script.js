@@ -10,7 +10,7 @@ const appData = [
 id: 1,
 application: 'CRM Pro',
 category: 'Sales',
-usage: 25,
+usage: 'Medium', // Changed to string
 seats: 28,
 license: `Downgraded in M6`,
 competitors: [],
@@ -28,7 +28,7 @@ monthlyData: [
 id: 2,
 application: 'Lead Management',
 category: 'Sales',
-usage: 18,
+usage: 'Low', // Changed to string
 seats: 21,
 license: 'Downgraded in M6',
 competitors: [],
@@ -46,7 +46,7 @@ monthlyData: [
 id: 3,
 application: 'Sales Analytics',
 category: 'Sales',
-usage: 54,
+usage: 'High', // Changed to string
 seats: 33,
 license: 'Upgraded in M6',
 competitors: [],
@@ -64,7 +64,7 @@ monthlyData: [
 id: 4,
 application: 'Email Platform',
 category: 'Marketing',
-usage: 35,
+usage: 'Medium', // Changed to string
 seats: 41,
 license: 'No changes',
 competitors: ['Mailchimp'],
@@ -82,7 +82,7 @@ monthlyData: [
 id: 5,
 application: 'Marketing Automation',
 category: 'Marketing',
-usage: 52,
+usage: 'High', // Changed to string
 seats: 46,
 license: 'Downgraded in M6',
 competitors: ['MailChimp'],
@@ -100,7 +100,7 @@ monthlyData: [
 id: 6,
 application: 'Social Media',
 category: 'Marketing',
-usage: 70,
+usage: 'High', // Changed to string
 seats: 29,
 license: 'Upgraded in M6',
 competitors: ['Mailchimp', 'Active campaign'],
@@ -118,7 +118,7 @@ monthlyData: [
 id: 7,
 application: 'Helpdesk',
 category: 'Support',
-usage: 86,
+usage: 'High', // Changed to string
 seats: 46,
 license: 'Upgraded in M6',
 competitors: [],
@@ -136,7 +136,7 @@ monthlyData: [
 id: 8,
 application: 'Live Chat',
 category: 'Support',
-usage: 28,
+usage: 'Medium', // Changed to string
 seats: 48,
 license: 'Downgraded in M6',
 competitors: [],
@@ -154,7 +154,7 @@ monthlyData: [
 id: 9,
 application: 'Knowledge Base',
 category: 'Support',
-usage: 54,
+usage: 'High', // Changed to string
 seats: 41,
 license: 'Downgraded in M6',
 competitors: [],
@@ -172,7 +172,7 @@ monthlyData: [
 id: 10,
 application: 'Accounting',
 category: 'Finance',
-usage: 22,
+usage: 'Low', // Changed to string
 seats: 20,
 license: 'Downgraded in M6',
 competitors: [],
@@ -190,7 +190,7 @@ monthlyData: [
 id: 11,
 application: 'Expense Tracking',
 category: 'Finance',
-usage: 29,
+usage: 'Medium', // Changed to string
 seats: 12,
 license: 'Upgraded in M6',
 competitors: [],
@@ -208,7 +208,7 @@ monthlyData: [
 id: 12,
 application: 'Invoice',
 category: 'Finance',
-usage: 86,
+usage: 'High', // Changed to string
 seats: 31,
 license: 'Downgraded in M6',
 competitors: [],
@@ -226,7 +226,7 @@ monthlyData: [
 id: 13,
 application: 'Inventory',
 category: 'Operations',
-usage: 73,
+usage: 'High', // Changed to string
 seats: 47,
 license: 'Upgraded in M6',
 competitors: [],
@@ -244,7 +244,7 @@ monthlyData: [
 id: 14,
 application: 'Project Management',
 category: 'Operations',
-usage: 54,
+usage: 'High', // Changed to string
 seats: 29,
 license: 'No changes',
 competitors: [],
@@ -262,7 +262,7 @@ monthlyData: [
 id: 15,
 application: 'HR',
 category: 'Human Resources',
-usage: 20,
+usage: 'Low', // Changed to string
 seats: 26,
 license: 'Upgraded in M6',
 competitors: [],
@@ -280,7 +280,7 @@ monthlyData: [
 id: 16,
 application: 'Cloud Storage',
 category: 'Productivity',
-usage: 85,
+usage: 'High', // Changed to string
 seats: 120,
 license: 'Upgraded in M6',
 competitors: ['Dropbox', 'Google Drive'],
@@ -298,7 +298,7 @@ monthlyData: [
 id: 17,
 application: 'Video Conferencing',
 category: 'Communication',
-usage: 60,
+usage: 'Medium', // Changed to string
 seats: 75,
 license: 'No changes',
 competitors: ['Zoom', 'Microsoft Teams'],
@@ -577,7 +577,8 @@ const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData
 const hasRecentSignificantDowngrade = app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0;
 
 // Condition B: Very Low Usage with Downgraded License
-const isVeryLowUsageAndDowngraded = app.usage < 20 && app.license.includes('Downgraded');
+// Changed to check if usage is 'Low' string AND license is 'Downgraded'
+const isVeryLowUsageAndDowngraded = app.usage === 'Low' && app.license.includes('Downgraded');
 
 // Condition C: Consistent Seat Decline (over last 3 months: M4, M5, M6)
 let totalRecentDecline = 0;
@@ -633,8 +634,8 @@ if (isCritical) return false; // If it's critical, it cannot be a warning sign
 const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
 
 // NEW WARNING SIGNS LOGIC:
-// 1. Usage Drop - Decline in License Utilization - <70%
-const isUsageDrop = app.usage < 70;
+// 1. Usage Drop - Decline in License Utilization - usage is 'Low' or 'Medium'
+const isUsageDrop = (app.usage === 'Low' || app.usage === 'Medium');
 
 // 2. ARR Trend - 30% Decrease (Comparing M6 revenue to M3 revenue)
 let isArrTrendDecrease = false;
@@ -773,19 +774,20 @@ if (app.license.includes('Downgraded')) {
     licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
 }
 
-// --- NEW LOGIC FOR USAGE DISPLAY: Bar with text overlay ---
-let usageDisplayText = '';
-let usageBackgroundColorClass = ''; // This will hold our new background color class
+// --- MODIFIED LOGIC FOR USAGE DISPLAY: Directly use app.usage string value ---
+let usageDisplayText = app.usage; // Directly use the string value from app.usage
+let usageBackgroundColorClass = ''; 
 
-if (app.usage < 20) {
-    usageDisplayText = 'Low';
+// Map the string value to the appropriate background color class
+if (app.usage === 'Low') {
     usageBackgroundColorClass = 'bg-usage-low';
-} else if (app.usage >= 20 && app.usage <= 40) {
-    usageDisplayText = 'Medium';
+} else if (app.usage === 'Medium') {
     usageBackgroundColorClass = 'bg-usage-medium';
-} else { // Above 40
-    usageDisplayText = 'High';
+} else if (app.usage === 'High') { 
     usageBackgroundColorClass = 'bg-usage-high';
+} else {
+    // Fallback for any unexpected usage values
+    usageBackgroundColorClass = ''; 
 }
 
 // New HTML structure for the usage cell
@@ -794,7 +796,7 @@ const usageHtml = `
         <span class="usage-bar-text">${usageDisplayText}</span>
     </div>
 `;
-// --- END NEW LOGIC ---
+// --- END MODIFIED LOGIC ---
 
 // --- NEW LOGIC for ARR and ARR Trend with Percentage ---
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1]; // Get the last month's data
@@ -1038,7 +1040,8 @@ row.addEventListener('click', (event) => {
           if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
               detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
           }
-          if (app.usage < 20 && app.license.includes('Downgraded')) {
+          // Changed to check if usage is 'Low' string AND license is 'Downgraded'
+          if (app.usage === 'Low' && app.license.includes('Downgraded')) {
               detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
           }
           let totalRecentDecline = 0;
@@ -1062,8 +1065,9 @@ row.addEventListener('click', (event) => {
           // Determine specific warning sub-conditions for display
           const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
           
-          if (app.usage < 70) { // New Usage Drop
-              detectedAnomalies.push(`<li>Usage dropped below 70%</li>`);
+          // Changed to check if usage is 'Low' or 'Medium' string
+          if (app.usage === 'Low' || app.usage === 'Medium') { 
+              detectedAnomalies.push(`<li>Usage is Low or Medium</li>`);
           }
           if (app.monthlyData.length >= 6) { // New ARR Trend check
               const m6Revenue = app.monthlyData[5].revenue;
