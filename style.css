@@ -1355,6 +1355,8 @@ display: block; /* Ensures the image is treated as a block element */
     width: 80%; /* Make buttons narrower than full width */
     max-width: 200px; /* Limit max width for larger screens */
     text-align: center;
+    text-decoration: none; /* Remove underline for anchor tags */
+    display: inline-block; /* Ensure it behaves like a block for width and margin */
 }
 
 .expanded-row-button:hover {

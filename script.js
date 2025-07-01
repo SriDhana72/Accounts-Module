@@ -1170,8 +1170,8 @@ row.addEventListener('click', (event) => {
                         <div>
                             <h6 class="mb-2 fw-bold">Additional Actions</h6>
                             <div class="expanded-row-buttons">
-                                <button class="expanded-row-button">Go to store</button>
-                                <button class="expanded-row-button">View MICS</button>
+                                <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="expanded-row-button">Go to <strong>Store</strong></a>
+                                <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="expanded-row-button">View <strong>MICS</strong></a>
                             </div>
                         </div>
                     </div>
