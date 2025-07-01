@@ -1166,14 +1166,21 @@ row.addEventListener('click', (event) => {
                         </div>
                     </div>
 
-                    <div class="col-md-4 p-2 border-start border-end">
-                        <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
-                        <p class="small text-muted mb-0">
-                            ${competitorIntegrationsContent}
-                        </p>
+                    <div class="col-md-4 p-2 border-start border-end d-flex flex-column justify-content-between">
+                        <div>
+                            <h6 class="mb-2 fw-bold">Additional Actions</h6>
+                            <div class="expanded-row-buttons">
+                                <button class="expanded-row-button">Go to store</button>
+                                <button class="expanded-row-button">View MICS</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-4 p-2">
+                        <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
+                        <p class="small text-muted mb-3">
+                            ${competitorIntegrationsContent}
+                        </p>
                         <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
                         <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
                         ${anomaliesHtml}

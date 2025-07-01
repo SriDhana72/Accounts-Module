@@ -1331,3 +1331,32 @@ display: block; /* Ensures the image is treated as a block element */
     margin-right: 4px; /* Reduced margin for closer proximity */
     vertical-align: middle; /* Align with text */
 }
+
+/* New styles for the buttons in the middle section of expanded row */
+.expanded-row-buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Space between buttons */
+    margin-top: 15px; /* Space above the buttons */
+    width: 100%; /* Ensure buttons take full width of their container */
+    align-items: center; /* Center buttons horizontally */
+}
+
+.expanded-row-button {
+    background-color: #5592f3; /* Blue color */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+    width: 80%; /* Make buttons narrower than full width */
+    max-width: 200px; /* Limit max width for larger screens */
+    text-align: center;
+}
+
+.expanded-row-button:hover {
+    background-color: #4285f4; /* Darker blue on hover */
+}
