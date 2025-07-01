@@ -56,7 +56,7 @@ align-items: center;
 min-width: 40px;
 text-align: center;
 line-height: 1;
-font-size: 1.5em; /* KEPT AT 1.5EM */
+font-size: 1.2em; /* Adjusted to match other card numbers */
 }
 
 /* Add a wrapper for better alignment */
@@ -96,7 +96,7 @@ transform: translateY(-2px);
 display: flex;
 align-items: center;
 margin-bottom: 2px;
-font-size: 0.7em; /* Kept at 0.7em */
+/* font-size: 0.7em; KEPT AT 0.7EM BUT NOW CONTROLLED BY .card-section p:first-child */
 color: #212529;
 white-space: nowrap;
 }
@@ -108,14 +108,27 @@ font-weight: bold;
 color: #212529;
 }
 
-#deskTicketsCard strong {
-font-size: 1.3em; /* Kept at 1.3em */
+/* Card Count Strong Tag (e.g., the '2' for Critical Issues) */
+.card-section strong:not(:first-child) {
+font-size: 1.2em; /* Decreased from 1.3em */
 font-weight: 700;
 color: #212529;
 line-height: 1;
 margin-bottom: 5px;
 display: block;
 }
+
+/* Card Title Strong Tag (e.g., 'Critical Issues', 'Desk Tickets') */
+.card-section p:first-child strong {
+    font-size: 0.95em; /* Decreased from 1em */
+    font-weight: 600; /* Ensure consistent bolding */
+}
+
+/* Desk Tickets card specific alignment for the first line (icon and title) */
+#deskTicketsCard p:first-child {
+    margin-top: 2px; /* Adjusted margin to visually align with other card titles */
+}
+
 
 .ticket-counts-labels {
 font-weight: bold;
@@ -135,7 +148,7 @@ color: #6c757d;
 
 .ticket-counts-numbers {
 margin-top: 0.25rem;
-font-size: 0.95rem;
+font-size: 1.2em; /* Adjusted to match other card numbers */
 font-weight: 500;
 display: flex;
 justify-content: space-between;
@@ -224,6 +237,8 @@ margin-bottom: 30px;
 
 h4 {
 color: #212529;
+font-weight: 600; /* Ensured bold */
+font-size: 1.25em; /* Adjusted font size slightly larger */
 }
 
 /* --- Styles for the Top Five Summary Cards (Critical Issues, Warning Signs, etc.) --- */
@@ -295,7 +310,7 @@ transform: translateY(-2px);
 display: flex;
 align-items: center;
 margin-bottom: 2px;
-font-size: 0.7em;
+/* Removed font-size: 0.7em; here as it's now controlled by .card-section p:first-child strong */
 color: #212529;
 white-space: nowrap;
 }
@@ -307,17 +322,8 @@ font-weight: bold;
 color: #212529;
 }
 
-.card-section strong:not(:first-child) {
-font-size: 1.3em;
-font-weight: 700;
-color: #212529;
-line-height: 1;
-margin-bottom: 5px;
-display: block;
-}
-
 .card-section p:last-child {
-font-size: 0.65em;
+font-size: 0.75em; /* Decreased from 0.8em */
 color: #212529;
 margin-bottom: 0;
 }
@@ -377,13 +383,16 @@ font-size: 1em !important; /* General rule for button icons */
 
 /* --- Styles for the Main Application Table --- */
 #applicationTableContainer {
-display: block;
-margin-top: 5px;
-border-radius: 8px;
-overflow: hidden;
-border: 1px solid #dee2e6;
-background-color: #fcfcfc;
-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: block;
+    margin-top: 5px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    background-color: #fcfcfc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* NEW: For scrollable content below fixed header */
+    max-height: 500px; /* Adjust as needed based on desired visible height */
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 #applicationTable {
@@ -394,6 +403,10 @@ margin-bottom: 0;
 #applicationTable thead {
     /* Liquid Glass Effect applied to thead */
     background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
+    /* NEW: For sticky header */
+    position: sticky;
+    top: 0; /* Stick to the top of its scrolling container */
+    z-index: 10; /* Ensure it stays above scrolling content */
 }
 
 #applicationTable thead th {
@@ -562,7 +575,7 @@ display: block;
 margin-bottom: 0.25rem;
 font-size: 1em;
 color: #333;
-font-weight: 600;
+font-weight: 600; /* Ensured bold */
 }
 
 .dropdown-section p,
@@ -618,7 +631,7 @@ overflow-y: auto;
 
 .monthly-data-table th {
 background-color: #f0f2f5;
-font-size: 0.9em; 
+font-size: 0.95em; /* Adjusted font size */
 padding: 8px 12px;
 color: #000; 
 }
@@ -696,6 +709,14 @@ color: #212529;
 font-size: 1em;
 }
 
+/* For "Executive Summary" heading */
+.account-details-main-box h6.fw-bold {
+    font-size: 1em; /* Explicitly set font size */
+    font-weight: 600; /* Ensure it's bold */
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
 .anomaly-heading-line i {
 font-size: 1.2em;
 color: #dc3545 !important;
@@ -755,6 +776,7 @@ display: block;
 margin-bottom: 8px;
 color: #333;
 font-size: 1em;
+font-weight: 600; /* Ensured bold */
 }
 
 .zoho-opportunity-value {
@@ -1014,22 +1036,24 @@ background-color: #e9ecef;
 color: #495057;
 padding: 3px 7px;
 border-radius: 15px;
-font-size: 0.75em;
+font-size: 0.9em; /* Increased from 0.85em */
 white-space: nowrap;
 text-transform: capitalize;
 }
 
 /* Specific tag colors (optional, but good for visual distinction) */
-.tag-escalation { background-color: #f8d7da; color: #721c24; } /* Light red */
-.tag-risk-alert { background-color: #f8d7da; color: #721c24; } /* Light red */
-.tag-frustrated { background-color: #f8d7da; color: #721c24; } /* Light red */
-
-.tag-training { background-color: #d4edda; color: #155724; } /* Light green */
-.tag-question { background-color: #d1ecf1; color: #0c5460; } /* Light blue/cyan */
-.tag-request { background-color: #d1ecf1; color: #0c5460; } /* Light blue/cyan */
-.tag-neutral { background-color: #e2e3e5; color: #383d41; } /* Light grey */
-.tag-resolved { background-color: #d4edda; color: #155724; } /* Light green for resolved */
-.tag-completed { background-color: #d4edda; color: #155724; } /* Light green for completed */
+/* Mild gradient background colors for tags */
+.tag-dissatisfaction-complaint { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-escalation-request { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-repeated-follow-up { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-slow-support-delay { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-feature-gap { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-cancel-threat-churn-threat { background: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; } /* Red */
+.tag-competitor-switch { background: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
+.tag-product-regret { background: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
+.tag-service-outage-emergency { background: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
+.tag-security-data-breach { background: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
+.tag-evaluating-alternatives { background: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
 
 
 /* Arrow styling for ticket table */
@@ -1102,4 +1126,194 @@ display: block; /* Ensures the image is treated as a block element */
 
 .need-help-button:hover {
     background-color: #4285f4;
+}
+
+/* NEW: Styles for the action dropdown */
+.action-dropdown-wrapper {
+    position: relative; /* Container for absolute positioning */
+    display: inline-block; /* Allows the wrapper to size to its content */
+    text-align: center; /* Center the icon within the td */
+}
+
+.action-toggle-icon {
+    cursor: pointer;
+    display: block; /* Ensures the icon takes its own line within the wrapper */
+    margin: 0 auto; /* Center the icon horizontally if wrapper is wider */
+}
+
+.action-dropdown-menu {
+    position: absolute;
+    top: 100%; /* Position below the icon */
+    right: 0; /* Align to the right of the wrapper */
+    background-color: rgba(255, 255, 255, 0.7); /* Slightly more transparent glass background for the menu itself */
+    backdrop-filter: blur(8px); /* Stronger blur for the menu */
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Very subtle border */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.15); /* Layered shadows */
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 8px; /* Space between buttons */
+    z-index: 1000; /* Ensure it's on top */
+    min-width: 180px; /* Minimum width for the dropdown, slightly increased */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); /* Start slightly below and move up */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.action-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Glass button styles */
+.glass-button {
+    background-color: rgba(255, 255, 255, 0.2); /* Base translucent background */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: none; /* Remove default border */
+    border-radius: 9999px; /* Makes it pill-shaped */
+    padding: 6px 12px;
+    color: #333; /* Darker text for readability over light glass */
+    font-size: 0.8em; /* Slightly smaller font for buttons */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.2); /* Subtle outer shadow and light inner 'border' */
+    text-decoration: none; /* Remove underline for links */
+    display: inline-flex; /* Use flex to align icon and text */
+    align-items: center;
+    white-space: nowrap; /* Ensures text and icon stay on one line */
+    outline: none; /* Remove outline on focus */
+    width: 100%; /* Make buttons take full width of the dropdown */
+    box-sizing: border-box;
+}
+
+.glass-button:hover {
+    background-color: rgba(255, 255, 255, 0.35); /* Slightly less transparent on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+.glass-button i {
+    margin-right: 8px; /* More space between icon and text */
+    font-size: 1.1em; /* Adjust icon size within button */
+}
+
+/* Specific button colors (mild) - now only affecting text color */
+.glass-button.email-peer {
+    color: #58508d; /* Original mild purple/blue */
+    /* background-image removed */
+}
+.glass-button.email-client {
+    color: #00876c; /* Original mild green */
+    /* background-image removed */
+}
+.glass-button.connect-us {
+    color: #c94c4c; /* Original mild red */
+    /* background-image removed */
+}
+/* New style for the "AI" part of the button text */
+.ai-text {
+    color: #007bff; /* A distinct blue color for 'AI' */
+    font-weight: bold; /* Make it bold for emphasis */
+}
+
+/* NEW CSS for Competitor Classification (used for header, not for row data anymore) */
+.competitor-classification-container {
+    display: flex;
+    align-items: flex-start; /* Aligns content to the top of the container */
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.cross-sell-section,
+.threat-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content (label and value/list) within its section */
+    padding: 5px;
+    border-radius: 8px;
+    /* Fixed width for consistent alignment */
+    width: calc(50% - 10px); /* 50% width minus half the gap on each side */
+    box-sizing: border-box; /* Include padding and border in the width */
+    text-align: center; /* Ensures text is centered */
+}
+
+/* New style for the list of competitors */
+.competitor-value-list {
+    margin-top: 5px; /* Space between label and list */
+    font-size: 0.9em;
+    text-align: center; /* Center the list items */
+    width: 100%;
+}
+
+.competitor-value-list ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.competitor-value-list li {
+    white-space: nowrap; /* Prevent wrapping for individual items if possible */
+    margin-bottom: 2px; /* Small space between list items */
+}
+
+.competitor-value-list li:last-child {
+    margin-bottom: 0;
+}
+
+.competitor-value {
+    font-weight: 500;
+    font-size: 0.9em;
+    white-space: nowrap;
+    text-align: center; /* Ensure "None" is centered */
+}
+
+
+.vertical-divider {
+    width: 1px;
+    background-color: #ccc;
+    align-self: stretch; /* Stretch to the height of its parent */
+    margin: 0 5px;
+}
+
+/* Color classes for competitor labels */
+.text-cross-sell {
+    color: #28a745; /* Green color */
+}
+
+.text-threat {
+    color: #dc3545; /* Red color */
+}
+
+/* Ensure the td aligns content to center */
+#applicationTable tbody tr td:nth-child(8) { /* Targeting Competitors column specifically */
+    text-align: center;
+}
+
+/* Also adjust the header to center */
+#applicationTable thead th:nth-child(8) { /* Targeting Competitors column header */
+    text-align: center;
+}
+
+/* NEW: Style for individual competitor tags in table rows */
+.competitor-tag {
+    display: inline-block;
+    background-color: #f8d7da; /* Light red background for tags */
+    color: #721c24; /* Dark red text for tags */
+    padding: 3px 8px;
+    border-radius: 15px; /* Pill shape */
+    font-size: 0.85em;
+    margin: 2px; /* Space between tags */
+    white-space: nowrap;
+}
+/* Style for application status arrows */
+.app-status-arrow {
+    font-size: 0.9em; /* Smaller size for subtlety */
+    margin-right: 5px; /* Space between arrow and text */
+    vertical-align: middle; /* Align with text */
 }

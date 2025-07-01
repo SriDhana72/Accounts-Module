@@ -74,7 +74,7 @@ monthlyData: [
   { month: 'M2', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
   { month: 'M3', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
   { month: 'M4', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-  { month: 'M5', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+  { month: 'M5', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'High' },
   { month: 'M6', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
 ]
 },
@@ -314,56 +314,103 @@ monthlyData: [
 }
 ];
 
-// Dummy data for Ticket Details table - UPDATED SERVICE NAMES AND ADDED NEW FIELDS
+// Function to assign new tags based on ticket summary
+function assignTagsFromSummary(summary) {
+const tags = [];
+const lowerSummary = summary.toLowerCase();
+
+// Mapping keywords to new tags
+if (lowerSummary.includes('dissatisfaction') || lowerSummary.includes('complaint') || lowerSummary.includes('unhappy') || lowerSummary.includes('frustrated') || lowerSummary.includes('poor service')) {
+tags.push('Dissatisfaction/Complaint');
+}
+if (lowerSummary.includes('escalation') || lowerSummary.includes('urgent') || lowerSummary.includes('critical')) {
+tags.push('Escalation Request');
+}
+if (lowerSummary.includes('repeated follow-up') || lowerSummary.includes('still waiting') || lowerSummary.includes('no response')) {
+tags.push('Repeated Follow-up');
+}
+if (lowerSummary.includes('slow support') || lowerSummary.includes('delay') || lowerSummary.includes('lagging') || lowerSummary.includes('unresponsive') || lowerSummary.includes('pending')) {
+tags.push('Slow Support / Delay');
+}
+if (lowerSummary.includes('feature request') || lowerSummary.includes('missing feature') || lowerSummary.includes('feature gap')) {
+tags.push('Feature Gap');
+}
+if (lowerSummary.includes('cancel') || lowerSummary.includes('churn') || lowerSummary.includes('leaving') || lowerSummary.includes('terminate subscription')) {
+tags.push('Cancel Threat/Churn Threat');
+}
+if (lowerSummary.includes('competitor') || lowerSummary.includes('switching to') || lowerSummary.includes('moving to')) {
+tags.push('Competitor Switch');
+}
+if (lowerSummary.includes('regret') || lowerSummary.includes('disappointed with product') || lowerSummary.includes('not meeting expectations')) {
+tags.push('Product Regret');
+}
+// Updated Service Outage/Emergency to include 'access issue' related keywords
+if (lowerSummary.includes('outage') || lowerSummary.includes('down') || lowerSummary.includes('emergency') || lowerSummary.includes('not working') || lowerSummary.includes('service disruption') || lowerSummary.includes('access issue') || lowerSummary.includes('cannot log in') || lowerSummary.includes('connectivity problem') || lowerSummary.includes('unreachable')) {
+tags.push('Service Outage/Emergency');
+}
+// Updated Security/Data Breach to include 'trust concern' related keywords
+if (lowerSummary.includes('security') || lowerSummary.includes('data breach') || lowerSummary.includes('unauthorized access') || lowerSummary.includes('vulnerability') || lowerSummary.includes('trust concern') || lowerSummary.includes('privacy issue')) {
+tags.push('Security/Data Breach');
+}
+// New tag: Evaluating Alternatives
+if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
+tags.push('Evaluating Alternatives');
+}
+
+return tags;
+}
+
+
+// Dummy data for Ticket Details table - UPDATED TO USE NEW TAG LOGIC
 const ticketDetailsData = [
 {
 id: 'dept-it-support', // Added ID for expansion logic
 department: "IT Support",
 openStatus: 3,
-closedStatus: 2, // This count also needs to be reflected accurately based on actual tickets
+closedStatus: 2, // This is explicitly 2
 openTicketOwnership: "Loganathan",
 executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
 tickets: [
-    { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department.", url: "#", tags: ["Escalation", "Risk alert"], status: "Open" },
-    { id: "TKT-002-IT", summary: "Software installation request for new hire.", url: "#", tags: ["Request", "Training"], status: "Open" },
-    { id: "TKT-003-IT", summary: "Printer driver conflict on multiple workstations.", url: "#", tags: ["Question", "Neutral"], status: "Open" },
-    { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", tags: ["Resolved"], status: "Closed" },
-    { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", tags: ["Completed"], status: "Closed" }
+    { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department. Urgent!", url: "#", status: "Open" },
+    { id: "TKT-002-IT", summary: "Missing feature: unable to export reports to PDF. Repeated follow-up needed.", url: "#", status: "Open" },
+    { id: "TKT-003-IT", summary: "User is frustrated with slow support response times.", url: "#", status: "Open" },
+    { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", status: "Closed" }
 ]
 },
 {
 id: 'dept-sales-ops',
 department: "Sales Operations",
 openStatus: 1,
-closedStatus: 0,
+closedStatus: 0, // This is explicitly 0
 openTicketOwnership: "Foumin",
 executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
 tickets: [
-    { id: "TKT-004-SO", summary: "CRM data sync failure with reporting tool.", url: "#", tags: ["Escalation", "Risk alert"], status: "Open" }
+    { id: "TKT-004-SO", summary: "CRM data sync failure with reporting tool, user considering competitor switch.", url: "#", status: "Open" }
 ]
 },
 {
 id: 'dept-finance',
 department: "Finance",
 openStatus: 1,
-closedStatus: 0,
+closedStatus: 0, // This is explicitly 0
 openTicketOwnership: "Dhana",
 executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
 tickets: [
-    { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies.", url: "#", tags: ["Question"], status: "Open" }
+    { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies, dissatisfaction with current system.", url: "#", status: "Open" }
 ]
 },
 {
 id: 'dept-development',
 department: "Development",
 openStatus: 3,
-closedStatus: 0,
+closedStatus: 0, // This is explicitly 0
 openTicketOwnership: "Sivanesan",
 executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
 tickets: [
-    { id: "TKT-006-DEV", summary: "Critical bug in user authentication module.", url: "#", tags: ["Escalation", "Frustrated", "Risk alert"], status: "Open" },
-    { id: "TKT-007-DEV", summary: "UI bug: button misaligned on dashboard page.", url: "#", tags: ["Question", "Neutral"], status: "Open" },
-    { id: "TKT-008-DEV", summary: "Feature request: export data to CSV format.", url: "#", tags: ["Request"], status: "Open" }
+    { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
+    { id: "TKT-007-DEV", summary: "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", status: "Open" },
+    { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
 ]
 },
 {
@@ -374,14 +421,21 @@ closedStatus: 5,
 openTicketOwnership: "Laxman",
 executiveSummary: "No open tickets. All HR-related requests and queries have been resolved promptly.",
 tickets: [
-    { id: "TKT-CLOSED-HR-001", summary: "Onboarding process completed for new employee.", url: "#", tags: ["Completed"], status: "Closed" },
-    { id: "TKT-CLOSED-HR-002", summary: "Payroll discrepancy resolved for John Doe.", url: "#", tags: ["Resolved"], status: "Closed" },
-    { id: "TKT-CLOSED-HR-003", summary: "Policy clarification provided for leave request.", url: "#", tags: ["Resolved"], status: "Closed" },
-    { id: "TKT-CLOSED-HR-004", summary: "Benefits enrollment assistance provided.", url: "#", tags: ["Completed"], status: "Closed" },
-    { id: "TKT-CLOSED-HR-005", summary: "Performance review scheduling completed.", url: "#", tags: ["Completed"], status: "Closed" }
+    { id: "TKT-CLOSED-HR-001", summary: "Onboarding process completed for new employee.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-HR-002", summary: "Payroll discrepancy resolved for John Doe.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-HR-003", summary: "Policy clarification provided for leave request.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-HR-004", summary: "Benefits enrollment assistance provided.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-HR-005", summary: "Performance review scheduling completed.", url: "#", status: "Closed" }
 ]
 }
 ];
+
+// Pre-process ticketDetailsData to assign tags
+ticketDetailsData.forEach(dept => {
+dept.tickets.forEach(ticket => {
+ticket.tags = assignTagsFromSummary(ticket.summary);
+});
+});
 
 
 // Initialize all DOM element references at the top
@@ -423,6 +477,17 @@ let healthScoreCheck = null;
 // New references for the <strong> elements within the cards
 let competitorExposureCountElement = null;
 let downgradeRisksCountElement = null;
+
+// Global variable to track the currently open dropdown menu
+let currentOpenDropdown = null; 
+
+// Function to close all dropdowns
+function closeAllDropdowns() {
+if (currentOpenDropdown) {
+currentOpenDropdown.classList.remove('show');
+currentOpenDropdown = null;
+}
+}
 
 
 // Function to initialize DOM elements
@@ -502,7 +567,7 @@ let anomaliesWarningOnlyData = []; // For Warning Signs card click
 function filterDataArrays() {
 allAppsFilteredData = appData;
 
-// --- New Logic for Critical Issues ---
+// --- Logic for Critical Issues ---
 anomaliesCriticalOnlyData = appData.filter(app => {
 // Ensure monthlyData has at least 6 months to safely access index 5 (M6)
 // If not, this condition cannot be met for that app
@@ -533,7 +598,32 @@ const hasConsistentSeatDecline = totalRecentDecline <= -3; // e.g., lost 3 or mo
 return hasRecentSignificantDowngrade || isVeryLowUsageAndDowngraded || hasConsistentSeatDecline;
 });
 
-// --- New Logic for Warning Signs (must NOT be a Critical Issue) ---
+// --- Account-level warning flags from ticket data ---
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+const hasManyOpenTicketsWarning = totalOpenTickets > 15;
+
+const problematicTicketTags = [
+"Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
+"Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
+"Competitor Switch", "Product Regret", "Service Outage/Emergency",
+"Security/Data Breach", "Evaluating Alternatives"
+].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')); // Convert to lowercase and class-friendly for matching
+
+let hasProblematicTicketTagsWarning = false;
+for (const dept of ticketDetailsData) {
+for (const ticket of dept.tickets) {
+  if (ticket.status === 'Open' && ticket.tags) { // Only check open tickets with tags
+      const foundTag = ticket.tags.some(tag => problematicTicketTags.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')));
+      if (foundTag) {
+          hasProblematicTicketTagsWarning = true;
+          break; // Found one, no need to check further for this flag
+      }
+  }
+}
+if (hasProblematicTicketTagsWarning) break; // Found one, no need to check further departments
+}
+
+// --- Logic for Warning Signs (must NOT be a Critical Issue) ---
 anomaliesWarningOnlyData = appData.filter(app => {
 // First, ensure it's not already a critical issue using the IDs
 const isCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
@@ -542,21 +632,29 @@ if (isCritical) return false; // If it's critical, it cannot be a warning sign
 // Retrieve latest zohoConversionOpportunities safely
 const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
 
-// Condition A: Low to Moderate Usage OR Low Seats
-const isLowToModerateUsageOrLowSeats = (app.usage >= 20 && app.usage <= 50) || (app.seats < 30);
+// NEW WARNING SIGNS LOGIC:
+// 1. Usage Drop - Decline in License Utilization - <70%
+const isUsageDrop = app.usage < 70;
 
-// Condition B: Downgraded License (without recent critical seat loss already covered)
-// This captures cases where license is downgraded, but seats might be stable or usage not critical.
-// It relies on the 'isCritical' check above to ensure it's not already a critical issue.
-const isDowngradedButNotCriticallyFalling = app.license.includes('Downgraded');
+// 2. ARR Trend - 30% Decrease (Comparing M6 revenue to M3 revenue)
+let isArrTrendDecrease = false;
+if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) { // Ensure M6 and M3 data exists (index 5 and 2)
+  const m6Revenue = app.monthlyData[5].revenue;
+  const m3Revenue = app.monthlyData[2].revenue;
+  if (m3Revenue > 0) { // Avoid division by zero
+      const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+      isArrTrendDecrease = percentageChange < -0.30; // 30% decrease
+  }
+}
 
-// Condition C: Competitor Integrations Present
+// Existing conditions
+const isLowSeats = app.seats < 30; // Keep explicit low seats check
+const isDowngraded = app.license.includes('Downgraded');
 const hasCompetitors = app.competitors && app.competitors.length > 0;
-
-// Condition D: Low Conversion Opportunities
 const isLowConversionOpp = latestZohoConversion === 'Low';
 
-return isLowToModerateUsageOrLowSeats || isDowngradedButNotCriticallyFalling || hasCompetitors || isLowConversionOpp;
+// Combine all application-specific and account-level warning conditions
+return isUsageDrop || isArrTrendDecrease || isLowSeats || isDowngraded || hasCompetitors || isLowConversionOpp || hasManyOpenTicketsWarning || hasProblematicTicketTagsWarning;
 });
 
 
@@ -608,8 +706,9 @@ downgradeRisksCountElement.textContent = downgradesFilteredData.length;
 
 
 // Update counts for Desk Tickets card and button
-const totalOpenTickets = ticketDetailsData.reduce((sum, ticket) => sum + ticket.tickets.filter(t => t.status === 'Open').length, 0);
-const totalClosedTickets = ticketDetailsData.reduce((sum, ticket) => sum + ticket.tickets.filter(t => t.status === 'Closed').length, 0);
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+// FIX: Correctly sum closedStatus for totalClosedTickets
+const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
 
 const openTicketsCountSpan = document.getElementById('openTicketsCount');
 const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
@@ -658,9 +757,12 @@ row.setAttribute('data-app-id', app.id);
 row.className = 'clickable-row';
 
 // Determine competitor display
-let competitorsHtml = 'None';
+let competitorsHtml = ''; // Initialize as empty
 if (app.competitors && app.competitors.length > 0) {
-    competitorsHtml = app.competitors.map(comp => `<span class="red-bg">${comp}</span>`).join(' ');
+    // Generate tags for each competitor
+    competitorsHtml = app.competitors.map(comp => `<span class="competitor-tag">${comp}</span>`).join('');
+} else {
+    competitorsHtml = 'None';
 }
 
 // Determine license trend icon and color
@@ -694,45 +796,135 @@ const usageHtml = `
 `;
 // --- END NEW LOGIC ---
 
-// --- NEW LOGIC for ARR and ARR Trend ---
+// --- NEW LOGIC for ARR and ARR Trend with Percentage ---
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1]; // Get the last month's data
 const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
 
 let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+let arrPercentageChangeHtml = '';
+let arrPercentageClass = 'text-muted';
 
-if (currentMonthData) {
-    const lastMonthRevenueChange = parseInt(currentMonthData.revenueChange);
-    if (lastMonthRevenueChange > 0) {
+if (app.monthlyData.length >= 2) { // Need at least two months to calculate percentage change
+    const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
+    const previousArr = previousMonthData.revenue;
+    const currentArrValue = currentMonthData.revenue;
+
+    if (previousArr !== 0) { // Avoid division by zero
+        const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
+        arrPercentageChangeHtml = `${percentageChange.toFixed(1)}%`; // Format to one decimal place
+
+        if (percentageChange > 0) {
+            arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+            arrPercentageClass = 'text-success';
+            arrPercentageChangeHtml = `+${arrPercentageChangeHtml}`; // Add '+' for positive changes
+        } else if (percentageChange < 0) {
+            arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+            arrPercentageClass = 'text-danger';
+        } else {
+            arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+            arrPercentageClass = 'text-muted';
+        }
+    } else if (currentArrValue > 0) {
+        // If previous ARR was 0 and current is positive, it's an infinite increase
+        arrPercentageChangeHtml = `+Inf%`;
+        arrPercentageClass = 'text-success';
         arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-    } else if (lastMonthRevenueChange < 0) {
-        arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+    } else {
+        arrPercentageChangeHtml = `0%`; // If both are 0 or previous is 0 and current is 0 or negative
+        arrPercentageClass = 'text-muted';
     }
+} else {
+    arrPercentageChangeHtml = 'N/A'; // Not enough data for percentage
+    arrPercentageClass = 'text-muted';
 }
-// Removed the numerical change value from arrTrendCellContent
-const arrTrendCellContent = `${arrTrendIconHtml}`; 
+
+const arrRevenueCellContent = `
+    $${currentArr}<br>
+    <span class="${arrPercentageClass}">${arrPercentageChangeHtml}</span>
+`;
+// --- END NEW LOGIC ---
+
+// --- NEW LOGIC for Application Status Arrow (NO BACKGROUND CIRCLE) ---
+let appStatusArrowHtml = '';
+if (app.license.includes('Upgraded')) {
+    appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></i>`; // Changed to bi-arrow-up
+} else if (app.license.includes('Downgraded')) {
+    appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`; // Changed to bi-arrow-down
+} else {
+    appStatusArrowHtml = `<i class="bi bi-dash-lg text-muted app-status-arrow"></i>`; // Changed to bi-dash-lg
+}
 // --- END NEW LOGIC ---
 
 row.innerHTML = `
     <td><span class="expand-toggle-arrow">▼</span></td> 
     <td style="min-width: 200px;">
-        ${app.application}<br>${app.category} <!-- REMOVED <small> TAG HERE -->
+        ${appStatusArrowHtml}${app.application}<br>${app.category}
     </td>
     <td>${usageHtml}</td> 
-    <td>$${currentArr}</td> <!-- Display current ARR -->
-    <td>${arrTrendCellContent}</td> <!-- Display ARR Trend -->
+    <td>${arrRevenueCellContent}</td> <!-- Updated to include percentage -->
+    <td>${arrTrendIconHtml}</td> <!-- Only icon here -->
     <td>${app.seats}</td>
     <td>${licenseTrendIconHtml} ${app.license}</td>
     <td>${competitorsHtml}</td>
     <td>N/A</td> 
-    <td><i class="bi bi-exclamation-triangle text-danger"></i></td>
+    <td>
+        <div class="action-dropdown-wrapper">
+            <i class="bi bi-exclamation-triangle text-danger action-toggle-icon"></i>
+            <div class="action-dropdown-menu">
+                <button class="glass-button email-peer">
+                    <i class="bi bi-envelope-fill"></i> Email to Peer
+                </button>
+                <button class="glass-button email-client">
+                    <i class="bi bi-person-lines-fill"></i> Email to Client
+                </button>
+                <button class="glass-button connect-us">
+                    <i class="bi bi-telephone-fill"></i> Talk to an Agent (<span class="ai-text">AI</span>)
+                </button>
+            </div>
+        </div>
+    </td>
 `;
+
+// Add click event listener for the action toggle icon
+const actionToggleIcon = row.querySelector('.action-toggle-icon');
+const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
+
+if (actionToggleIcon && actionDropdownMenu) {
+    actionToggleIcon.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent the row's click listener from firing
+
+        if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
+            // If another dropdown is open, close it first
+            closeAllDropdowns();
+        }
+
+        actionDropdownMenu.classList.toggle('show');
+        if (actionDropdownMenu.classList.contains('show')) {
+            currentOpenDropdown = actionDropdownMenu;
+        } else {
+            currentOpenDropdown = null;
+        }
+    });
+
+    // Optional: Close dropdown if any of its buttons are clicked
+    actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent document click from immediately closing it again
+            // Perform button action here (e.g., alert, console.log)
+            console.log(`${button.textContent.trim()} clicked!`);
+            closeAllDropdowns(); // Close dropdown after button click
+        });
+    });
+}
 
 // Add click event listener for row expansion/collapse
 row.addEventListener('click', (event) => {
-    // Prevent event from bubbling up if clicked on the action icon
-    if (event.target.tagName === 'I' && event.target.classList.contains('bi-exclamation-triangle')) {
-        return;
+    // Only proceed with row expansion if the click was not on the dropdown wrapper
+    if (event.target.closest('.action-dropdown-wrapper')) {
+        return; // Do nothing if click is inside the action dropdown area
     }
+    closeAllDropdowns(); // Close any open dropdown when clicking on a row (outside action area)
+
 
     const appId = app.id;
     const currentExpandedId = expandedRowId;
@@ -763,7 +955,7 @@ row.addEventListener('click', (event) => {
         expandedRow.setAttribute('data-parent-app-id', appId); // Link expanded row to its parent
 
         // --- START NEW EXPANDED ROW CONTENT ---
-        let monthlyDataHtml = app.monthlyData.map(month => {
+        let monthlyDataHtml = app.monthlyData.map((month, index) => {
             let changeIcon = '';
             let changeClass = 'text-muted'; // Default for no change or '0'
             if (month.change.includes('+')) {
@@ -778,15 +970,39 @@ row.addEventListener('click', (event) => {
 
             let revenueTrendIcon = '';
             let revenueTrendClass = 'text-muted';
-            // Determine revenue trend icon based on revenueChange
-            if (parseInt(month.revenueChange) > 0) {
-                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                revenueTrendClass = 'text-success';
-            } else if (parseInt(month.revenueChange) < 0) {
-                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                revenueTrendClass = 'text-danger';
+            let revenuePercentageChange = 'N/A';
+
+            if (index > 0) { // Calculate percentage change from previous month
+                const previousMonthRevenue = app.monthlyData[index - 1].revenue;
+                const currentMonthRevenue = month.revenue;
+
+                if (previousMonthRevenue !== 0) {
+                    const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+                    revenuePercentageChange = `${percentage.toFixed(1)}%`;
+                    if (percentage > 0) {
+                        revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                        revenueTrendClass = 'text-success';
+                        revenuePercentageChange = `+${revenuePercentageChange}`;
+                    } else if (percentage < 0) {
+                        revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                        revenueTrendClass = 'text-danger';
+                    } else {
+                        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                        revenueTrendClass = 'text-muted';
+                    }
+                } else if (currentMonthRevenue > 0) {
+                    revenuePercentageChange = `+Inf%`;
+                    revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                    revenueTrendClass = 'text-success';
+                } else {
+                    revenuePercentageChange = `0%`;
+                    revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    revenueTrendClass = 'text-muted';
+                }
             } else {
-                 revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`; // No change for M1
+                revenueTrendClass = 'text-muted';
+                revenuePercentageChange = 'N/A';
             }
 
 
@@ -795,8 +1011,11 @@ row.addEventListener('click', (event) => {
                     <td>${month.month}</td>
                     <td>${month.seats}</td>
                     <td class="${changeClass}">${changeIcon} ${month.change}</td> 
-                    <td>$${month.revenue}</td>
-                    <td class="${revenueTrendClass}">${revenueTrendIcon} ${month.revenueChange}</td>
+                    <td>
+                        $${month.revenue}<br>
+                        <span class="${revenueTrendClass}">${revenuePercentageChange}</span>
+                    </td>
+                    <td class="${revenueTrendClass}">${revenueTrendIcon}</td>
                 </tr>
             `;
         }).join('');
@@ -827,7 +1046,7 @@ row.addEventListener('click', (event) => {
           const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
           if (relevantMonths.length === 3) {
               relevantMonths.forEach(month => { 
-                  const change = parseInt(month.change);
+                  const change = parseInt(month.change); // Changed to month.change from just month
                   if (change < 0) {
                       totalRecentDecline += change;
                   }
@@ -843,18 +1062,62 @@ row.addEventListener('click', (event) => {
           // Determine specific warning sub-conditions for display
           const latestZohoConversion = app.monthlyData.length > 0 ? app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities : '';
           
-          if ((app.usage >= 20 && app.usage <= 50) || (app.seats < 30)) {
-              detectedAnomalies.push(`<li>Low to Moderate Usage / Low Seats</li>`);
+          if (app.usage < 70) { // New Usage Drop
+              detectedAnomalies.push(`<li>Usage dropped below 70%</li>`);
           }
-          if (app.license.includes('Downgraded')) { // If it's a warning sign, it's a downgraded license
+          if (app.monthlyData.length >= 6) { // New ARR Trend check
+              const m6Revenue = app.monthlyData[5].revenue;
+              const m3Revenue = app.monthlyData[2].revenue;
+              if (m3Revenue > 0) {
+                  const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                  if (percentageChange < -0.30) {
+                      detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6)</li>`);
+                  }
+              }
+          }
+          if (app.seats < 30) { // Existing Low Seats
+              detectedAnomalies.push(`<li>Low Seats</li>`);
+          }
+          if (app.license.includes('Downgraded')) { // Existing Downgraded License
               detectedAnomalies.push(`<li>Downgraded License</li>`);
           }
-          if (app.competitors && app.competitors.length > 0) {
+          if (app.competitors && app.competitors.length > 0) { // Existing Competitor Integrations
               detectedAnomalies.push(`<li>Competitor Integrations Present</li>`);
           }
-          if (latestZohoConversion === 'Low') {
+          if (latestZohoConversion === 'Low') { // Existing Low Conversion Opportunities
               detectedAnomalies.push(`<li>Low Zoho Conversion Opportunities</li>`);
           }
+          
+          // NEW: Account-level warning flags for display
+          const totalOpenTicketsForDisplay = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+          if (totalOpenTicketsForDisplay > 15) {
+            detectedAnomalies.push(`<li>More than 15 open desk tickets for the account</li>`);
+          }
+
+          // Check for problematic tags
+          const problematicTicketTagsForDisplay = [
+              "Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
+              "Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
+              "Product Regret", "Service Outage/Emergency",
+              "Security/Data Breach", "Evaluating Alternatives"
+          ].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-'));
+
+          let hasProblematicTagsInOpenTickets = false;
+          for (const dept of ticketDetailsData) {
+              for (const ticket of dept.tickets) {
+                  if (ticket.status === 'Open' && ticket.tags) {
+                      if (ticket.tags.some(tag => problematicTicketTagsForDisplay.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))) {
+                          hasProblematicTagsInOpenTickets = true;
+                          break;
+                      }
+                  }
+              }
+              if (hasProblematicTagsInOpenTickets) break;
+          }
+          if (hasProblematicTagsInOpenTickets) {
+            detectedAnomalies.push(`<li>Open desk tickets have problematic tags (Dissatisfaction/Complaint, Escalation Request, etc.)</li>`);
+          }
+
         }
 
 
@@ -887,8 +1150,8 @@ row.addEventListener('click', (event) => {
                                     <tr>
                                         <th>Month</th>
                                         <th>Seats</th>
-                                        <th>Change</th>
-                                        <th>Revenue</th>
+                                        <th>Trend</th> <!-- Changed from Change -->
+                                        <th>ARR</th> <!-- Changed from Revenue -->
                                         <th>Trend</th>
                                     </tr>
                                 </thead>
@@ -907,7 +1170,7 @@ row.addEventListener('click', (event) => {
                     </div>
 
                     <div class="col-md-4 p-2">
-                        <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h6>
+                        <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
                         <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
                         ${anomaliesHtml}
                     </div>
@@ -999,7 +1262,13 @@ row.addEventListener('click', (event) => {
         let openTicketsHtml = '';
         if (openTickets && openTickets.length > 0) {
             openTicketsHtml = openTickets.map(tkt => {
-                const tagsHtml = tkt.tags.map(tag => `<span class="ticket-tag tag-${tag.toLowerCase().replace(/ /g, '-')}">${tag}</span>`).join('');
+                // Generate tags dynamically based on summary
+                const currentTicketTags = assignTagsFromSummary(tkt.summary);
+                const tagsHtml = currentTicketTags.map(tag => {
+                    // Convert tag to a class-friendly format (lowercase, replace spaces/slashes with hyphens)
+                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                }).join('');
                 return `
                     <li class="ticket-item">
                         <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
@@ -1015,7 +1284,10 @@ row.addEventListener('click', (event) => {
         let closedTicketsHtml = '';
         if (closedTickets && closedTickets.length > 0) {
             closedTicketsHtml = closedTickets.map(tkt => {
-                const tagsHtml = tkt.tags.map(tag => `<span class="ticket-tag tag-${tag.toLowerCase().replace(/ /g, '-')}">${tag}</span>`).join('');
+                const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
+                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                }).join('');
                 return `
                     <li class="ticket-item">
                         <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
@@ -1357,5 +1629,13 @@ ticketDetailsTableContainer.style.display = 'none';
 // --- NEW: Call updateCounts() after initial rendering and filterDataArrays()
 // and also ensure initial card is highlighted if relevant.
 updateCounts(); // Call updateCounts initially to set all button counts
+
+// Add a global click listener to close dropdowns when clicking outside
+document.addEventListener('click', (event) => {
+// If a dropdown is open and the click is not inside it or its toggle button
+if (currentOpenDropdown && !event.target.closest('.action-dropdown-wrapper')) {
+  closeAllDropdowns();
+}
+});
 
 });

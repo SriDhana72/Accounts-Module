@@ -76,22 +76,22 @@
                         <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
                         <strong>Critical Issues</strong></p>
                         <strong id="criticalIssuesCount">2</strong>
-                        <p>Requires immediate Attention</p>
+                        <p>* immediate concern</p>
                     </div>
                     <div class="card-section" id="warningSignsCard">
                         <p><i class="bi bi-exclamation-triangle fs-4 me-2" style="color: #FFC107;"></i><strong>Warning Signs</strong></p>
                         <strong id="warningSignsCount">2</strong>
-                        <p>Potential risks to monitor</p>
+                        <p>* Early signs of risk</p>
                     </div>
                     <div class="card-section" id="competitorExposureCard">
-                        <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 2.3em;"></i><strong>Competitor Exposure</strong></p>
+                        <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 1.8em;"></i><strong>Competitor Exposure</strong></p>
                         <strong id="competitorExposureCount">6</strong>
-                        <p>Competitor products in use</p>
+                        <p>* potential churn influence</p>
                     </div>
                     <div class="card-section" id="downgradeRisksCard">
                         <p><i class="bi bi-graph-down-arrow fs-4 me-2" style="color: #800000;"></i><strong>Downgrade Risks</strong></p>
                         <strong id="downgradeRisksCount">2</strong>
-                        <p>Requires immediate Attention</p>
+                        <p>* Requires immediate Attention</p>
                     </div>
                     <div class="card-section" id="deskTicketsCard">
                         <p>
@@ -108,6 +108,7 @@
                                 <span id="closedTicketsCount" class="closed-count"></span>
                             </div>
                         </div>
+                        <p>* customer sentiment/volume/severity</p>
                     </div>
                 </div>
             </div>
@@ -145,11 +146,11 @@
                         <th style="width: 30px;"></th>
                         <th style="min-width: 200px;">Applications</th>
                         <th>Usage</th>
-                        <th>ARR</th> <!-- New Column Header -->
-                        <th>ARR Trend</th> <!-- New Column Header -->
+                        <th>ARR</th>
+                        <th>ARR Trend</th>
                         <th>Seats</th>
                         <th>License Trend</th>
-                        <th>Competitors</th>
+                        <th>Competitors<br><small><span style="color: #28a745;">Cross-sell</span> | <span style="color: #dc3545;">Threat</span></small></th>
                         <th>Zoho Options</th>
                         <th>Actions</th>
                     </tr>
@@ -186,7 +187,7 @@
         </div>
     </div>
 
-    <script src="healthScore.js"></script> <!-- ADDED THIS LINE -->
+    <script src="healthScore.js"></script> 
     <script src="script.js"></script>
 </body>
 </html>
