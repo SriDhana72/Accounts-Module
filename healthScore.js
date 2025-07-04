@@ -1,5 +1,7 @@
 // healthScore.js
 
+// healthScore.js
+
 /**
  * Updates the display of the health score widget based on the given score.
  * This function dynamically changes the circle's background color,
@@ -34,24 +36,24 @@ function updateHealthScore(score) {
 
 
     // --- Apply styles and text based on the score range ---
-    if (score > 80) {
-        // Score is Excellent (e.g., 81-100)
+    if (score >= 70) {
+        // Score is Healthy (70-100)
         healthScoreCircle.classList.add('health-score-green-gradient'); // Apply green gradient
-        healthScoreStatus.textContent = 'Excellent'; // Set status text
+        healthScoreStatus.textContent = 'Healthy'; // Set status text
         healthScoreStatus.classList.add('text-success'); // Apply Bootstrap success text color
         healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success'); // Apply green checkmark icon
         healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
-    } else if (score >= 60) {
-        // Score is Good (e.g., 60-80)
+    } else if (score >= 40) {
+        // Score is At Risk (40-69)
         healthScoreCircle.classList.add('health-score-yellow-gradient'); // Apply yellow gradient
-        healthScoreStatus.textContent = 'Good'; // Set status text
+        healthScoreStatus.textContent = 'At Risk'; // Set status text
         healthScoreStatus.classList.add('text-warning'); // Apply Bootstrap warning text color
         healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning'); // Apply yellow warning icon
         healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
     } else {
-        // Score is Poor (e.g., < 60)
+        // Score is Critical (< 40)
         healthScoreCircle.classList.add('health-score-red-gradient'); // Apply red gradient
-        healthScoreStatus.textContent = 'weak'; // Set status text
+        healthScoreStatus.textContent = 'Critical'; // Set status text
         healthScoreStatus.classList.add('text-danger'); // Apply Bootstrap danger text color
         healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Apply red 'x' icon
         healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible

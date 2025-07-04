@@ -28,14 +28,39 @@
                         <span class="small">12 Inactive Subscriptions</span>
                     </div>
 
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="text-warning fs-5">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i> </span>
+                    <div class="d-flex align-items-center mb-2"> <!-- Removed position-relative here, moved to eye icon -->
+                        <span class="fs-5">
+                            <i class="bi bi-star-fill star-red-gradient"></i>
+                            <i class="bi bi-star-fill star-green-gradient"></i>
+                            <i class="bi bi-star-fill star-purple-gradient"></i>
+                        </span>
                         <span class="ms-2 text-muted small">5/12/2025</span>
+                        <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
+                            <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
+                            <div id="ratingDetailsPopup" class="rating-details-popup">
+                                <div class="d-flex">
+                                    <i class="bi bi-star-fill star-red-gradient"></i>
+                                    <div>
+                                        <strong>Engagement</strong>
+                                        <p class="small text-muted mb-0">High user activity</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-star-fill star-green-gradient"></i>
+                                    <div>
+                                        <strong>Interaction</strong>
+                                        <p class="small text-muted mb-0">Regular communication</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-star-fill star-purple-gradient"></i>
+                                    <div>
+                                        <strong>Revenue Growth</strong>
+                                        <p class="small text-muted mb-0">Consistent revenue increase</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </i>
                     </div>
 
                     <div class="d-flex align-items-center mb-2">
@@ -76,22 +101,22 @@
                         <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
                         <strong>Critical Issues</strong></p>
                         <strong id="criticalIssuesCount">2</strong>
-                        <p>* immediate concern</p>
+                        <p>immediate concern</p>
                     </div>
                     <div class="card-section" id="warningSignsCard">
                         <p><i class="bi bi-exclamation-triangle fs-4 me-2" style="color: #FFC107;"></i><strong>Warning Signs</strong></p>
                         <strong id="warningSignsCount">2</strong>
-                        <p>* Early signs of risk</p>
+                        <p>Early signs of risk</p>
                     </div>
                     <div class="card-section" id="competitorExposureCard">
                         <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 1.8em;"></i><strong>Competitor Exposure</strong></p>
                         <strong id="competitorExposureCount">6</strong>
-                        <p>* potential churn influence</p>
+                        <p>potential churn influence</p>
                     </div>
                     <div class="card-section" id="downgradeRisksCard">
                         <p><i class="bi bi-graph-down-arrow fs-4 me-2" style="color: #800000;"></i><strong>Downgrade Risks</strong></p>
                         <strong id="downgradeRisksCount">2</strong>
-                        <p>* Requires immediate Attention</p>
+                        <p>Requires immediate Attention</p>
                     </div>
                     <div class="card-section" id="deskTicketsCard">
                         <p>
@@ -108,7 +133,7 @@
                                 <span id="closedTicketsCount" class="closed-count"></span>
                             </div>
                         </div>
-                        <p>* customer sentiment/volume/severity</p>
+                        <p>sentiment/volume/severity</p>
                     </div>
                 </div>
             </div>

@@ -92,14 +92,14 @@ box-shadow: 0 5px 12px rgba(0,0,0,0.10);
 transform: translateY(-2px);
 }
 
-#deskTicketsCard p {
+/* Removed the general #deskTicketsCard p rule to apply flex only to first-child */
+/* #deskTicketsCard p {
 display: flex;
 align-items: center;
 margin-bottom: 2px;
-/* font-size: 0.7em; KEPT AT 0.7EM BUT NOW CONTROLLED BY .card-section p:first-child */
 color: #212529;
 white-space: nowrap;
-}
+} */
 
 #deskTicketsCard p i {
 margin-right: 5px;
@@ -126,7 +126,13 @@ display: block;
 
 /* Desk Tickets card specific alignment for the first line (icon and title) */
 #deskTicketsCard p:first-child {
+    display: flex; /* Added display flex */
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
     margin-top: 2px; /* Adjusted margin to visually align with other card titles */
+    margin-bottom: 2px; /* Ensure consistent margin */
+    color: #212529;
+    white-space: nowrap;
 }
 
 
@@ -322,10 +328,24 @@ font-weight: bold;
 color: #212529;
 }
 
+/* Specific styles for the description paragraph */
 .card-section p:last-child {
-font-size: 0.75em; /* Decreased from 0.8em */
-color: #212529;
-margin-bottom: 0;
+    font-size: 0.75em;
+    color: #999999; /* Changed to lighter faded grey */
+    margin-bottom: 0;
+    font-weight: normal; /* Changed from bold */
+    align-self: center; /* Aligns it to the center */
+    text-align: center; /* Aligns its text content to the center */
+    width: 100%; /* Ensures it takes full width to apply text-align */
+}
+
+/* Specific style for Desk Tickets card description to ensure it overrides */
+#deskTicketsCard p:last-child {
+    font-weight: normal; /* Changed from bold */
+    color: #999999; /* Changed to lighter faded grey */
+    text-align: center;
+    align-self: center;
+    display: block; /* Explicitly set to block to ensure text-align works */
 }
 
 .container-section > div:first-of-type {
@@ -428,6 +448,14 @@ width: 30px;
 text-align: center;
 }
 
+/* Adjust width and alignment for the new Status column header */
+/* Removed as status is now a tag */
+/* #applicationTable thead th:nth-child(3) {
+    width: 10%; 
+    min-width: 100px; 
+    text-align: left; 
+} */
+
 #applicationTable tbody tr td {
 padding: 12px 20px;
 border-bottom: 1px solid #e9ecef;
@@ -511,7 +539,8 @@ color: #6c757d;
 }
 
 /* Specific alignment for the 'Usage' header (third th) */
-#applicationTable thead th:nth-child(3) {
+/* This rule now applies to the Usage column, which is the 3rd th */
+#applicationTable thead th:nth-child(3) { /* Changed from nth-child(4) to nth-child(3) */
 text-align: left; /* Keep it left-aligned as it's almost correct */
 padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
 }
@@ -851,7 +880,7 @@ border: 1px solid #e0e0e0;
 
 background-image: linear-gradient(to right,
 #ea4335 0%, #ea4335 25%,
-#34a853 25%, #34a853 50%,
+#34a853 25%, #34a53 50%,
 #4285f4 50%, #4285f4 75%,
 #fbbc05 75%, #fbbc05 100%
 );
@@ -859,7 +888,7 @@ background-size: 100% 2px;
 background-repeat: no-repeat;
 background-position: top;
 
-overflow: hidden; 
+overflow: visible; /* Changed from hidden to visible */
 }
 
 
@@ -1044,16 +1073,16 @@ text-transform: capitalize;
 /* Specific tag colors (optional, but good for visual distinction) */
 /* Mild gradient background colors for tags */
 .tag-dissatisfaction-complaint { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-.tag-escalation-request { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-.tag-repeated-follow-up { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-.tag-slow-support-delay { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-.tag-feature-gap { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-escalation-request { background: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-repeated-follow-up { background: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-slow-support-delay { background: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-feature-gap { background: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
 .tag-cancel-threat-churn-threat { background: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; } /* Red */
-.tag-competitor-switch { background: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
-.tag-product-regret { background: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
-.tag-service-outage-emergency { background: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
-.tag-security-data-breach { background: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
-.tag-evaluating-alternatives { background: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
+.tag-competitor-switch { background: linear: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
+.tag-product-regret { background: linear: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
+.tag-service-outage-emergency { background: linear: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
+.tag-security-data-breach { background: linear: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
+.tag-evaluating-alternatives { background: linear: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
 
 
 /* Arrow styling for ticket table */
@@ -1133,6 +1162,8 @@ display: block; /* Ensures the image is treated as a block element */
     position: relative; /* Container for absolute positioning */
     display: inline-block; /* Allows the wrapper to size to its content */
     text-align: center; /* Center the icon within the td */
+    /* Crucial: Allow content to overflow */
+    overflow: visible; 
 }
 
 .action-toggle-icon {
@@ -1142,9 +1173,7 @@ display: block; /* Ensures the image is treated as a block element */
 }
 
 .action-dropdown-menu {
-    position: absolute;
-    top: 100%; /* Position below the icon */
-    right: 0; /* Align to the right of the wrapper */
+    position: absolute; 
     background-color: rgba(255, 255, 255, 0.7); /* Slightly more transparent glass background for the menu itself */
     backdrop-filter: blur(8px); /* Stronger blur for the menu */
     -webkit-backdrop-filter: blur(8px);
@@ -1155,19 +1184,33 @@ display: block; /* Ensures the image is treated as a block element */
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
     gap: 8px; /* Space between buttons */
-    z-index: 1000; /* Ensure it's on top */
+    z-index: 9; /* Ensure it's below the sticky header (z-index 10) */
     min-width: 180px; /* Minimum width for the dropdown, slightly increased */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px); /* Start slightly below and move up */
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
 }
 
 .action-dropdown-menu.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
 }
+
+/* Positioning for main table action dropdown */
+/* This positions it centered below the triangle icon */
+#applicationTable .action-dropdown-menu {
+    top: calc(100% + 5px); /* Position below the toggle icon with a small gap */
+    left: 50%; /* Start at 50% from the left of the wrapper */
+    transform: translateX(-50%); /* Shift left by half its width to center */
+}
+
+/* Positioning for expanded row action dropdown */
+/* This positions it below and aligned to the left of the "More Actions" button */
+.expanded-content .action-dropdown-menu {
+    top: calc(100% + 5px); /* Position below the toggle button with a small gap */
+    left: 0; /* Align to the left edge of the toggle button */
+}
+
 
 /* Glass button styles */
 .glass-button {
@@ -1193,7 +1236,7 @@ display: block; /* Ensures the image is treated as a block element */
 
 .glass-button:hover {
     background-color: rgba(255, 255, 255, 0.35); /* Slightly less transparent on hover */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Slightly more prominent shadow */
     transform: translateY(-1px); /* Slight lift effect */
 }
 
@@ -1333,32 +1376,139 @@ display: block; /* Ensures the image is treated as a block element */
 }
 
 /* New styles for the buttons in the middle section of expanded row */
-.expanded-row-buttons {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 10px; /* Space between buttons */
-    margin-top: 15px; /* Space above the buttons */
-    width: 100%; /* Ensure buttons take full width of their container */
-    align-items: center; /* Center buttons horizontally */
+/* REMOVED: .expanded-row-buttons and .expanded-row-button styles are no longer needed */
+/* The buttons now use .glass-button and are part of .action-dropdown-menu */
+
+
+/* NEW CSS for Status Tags */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px; /* Pill shape */
+    font-size: 0.75em; /* Small font size */
+    font-weight: 600;
+    margin-left: 8px; /* Space from application name */
+    white-space: nowrap; /* Prevent wrapping */
+    vertical-align: middle; /* Align with text */
 }
 
-.expanded-row-button {
-    background-color: #5592f3; /* Blue color */
-    color: white;
-    border: none;
-    padding: 8px 15px;
+.status-tag-active {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+}
+
+.status-tag-inactive {
+    background-color: #d1ecf1; /* Light blue background */
+    color: #0c5460; /* Dark blue text */
+}
+
+.status-tag-renewal-risk {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+}
+
+/* Specific styles for the dropdown menu within the expanded row's Actions section */
+/* These are now mostly handled by JS, but keeping relative positioning for the wrapper */
+.expanded-content .action-dropdown-wrapper {
+    margin-left: 10px; /* Add some space to the left of the button */
+    display: inline-flex; /* Ensure it wraps content properly */
+    align-items: center; /* Vertically align items */
+    overflow: visible; /* Crucial for dropdown not to be clipped */
+}
+
+.expanded-content .action-toggle-button {
+    width: auto; /* Allow button to size to its content */
+    max-width: none; /* Remove max-width constraint */
+    display: inline-flex; /* Keep it inline-flex for icon and text alignment */
+    align-items: center;
+    justify-content: center; /* Center content within the button */
+    font-size: 0.85em; /* Slightly larger font for readability */
+    padding: 5px 10px; /* Adjust padding for smaller size */
+}
+
+.expanded-content .action-toggle-button i {
+    margin-right: 5px; /* Adjust icon margin */
+    font-size: 1em; /* Adjust icon size */
+}
+
+/* NEW CSS for the Rating Details Popup */
+.rating-details-popup {
+    position: absolute;
+    left: 100%; /* Position to the right of the parent */
+    top: 50%; /* Align vertically with the middle of the parent */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    background-color: #f0f0f0; /* Grey background */
+    border: 1px solid #e9ecef;
     border-radius: 8px;
-    font-size: 0.9em;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease;
-    width: 80%; /* Make buttons narrower than full width */
-    max-width: 200px; /* Limit max width for larger screens */
-    text-align: center;
-    text-decoration: none; /* Remove underline for anchor tags */
-    display: inline-block; /* Ensure it behaves like a block for width and margin */
+    padding: 10px; /* Reduced padding */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100; /* Ensure it appears on top of other content */
+    display: none; /* Hidden by default */
+    width: 180px; /* Fixed smaller width */
+    max-width: 180px; /* Max width to prevent it from getting too wide */
+    white-space: normal; /* Allow text wrapping inside popup */
 }
 
-.expanded-row-button:hover {
-    background-color: #4285f4; /* Darker blue on hover */
+.rating-details-popup .d-flex {
+    align-items: center; /* Vertically align items in the center */
+    margin-bottom: 5px; /* Reduced margin between items */
+}
+
+.rating-details-popup .d-flex:last-child {
+    margin-bottom: 0; /* No margin for the last item */
+}
+
+.rating-details-popup .bi-star-fill {
+    font-size: 1em; /* Smaller star icon */
+    margin-right: 5px; /* Space between star and text */
+    flex-shrink: 0; /* Prevent star from shrinking */
+}
+
+.rating-details-popup strong {
+    display: inline; /* Keep strong tag inline */
+    font-size: 0.85em; /* Smaller font for text */
+    color: #333;
+    margin-bottom: 0; /* Remove margin */
+}
+
+.rating-details-popup p {
+    font-size: 0.7em; /* Even smaller font for description */
+    color: #6c757d;
+    margin-bottom: 0;
+    line-height: 1.2; /* Tighter line height */
+}
+
+/* Gradient styles for the main stars */
+.star-red-gradient {
+    background: linear-gradient(to right, #A5D6A7, #66BB6A); /* Medium Green */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Fallback for non-webkit browsers */
+}
+.star-green-gradient {
+    background: linear-gradient(to right, #FFEB3B, #FFC107); /* Medium Yellow */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+.star-purple-gradient {
+    background: linear-gradient(to right, #CE93D8, #AB47BC); /* Medium Purple */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Ensure the eye icon is clickable and on top */
+.clickable-eye-icon {
+    position: relative;
+    z-index: 2; /* Ensure it's above other elements in the same line */
+}
+
+/* NEW CSS for ARR Percentage Text */
+.arr-percentage-text {
+    font-size: 0.75em; /* Smaller font size for percentages */
+    font-weight: 500; /* Keep it readable but not too bold */
 }
