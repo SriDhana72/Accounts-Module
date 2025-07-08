@@ -1391,13 +1391,13 @@ expandedRow.innerHTML = `
                         </button>
                         <div class="action-dropdown-menu">
                             <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button">
-                                <i class="bi bi-shop"></i> Go to Store
+                                <i class="bi bi-shop"></i> Store
                             </a>
                             <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button">
-                                <i class="bi bi-file-earmark-text"></i> View MICS
+                                <i class="bi bi-file-earmark-text"></i> MICS
                             </a>
                             <a href="https://www.example.com/gc" target="_blank" rel="noopener noreferrer" class="glass-button">
-                                <i class="bi bi-file-earmark-bar-graph"></i> View GC
+                                <i class="bi bi-chat-dots"></i> Guided conversation
                             </a>
                         </div>
                     </div>
@@ -1950,5 +1950,38 @@ if (clickableEyeIcon && ratingDetailsPopup) {
             ratingDetailsPopup.style.display = 'none';
         }
     });
+}
+
+// NEW: Need Help button dropdown functionality
+const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
+if (needHelpDropdownWrapper) {
+    const needHelpToggleButton = needHelpDropdownWrapper.querySelector('.action-toggle-button');
+    const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
+
+    if (needHelpToggleButton && needHelpDropdownMenu) {
+        needHelpToggleButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent document click from immediately closing
+
+            if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
+                closeAllDropdowns();
+            }
+
+            needHelpDropdownMenu.classList.toggle('show');
+            if (needHelpDropdownMenu.classList.contains('show')) {
+                currentOpenDropdown = needHelpDropdownMenu;
+                currentOpenDropdownToggle = needHelpToggleButton;
+            } else {
+                closeAllDropdowns();
+            }
+        });
+
+        needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+                closeAllDropdowns();
+            });
+        });
+    }
 }
 });

@@ -1136,25 +1136,10 @@ display: block; /* Ensures the image is treated as a block element */
     position: absolute;
     top: 70px;
     right: 0; /* Changed from 'end-0' to 'right: 0' for direct CSS */
-}
-
-.need-help-button {
-    background-color: #5592f3;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-size: 0.9em;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease;
-    margin-top: 10px; /* Space below the image */
-    display: block; /* Make it a block element to take full width of its container if needed, or inline-block if next to image */
-    text-align: center;
-}
-
-.need-help-button:hover {
-    background-color: #4285f4;
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
 }
 
 /* NEW: Styles for the action dropdown */
@@ -1164,6 +1149,13 @@ display: block; /* Ensures the image is treated as a block element */
     text-align: center; /* Center the icon within the td */
     /* Crucial: Allow content to overflow */
     overflow: visible; 
+}
+
+/* Specific styling for the Need Help button wrapper */
+#need-help-dropdown-wrapper {
+    margin-top: 10px; /* Space between GIF and button */
+    width: 100%; /* Take full width of its parent (#additional-image-widget) */
+    text-align: center; /* Center the button within its wrapper */
 }
 
 .action-toggle-icon {
@@ -1209,6 +1201,13 @@ display: block; /* Ensures the image is treated as a block element */
 .expanded-content .action-dropdown-menu {
     top: calc(100% + 5px); /* Position below the toggle button with a small gap */
     left: 0; /* Align to the left edge of the toggle button */
+}
+
+/* Positioning for the Need Help dropdown */
+#need-help-dropdown-menu {
+    top: calc(100% + 5px); /* Position below the toggle button */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
 }
 
 
@@ -1511,4 +1510,22 @@ display: block; /* Ensures the image is treated as a block element */
 .arr-percentage-text {
     font-size: 0.75em; /* Smaller font size for percentages */
     font-weight: 500; /* Keep it readable but not too bold */
+}
+
+/* NEW: Specific style for the Need Help button background */
+.glass-button.need-help-button {
+    background: linear-gradient(to right, #6a82fb, #fc5c7d); /* Blue to pink gradient */
+    color: white; /* White text for contrast */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+.glass-button.need-help-button:hover {
+    background: linear-gradient(to right, #5c73e0, #e84d6b); /* Slightly darker on hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* Ensure the icon and AI text are white for this button */
+.glass-button.need-help-button i,
+.glass-button.need-help-button .ai-text {
+    color: white !important;
 }

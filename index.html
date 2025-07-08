@@ -91,7 +91,25 @@
                 <!-- NEW DIV FOR IMAGE BELOW HEALTH SCORE WIDGET -->
                 <div id="additional-image-widget" class="position-absolute end-0" style="top: 70px;">
                     <img src="need help .gif" alt="Placeholder Image" class="needHelp">
-                    <button class="btn need-help-button">Need Help</button>
+                    <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
+                        <button class="glass-button action-toggle-button need-help-button">
+                            <i class="bi bi-question-circle"></i> Need Help
+                        </button>
+                        <div id="need-help-dropdown-menu" class="action-dropdown-menu">
+                            <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button">
+                                <i class="bi bi-shop"></i> Store
+                            </a>
+                            <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button">
+                                <i class="bi bi-file-earmark-text"></i> MICS
+                            </a>
+                            <a href="https://www.example.com/gc" target="_blank" rel="noopener noreferrer" class="glass-button">
+                                <i class="bi bi-chat-dots"></i> Guided conversation
+                            </a>
+                            <button class="glass-button connect-us">
+                                <i class="bi bi-telephone-fill"></i> Talk to an Agent (<span class="ai-text">AI</span>)
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
