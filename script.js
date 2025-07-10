@@ -273,7 +273,7 @@ relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department (ge
 monthlyData: [
 { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 46, change: '+1', revenue: 4600, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-{ month: 'M3', seats: 46, change: '0', revenue: 4600, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+{ month: 'M3', seats: 46, change: '0', revenue: 4600, revenueChange: '0', competitorIntegrator: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M4', seats: 47, change: '+1', revenue: 4700, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M5', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M6', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -355,12 +355,12 @@ competitors: ['Zoom', 'Microsoft Teams'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
 monthlyData: [
-{ month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Zoom', zohoConversionOpportunities: 'Medium' },
-{ month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Zoom', zohoConversionOpportunities: 'Medium' },
-{ month: 'M3', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Microsoft Teams', zohoConversionOpportunities: 'Medium' },
-{ month: 'M4', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Microsoft Teams', zohoConversionOpportunities: 'Medium' },
-{ month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-{ month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+{ month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+{ month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+{ month: 'M3', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+{ month: 'M4', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+{ month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+{ month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
 ]
 }
 ];
@@ -560,6 +560,10 @@ const npsScore = 70; // Example NPS score
 function closeAllDropdowns() {
 if (currentOpenDropdown) {
 currentOpenDropdown.classList.remove('show');
+// Remove animation class from buttons when closing
+currentOpenDropdown.querySelectorAll('.glass-button').forEach(button => {
+    button.style.animation = ''; // Reset animation
+});
 currentOpenDropdown = null;
 currentOpenDropdownToggle = null;
 }
@@ -610,6 +614,11 @@ healthScoreValue = document.getElementById('healthScoreValue');
 healthScoreStatus = document.getElementById('healthScoreStatus');
 healthScoreCheck = document.getElementById('healthScoreCheck');
 
+// Modal elements
+// Removed subscriptionChatModalOverlay as it's no longer needed
+subscriptionChatModal = document.getElementById('subscriptionChatModal'); // Direct reference to the modal
+closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
+subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
 
 // Check if all required elements exist (add more checks as needed)
 if (!applicationTableContainer) {
@@ -623,6 +632,11 @@ return false;
 if (!applicationTableHeader) { // Check for thead
 console.error('Application table header (thead) not found!');
 return false;
+}
+// Ensure the chat modal itself is found
+if (!subscriptionChatModal) {
+    console.error('Subscription chat modal element (subscriptionChatModal) not found!');
+    return false;
 }
 return true;
 }
@@ -881,7 +895,7 @@ let displayText = status;
 if (status === 'Active') {
 colorClass = 'status-tag-active'; // Green
 } else if (status === 'Inactive') {
-colorClass = 'status-tag-inactive'; // Blue
+colorClass = 'status-tag-inactive'; // Orange background, red bold font
 } else if (status === 'Renewal risk detected') {
 colorClass = 'status-tag-renewal-risk'; // Red
 displayText = 'Renewal risk'; // Change text
@@ -919,12 +933,38 @@ row.setAttribute('data-app-id', app.id);
 row.className = 'clickable-row';
 
 // Determine competitor display
-let competitorsHtml = ''; // Initialize as empty
+let crossSellCompetitors = [];
+let threatCompetitors = [];
+
+// Hardcoded mapping for demonstration
+const crossSellList = ['Mailchimp', 'Dropbox'];
+const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive'];
+
 if (app.competitors && app.competitors.length > 0) {
-// Generate tags for each competitor
-competitorsHtml = app.competitors.map(comp => `<span class="competitor-tag">${comp}</span>`).join('');
+    app.competitors.forEach(comp => {
+        if (crossSellList.includes(comp)) {
+            crossSellCompetitors.push(comp);
+        } else if (threatList.includes(comp)) {
+            threatCompetitors.push(comp);
+        } else {
+            // Default to threat if not explicitly categorized
+            threatCompetitors.push(comp);
+        }
+    });
+}
+
+let competitorsHtml = '';
+const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
+const threatTagsHtml = threatCompetitors.map(comp => `<span class="competitor-tag threat-tag">${comp}</span>`).join('');
+
+if (crossSellTagsHtml && threatTagsHtml) {
+    competitorsHtml = `${crossSellTagsHtml}<span class="vertical-bar-in-table"></span>${threatTagsHtml}`;
+} else if (crossSellTagsHtml) {
+    competitorsHtml = crossSellTagsHtml;
+} else if (threatTagsHtml) {
+    competitorsHtml = threatTagsHtml;
 } else {
-competitorsHtml = 'None';
+    competitorsHtml = 'None';
 }
 
 // Determine license trend icon and color
@@ -1014,7 +1054,7 @@ appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></
 } else if (app.license.includes('Downgraded')) {
 appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`; // Changed to bi-arrow-down
 } else {
-appStatusArrowHtml = `<i class="bi bi-dash-lg text-muted app-status-arrow"></i>`; // Changed to bi-dash-lg
+appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`; // Changed to bi-arrow-right and text-primary
 }
 // --- END NEW LOGIC ---
 
@@ -1037,7 +1077,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>${app.
 <td>N/A</td> 
 <td>
 <div class="action-dropdown-wrapper">
-    <i class="bi bi-exclamation-triangle text-danger action-toggle-icon"></i>
+    <i class="bi bi-exclamation-triangle text-danger action-toggle-element"></i>
     <div class="action-dropdown-menu">
         <button class="glass-button email-peer">
             <i class="bi bi-envelope-fill"></i> Email to Peer
@@ -1045,20 +1085,20 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>${app.
         <button class="glass-button email-client">
             <i class="bi bi-person-lines-fill"></i> Email to Client
         </button>
-        <button class="glass-button connect-us">
-            <i class="bi bi-telephone-fill"></i> Talk to an Agent (<span class="ai-text">AI</span>)
+        <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
+            <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
         </button>
     </div>
 </div>
 </td>
 `;
 
-// Add click event listener for the action toggle icon
-const actionToggleIcon = row.querySelector('.action-toggle-icon');
+// Add click event listener for the action toggle element (icon)
+const actionToggleElement = row.querySelector('.action-toggle-element');
 const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
 
-if (actionToggleIcon && actionDropdownMenu) {
-actionToggleIcon.addEventListener('click', (event) => {
+if (actionToggleElement && actionDropdownMenu) {
+actionToggleElement.addEventListener('click', (event) => {
 event.stopPropagation(); // Prevent the row's click listener from firing
 
 if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
@@ -1069,7 +1109,7 @@ if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
 actionDropdownMenu.classList.toggle('show');
 if (actionDropdownMenu.classList.contains('show')) {
     currentOpenDropdown = actionDropdownMenu;
-    currentOpenDropdownToggle = actionToggleIcon; // Store the toggle element
+    currentOpenDropdownToggle = actionToggleElement; // Store the toggle element
 } else {
     closeAllDropdowns(); // Close it if it was just toggled off
 }
@@ -1081,6 +1121,15 @@ button.addEventListener('click', (event) => {
     event.stopPropagation(); // Prevent document click from immediately closing it again
     // Perform button action here (e.g., alert, console.log)
     console.log(`${button.textContent.trim()} clicked!`);
+    
+    // Check if it's the "Talk to an Agent (AI)" button
+    if (button.classList.contains('connect-us')) {
+        const subscriptionId = button.dataset.subscriptionId;
+        const subscriptionName = button.dataset.subscriptionName;
+        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target); // Pass the clicked button element
+    }
+
     closeAllDropdowns(); // Close dropdown after button click
 });
 });
@@ -1390,15 +1439,15 @@ expandedRow.innerHTML = `
                             <i class="bi bi-gear-fill"></i> More Actions
                         </button>
                         <div class="action-dropdown-menu">
-                            <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button">
+                            <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
                                 <i class="bi bi-shop"></i> Store
                             </a>
-                            <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button">
+                            <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button mics-link">
                                 <i class="bi bi-file-earmark-text"></i> MICS
                             </a>
-                            <a href="https://www.example.com/gc" target="_blank" rel="noopener noreferrer" class="glass-button">
-                                <i class="bi bi-chat-dots"></i> Guided conversation
-                            </a>
+                            <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
+                                <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1440,6 +1489,15 @@ if (expandedRowDropdownWrapper) {
             button.addEventListener('click', (event) => {
                 event.stopPropagation();
                 console.log(`${button.textContent.trim()} clicked from expanded row!`);
+                
+                // Check if it's the "Talk to an Agent (AI)" button
+                if (button.classList.contains('connect-us')) {
+                    const subscriptionId = button.dataset.subscriptionId;
+                    const subscriptionName = button.dataset.subscriptionName;
+                    console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                    openSubscriptionChatModal(subscriptionId, subscriptionName, event.target); // Pass the clicked button element
+                }
+
                 closeAllDropdowns();
             });
         });
@@ -1601,6 +1659,7 @@ ticketDetailsTableBody.appendChild(row);
 function switchTab(selectedCategory, dataToRender = null) {
 // Close any open dropdown when switching tabs
 closeAllDropdowns();
+closeSubscriptionChatModal(); // Close chat modal when switching tabs
 
 // Remove 'active' class from the currently active button
 const currentActiveBtn = document.querySelector('.btns.active');
@@ -1785,6 +1844,56 @@ console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`
 }
 
 
+// NEW: Modal functions
+let subscriptionChatModal = null; // Changed from subscriptionChatModalOverlay
+let closeSubscriptionChatModalBtn = null;
+let subscriptionChatIframe = null;
+
+/**
+ * Opens the subscription chat modal, positioning it relative to the clicked row.
+ * @param {number} subscriptionId The ID of the subscription.
+ * @param {string} subscriptionName The name of the subscription.
+ * @param {HTMLElement} clickedButton The button element that was clicked to open the modal.
+ */
+function openSubscriptionChatModal(subscriptionId, subscriptionName, clickedButton) {
+    if (!subscriptionChatModal || !subscriptionChatIframe || !clickedButton) {
+        console.error('Chat modal elements or clicked button not found!');
+        return;
+    }
+
+    // Find the parent row (<tr>) of the clicked button
+    const row = clickedButton.closest('tr');
+    if (!row) {
+        console.error('Could not find parent row for clicked button.');
+        return;
+    }
+
+    // Get the bounding rectangle of the row
+    const rowRect = row.getBoundingClientRect();
+
+    // Calculate the desired top position for the modal
+    // This positions the modal 10px below the clicked row, relative to the document's top
+    const modalTop = window.scrollY + rowRect.bottom + 10;
+
+    // Set the iframe source with the subscription ID as a query parameter
+    subscriptionChatIframe.src = `chat_iframe_content.html?subscriptionId=${subscriptionId}`;
+    
+    // Apply the calculated top position and a fixed right position
+    subscriptionChatModal.style.top = `${modalTop}px`;
+    subscriptionChatModal.style.right = '20px'; // Keep it 20px from the right edge of the viewport
+
+    // Show the modal
+    subscriptionChatModal.classList.add('show');
+}
+
+function closeSubscriptionChatModal() {
+    if (subscriptionChatModal) {
+        subscriptionChatModal.classList.remove('show');
+        subscriptionChatIframe.src = ''; // Clear iframe src to stop any content/audio
+    }
+}
+
+
 // DOMContentLoaded event listener to initialize the page
 document.addEventListener('DOMContentLoaded', () => {
 console.log('DOM loaded, initializing...');
@@ -1917,9 +2026,16 @@ updateCounts(); // Call updateCounts initially to set all button counts
 
 // Add a global click listener to close dropdowns when clicking outside
 document.addEventListener('click', (event) => {
-// If a dropdown is open and the click is not inside it or its toggle button
-if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-icon')) {
+// If a dropdown is open and the click is not inside it or its toggle element
+if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
 closeAllDropdowns();
+}
+// If the chat modal is open and the click is outside the modal content
+// Note: The chat modal is now absolutely positioned, so it's part of the document flow.
+// We need to check if the click is outside the modal itself.
+if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
+    !event.target.closest('.subscription-chat-modal')) {
+    closeSubscriptionChatModal();
 }
 });
 
@@ -1952,14 +2068,14 @@ if (clickableEyeIcon && ratingDetailsPopup) {
     });
 }
 
-// NEW: Need Help button dropdown functionality
+// NEW: Need Help dropdown functionality
 const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
 if (needHelpDropdownWrapper) {
-    const needHelpToggleButton = needHelpDropdownWrapper.querySelector('.action-toggle-button');
+    const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element'); // Changed to action-toggle-element
     const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
 
-    if (needHelpToggleButton && needHelpDropdownMenu) {
-        needHelpToggleButton.addEventListener('click', (event) => {
+    if (needHelpToggleElement && needHelpDropdownMenu) {
+        needHelpToggleElement.addEventListener('click', (event) => {
             event.stopPropagation(); // Prevent document click from immediately closing
 
             if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
@@ -1967,10 +2083,21 @@ if (needHelpDropdownWrapper) {
             }
 
             needHelpDropdownMenu.classList.toggle('show');
+            // Toggle the 'show' class on the toggle element itself for arrow rotation
+            needHelpToggleElement.classList.toggle('show-arrow');
+
             if (needHelpDropdownMenu.classList.contains('show')) {
+                // When showing, apply staggered animation
+                needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                    button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`; // Increased delay
+                });
                 currentOpenDropdown = needHelpDropdownMenu;
-                currentOpenDropdownToggle = needHelpToggleButton;
+                currentOpenDropdownToggle = needHelpToggleElement; // Store the toggle element
             } else {
+                // When hiding, reset animation
+                needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                    button.style.animation = ''; // Reset animation
+                });
                 closeAllDropdowns();
             }
         });
@@ -1984,4 +2111,10 @@ if (needHelpDropdownWrapper) {
         });
     }
 }
+
+// Event listener for the close button on the chat modal
+if (closeSubscriptionChatModalBtn) {
+    closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
+}
+
 });
