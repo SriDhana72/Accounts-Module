@@ -1,6 +1,6 @@
 /* General Body and Container Styles */
 body {
-font-family: 'Inter', sans-serif; /* Changed font to Inter */
+font-family:'puvi','Inter', sans-serif; /* Changed font to Inter */
 background-color: #f8f9fa; /* Light background for the whole page */
 color: #333;
 }
