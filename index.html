@@ -14,7 +14,7 @@
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <div class="account-info-content">
                     <h5 class="fw-bold mb-1 text-primary d-inline-block">Global Innovations Inc.</h5>
-                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter</span> 
+                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter (Owner)</span>
                     <p class="text-muted small mb-2">
                         <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
                     </p>
@@ -34,7 +34,7 @@
                             <i class="bi bi-star-fill star-green-gradient"></i>
                             <i class="bi bi-star-fill star-purple-gradient"></i>
                         </span>
-                        <span class="ms-2 text-muted small">5/12/2025</span>
+                        <span class="ms-2 text-muted small">5/12/2022</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
                             <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
                             <div id="ratingDetailsPopup" class="rating-details-popup">
@@ -86,33 +86,30 @@
                     </div>
                     <!-- Circle with number -->
                     <div id="healthScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center health-score-green-gradient">
-                        <span id="healthScoreValue" class="fw-bold text-white fs-4">98</span>
+                        <span id="healthScoreValue" class="fw-bold fs-4">98</span>
                     </div>
                 </div>
 
-                <!-- NEW DIV FOR IMAGE BELOW HEALTH SCORE WIDGET -->
-                <div id="additional-image-widget" class="position-absolute end-0" style="top: 70px;">
-                    <img src="images/Helppp.mp4.gif" alt="Placeholder Image" class="needHelp">
-                    <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
-                        <!-- Changed from button to span with arrow icon and text -->
-                        <span class="action-toggle-element">
-                            <i class="bi bi-chevron-down"></i>
+                <!-- NEW: Need Help button moved inside this box -->
+                <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
+                    <!-- Changed to a button with icon and text -->
+                    <button class="action-toggle-element need-help-fab">
+                        <i class="bi bi-question-circle-fill"></i>
                         <span class="need-help-toggle-text">Need Help</span>
-                        </span>
-                        <div id="need-help-dropdown-menu" class="action-dropdown-menu">
-                            <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
-                                <i class="bi bi-shop"></i> Store
-                            </a>
-                            <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button mics-link">
-                                <i class="bi bi-file-earmark-text"></i> MICS
-                            </a>
-                            <button class="glass-button gc-link">
-                                <i class="bi bi-chat-dots"></i> Guided conversation
-                            </button>
-                            <button class="glass-button connect-us">
-                                <i class="bi bi-chat-text-fill"></i> Chat with an Agent (<span class="ai-text">AI</span>)
-                            </button>
-                        </div>
+                    </button>
+                    <div id="need-help-dropdown-menu" class="action-dropdown-menu">
+                        <button class="glass-button email-client">
+                            <i class="bi bi-person-lines-fill"></i> Email to Client
+                        </button>
+                        <button class="glass-button email-peer">
+                            <i class="bi bi-envelope-fill"></i> Email to Peer
+                        </button>
+                        <button class="glass-button gc-link">
+                            <i class="bi bi-chat-dots"></i> Guided conversation
+                        </button>
+                        <button class="glass-button connect-us">
+                            <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
+                        </button>
                     </div>
                 </div>
 
@@ -228,7 +225,7 @@
     <!-- Subscription Chat Modal Structure (now directly in body, absolutely positioned) -->
     <div id="subscriptionChatModal" class="subscription-chat-modal">
         <div class="subscription-chat-modal-header">
-            <span>Please post your query</span>
+            <span>What’s Going On?</span>
             <button class="close-button" id="closeSubscriptionChatModal">&times;</button>
         </div>
         <div class="subscription-chat-modal-body">
