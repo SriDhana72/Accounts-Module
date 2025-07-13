@@ -364,6 +364,69 @@ monthlyData: [
 { month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
 { month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
 ]
+},
+{
+    id: 18,
+    application: 'Sign', // New Zoho app
+    category: 'Productivity',
+    usage: 'High',
+    seats: 50,
+    license: 'Upgraded in M6',
+    paymentFailureCount: 0,
+    pauseScheduledCount: 0,
+    competitors: [],
+    details: [],
+    relevantDepartmentId: 'dept-it-support',
+    monthlyData: [
+        { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M2', seats: 46, change: '+1', revenue: 460, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M3', seats: 47, change: '+1', revenue: 470, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M4', seats: 48, change: '+1', revenue: 480, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M5', seats: 49, change: '+1', revenue: 490, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M6', seats: 50, change: '+1', revenue: 500, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    ]
+},
+{
+    id: 19,
+    application: 'Meeting', // New Zoho app
+    category: 'Communication',
+    usage: 'Medium',
+    seats: 80,
+    license: 'No changes',
+    paymentFailureCount: 0,
+    pauseScheduledCount: 0,
+    competitors: ['Google Meet'],
+    details: [],
+    relevantDepartmentId: 'dept-it-support',
+    monthlyData: [
+        { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+        { month: 'M2', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+        { month: 'M3', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+        { month: 'M4', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+        { month: 'M5', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+        { month: 'M6', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    ]
+},
+{
+    id: 20,
+    application: 'Mail Suite', // New Zoho app
+    category: 'Communication',
+    usage: 'High',
+    seats: 150,
+    license: 'Upgraded in M6',
+    paymentFailureCount: 0,
+    pauseScheduledCount: 0,
+    competitors: ['Outlook', 'Gmail'],
+    details: [],
+    relevantDepartmentId: 'dept-it-support',
+    monthlyData: [
+        { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
+        { month: 'M2', seats: 142, change: '+2', revenue: 1420, revenueChange: '+20', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
+        { month: 'M3', seats: 144, change: '+2', revenue: 1440, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
+        { month: 'M4', seats: 146, change: '+2', revenue: 1460, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
+        { month: 'M5', seats: 148, change: '+2', revenue: 1480, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+        { month: 'M6', seats: 150, change: '+2', revenue: 1500, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    ]
 }
 ];
 
@@ -496,7 +559,7 @@ executiveSummary: "No open tickets. All HR-related requests and queries have bee
 tickets: [
 { id: "TKT-CLOSED-HR-001", summary: "Onboarding process completed for new employee.", url: "#", status: "Closed" },
 { id: "TKT-CLOSED-HR-002", summary: "Payroll discrepancy resolved for John Doe.", url: "#", status: "Closed" },
-{ id: "TKT-CLOSED-HR-003", summary: "Policy clarification provided for leave request.", url: "#", status: "Closed" },
+{ id: "TKT-CLOSED-HR-003", summary: "Policy clarification provided for leave request.", url: "#", "status": "Closed" },
 { id: "TKT-CLOSED-HR-004", summary: "Benefits enrollment assistance provided.", url: "#", status: "Closed" },
 { id: "TKT-CLOSED-HR-005", summary: "Performance review scheduling completed.", url: "#", status: "Closed" }
 ]
@@ -555,10 +618,15 @@ let downgradeRisksCountElement = null;
 let currentOpenDropdown = null; 
 let currentOpenDropdownToggle = null;
 
+// Global variable to track the currently open threat popup and its toggle element
+let currentOpenThreatPopup = null;
+let currentOpenThreatPopupToggle = null;
+
+
 // Global NPS Score (for demonstration, you would fetch this from CRM)
 const npsScore = 70; // Example NPS score
 
-// Function to close all dropdowns
+// Function to close all dropdowns (action menus)
 function closeAllDropdowns() {
 if (currentOpenDropdown) {
 currentOpenDropdown.classList.remove('show');
@@ -574,6 +642,16 @@ currentOpenDropdown = null;
 currentOpenDropdownToggle = null;
 }
 }
+
+// Function to close all threat popups
+function closeAllThreatPopups() {
+    if (currentOpenThreatPopup) {
+        currentOpenThreatPopup.classList.remove('show');
+        currentOpenThreatPopup = null;
+        currentOpenThreatPopupToggle = null;
+    }
+}
+
 
 // Function to initialize DOM elements
 function initializeDOMElements() {
@@ -959,19 +1037,33 @@ if (app.competitors && app.competitors.length > 0) {
     });
 }
 
-let competitorsHtml = '';
 const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
-const threatTagsHtml = threatCompetitors.map(comp => `<span class="competitor-tag threat-tag">${comp}</span>`).join('');
 
-if (crossSellTagsHtml && threatTagsHtml) {
-    competitorsHtml = `${crossSellTagsHtml}<span class="vertical-bar-in-table"></span>${threatTagsHtml}`;
-} else if (crossSellTagsHtml) {
-    competitorsHtml = crossSellTagsHtml;
-} else if (threatTagsHtml) {
-    competitorsHtml = threatTagsHtml;
+// --- NEW THREAT DISPLAY LOGIC ---
+let threatDisplayHtml = '';
+let threatPopupHtml = '';
+if (threatCompetitors.length > 0) {
+    // Always display the first threat
+    threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
+    
+    // If there are more, add the +N indicator and prepare the popup
+    if (threatCompetitors.length > 1) {
+        const remainingThreatsCount = threatCompetitors.length - 1;
+        threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
+
+        // Prepare popup content
+        threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
+        threatPopupHtml = `
+            <div class="threat-popup-container">
+                ${threatPopupHtml}
+            </div>
+        `;
+    }
 } else {
-    competitorsHtml = 'None';
+    threatDisplayHtml = 'None';
 }
+// --- END NEW THREAT DISPLAY LOGIC ---
+
 
 // Determine license trend icon and color
 let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`; // Default: no change
@@ -1072,14 +1164,27 @@ const appStatus = app.status; // Use the pre-assigned status
 row.innerHTML = `
 <td><span class="expand-toggle-arrow">▼</span></td> 
 <td style="min-width: 200px;">
-${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>${app.category}
+${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span class="application-category">${app.category}</span>
 </td>
 <td>${usageHtml}</td> 
 <td>${arrRevenueCellContent}</td> <!-- Updated to include percentage -->
 <td>${arrTrendIconHtml}</td> <!-- Only icon here -->
-<td>${app.seats}</td>
+<td>${app.seats}</td> <!-- Display seats here -->
 <td>${licenseTrendIconHtml} ${app.license}</td>
-<td>${competitorsHtml}</td>
+<td class="text-center">
+    <div class="competitors-flex-container">
+        <div class="competitors-cross-sell-section">
+            ${crossSellTagsHtml || 'None'}
+        </div>
+        <span class="vertical-bar-in-table"></span>
+        <div class="competitors-threat-section">
+            <div class="threat-popup-wrapper">
+                ${threatDisplayHtml}
+                ${threatPopupHtml}
+            </div>
+        </div>
+    </div>
+</td>
 <td>N/A</td> 
 <td>
 <div class="action-dropdown-wrapper">
@@ -1111,6 +1216,7 @@ if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
     // If another dropdown is open, close it first
     closeAllDropdowns();
 }
+closeAllThreatPopups(); // Close any open threat popups
 
 actionDropdownMenu.classList.toggle('show');
 if (actionDropdownMenu.classList.contains('show')) {
@@ -1141,13 +1247,42 @@ button.addEventListener('click', (event) => {
 });
 }
 
+// --- NEW THREAT POPUP EVENT LISTENERS ---
+const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
+if (threatPopupWrapper) {
+    const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
+    const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
+
+    if (threatTrigger && threatPopup) {
+        threatTrigger.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent row click and other clicks
+
+            if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
+                closeAllThreatPopups(); // Close other threat popups
+            }
+            closeAllDropdowns(); // Close any open action dropdowns
+
+            threatPopup.classList.toggle('show');
+            if (threatPopup.classList.contains('show')) {
+                currentOpenThreatPopup = threatPopup;
+                currentOpenThreatPopupToggle = threatTrigger;
+            } else {
+                closeAllThreatPopups();
+            }
+        });
+    }
+}
+// --- END NEW THREAT POPUP EVENT LISTENERS ---
+
+
 // Add click event listener for row expansion/collapse
 row.addEventListener('click', (event) => {
-// Only proceed with row expansion if the click was not on the dropdown wrapper
-if (event.target.closest('.action-dropdown-wrapper')) {
-return; // Do nothing if click is inside the action dropdown area
+// Only proceed with row expansion if the click was not on the dropdown wrapper or threat popup wrapper
+if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
+return; // Do nothing if click is inside the action dropdown or threat popup area
 }
 closeAllDropdowns(); // Close any open dropdown when clicking on a row (outside action area)
+closeAllThreatPopups(); // Close any open threat popups
 
 
 const appId = app.id;
@@ -1481,6 +1616,7 @@ if (expandedRowDropdownWrapper) {
             if (currentOpenDropdown && currentOpenDropdown !== expandedRowDropdownMenu) {
                 closeAllDropdowns();
             }
+            closeAllThreatPopups(); // Close any open threat popups
 
             expandedRowDropdownMenu.classList.toggle('show');
             if (expandedRowDropdownMenu.classList.contains('show')) {
@@ -1665,6 +1801,7 @@ ticketDetailsTableBody.appendChild(row);
 function switchTab(selectedCategory, dataToRender = null) {
 // Close any open dropdown when switching tabs
 closeAllDropdowns();
+closeAllThreatPopups(); // Close any open threat popups
 closeSubscriptionChatModal(); // Close chat modal when switching tabs
 
 // Remove 'active' class from the currently active button
@@ -2030,11 +2167,15 @@ ticketDetailsTableContainer.style.display = 'none';
 // --- NEW: Call updateCounts() after initial rendering and filterDataArrays()
 updateCounts(); // Call updateCounts initially to set all button counts
 
-// Add a global click listener to close dropdowns when clicking outside
+// Add a global click listener to close dropdowns and popups when clicking outside
 document.addEventListener('click', (event) => {
 // If a dropdown is open and the click is not inside it or its toggle element
 if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
 closeAllDropdowns();
+}
+// If a threat popup is open and the click is not inside it or its trigger
+if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
+    closeAllThreatPopups();
 }
 // If the chat modal is open and the click is outside the modal content
 // Note: The chat modal is now absolutely positioned, so it's part of the document flow.
@@ -2087,6 +2228,7 @@ if (needHelpDropdownWrapper) {
             if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
                 closeAllDropdowns();
             }
+            closeAllThreatPopups(); // Close any open threat popups
 
             needHelpDropdownMenu.classList.toggle('show');
             // Toggle the 'show' class on the toggle element itself for arrow rotation

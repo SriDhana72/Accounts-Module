@@ -34,7 +34,7 @@
                             <i class="bi bi-star-fill star-green-gradient"></i>
                             <i class="bi bi-star-fill star-purple-gradient"></i>
                         </span>
-                        <span class="ms-2 text-muted small">5/12/2022</span>
+                        <span class="ms-2 text-muted small">7/14/2025</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
                             <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
                             <div id="ratingDetailsPopup" class="rating-details-popup">
@@ -189,14 +189,17 @@
             <table class="table" id="applicationTable">
                 <thead>
                     <tr>
-                        <th style="width: 30px;"></th>
+                        <th></th> <!-- For expand arrow -->
                         <th style="min-width: 200px;">Applications</th>
                         <th>Usage</th>
                         <th>ARR</th>
                         <th>ARR Trend</th>
-                        <th>Seats</th>
+                        <th>License</th> <!-- Renamed from Seats -->
                         <th>License Trend</th>
-                        <th>Competitors<br><small><span style="color: #28a745;">Cross-sell</span> | <span style="color: #dc3545;">Threat</span></small></th>
+                        <th class="text-center">
+                            Competitors<br>
+                            <small><span class="text-success">Cross-sell</span> | <span class="text-danger">Threat</span></small>
+                        </th>
                         <th>Zoho Options</th>
                         <th>Actions</th>
                     </tr>
@@ -222,6 +225,7 @@
             </table>
         </div>
     </div>
+
     <!-- Subscription Chat Modal Structure (now directly in body, absolutely positioned) -->
     <div id="subscriptionChatModal" class="subscription-chat-modal">
         <div class="subscription-chat-modal-header">

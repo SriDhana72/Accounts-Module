@@ -1,6 +1,6 @@
 /* General Body and Container Styles */
 body {
-font-family:'puvi','Inter', sans-serif; /* Changed font to Inter */
+font-family: 'Inter', sans-serif; /* Changed font to Inter */
 background-color: #f8f9fa; /* Light background for the whole page */
 color: #333;
 }
@@ -1033,7 +1033,7 @@ align-items: center;
 background-color: #f5f5f5; /* Faded grey background */
 padding: 8px 12px;
 margin-bottom: 6px;
-border-radius: 4px;
+border-radius: 18px; /* Increased radius from 12px to 18px */
 border: 1px solid #e0e2e5;
 font-size: 0.9em;
 color: #495057;
@@ -1084,8 +1084,8 @@ text-transform: capitalize;
 .tag-cancel-threat-churn-threat { background: linear: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; } /* Red */
 .tag-competitor-switch { background: linear: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
 .tag-product-regret { background: linear: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
-.tag-service-outage-emergency { background: linear: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
-.tag-security-data-breach { background: linear: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
+.tag-service-outage-emergency { background: linear: linear: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
+.tag-security-data-breach { background: linear: linear: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
 .tag-evaluating-alternatives { background: linear: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
 
 
@@ -1444,14 +1444,16 @@ margin-left: 0;
 }
 
 /* Ensure the td aligns content to center */
-#applicationTable tbody tr td:nth-child(8) { /* Targeting Competitors column specifically */
+/* Removed specific td alignment for competitor column as it's now two columns */
+/* #applicationTable tbody tr td:nth-child(8) { 
     text-align: center;
-}
+} */
 
 /* Also adjust the header to center */
-#applicationTable thead th:nth-child(8) { /* Targeting Competitors column header */
+/* Removed specific th alignment for competitor column as it's now two sub-columns */
+/* #applicationTable thead th:nth-child(8) { 
     text-align: center;
-}
+} */
 
 /* NEW: Style for individual competitor tags in table rows */
 .competitor-tag {
@@ -1459,7 +1461,7 @@ margin-left: 0;
     padding: 3px 8px;
     border-radius: 15px; /* Pill shape */
     font-size: 0.85em;
-    margin: 2px; /* Space between tags */
+    margin: 1px; /* Reduced space between tags */
     white-space: nowrap;
 }
 
@@ -1480,9 +1482,19 @@ margin-left: 0;
     width: 1px;
     background-color: #ccc; /* Light grey for the bar */
     height: 1.2em; /* Height similar to text line height */
-    margin: 0 8px; /* Space around the bar */
+    margin: 0; /* Removed margin */
     vertical-align: middle; /* Align with text */
 }
+
+/* Add padding to the sections adjacent to the vertical bar */
+.competitors-cross-sell-section {
+    padding-right: 2px; /* Small padding to push content away from the bar */
+}
+
+.competitors-threat-section {
+    padding-left: 2px; /* Small padding to push content away from the bar */
+}
+
 
 /* Style for application status arrows */
 .app-status-arrow {
@@ -1569,9 +1581,9 @@ margin-left: 0;
     left: 100%; /* Position to the right of the parent */
     top: 50%; /* Align vertically with the middle of the parent */
     transform: translateY(-50%); /* Adjust for vertical centering */
-    background-color: #f0f0f0; /* Grey background */
+    background-color: rgba(255, 255, 255, 0.9); /* Faded white background */
     border: 1px solid #e9ecef;
-    border-radius: 8px;
+    border-radius: 50px; /* Changed to pill shape */
     padding: 10px; /* Reduced padding */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     z-index: 100; /* Ensure it appears on top of other content */
@@ -1579,7 +1591,12 @@ margin-left: 0;
     width: 180px; /* Fixed smaller width */
     max-width: 180px; /* Max width to prevent it from getting too wide */
     white-space: normal; /* Allow text wrapping inside popup */
+    /* Remove pseudo-elements for caret */
+    &::before, &::after {
+        content: none;
+    }
 }
+
 
 .rating-details-popup .d-flex {
     align-items: center; /* Vertically align items in the center */
@@ -1737,4 +1754,106 @@ margin-left: 0;
     height: 100%;
     border: none; /* Remove iframe default border */
     display: block; /* Ensure no extra space around iframe */
+}
+
+/* NEW CSS for Threat Pop-up */
+.threat-popup-wrapper {
+    position: relative; /* For positioning the popup */
+    /* display: inline-block; Removed this as it will be handled by flex container */
+}
+
+.threat-tag-display {
+    font-size: 0.7em; /* Very small font size for the displayed tag */
+    padding: 3px 6px;
+    border-radius: 15px;
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red */
+    white-space: nowrap;
+    display: inline-block; /* Ensure it respects padding/margin */
+    vertical-align: middle;
+}
+
+.threat-more-indicator {
+    font-size: 0.7em; /* Very small font size for +N */
+    color: #007bff; /* Blue to indicate clickability */
+    cursor: pointer;
+    margin-left: 4px; /* Small space from the tag */
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.threat-popup-container {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px; /* Rounded corners for the popup */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 8px 12px; /* Padding inside the popup */
+    z-index: 100; /* Ensure it's on top */
+    display: none; /* Hidden by default */
+    top: 50%; /* Center vertically relative to the trigger */
+    left: calc(100% + 5px); /* Position to the right of the trigger with a small gap */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    min-width: 120px; /* Minimum width for readability */
+    white-space: nowrap; /* Prevent wrapping of individual items */
+}
+
+.threat-popup-container.show {
+    display: block;
+}
+
+.threat-popup-item {
+    font-size: 0.7em; /* Small font size for items in popup */
+    color: #721c24; /* Dark red for threat items */
+    display: block; /* Each item on its own line */
+    margin-bottom: 4px; /* Space between items */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.threat-popup-item:last-child {
+    margin-bottom: 0;
+}
+
+/* NEW CSS for Competitors Column Alignment */
+.competitors-flex-container {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Distribute space between items */
+    width: 100%; /* Take full width of the cell */
+}
+
+.competitors-cross-sell-section {
+    flex-grow: 1; /* Allow to grow and take available space */
+    text-align: left; /* Align content to the left */
+    display: flex; /* Use flex for tags */
+    flex-wrap: wrap; /* Allow tags to wrap */
+    gap: 2px; /* Small gap between tags */
+    align-items: center; /* Vertically align tags */
+    justify-content: flex-start; /* Align tags to the start */
+    min-width: 50px; /* Ensure it has some width */
+}
+
+.competitors-threat-section {
+    flex-grow: 1; /* Allow to grow and take available space */
+    text-align: right; /* Align content to the right */
+    display: flex; /* Use flex for tags and popup trigger */
+    flex-wrap: wrap; /* Allow tags to wrap */
+    gap: 2px; /* Small gap between tags */
+    align-items: center; /* Vertically align tags */
+    justify-content: flex-end; /* Align tags to the end */
+    min-width: 50px; /* Ensure it has some width */
+}
+
+/* Ensure the vertical bar stays in the middle */
+.vertical-bar-in-table {
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+/* NEW CSS for Application Category Font Size */
+.application-category {
+    font-size: 0.8em; /* Smaller font size */
+    color: #6c757d; /* Muted color */
+    display: block; /* Ensure it's on a new line */
+    margin-top: 2px; /* Small space from app name */
 }
