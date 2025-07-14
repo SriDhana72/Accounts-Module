@@ -593,6 +593,13 @@ let criticalIssuesCountSpan = null;
 let warningSignsCountSpan = null;
 let deskTicketsCountSpan = null;
 
+// NEW ARR elements
+let arrLessThan5kCountSpan = null;
+let arrGreaterThan5kCountSpan = null;
+let arrLessThan5kSegment = null;
+let arrGreaterThan5kSegment = null;
+
+
 // Initialize state variables
 let expandedRowId = null;
 let expandedTicketRowId = null; // New state for expanded ticket details row
@@ -602,6 +609,7 @@ let activeSection = 'all-apps'; // Keeps track of which tab is currently active
 let criticalIssuesCard = null;
 let warningSignsCard = null;
 competitorExposureCard = null;
+downgradeRisksCard = null;
 downgradeRisksCard = null;
 deskTicketsCard = null;
 // Health Score elements - Declare globally
@@ -672,6 +680,13 @@ anomaliesCountSpan = document.getElementById('anomaliesCount');
 criticalIssuesCountSpan = document.getElementById('criticalIssuesCount');
 warningSignsCountSpan = document.getElementById('warningSignsCount');
 
+// NEW ARR elements
+arrLessThan5kCountSpan = document.getElementById('arrLessThan5kCount');
+arrGreaterThan5kCountSpan = document.getElementById('arrGreaterThan5kCount');
+arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
+arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
+
+
 // Card elements for click handling
 criticalIssuesCard = document.getElementById('criticalIssuesCard');
 warningSignsCard = document.getElementById('warningSignsCard');
@@ -735,6 +750,19 @@ let anomaliesFilteredData = []; // Combined critical and warning
 let anomaliesCriticalOnlyData = []; // For Critical Issues card click
 let anomaliesWarningOnlyData = []; // For Warning Signs card click
 
+// NEW: ARR filtered data arrays
+let arrLessThan5kFilteredData = [];
+let arrGreaterThan5kFilteredData = [];
+
+
+// Function to calculate total ARR for an application
+function calculateTotalArr(app) {
+    // Assuming the last month's revenue is the current ARR
+    // Or, if a sum is needed, iterate through monthlyData and sum up.
+    // For this context, "Total ARR" seems to refer to the current ARR.
+    const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
+    return currentMonthData ? currentMonthData.revenue : 0;
+}
 
 // Function to filter data arrays - UPDATED LOGIC HERE
 function filterDataArrays() {
@@ -914,6 +942,10 @@ const anomaliesSet = new Set();
 anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
 anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
 anomaliesFilteredData = Array.from(anomaliesSet);
+
+// NEW: Filter for ARR categories
+arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
+arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
 }
 
 
@@ -970,6 +1002,10 @@ if (closedTicketsCountSpan) {
 closedTicketsCountSpan.style.minWidth = '50px';
 closedTicketsCountSpan.style.textAlign = 'center';
 }
+
+// NEW: Update ARR capsule counts
+if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = arrLessThan5kFilteredData.length;
+if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = arrGreaterThan5kFilteredData.length;
 }
 
 // Function to generate the status tag HTML with correct styling
@@ -1107,8 +1143,8 @@ let arrPercentageClass = 'text-muted';
 
 if (app.monthlyData.length >= 2) { // Need at least two months to calculate percentage change
 const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
-const previousArr = previousMonthData.revenue;
 const currentArrValue = currentMonthData.revenue;
+const previousArr = previousMonthData.revenue;
 
 if (previousArr !== 0) { // Avoid division by zero
 const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
@@ -1805,10 +1841,9 @@ closeAllThreatPopups(); // Close any open threat popups
 closeSubscriptionChatModal(); // Close chat modal when switching tabs
 
 // Remove 'active' class from the currently active button
-const currentActiveBtn = document.querySelector('.btns.active');
-if (currentActiveBtn) {
-currentActiveBtn.classList.remove('active');
-}
+clearAllButtonHighlights();
+clearAllArrSegmentHighlights();
+
 
 // Explicitly hide BOTH table containers before showing the selected one
 // Aggressively hide applicationTableContainer and clear its content
@@ -1911,6 +1946,33 @@ renderTicketDetailsTable(); // Render content
 activeSection = 'ticket-details';
 updateCounts(); // <<< IMPORTANT: Added here
 break;
+// NEW ARR Cases
+case 'arr-less-than-5k':
+    if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
+    if (applicationTableContainer) {
+        applicationTableContainer.classList.remove('d-none');
+        applicationTableContainer.style.display = 'block';
+        if (applicationTableHeader) {
+            applicationTableHeader.style.display = 'table-header-group';
+        }
+    }
+    renderApplicationTable(arrLessThan5kFilteredData);
+    activeSection = 'arr-less-than-5k';
+    updateCounts();
+    break;
+case 'arr-greater-than-5k':
+    if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
+    if (applicationTableContainer) {
+        applicationTableContainer.classList.remove('d-none');
+        applicationTableContainer.style.display = 'block';
+        if (applicationTableHeader) {
+            applicationTableHeader.style.display = 'table-header-group';
+        }
+    }
+    renderApplicationTable(arrGreaterThan5kFilteredData);
+    activeSection = 'arr-greater-than-5k';
+    updateCounts();
+    break;
 default:
 console.warn('Unknown category selected:', selectedCategory);
 if (allAppsBtn) allAppsBtn.classList.add('active');
@@ -1927,6 +1989,18 @@ updateCounts(); // <<< IMPORTANT: Added here
 break;
 }
 // <<< IMPORTANT: The 'updateCounts();' call from the very end of switchTab has been REMOVED.
+}
+
+// NEW: Function to clear all main filter button highlights
+function clearAllButtonHighlights() {
+    const allBtns = document.querySelectorAll('.btns');
+    allBtns.forEach(btn => btn.classList.remove('active'));
+}
+
+// NEW: Function to clear all ARR segment highlights
+function clearAllArrSegmentHighlights() {
+    if (arrLessThan5kSegment) arrLessThan5kSegment.classList.remove('active-arr-filter');
+    if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.remove('active-arr-filter');
 }
 
 
@@ -2112,6 +2186,21 @@ if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
 switchTab('ticket-details');
 highlightActiveCard(null); // Clear card highlight
 });
+
+// NEW: Add event listeners for ARR segments
+if (arrLessThan5kSegment) {
+    arrLessThan5kSegment.addEventListener('click', () => {
+        switchTab('arr-less-than-5k');
+        highlightActiveCard(null); // Clear card highlight
+    });
+}
+if (arrGreaterThan5kSegment) {
+    arrGreaterThan5kSegment.addEventListener('click', () => {
+        switchTab('arr-greater-than-5k');
+        highlightActiveCard(null); // Clear card highlight
+    });
+}
+
 
 // Add event listeners for the top cards - UPDATED TO CALL highlightActiveCard
 if (criticalIssuesCard) {

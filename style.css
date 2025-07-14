@@ -1104,22 +1104,6 @@ tr.expanded .ticket-expand-toggle-arrow {
 transform: rotate(180deg);
 }
 
-/* Responsive adjustments for ticket dropdown content */
-@media (max-width: 768px) {
-.ticket-item {
-flex-direction: column; /* Stack summary and tags on small screens */
-align-items: flex-start;
-}
-.ticket-summary {
-margin-right: 0;
-margin-bottom: 5px; /* Space between summary and tags */
-}
-.ticket-tags {
-width: 100%; /* Take full width */
-justify-content: flex-start; /* Align tags to left */
-margin-left: 0;
-}
-}
 /* Applying background directly to the image itself might be covered by the image pixels if the image is opaque. */
 /* REMOVED .needHelp styles */
 
@@ -1556,7 +1540,7 @@ margin-left: 0;
 .expanded-content .action-dropdown-wrapper {
     margin-left: 10px; /* Add some space to the left of the button */
     display: inline-flex; /* Ensure it wraps content properly */
-    align-items: center; /* Vertically align items */
+    align-items: center;
     overflow: visible; /* Crucial for dropdown not to be clipped */
 }
 
@@ -1856,4 +1840,91 @@ margin-left: 0;
     color: #6c757d; /* Muted color */
     display: block; /* Ensure it's on a new line */
     margin-top: 2px; /* Small space from app name */
+}
+
+/* NEW CSS for ARR Capsule */
+.arr-capsule-container {
+    background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9));
+    border: 1px solid #e9ecef;
+    border-radius: 25px; /* Pill shape */
+    padding: 3px; /* Compact padding, reduced from 5px */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    flex-shrink: 0; /* Prevent shrinking if space is tight */
+    margin-left: 10px; /* Reduced space from H4 */
+    margin-right: 15px; /* Space from buttons */
+    height: 35px; /* Compact height, reduced from 40px */
+}
+
+.arr-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1; /* Take equal space */
+    padding: 0 8px; /* Horizontal padding inside segments, reduced from 10px */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.arr-segment:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.arr-segment:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.arr-segment:hover {
+    background-color: rgba(255, 255, 255, 0.5); /* Lighter hover effect */
+    transform: translateY(-1px);
+}
+
+.arr-segment.active-arr-filter {
+    background-color: #87CEEB; /* Lighter blue */
+    color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    /* NEW: Add border animation */
+    animation: arr-border-pulse 1.5s infinite alternate;
+}
+
+/* Keyframes for ARR border pulse animation */
+@keyframes arr-border-pulse {
+    0% {
+        border: 2px solid rgba(135, 206, 235, 0.5); /* Lighter, more visible blue */
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
+    }
+    50% {
+        border: 2px solid rgba(135, 206, 235, 1); /* Main lighter blue */
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 5px rgba(135, 206, 235, 0); /* Outer glow fades out */
+    }
+    100% {
+        border: 2px solid rgba(135, 206, 235, 0.5); /* Lighter, more visible blue */
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
+    }
+}
+
+
+.arr-label {
+    font-size: 0.7em; /* Smaller font for label, reduced from 0.75em */
+    font-weight: 500;
+    color: #495057;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.arr-count {
+    font-size: 1em; /* Smaller font for count, reduced from 1.1em */
+    font-weight: 700;
+    color: #212529;
+    line-height: 1;
+}
+
+/* Add a subtle vertical divider between segments */
+.arr-capsule-container .arr-segment:first-child {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
 }

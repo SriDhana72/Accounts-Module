@@ -34,7 +34,7 @@
                             <i class="bi bi-star-fill star-green-gradient"></i>
                             <i class="bi bi-star-fill star-purple-gradient"></i>
                         </span>
-                        <span class="ms-2 text-muted small">7/14/2025</span>
+                        <span class="ms-2 text-muted small">5/12/202g2</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
                             <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
                             <div id="ratingDetailsPopup" class="rating-details-popup">
@@ -157,10 +157,23 @@
                 </div>
             </div>
             <hr />
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 style="font-weight: 600; margin-bottom: 0;">
-                    <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
-                </h4>
+            <div class="d-flex align-items-center justify-content-between mb-4"> <!-- Modified to align items and justify content -->
+                <div class="d-flex align-items-center"> <!-- New div for grouping H4 and ARR capsule -->
+                    <h4 style="font-weight: 600; margin-bottom: 0;">
+                        <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
+                    </h4>
+                    <!-- NEW ARR Capsule - Moved here -->
+                    <div class="arr-capsule-container d-flex align-items-center">
+                        <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
+                            <span class="arr-label">&lt;5k</span> <!-- Renamed label -->
+                            <span class="arr-count" id="arrLessThan5kCount">0</span>
+                        </div>
+                        <div class="arr-segment arr-greater-than-5k" id="arrGreaterThan5kSegment">
+                            <span class="arr-label">&gt;5k</span> <!-- Renamed label -->
+                            <span class="arr-count" id="arrGreaterThan5kCount">0</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="Buttons-section">
                     <button class="btn btn-light btns active" id="allAppsBtn">
                         All Apps (<span id="allAppsCount">15</span>)
