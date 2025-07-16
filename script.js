@@ -600,11 +600,6 @@ let arrLessThan5kSegment = null;
 let arrGreaterThan5kSegment = null;
 
 
-// Initialize state variables
-let expandedRowId = null;
-let expandedTicketRowId = null; // New state for expanded ticket details row
-let activeSection = 'all-apps'; // Keeps track of which tab is currently active
-
 // Card element references
 let criticalIssuesCard = null;
 let warningSignsCard = null;
@@ -728,7 +723,7 @@ if (!applicationTableBody) {
 console.error('Application table body not found!');
 return false;
 }
-if (!applicationTableHeader) { // Check for thead
+if (!applicationTableHeader) { // Check for the thead
 console.error('Application table header (thead) not found!');
 return false;
 }
@@ -1004,8 +999,8 @@ closedTicketsCountSpan.style.textAlign = 'center';
 }
 
 // NEW: Update ARR capsule counts
-if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = arrLessThan5kFilteredData.length;
-if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = arrGreaterThan5kFilteredData.length;
+if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
+if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
 }
 
 // Function to generate the status tag HTML with correct styling
@@ -1058,7 +1053,7 @@ let threatCompetitors = [];
 
 // Hardcoded mapping for demonstration
 const crossSellList = ['Mailchimp', 'Dropbox'];
-const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive'];
+const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS']; // Added Sqauare POS
 
 if (app.competitors && app.competitors.length > 0) {
     app.competitors.forEach(comp => {
@@ -1073,32 +1068,52 @@ if (app.competitors && app.competitors.length > 0) {
     });
 }
 
-const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
+let competitorsCellContent = '';
 
-// --- NEW THREAT DISPLAY LOGIC ---
-let threatDisplayHtml = '';
-let threatPopupHtml = '';
-if (threatCompetitors.length > 0) {
-    // Always display the first threat
-    threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
-    
-    // If there are more, add the +N indicator and prepare the popup
-    if (threatCompetitors.length > 1) {
-        const remainingThreatsCount = threatCompetitors.length - 1;
-        threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
-
-        // Prepare popup content
-        threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
-        threatPopupHtml = `
-            <div class="threat-popup-container">
-                ${threatPopupHtml}
-            </div>
-        `;
-    }
+// --- MODIFIED LOGIC FOR COMPETITORS CELL CONTENT ---
+if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
+    // Case 1: No competitors at all - show single 'None' centered
+    competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
+                                <span class="text-dark">None</span>
+                              </div>`;
 } else {
-    threatDisplayHtml = 'None';
+    // Case 2: Competitors exist, render the split view
+    const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
+
+    let threatDisplayHtml = '';
+    let threatPopupHtml = '';
+    if (threatCompetitors.length > 0) {
+        threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
+        if (threatCompetitors.length > 1) {
+            const remainingThreatsCount = threatCompetitors.length - 1;
+            threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
+            threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
+            threatPopupHtml = `
+                <div class="threat-popup-container">
+                    ${threatPopupHtml}
+                </div>
+            `;
+        }
+    } else {
+        threatDisplayHtml = '<span class="text-dark">None</span>'; // If no threat, display 'None' in black
+    }
+
+    competitorsCellContent = `
+        <div class="competitors-flex-container">
+            <div class="competitors-cross-sell-section">
+                ${crossSellTagsHtml || '<span class="text-dark">None</span>'}
+            </div>
+            <span class="vertical-bar-in-table"></span>
+            <div class="competitors-threat-section">
+                <div class="threat-popup-wrapper">
+                    ${threatDisplayHtml}
+                    ${threatPopupHtml}
+                </div>
+            </div>
+        </div>
+    `;
 }
-// --- END NEW THREAT DISPLAY LOGIC ---
+// --- END MODIFIED LOGIC FOR COMPETITORS CELL CONTENT ---
 
 
 // Determine license trend icon and color
@@ -1167,7 +1182,7 @@ arrPercentageChangeHtml = `+Inf%`;
 arrPercentageClass = 'text-success';
 arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
 } else {
-arrPercentageChangeHtml = `0%`; // If both are 0 or previous is 0 and current is 0 or negative
+arrPercentageChangeHtml = `N/A`; // If both are 0 or previous is 0 and current is 0 or negative
 arrPercentageClass = 'text-muted';
 }
 } else {
@@ -1208,18 +1223,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
 <td>${app.seats}</td> <!-- Display seats here -->
 <td>${licenseTrendIconHtml} ${app.license}</td>
 <td class="text-center">
-    <div class="competitors-flex-container">
-        <div class="competitors-cross-sell-section">
-            ${crossSellTagsHtml || 'None'}
-        </div>
-        <span class="vertical-bar-in-table"></span>
-        <div class="competitors-threat-section">
-            <div class="threat-popup-wrapper">
-                ${threatDisplayHtml}
-                ${threatPopupHtml}
-            </div>
-        </div>
-    </div>
+    ${competitorsCellContent}
 </td>
 <td>N/A</td> 
 <td>
@@ -1367,7 +1371,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     let revenueTrendClass = 'text-muted';
     let revenuePercentageChange = 'N/A';
 
-    if (index > 0) { // Calculate percentage change from previous month
+    if (index > 0) { // Need at least two months to calculate percentage change
         const previousMonthRevenue = app.monthlyData[index - 1].revenue;
         const currentMonthRevenue = month.revenue;
 
@@ -1390,7 +1394,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
             revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
             revenueTrendClass = 'text-success';
         } else {
-            revenuePercentageChange = `0%`;
+            revenuePercentageChange = `N/A`;
             revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
             revenueTrendClass = 'text-muted';
         }
