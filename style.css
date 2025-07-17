@@ -356,22 +356,25 @@ margin-bottom: 0;
 /* --- Styles for the Filter Buttons (All Apps, Downgrades, etc.) --- */
 .Buttons-section {
 display: flex;
-flex-wrap: wrap;
-gap: 8px;
+flex-wrap: nowrap; /* Changed from wrap to nowrap */
+gap: 6px; /* Reduced gap */
 margin-bottom: 5px;
+overflow-x: auto; /* Added for horizontal scrolling if needed */
+padding-bottom: 5px; /* Add some padding for the scrollbar */
 }
 
 .btns {
 background-color: white;
 border: 1px solid grey;
 margin: 0;
-padding: 5px 10px;
+padding: 4px 8px; /* Reduced padding */
 border-radius: 8px;
-font-size: 0.95em;
+font-size: 0.9em; /* Reduced font size */
 font-weight: 500;
 transition: all 0.2s ease-in-out;
 color: #495057;
 white-space: nowrap;
+flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 .btns:hover {
 background-color: #f0f0f0;
@@ -1576,10 +1579,6 @@ transform: rotate(180deg);
     width: 180px; /* Fixed smaller width */
     max-width: 180px; /* Max width to prevent it from getting too wide */
     white-space: normal; /* Allow text wrapping inside popup */
-    /* Remove pseudo-elements for caret */
-    &::before, &::after {
-        content: none;
-    }
 }
 
 
@@ -1808,7 +1807,7 @@ transform: rotate(180deg);
     /* Reverted to default display for TD to maintain horizontal lines */
     display: table-cell; 
     text-align: center; /* Center the content within the cell */
-    vertical-align: middle; /* Vertically align content */
+    vertical-align: middle;
     padding: 12px 20px; /* Restore default padding */
 }
 

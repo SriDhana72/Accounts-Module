@@ -20,6 +20,7 @@ pauseScheduledCount: 0, // New field
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
+createdTime: '2023-01-15T10:00:00Z', // Earliest, initial signup
 monthlyData: [
 { month: 'M1', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -41,6 +42,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
+createdTime: '2023-02-01T11:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'Medium' },
 { month: 'M2', seats: 24, change: '-1', revenue: 1200, revenueChange: '-50', competitorIntegrations: 'High' },
@@ -62,6 +64,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
+createdTime: '2023-03-10T12:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
 { month: 'M2', seats: 31, change: '+1', revenue: 3100, revenueChange: '+100', competitorIntegrations: 'Low' },
@@ -83,6 +86,7 @@ pauseScheduledCount: 0,
 competitors: ['Mailchimp'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department (general IT for marketing tech)
+createdTime: '2023-04-05T13:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
@@ -104,6 +108,7 @@ pauseScheduledCount: 0,
 competitors: ['MailChimp'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2023-05-20T14:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 50, change: '0', revenue: 2500, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 49, change: '-1', revenue: 2450, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -125,6 +130,7 @@ pauseScheduledCount: 0,
 competitors: ['Mailchimp', 'Active campaign'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2023-06-10T15:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 26, change: '+1', revenue: 1300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -146,6 +152,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2023-07-01T16:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 40, change: '0', revenue: 2000, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 41, change: '+1', revenue: 2050, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -167,6 +174,7 @@ pauseScheduledCount: 4, // Example: Warning
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2023-08-12T17:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 52, change: '0', revenue: 260, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 51, change: '-1', revenue: 255, revenueChange: '-5', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -188,6 +196,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2023-09-01T18:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 44, change: '-1', revenue: 440, revenueChange: '-10', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -209,6 +218,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
+createdTime: '2023-10-20T09:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 22, change: '0', revenue: 2200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 22, change: '0', revenue: 2200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -230,6 +240,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
+createdTime: '2023-11-05T10:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 10, change: '0', revenue: 100, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 11, change: '+1', revenue: 110, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -251,6 +262,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
+createdTime: '2023-12-01T11:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 35, change: '0', revenue: 3500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 34, change: '-1', revenue: 3400, revenueChange: '-100', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -272,6 +284,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department (general IT for operational tech)
+createdTime: '2024-01-10T12:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 46, change: '+1', revenue: 4600, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -293,6 +306,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2024-02-14T13:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -314,6 +328,7 @@ pauseScheduledCount: 0,
 competitors: [],
 details: [],
 relevantDepartmentId: 'dept-hr', // NEW: Link to relevant department
+createdTime: '2024-03-01T14:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 24, change: '0', revenue: 1200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 25, change: '+1', revenue: 1250, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -335,6 +350,7 @@ pauseScheduledCount: 0,
 competitors: ['Dropbox', 'Google Drive'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2024-04-20T15:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 100, change: '0', revenue: 500, revenueChange: '0', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 105, change: '+5', revenue: 525, revenueChange: '+25', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
@@ -356,6 +372,7 @@ pauseScheduledCount: 0,
 competitors: ['Zoom', 'Microsoft Teams'],
 details: [],
 relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
+createdTime: '2024-05-01T16:00:00Z', // Cross-sell
 monthlyData: [
 { month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
 { month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
@@ -377,6 +394,7 @@ monthlyData: [
     competitors: [],
     details: [],
     relevantDepartmentId: 'dept-it-support',
+    createdTime: '2024-06-10T17:00:00Z', // Cross-sell
     monthlyData: [
         { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
         { month: 'M2', seats: 46, change: '+1', revenue: 460, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -398,6 +416,7 @@ monthlyData: [
     competitors: ['Google Meet'],
     details: [],
     relevantDepartmentId: 'dept-it-support',
+    createdTime: '2024-07-01T18:00:00Z', // Cross-sell
     monthlyData: [
         { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
         { month: 'M2', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
@@ -419,6 +438,7 @@ monthlyData: [
     competitors: ['Outlook', 'Gmail'],
     details: [],
     relevantDepartmentId: 'dept-it-support',
+    createdTime: '2024-07-15T19:00:00Z', // Cross-sell
     monthlyData: [
         { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
         { month: 'M2', seats: 142, change: '+2', revenue: 1420, revenueChange: '+20', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
@@ -580,11 +600,13 @@ let ticketDetailsTableContainer = null;
 let applicationTableBody = null;
 let applicationTableHeader = null; // Reference for the applications table header
 let ticketDetailsTableBody = null;
+let crossSellBtn = null; // NEW: Cross-sell button
 let allAppsBtn = null;
 let downgradesBtn = null;
 let competitorsBtn = null;
 let anomaliesBtn = null;
 let ticketDetailsBtn = null;
+let crossSellCountSpan = null; // NEW: Cross-sell count span
 let allAppsCountSpan = null;
 let downgradesCountSpan = null;
 let competitorsCountSpan = null;
@@ -663,11 +685,13 @@ ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContain
 applicationTableBody = document.getElementById('applicationTableBody');
 applicationTableHeader = document.querySelector('#applicationTable thead'); // Select the thead of the applications table
 ticketDetailsTableBody = document.getElementById('ticketDetailsTableBody');
+crossSellBtn = document.getElementById('crossSellBtn'); // NEW
 allAppsBtn = document.getElementById('allAppsBtn');
 downgradesBtn = document.getElementById('downgradesBtn');
 competitorsBtn = document.getElementById('competitorsBtn');
 anomaliesBtn = document.getElementById('anomaliesBtn');
 ticketDetailsBtn = document.getElementById('ticketDetailsBtn');
+crossSellCountSpan = document.getElementById('crossSellCount'); // NEW
 allAppsCountSpan = document.getElementById('allAppsCount');
 downgradesCountSpan = document.getElementById('downgradesCount');
 competitorsCountSpan = document.getElementById('competitorsCount');
@@ -682,7 +706,7 @@ arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
 arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
 
 
-// Card elements for click handling
+// Card element references
 criticalIssuesCard = document.getElementById('criticalIssuesCard');
 warningSignsCard = document.getElementById('warningSignsCard');
 competitorExposureCard = document.getElementById('competitorExposureCard');
@@ -737,6 +761,7 @@ return true;
 
 // Filtered data arrays (these will be used when switching tabs)
 let allAppsFilteredData = [];
+let crossSellFilteredData = []; // NEW: Cross-sell filtered data
 let downgradesFilteredData = [];
 let competitorsFilteredData = [];
 let criticalIssuesFilteredData = [];
@@ -750,7 +775,7 @@ let arrLessThan5kFilteredData = [];
 let arrGreaterThan5kFilteredData = [];
 
 
-// Function to calculate total ARR for an application
+// Function to calculate total ARR for an.application
 function calculateTotalArr(app) {
     // Assuming the last month's revenue is the current ARR
     // Or, if a sum is needed, iterate through monthlyData and sum up.
@@ -762,6 +787,22 @@ function calculateTotalArr(app) {
 // Function to filter data arrays - UPDATED LOGIC HERE
 function filterDataArrays() {
 allAppsFilteredData = appData;
+
+// Find the earliest createdTime to identify the initial signup
+let initialSignupApp = null;
+let earliestTime = Infinity;
+
+appData.forEach(app => {
+    const appCreatedTime = new Date(app.createdTime).getTime();
+    if (appCreatedTime < earliestTime) {
+        earliestTime = appCreatedTime;
+        initialSignupApp = app;
+    }
+});
+
+// All applications except the initial signup are cross-sells
+crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
+
 
 // Get account-level metrics that are still relevant
 const totalInactiveApps = appData.filter(a => a.status === 'Inactive').length;
@@ -949,6 +990,7 @@ function updateCounts(specificAnomaliesCount = null) {
 console.log('Updating counts...');
 
 // Update counts for buttons
+if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellFilteredData.length; // NEW
 if (allAppsCountSpan) allAppsCountSpan.textContent = allAppsFilteredData.length;
 if (downgradesCountSpan) downgradesCountSpan.textContent = downgradesFilteredData.length;
 if (competitorsCountSpan) competitorsCountSpan.textContent = competitorsFilteredData.length;
@@ -1408,7 +1450,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     return `
         <tr>
             <td>${month.month}</td>
-            <td>${month.seats}</td>
+            <td>${month.seats}</td> <!-- This is where seats data is displayed -->
             <td class="${changeClass}">${changeIcon} ${month.change}</td> 
             <td>
                 $${month.revenue}<br>
@@ -1589,7 +1631,7 @@ expandedRow.innerHTML = `
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Seats</th>
+                                <th>License</th> <!-- Renamed from Seats -->
                                 <th>Trend</th> <!-- Changed from Change -->
                                 <th>ARR</th> <!-- Changed from Revenue -->
                                 <th>Trend</th>
@@ -1872,6 +1914,19 @@ console.log('Hiding ticketDetailsTableContainer.');
 
 // Show the appropriate table and render data
 switch (selectedCategory) {
+case 'cross-sell': // NEW: Cross-sell case
+    if (crossSellBtn) crossSellBtn.classList.add('active');
+    if (applicationTableContainer) {
+        applicationTableContainer.classList.remove('d-none');
+        applicationTableContainer.style.display = 'block';
+        if (applicationTableHeader) {
+            applicationTableHeader.style.display = 'table-header-group';
+        }
+    }
+    renderApplicationTable(crossSellFilteredData);
+    activeSection = 'cross-sell';
+    updateCounts();
+    break;
 case 'all-apps':
 if (allAppsBtn) allAppsBtn.classList.add('active');
 if (applicationTableContainer) {
@@ -2173,6 +2228,10 @@ updateHealthScore(calculatedHealthScore);
 if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
 switchTab('all-apps');
 highlightActiveCard(null); // Clear card highlight when main button is clicked
+});
+if (crossSellBtn) crossSellBtn.addEventListener('click', () => { // NEW: Cross-sell button listener
+    switchTab('cross-sell');
+    highlightActiveCard(null);
 });
 if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
 switchTab('downgrades');

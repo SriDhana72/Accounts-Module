@@ -13,19 +13,19 @@
         <div class="container-section">
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <div class="account-info-content">
-                    <h5 class="fw-bold mb-1 text-primary d-inline-block">Global Innovations Inc.</h5>
-                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter (Owner)</span>
+                    <h5 class="fw-bold mb-1 text-primary d-inline-block">Global Innovations Inc </h5>
+                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter</span>
                     <p class="text-muted small mb-2">
                         <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
                     </p>
 
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-person-fill text-success me-2"></i>
-                        <span class="small">50 Active Subscriptions</span>
+                        <span class="small">20 Active Subscriptions</span>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <i class="bi bi-person-x-fill text-danger me-2"></i>
-                        <span class="small">12 Inactive Subscriptions</span>
+                        <span class="small">4 Inactive Subscriptions</span>
                     </div>
 
                     <div class="d-flex align-items-center mb-2"> <!-- Removed position-relative here, moved to eye icon -->
@@ -34,7 +34,7 @@
                             <i class="bi bi-star-fill star-green-gradient"></i>
                             <i class="bi bi-star-fill star-purple-gradient"></i>
                         </span>
-                        <span class="ms-2 text-muted small">5/12/202g2</span>
+                        <span class="ms-2 text-muted small">18/7/2025</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
                             <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
                             <div id="ratingDetailsPopup" class="rating-details-popup">
@@ -157,8 +157,8 @@
                 </div>
             </div>
             <hr />
-            <div class="d-flex align-items-center justify-content-between mb-4"> <!-- Modified to align items and justify content -->
-                <div class="d-flex align-items-center"> <!-- New div for grouping H4 and ARR capsule -->
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-nowrap overflow-x-auto"> <!-- Added flex-nowrap overflow-x-auto -->
+                <div class="d-flex align-items-center flex-shrink-0"> <!-- Added flex-shrink-0 -->
                     <h4 style="font-weight: 600; margin-bottom: 0;">
                         <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
                     </h4>
@@ -177,6 +177,9 @@
                 <div class="Buttons-section">
                     <button class="btn btn-light btns active" id="allAppsBtn">
                         All Apps (<span id="allAppsCount">15</span>)
+                    </button>
+                    <button class="btn btn-light btns" id="crossSellBtn">
+                        Cross-sell (<span id="crossSellCount">0</span>)
                     </button>
                     <button class="btn btn-light btns" id="downgradesBtn">
                         <i class="bi bi-graph-down-arrow fs-5" style="color: #800000;"></i>
@@ -238,7 +241,6 @@
             </table>
         </div>
     </div>
-
 
     <!-- Subscription Chat Modal Structure (now directly in body, absolutely positioned) -->
     <div id="subscriptionChatModal" class="subscription-chat-modal">
