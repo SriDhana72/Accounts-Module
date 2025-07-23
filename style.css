@@ -1,1971 +1,1971 @@
 /* General Body and Container Styles */
 body {
-    font-family: 'Inter', sans-serif; /* Changed font to Inter */
-    background-color: #f8f9fa; /* Light background for the whole page */
-    color: #333;
-    }
-    
-    .container-fluid {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    }
-    
-    .container-section {
-    background-color: #f5f5f5; /* Very subtle grey background for the main widget container */
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
+font-family: 'Inter', sans-serif; /* Changed font to Inter */
+background-color: #f8f9fa; /* Light background for the whole page */
+color: #333;
+}
+
+.container-fluid {
+padding-top: 30px;
+padding-bottom: 30px;
+}
+
+.container-section {
+background-color: #f5f5f5; /* Very subtle grey background for the main widget container */
+padding: 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+margin-bottom: 30px;
+border: 1px solid #e9ecef;
+}
+
+/* Ticket Counts Styles */
+.ticket-counts-labels {
+font-weight: bold;
+font-size: 0.9rem;
+line-height: 1.2;
+}
+
+.ticket-counts-labels span {
+margin: 0 0.3rem;
+}
+
+.ticket-counts-labels .vertical-bar {
+font-size: 0.9rem;
+font-weight: bold;
+color: #6c757d;
+}
+/* Specific colors for Open and Closed labels */
+.ticket-counts-labels .open-label {
+color: #dc3545; /* Red for Open */
+}
+
+.ticket-counts-labels .closed-label {
+color: #28a745; /* Green for Closed */
+}
+
+.ticket-counts-numbers {
+margin-top: 0.25rem;
+font-weight: 500;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.ticket-counts-numbers span {
+min-width: 40px;
+text-align: center;
+line-height: 1;
+font-size: 1.2em; /* Adjusted to match other card numbers */
+}
+
+/* Add a wrapper for better alignment */
+.ticket-counts-wrapper {
+display: flex;
+flex-direction: column;
+align-items: stretch;
+margin-top: 1rem;
+}
+
+/* Ticket Details Card Styles */
+#deskTicketsCard {
+    /* Liquid Glass Effect */
+    background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Applied liquid glass */
     border: 1px solid #e9ecef;
-    }
-    
-    /* Ticket Counts Styles */
-    .ticket-counts-labels {
-    font-weight: bold;
-    font-size: 0.9rem;
-    line-height: 1.2;
-    }
-    
-    .ticket-counts-labels span {
-    margin: 0 0.3rem;
-    }
-    
-    .ticket-counts-labels .vertical-bar {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #6c757d;
-    }
-    /* Specific colors for Open and Closed labels */
-    .ticket-counts-labels .open-label {
-    color: #dc3545; /* Red for Open */
-    }
-    
-    .ticket-counts-labels .closed-label {
-    color: #28a745; /* Green for Closed */
-    }
-    
-    .ticket-counts-numbers {
-    margin-top: 0.25rem;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    }
-    
-    .ticket-counts-numbers span {
-    min-width: 40px;
-    text-align: center;
-    line-height: 1;
-    font-size: 1.2em; /* Adjusted to match other card numbers */
-    }
-    
-    /* Add a wrapper for better alignment */
-    .ticket-counts-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 1rem;
-    }
-    
-    /* Ticket Details Card Styles */
-    #deskTicketsCard {
-        /* Liquid Glass Effect */
-        background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Applied liquid glass */
-        border: 1px solid #e9ecef;
-        border-radius: 35px;
-        padding: 5px; /* Keeping your existing padding value */
-        min-height: 145px;
-        flex-basis: calc(20% - 15px);
-        max-width: calc(20% - 15px);
-        min-width: 150px;
-        min-height: 120px;
-        padding: 8px; /* Keeping your existing padding value */
-        flex-grow: 1;
-        flex-shrink: 1;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-        cursor: pointer;
-    }
-    
-    #deskTicketsCard:hover {
-    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
-    transform: translateY(-2px);
-    }
-    
-    /* Removed the general #deskTicketsCard p rule to apply flex only to first-child */
-    /* #deskTicketsCard p {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2px;
-    color: #212529;
-    white-space: nowrap;
-    } */
-    
-    #deskTicketsCard p i {
-    margin-right: 5px;
-    font-size: 1.2em !important;
-    font-weight: bold;
-    color: #212529;
-    }
-    
-    /* Card Count Strong Tag (e.g., the '2' for Critical Issues) */
-    .card-section strong:not(:first-child) {
-    font-size: 1.2em; /* Decreased from 1.3em */
-    font-weight: 700;
-    color: #212529;
-    line-height: 1;
-    margin-bottom: 5px;
-    display: block;
-    }
-    
-    /* Card Title Strong Tag (e.g., 'Critical Issues', 'Desk Tickets') */
-    .card-section p:first-child strong {
-        font-size: 0.95em; /* Decreased from 1em */
-        font-weight: 600; /* Ensure consistent bolding */
-    }
-    
-    /* Desk Tickets card specific alignment for the first line (icon and title) */
-    #deskTicketsCard p:first-child {
-        display: flex; /* Added display flex */
-        align-items: center;
-        justify-content: center; /* Center content horizontally */
-        margin-top: 2px; /* Adjusted margin to visually align with other card titles */
-        margin-bottom: 2px; /* Ensure consistent margin */
-        color: #212529;
-        white-space: nowrap;
-    }
-    
-    
-    .ticket-counts-labels {
-    font-weight: bold;
-    font-size: 0.9rem;
-    line-height: 1.2;
-    }
-    
-    .ticket-counts-labels span {
-    margin: 0 0.3rem;
-    }
-    
-    .ticket-counts-labels .vertical-bar {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #6c757d;
-    }
-    
-    .ticket-counts-numbers {
-    margin-top: 0.25rem;
-    font-size: 1.2em; /* Adjusted to match other card numbers */
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    }
-    
-    .ticket-counts-numbers span {
-    min-width: 40px;
-    text-align: center;
-    line-height: 1;
-    }
-    
-    /* The `ticket-details-table td` rule for content color and font size */
-    .ticket-details-table td {
-    padding: 15px 20px; /* Increased vertical padding to 15px */
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    color: black;
-    font-size: 0.9em; /* Matches the font size for application table cells */
-    }
-    
-    /* `ticketDetailsTable thead th` rule for header color and font size */
-    #ticketDetailsTable thead th { /* Specific to Ticket Details Table header */
-        /* Liquid Glass Effect - Lighter version */
-        background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
-        font-weight: 600;
-        color: black; /* Changed to black */
-        font-size: 0.95em; /* Set consistent header font size */
-        border-bottom: 2px solid #dee2e6; /* Stronger border for header */
-        white-space: nowrap; /* Prevent header text from wrapping */
-        padding: 12px 20px; /* Make padding consistent with main table headers */
-    }
-    
-    /* Specific column widths for Ticket Details Table */
-    #ticketDetailsTable th:nth-child(1),
-    #ticketDetailsTable td:nth-child(1) {
-    width: 5%; /* Expand Arrow Column */
-    min-width: 40px; /* Slightly increase min-width for arrow column */
-    text-align: center; /* Center the arrow in the header */
-    }
-    
-    #ticketDetailsTable th:nth-child(2),
-    #ticketDetailsTable td:nth-child(2) {
-    width: 35%; /* Department column - Increased for more space */
-    min-width: 150px;
-    }
-    
-    #ticketDetailsTable th:nth-child(3),
-    #ticketDetailsTable td:nth-child(3) {
-    width: 15%; /* Open Status column */
-    min-width: 80px;
-    }
-    
-    #ticketDetailsTable th:nth-child(4),
-    #ticketDetailsTable td:nth-child(4) {
-    width: 15%; /* Closed Status column */
-    min-width: 80px;
-    }
-    
-    #ticketDetailsTable th:nth-child(5),
-    #ticketDetailsTable td:nth-child(5) {
-    width: 30%; /* Open Ticket Ownership column - Adjusted to balance */
-    min-width: 120px;
-    text-align: left;
-    }
-    
-    /* Removed h1 styling as the element is removed */
-    /* h1 {
-    font-size: 2.2em;
-    font-weight: 700;
-    color: #212529;
-    margin-bottom: 5px;
-    } */
-    
-    .container-section > p {
-    font-size: 1em;
-    color: #6c757d;
-    margin-bottom: 25px;
-    }
-    
-    hr {
-    border-top: 1px solid #e0e0e0;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    }
-    
-    h4 {
-    color: #212529;
-    font-weight: 600; /* Ensured bold */
-    font-size: 1.25em; /* Adjusted font size slightly larger */
-    }
-    
-    /* --- Styles for the Top Five Summary Cards (Critical Issues, Warning Signs, etc.) --- */
-    .card-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* This centers children horizontally */
-    text-align: center; /* This centers inline-block/text content within the card */
-    
-    /* Box styling - Updated to liquid glass */
-    background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Liquid Glass Effect */
-    color: #212529; /* Keep your existing text color */
-    
-    border: 1px solid #e9ecef; /* Keep your existing border */
-    border-radius: 35px; /* Keep your existing border-radius */
-    padding: 1rem; /* Consolidated padding for better spacing */
-    min-height: 145px; /* Consistent height for all cards */
-    
-    flex-basis: calc(20% - 15px); /* Responsive width */
+    border-radius: 35px;
+    padding: 5px; /* Keeping your existing padding value */
+    min-height: 145px;
+    flex-basis: calc(20% - 15px);
     max-width: calc(20% - 15px);
-    min-width: 150px; /* Ensures they don't get too small */
-    
+    min-width: 150px;
+    min-height: 120px;
+    padding: 8px; /* Keeping your existing padding value */
     flex-grow: 1;
     flex-shrink: 1;
     transition: all 0.3s ease;
     box-shadow: 0 3px 8px rgba(0,0,0,0.06);
     cursor: pointer;
-    }
-    
-    .card-section:hover {
-    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
-    transform: translateY(-2px);
-    }
-    
-    /* Active border styling for cards - SOLID COLORS matching icons */
-    .card-section.active-highlight {
-        border: 2px solid #c0c0c0; /* Default subtle grey border for active state */
-        background-origin: border-box;
-        background-clip: padding-box, border-box;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Stronger shadow when active */
-        border-radius: 35px; /* Ensure border-radius is applied */
-    }
-    
-    /* Specific solid borders for each card type matching icon colors */
-    .card-border-critical.active-highlight {
-        border-color: #d96873; /* Red from text-danger */
-    }
-    
-    .card-border-warning.active-highlight {
-        border-color: #e5c976; /* Yellow from style */
-    }
-    
-    .card-border-competitor.active-highlight {
-        border-color: #73a0d0; /* Primary blue from text-primary */
-    }
-    
-    .card-border-downgrade.active-highlight {
-        border-color: #cb6060; /* Maroon from style */
-    }
-    
-    /* Targeted rule for Desk Tickets card border when active */
-    #deskTicketsCard.active-highlight {
-        border: 2px solid #67d2c7; /* Explicitly set full border property for Desk Tickets */
-    }
-    
-    
-    .card-section p:first-child {
-    display: flex;
+}
+
+#deskTicketsCard:hover {
+box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+transform: translateY(-2px);
+}
+
+/* Removed the general #deskTicketsCard p rule to apply flex only to first-child */
+/* #deskTicketsCard p {
+display: flex;
+align-items: center;
+margin-bottom: 2px;
+color: #212529;
+white-space: nowrap;
+} */
+
+#deskTicketsCard p i {
+margin-right: 5px;
+font-size: 1.2em !important;
+font-weight: bold;
+color: #212529;
+}
+
+/* Card Count Strong Tag (e.g., the '2' for Critical Issues) */
+.card-section strong:not(:first-child) {
+font-size: 1.2em; /* Decreased from 1.3em */
+font-weight: 700;
+color: #212529;
+line-height: 1;
+margin-bottom: 5px;
+display: block;
+}
+
+/* Card Title Strong Tag (e.g., 'Critical Issues', 'Desk Tickets') */
+.card-section p:first-child strong {
+    font-size: 0.95em; /* Decreased from 1em */
+    font-weight: 600; /* Ensure consistent bolding */
+}
+
+/* Desk Tickets card specific alignment for the first line (icon and title) */
+#deskTicketsCard p:first-child {
+    display: flex; /* Added display flex */
     align-items: center;
-    margin-bottom: 2px;
-    /* Removed font-size: 0.7em; here as it's now controlled by .card-section p:first-child strong */
+    justify-content: center; /* Center content horizontally */
+    margin-top: 2px; /* Adjusted margin to visually align with other card titles */
+    margin-bottom: 2px; /* Ensure consistent margin */
     color: #212529;
     white-space: nowrap;
-    }
-    
-    #deskTicketsCard p i {
-    margin-right: 5px;
-    font-size: 1.2em !important;
-    font-weight: bold;
-    color: #212529;
-    }
-    
-    /* Specific styles for the description paragraph */
-    .card-section p:last-child {
-        font-size: 0.75em;
-        color: #999999; /* Changed to lighter faded grey */
-        margin-bottom: 0;
-        font-weight: normal; /* Changed from bold */
-        align-self: center; /* Aligns it to the center */
-        text-align: center; /* Aligns its text content to the center */
-        width: 100%; /* Ensures it takes full width to apply text-align */
-    }
-    
-    /* Specific style for Desk Tickets card description to ensure it overrides */
-    #deskTicketsCard p:last-child {
-        font-weight: normal; /* Changed from bold */
-        color: #999999; /* Changed to lighter faded grey */
-        text-align: center;
-        align-self: center;
-        display: block; /* Explicitly set to block to ensure text-align works */
-    }
-    
-    .container-section > div:first-of-type {margin-bottom: 20px;}
-    
-    
-    /* --- Styles for the Filter Buttons (All Apps, Downgrades, etc.) --- */
-    .Buttons-section {
-    display: flex;
-    flex-wrap: nowrap; /* Changed from wrap to nowrap */
-    gap: 6px; /* Reduced gap */
-    margin-bottom: 5px;
-    overflow-x: auto; /* Added for horizontal scrolling if needed */
-    padding-bottom: 5px; /* Add some padding for the scrollbar */
-    }
-    
-    .btns {
-    background-color: white;
-    border: 1px solid grey;
-    margin: 0;
-    padding: 4px 8px; /* Reduced padding */
-    border-radius: 8px;
-    font-size: 0.9em; /* Reduced font size */
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-    color: #495057;
-    white-space: nowrap;
-    flex-shrink: 0; /* Prevent buttons from shrinking */
-    }
-    .btns:hover {
-    background-color: #f0f0f0;
-    }
-    .btns.active {
-    background-color:#5592f3;
-    color: white;
-    border-color:  #4285f4;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .btns.active:hover {
-    background-color: #618ded; /* A slightly darker blue for hover */
-    border-color: #3367d6;
-    }
-    /* --- NEW: Styles for icons and images within ACTIVE buttons --- */
-    .btns.active .bi {
-    color: white !important; /* Forces Font Awesome icons to be white */
-    }
-    
-    .btns.active img {
-    filter: brightness(0) invert(1); /* Converts image colors to white */
-    }
-    /* --- END NEW --- */
-    .btns .bi {
-    margin-right: 4px;
-    font-size: 1em !important; /* General rule for button icons */
-    }
-    
-    /* --- Styles for the Main Application Table --- */
-    #applicationTableContainer {
-        display: block;
-        margin-top: 5px;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #dee2e6;
-        background-color: #fcfcfc;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        /* Removed max-height and overflow-y: auto to eliminate extra whitespace */
-    }
-    
-    #applicationTable {
-    width: 100%;
-    margin-bottom: 0;
-    }
-    
-    #applicationTable thead {
-        /* Liquid Glass Effect applied to thead */
-        background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
-        /* NEW: For sticky header */
-        position: sticky;
-        top: 0; /* Stick to the top of its scrolling container */
-        z-index: 10; /* Ensure it stays above scrolling content */
-    }
-    
-    #applicationTable thead th {
-        /* Reset background for th, as it's now on thead */
-        background: transparent; 
-        color: #1a1d1f;
-        font-weight: 600;
-        font-size: 0.95em; /* Set consistent header font size */
-        padding: 12px 20px;
-        border-bottom: 1px solid #dee2e6;
-        vertical-align: middle;
-        text-align: left;
-    }
-    
-    #applicationTable thead th:first-child {
-    padding-left: 12px;
-    padding-right: 0;
-    width: 30px;
-    text-align: center;
-    }
-    
-    /* Adjust width and alignment for the new Status column header */
-    /* Removed as status is now a tag */
-    /* #applicationTable thead th:nth-child(3) {
-        width: 10%; 
-        min-width: 100px; 
-        text-align: left; 
-    } */
-    
-    #applicationTable tbody tr td {
-    padding: 12px 20px;
-    border-bottom: 1px solid #e9ecef;
-    vertical-align: middle;
-    font-size: 0.9em; /* Set consistent font size for table body cells */
-    }
-    
-    #applicationTable tbody tr:last-child td {
-    border-bottom: none;
-    }
-    
-    #applicationTable tbody tr:hover {
-    background-color: #f8f9fa;
-    cursor: pointer;
-    }
-    
-    /* --- Styles for the Usage Column Bars --- */
-    .usage-bar-container {
-    position: relative; /* Needed for absolute positioning of text */
-    width: 70px; /* Fixed width for the bar */
-    height: 25px; /* Height of the bar */
-    border-radius: 10px; /* Rounded corners for the bar */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Ensure text/content stays within bounds */
-    }
-    
-    .usage-bar-text {
-    position: absolute; /* Position text on top of the bar */
-    color: black; /* Black font color for the text */
-    font-size: 0.85em; /* Adjust font size as needed */
-    z-index: 1; /* Ensure text is above the background color */
-    white-space: nowrap; /* Prevent text from wrapping */
-    }
-    
-    /* Specific background colors for the usage bars */
-    .bg-usage-low {
-    /* Previously: background-color: #ff8a80; (red/orange) */
-    background: linear-gradient(to right, #ffe6e6, #f9d3d3); /* Very light red to light red */
-    }
-    
-    .bg-usage-medium {
-    /* Previously: background-color: #ffe082; (yellow/orange) */
-    background: linear-gradient(to right, #fffacd, #f5efb3); /* Very light yellow to light yellow */
-    }
-    
-    .bg-usage-high {
-    /* Previously: background-color: #74e493; (green/blue) */
-    background: linear-gradient(to right, #e8f5e9, #ddf6de); /* Very light green to light green */
-    }
-    
-    
-    /* --- Existing Styles (Preserved) --- */
-    .red-bg{
-    border-radius: 10px; /* Keeping your current 14px radius for these */
-    background-color: rgb(222 139 139 / 49%);
-    color: #df4141;
-    padding: 4px;
-    display: inline-block;
-    font-size: 0.85em;
-    }
-    
-    /* Styles for the license trend icons */
-    .license-trend-icon {
-    font-size: 1.1em;
-    margin-right: 5px;
-    vertical-align: middle;
-    }
-    
-    .trend-positive {
-    color: #28a745;
-    }
-    
-    .trend-negative {
-    color: #dc3545;
-    }
-    
-    .trend-neutral {
-    color: #6c757d;
-    }
-    
-    /* Specific alignment for the 'Usage' header (third th) */
-    /* This rule now applies to the Usage column, which is the 3rd th */
-    #applicationTable thead th:nth-child(3) { /* Changed from nth-child(4) to nth-child(3) */
-    text-align: left; /* Keep it left-aligned as it's almost correct */
-    padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
-    }
-    
-    /* --- Styles for Expanded Row Details --- */
-    .detail-row td {
-    padding: 0 !important;
-    border-bottom: none !important;
-    }
-    
-    .dropdown-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 15px;
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #fcfcfc;
-    border-top: 1px solid #e9ecef;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    box-shadow: inset 0 2px 5px (0, 0, 0, 0.03);
-    }
-    
-    .dropdown-section {
-    background-color: #ffffff;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 0;
-    flex: 1;
-    min-width: 250px;
-    max-width: calc(33.33% - 15px);
-    box-sizing: border-box;
-    text-align: left;
-    }
-    
-    .middle-column-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    }
-    .middle-column-section p {
-    margin-bottom: 0.5rem;
-    font-size: 0.9em;
-    color: #555;
-    }
-    .middle-column-section strong {
-    font-size: 1em;
-    color: #333;
+}
+
+
+.ticket-counts-labels {
+font-weight: bold;
+font-size: 0.9rem;
+line-height: 1.2;
+}
+
+.ticket-counts-labels span {
+margin: 0 0.3rem;
+}
+
+.ticket-counts-labels .vertical-bar {
+font-size: 0.9rem;
+font-weight: bold;
+color: #6c757d;
+}
+
+.ticket-counts-numbers {
+margin-top: 0.25rem;
+font-size: 1.2em; /* Adjusted to match other card numbers */
+font-weight: 500;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.ticket-counts-numbers span {
+min-width: 40px;
+text-align: center;
+line-height: 1;
+}
+
+/* The `ticket-details-table td` rule for content color and font size */
+.ticket-details-table td {
+padding: 15px 20px; /* Increased vertical padding to 15px */
+text-align: left;
+border-bottom: 1px solid #dee2e6;
+color: black;
+font-size: 0.9em; /* Matches the font size for application table cells */
+}
+
+/* `ticketDetailsTable thead th` rule for header color and font size */
+#ticketDetailsTable thead th { /* Specific to Ticket Details Table header */
+    /* Liquid Glass Effect - Lighter version */
+    background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
     font-weight: 600;
-    margin-bottom: 0.25rem;
-    }
-    
-    
-    .dropdown-section strong {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 1em;
-    color: #333;
-    font-weight: 600; /* Ensured bold */
-    }
-    
-    .dropdown-section p,
-    .dropdown-section ul {
-    margin-bottom: 0.5rem;
-    font-size: 0.9em;
-    color: #555;
-    }
-    
-    .dropdown-section ul {
-    list-style-type: disc;
-    padding-left: 25px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    }
-    
-    .dropdown-section li {
-    margin-bottom: 5px;
-    color: #333;
-    font-size: 0.9em;
-    }
-    
-    .details-section ul {
-    list-style: none;
-    padding-left: 0;
-    }
-    
-    .details-section li {
-    background-color: #f0f2f5;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    border: 1px solid #e0e2e5;
-    font-size: 0.9em;
-    color: #495057;
-    display: flex;
-    align-items: center;
-    }
-    .details-section li:last-child {
+    color: black; /* Changed to black */
+    font-size: 0.95em; /* Set consistent header font size */
+    border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+    white-space: nowrap; /* Prevent header text from wrapping */
+    padding: 12px 20px; /* Make padding consistent with main table headers */
+}
+
+/* Specific column widths for Ticket Details Table */
+#ticketDetailsTable th:nth-child(1),
+#ticketDetailsTable td:nth-child(1) {
+width: 5%; /* Expand Arrow Column */
+min-width: 40px; /* Slightly increase min-width for arrow column */
+text-align: center; /* Center the arrow in the header */
+}
+
+#ticketDetailsTable th:nth-child(2),
+#ticketDetailsTable td:nth-child(2) {
+width: 35%; /* Department column - Increased for more space */
+min-width: 150px;
+}
+
+#ticketDetailsTable th:nth-child(3),
+#ticketDetailsTable td:nth-child(3) {
+width: 15%; /* Open Status column */
+min-width: 80px;
+}
+
+#ticketDetailsTable th:nth-child(4),
+#ticketDetailsTable td:nth-child(4) {
+width: 15%; /* Closed Status column */
+min-width: 80px;
+}
+
+#ticketDetailsTable th:nth-child(5),
+#ticketDetailsTable td:nth-child(5) {
+width: 30%; /* Open Ticket Ownership column - Adjusted to balance */
+min-width: 120px;
+text-align: left;
+}
+
+/* Removed h1 styling as the element is removed */
+/* h1 {
+font-size: 2.2em;
+font-weight: 700;
+color: #212529;
+margin-bottom: 5px;
+} */
+
+.container-section > p {
+font-size: 1em;
+color: #6c757d;
+margin-bottom: 25px;
+}
+
+hr {
+border-top: 1px solid #e0e0e0;
+margin-top: 30px;
+margin-bottom: 30px;
+}
+
+h4 {
+color: #212529;
+font-weight: 600; /* Ensured bold */
+font-size: 1.25em; /* Adjusted font size slightly larger */
+}
+
+/* --- Styles for the Top Five Summary Cards (Critical Issues, Warning Signs, etc.) --- */
+.card-section {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center; /* This centers children horizontally */
+text-align: center; /* This centers inline-block/text content within the card */
+
+/* Box styling - Updated to liquid glass */
+background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Liquid Glass Effect */
+color: #212529; /* Keep your existing text color */
+
+border: 1px solid #e9ecef; /* Keep your existing border */
+border-radius: 35px; /* Keep your existing border-radius */
+padding: 1rem; /* Consolidated padding for better spacing */
+min-height: 145px; /* Consistent height for all cards */
+
+flex-basis: calc(20% - 15px); /* Responsive width */
+max-width: calc(20% - 15px);
+min-width: 150px; /* Ensures they don't get too small */
+
+flex-grow: 1;
+flex-shrink: 1;
+transition: all 0.3s ease;
+box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+cursor: pointer;
+}
+
+.card-section:hover {
+box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+transform: translateY(-2px);
+}
+
+/* Active border styling for cards - SOLID COLORS matching icons */
+.card-section.active-highlight {
+    border: 2px solid #c0c0c0; /* Default subtle grey border for active state */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Stronger shadow when active */
+    border-radius: 35px; /* Ensure border-radius is applied */
+}
+
+/* Specific solid borders for each card type matching icon colors */
+.card-border-critical.active-highlight {
+    border-color: #d96873; /* Red from text-danger */
+}
+
+.card-border-warning.active-highlight {
+    border-color: #e5c976; /* Yellow from style */
+}
+
+.card-border-competitor.active-highlight {
+    border-color: #73a0d0; /* Primary blue from text-primary */
+}
+
+.card-border-downgrade.active-highlight {
+    border-color: #cb6060; /* Maroon from style */
+}
+
+/* Targeted rule for Desk Tickets card border when active */
+#deskTicketsCard.active-highlight {
+    border: 2px solid #67d2c7; /* Explicitly set full border property for Desk Tickets */
+}
+
+
+.card-section p:first-child {
+display: flex;
+align-items: center;
+margin-bottom: 2px;
+/* Removed font-size: 0.7em; here as it's now controlled by .card-section p:first-child strong */
+color: #212529;
+white-space: nowrap;
+}
+
+#deskTicketsCard p i {
+margin-right: 5px;
+font-size: 1.2em !important;
+font-weight: bold;
+color: #212529;
+}
+
+/* Specific styles for the description paragraph */
+.card-section p:last-child {
+    font-size: 0.75em;
+    color: #999999; /* Changed to lighter faded grey */
     margin-bottom: 0;
-    }
-    
-    
-    /* Usage & License History (div-based columns) */
-    .expanded-content .table-responsive {
-    border: 1px solid #e9ecef;
+    font-weight: normal; /* Changed from bold */
+    align-self: center; /* Aligns it to the center */
+    text-align: center; /* Aligns its text content to the center */
+    width: 100%; /* Ensures it takes full width to apply text-align */
+}
+
+/* Specific style for Desk Tickets card description to ensure it overrides */
+#deskTicketsCard p:last-child {
+    font-weight: normal; /* Changed from bold */
+    color: #999999; /* Changed to lighter faded grey */
+    text-align: center;
+    align-self: center;
+    display: block; /* Explicitly set to block to ensure text-align works */
+}
+
+.container-section > div:first-of-type {
+margin-bottom: 0;
+}
+
+
+/* --- Styles for the Filter Buttons (All Apps, Downgrades, etc.) --- */
+.Buttons-section {
+display: flex;
+flex-wrap: nowrap; /* Changed from wrap to nowrap */
+gap: 6px; /* Reduced gap */
+margin-bottom: 5px;
+overflow-x: auto; /* Added for horizontal scrolling if needed */
+padding-bottom: 5px; /* Add some padding for the scrollbar */
+}
+
+.btns {
+background-color: white;
+border: 1px solid grey;
+margin: 0;
+padding: 4px 8px; /* Reduced padding */
+border-radius: 8px;
+font-size: 0.9em; /* Reduced font size */
+font-weight: 500;
+transition: all 0.2s ease-in-out;
+color: #495057;
+white-space: nowrap;
+flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+.btns:hover {
+background-color: #f0f0f0;
+}
+.btns.active {
+background-color:#5592f3;
+color: white;
+border-color:  #4285f4;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btns.active:hover {
+background-color: #618ded; /* A slightly darker blue for hover */
+border-color: #3367d6;
+}
+/* --- NEW: Styles for icons and images within ACTIVE buttons --- */
+.btns.active .bi {
+color: white !important; /* Forces Font Awesome icons to be white */
+}
+
+.btns.active img {
+filter: brightness(0) invert(1); /* Converts image colors to white */
+}
+/* --- END NEW --- */
+.btns .bi {
+margin-right: 4px;
+font-size: 1em !important; /* General rule for button icons */
+}
+
+/* --- Styles for the Main Application Table --- */
+#applicationTableContainer {
+    display: block;
+    margin-top: 5px;
     border-radius: 8px;
     overflow: hidden;
-    max-height: 200px;
-    overflow-y: auto;
-    }
-    
-    
-    .monthly-data-table th {
-    background-color: #f0f2f5;
-    font-size: 0.95em; /* Adjusted font size */
-    padding: 8px 12px;
-    color: #000; 
-    }
-    
-    .monthly-data-table td {
-    font-size: 0.9em; 
-    padding: 8px 12px;
-    color: #000; 
-    }
-    
-    .monthly-data-container h6 {
-    font-size: 1em;
-    margin-bottom: 10px;
-    padding-left: 0;
-    color: #212529;
-    font-weight: 600;
-    margin-top: 0;
-    }
-    
-    .monthly-data-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 0.8fr;
-    gap: 5px 15px;
-    font-size: 0.9em;
-    line-height: 1.4;
-    text-align: center;
-    }
-    
-    .monthly-data-row {
-    display: contents;
-    }
-    
-    .monthly-data-col {
-    padding: 3px 0;
-    color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-    
-    .monthly-data-header .monthly-data-col {
-    font-weight: 600;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
-    color: #333;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    }
-    
-    .monthly-data-col .bi {
-    font-size: 1.1em;
-    }
-    
-    
-    /* --- Specific Styling for Anomaly Section within Expanded Row --- */
-    .anomaly-block {
-    padding: 0px;
-    border-radius: 0px;
-    margin-top: 0px;
-    font-size: 0.95em;
-    line-height: 1.4;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    background-color: transparent !important;
-    border: none !important;
-    }
-    
-    .anomaly-heading-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    color: #212529;
-    font-size: 1em;
-    }
-    
-    /* For "Executive Summary" heading */
-    .account-details-main-box h6.fw-bold {
-        font-size: 1em; /* Explicitly set font size */
-        font-weight: 600; /* Ensure it's bold */
-        margin-bottom: 0;
-        flex-shrink: 0;
-    }
-    
-    .anomaly-heading-line i {
-    font-size: 1.2em;
-    color: #dc3545 !important;
-    vertical-align: middle;
-    transform: translateY(-0.08em);
-    }
-    
-    /* Styling for the anomaly details list */
-    .anomaly-details-list {
-    list-style: disc;
-    padding-left: 25px;
-    margin-top: 5px;
-    margin-bottom: 0;
-    }
-    
-    .anomaly-details-list li {
-    font-size: 0.9em;
-    color: #8B4513;
-    font-weight: bold;
-    margin-bottom: 3px;
-    }
-    .anomaly-details-list li:last-child {
-    margin-bottom: 0;
-    }
-    
-    /* For "No anomalies detected" paragraph */
-    .anomaly-details {
-    color: #8B4513 !important;
-    font-weight: 500;
-    padding-left: 26px;
-    line-height: 1.3;
-    font-size: 0.85em;
-    }
-    
-    .critical-anomaly-block {
-    /* color: #721c24; */
-    }
-    
-    .warning-anomaly-block {
-    /* color: #856404; */
-    }
-    
-    .no-anomaly-block {
-    background-color: transparent !important;
-    border: none !important;
-    color: #383d41;
-    }
-    
-    
-    /* --- Styling for Zoho Opportunities Section within Expanded Row --- */
-    .zoho-opportunities-section {
-    margin-top: 0;
-    margin-bottom: 15px;
-    }
-    .zoho-opportunities-section strong {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-size: 1em;
-    font-weight: 600; /* Ensured bold */
-    }
-    
-    .zoho-opportunity-value {
-    font-weight: 500;
-    color: #212529 !important;
-    font-size: 0.85em;
-    display: block;
-    }
-    
-    
-    /* Responsive adjustments for smaller screens */
-    @media (max-width: 992px) {
-    .dropdown-section {
-    max-width: 100%;
-    flex-basis: 100%;
-    margin-bottom: 15px;
-    }
-    
-    .dropdown-content {
-    flex-direction: column;
-    gap: 15px;
-    }
-    
-    .card-section {
-    flex-basis: calc(50% - 15px);
-    max-width: calc(50% - 15px);
-    }
-    }
-    
-    @media (max-width: 768px) {
-    .card-section {
-    flex-basis: 100%;
-    max-width: 100%;
-    }
-    
-    .monthly-data-grid {
-    grid-template-columns: 1fr 1fr 0.8fr;
-    font-size: 0.8em;
-    }
-    
-    .table thead th,
-    .table tbody tr td {
-    padding: 8px 10px;
-    }
-    
-    .table thead th:first-child,
-    .table tbody tr td:first-child {
-    padding-left: 8px;
-    padding-right: 0;
-    }
-    
-    .monthly-data-table th,
-    .monthly-data-table td {
-    font-size: 0.7em;
-    }
-    }
-    
-    .container-section hr + div {
-    margin-bottom: 0 !important;
-    }
-    
-    .account-details-main-box {
-    box-sizing: border-box;
-    position: relative;
-    padding: 20px;
-    padding-right: 120px;
-    background-color: #f0f0f0 !important; /* Changed to a more visible off-white */
-    border-radius: 35px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    
-    border: 1px solid #e0e0e0;
-    
-    background-image: linear-gradient(to right,
-    #ea4335 0%, #ea4335 25%,
-    #34a853 25%, #34a53 50%,
-    #4285f4 50%, #4285f4 75%,
-    #fbbc05 75%, #fbbc05 100%
-    );
-    background-size: 100% 2px;
-    background-repeat: no-repeat;
-    background-position: top;
-    
-    overflow: visible; /* Changed from hidden to visible */
-    }
-    
-    
-    /* NEW HEALTH SCORE WIDGET STYLES */
-    .health-score-widget {
-    /* Adjusted padding, but keep absolute positioning */
-    padding: 1rem;
-    display: flex; /* Ensure it's a flex container for its children */
-    align-items: center; /* Vertically align items in the center */
-    }
-    
-    .health-score-circle {
-    width: 60px; /* Size of the circle */
-    height: 60px; /* Size of the circle */
-    border-radius: 50%; /* Makes it a perfect circle */
-    /* color: white; Removed this, now set by #healthScoreValue */
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    transition: background-color 0.3s ease-in-out; /* Smooth transition for color changes */
-    /* Set a default gradient here to ensure it's not grey initially */
-    background: linear-gradient(135deg, #a8e6cf, #6ee7b7); /* Default to green - Lighter */
-    }
-    
-        /* Gradient Color Classes */
-        .health-score-green-gradient {
-        background: linear-gradient(135deg, #74e493, #38c172); /* Light green gradient */
-        }
-        
-        .health-score-yellow-gradient {
-        background: linear-gradient(135deg, #eec88a, #ffb300); /* Light yellow gradient */
-        }
-        
-        .health-score-red-gradient {
-        background: linear-gradient(135deg, #ff8a80, #e53935); /* Light red gradient */
-        }
-    
-    /* Specific style for the health score number to make it black */
-    #healthScoreValue {
-        color: black !important; /* Force black color */
-    }
-    
-    
-    .speedometer-widget {
-    padding: 1rem !important;
-    }
-    
-    .account-details-main-box h5.fw-bold {
-    font-size: 1.8rem;
-    }
-    
-    .account-details-main-box p.small.text-secondary {
-    font-size: 1rem;
-    max-width: none;
-    }
-    
-    /* Removed .account-info-content as it's refactored */
-    /* .account-info-content {
-    width: 100%;
-    } */
-    
-    .status-badge {
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.85em;
-    font-weight: 600;
-    color: white;
-    display: inline-block;
-    white-space: nowrap;
-    }
-    
-    .status-open {
-    background-color: #f8d7da;
-    color: #721c24;
-    }
-    
-    .status-pending {
-    background-color: #fff3cd;
-    color: #856404;
-    }
-    
-    .status-in-progress {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    }
-    
-    .status-closed {
-    background-color: #d4edda;
-    color: #155724;
-    }
-    
-    /* NEW: Specific styles for the Ticket Details Table */
-    /* These rules were moved to consolidate above. Keep this block empty or remove if no new rules are added. */
-    
-    
-    /* Styles for Expanded Ticket Details Row */
-    .ticket-detail-expanded-row td {
-    padding: 0 !important;
-    border-bottom: none !important;
-    }
-    
-    .ticket-dropdown-content {
-    display: flex;
-    flex-direction: column; /* Stack sections vertically */
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
+    border: 1px solid #dee2e6;
     background-color: #fcfcfc;
-    border-top: 1px solid #e9ecef;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
-    gap: 15px; /* Spacing between sections */
-    }
-    
-    .ticket-dropdown-section {
-    background-color: #ffffff;
-    border: 1px solid #e9ecef;
-    border-radius: 12px; /* Increased radius from 8px to 12px */
-    padding: 15px;
-    text-align: left;
-    }
-    
-    .ticket-dropdown-section strong {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1em;
-    color: #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Removed max-height and overflow-y: auto to eliminate extra whitespace */
+}
+
+#applicationTable {
+width: 100%;
+margin-bottom: 0;
+}
+
+#applicationTable thead {
+    /* Liquid Glass Effect applied to thead */
+    background: linear-gradient(to right, #EAF5FF, #EAF5FF); /* Continuous whitish-blue */
+    /* NEW: For sticky header */
+    position: sticky;
+    top: 0; /* Stick to the top of its scrolling container */
+    z-index: 10; /* Ensure it stays above scrolling content */
+}
+
+#applicationTable thead th {
+    /* Reset background for th, as it's now on thead */
+    background: transparent; 
+    color: #1a1d1f;
     font-weight: 600;
-    }
-    
-    .ticket-list {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 10px;
-    }
-    
-    .ticket-item {
-    display: flex;
-    flex-wrap: wrap; /* Allow tags to wrap */
-    align-items: center;
-    /* Changed background-color to a lighter, more faded grey */
-    background-color: rgba(255, 255, 255, 0.8); /* Faded white background */
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border-radius: 18px; /* Increased radius from 12px to 18px */
-    border: 1px solid #e0e2e5;
-    font-size: 0.9em;
-    color: #495057;
-    line-height: 1.4;
-    }
-    
-    .ticket-item:last-child {
+    font-size: 0.95em; /* Set consistent header font size */
+    padding: 12px 20px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    text-align: left;
+}
+
+#applicationTable thead th:first-child {
+padding-left: 12px;
+padding-right: 0;
+width: 30px;
+text-align: center;
+}
+
+/* Adjust width and alignment for the new Status column header */
+/* Removed as status is now a tag */
+/* #applicationTable thead th:nth-child(3) {
+    width: 10%; 
+    min-width: 100px; 
+    text-align: left; 
+} */
+
+#applicationTable tbody tr td {
+padding: 12px 20px;
+border-bottom: 1px solid #e9ecef;
+vertical-align: middle;
+font-size: 0.9em; /* Set consistent font size for table body cells */
+}
+
+#applicationTable tbody tr:last-child td {
+border-bottom: none;
+}
+
+#applicationTable tbody tr:hover {
+background-color: #f8f9fa;
+cursor: pointer;
+}
+
+/* --- Styles for the Usage Column Bars --- */
+.usage-bar-container {
+position: relative; /* Needed for absolute positioning of text */
+width: 70px; /* Fixed width for the bar */
+height: 25px; /* Height of the bar */
+border-radius: 10px; /* Rounded corners for the bar */
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden; /* Ensure text/content stays within bounds */
+}
+
+.usage-bar-text {
+position: absolute; /* Position text on top of the bar */
+color: black; /* Black font color for the text */
+font-size: 0.85em; /* Adjust font size as needed */
+z-index: 1; /* Ensure text is above the background color */
+white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Specific background colors for the usage bars */
+.bg-usage-low {
+/* Previously: background-color: #ff8a80; (red/orange) */
+background: linear-gradient(to right, #ffe6e6, #f9d3d3); /* Very light red to light red */
+}
+
+.bg-usage-medium {
+/* Previously: background-color: #ffe082; (yellow/orange) */
+background: linear-gradient(to right, #fffacd, #f5efb3); /* Very light yellow to light yellow */
+}
+
+.bg-usage-high {
+/* Previously: background-color: #74e493; (green/blue) */
+background: linear-gradient(to right, #e8f5e9, #ddf6de); /* Very light green to light green */
+}
+
+
+/* --- Existing Styles (Preserved) --- */
+.red-bg{
+border-radius: 10px; /* Keeping your current 14px radius for these */
+background-color: rgb(222 139 139 / 49%);
+color: #df4141;
+padding: 4px;
+display: inline-block;
+font-size: 0.85em;
+}
+
+/* Styles for the license trend icons */
+.license-trend-icon {
+font-size: 1.1em;
+margin-right: 5px;
+vertical-align: middle;
+}
+
+.trend-positive {
+color: #28a745;
+}
+
+.trend-negative {
+color: #dc3545;
+}
+
+.trend-neutral {
+color: #6c757d;
+}
+
+/* Specific alignment for the 'Usage' header (third th) */
+/* This rule now applies to the Usage column, which is the 3rd th */
+#applicationTable thead th:nth-child(3) { /* Changed from nth-child(4) to nth-child(3) */
+text-align: left; /* Keep it left-aligned as it's almost correct */
+padding-left: 30px; /* NEW: Add a small padding to push it slightly to the right */
+}
+
+/* --- Styles for Expanded Row Details --- */
+.detail-row td {
+padding: 0 !important;
+border-bottom: none !important;
+}
+
+.dropdown-content {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: flex-start;
+padding: 15px;
+gap: 20px;
+width: 100%;
+box-sizing: border-box;
+background-color: #fcfcfc;
+border-top: 1px solid #e9ecef;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;
+box-shadow: inset 0 2px 5px (0, 0, 0, 0.03);
+}
+
+.dropdown-section {
+background-color: #ffffff;
+border: 1px solid #e9ecef;
+border-radius: 8px;
+padding: 20px;
+margin-bottom: 0;
+flex: 1;
+min-width: 250px;
+max-width: calc(33.33% - 15px);
+box-sizing: border-box;
+text-align: left;
+}
+
+.middle-column-section {
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: flex-start;
+}
+.middle-column-section p {
+margin-bottom: 0.5rem;
+font-size: 0.9em;
+color: #555;
+}
+.middle-column-section strong {
+font-size: 1em;
+color: #333;
+font-weight: 600;
+margin-bottom: 0.25rem;
+}
+
+
+.dropdown-section strong {
+display: block;
+margin-bottom: 0.25rem;
+font-size: 1em;
+color: #333;
+font-weight: 600; /* Ensured bold */
+}
+
+.dropdown-section p,
+.dropdown-section ul {
+margin-bottom: 0.5rem;
+font-size: 0.9em;
+color: #555;
+}
+
+.dropdown-section ul {
+list-style-type: disc;
+padding-left: 25px;
+margin-top: 10px;
+margin-bottom: 15px;
+}
+
+.dropdown-section li {
+margin-bottom: 5px;
+color: #333;
+font-size: 0.9em;
+}
+
+.details-section ul {
+list-style: none;
+padding-left: 0;
+}
+
+.details-section li {
+background-color: #f0f2f5;
+padding: 8px 12px;
+margin-bottom: 6px;
+border-radius: 4px;
+border: 1px solid #e0e2e5;
+font-size: 0.9em;
+color: #495057;
+display: flex;
+align-items: center;
+}
+.details-section li:last-child {
+margin-bottom: 0;
+}
+
+
+/* Usage & License History (div-based columns) */
+.expanded-content .table-responsive {
+border: 1px solid #e9ecef;
+border-radius: 8px;
+overflow: hidden;
+max-height: 200px;
+overflow-y: auto;
+}
+
+
+.monthly-data-table th {
+background-color: #f0f2f5;
+font-size: 0.95em; /* Adjusted font size */
+padding: 8px 12px;
+color: #000; 
+}
+
+.monthly-data-table td {
+font-size: 0.9em; 
+padding: 8px 12px;
+color: #000; 
+}
+
+.monthly-data-container h6 {
+font-size: 1em;
+margin-bottom: 10px;
+padding-left: 0;
+color: #212529;
+font-weight: 600;
+margin-top: 0;
+}
+
+.monthly-data-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 0.8fr;
+gap: 5px 15px;
+font-size: 0.9em;
+line-height: 1.4;
+text-align: center;
+}
+
+.monthly-data-row {
+display: contents;
+}
+
+.monthly-data-col {
+padding: 3px 0;
+color: #555;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.monthly-data-header .monthly-data-col {
+font-weight: 600;
+border-bottom: 2px solid #ddd;
+padding-bottom: 8px;
+color: #333;
+background-color: #e9ecef;
+border-radius: 4px;
+}
+
+.monthly-data-col .bi {
+font-size: 1.1em;
+}
+
+
+/* --- Specific Styling for Anomaly Section within Expanded Row --- */
+.anomaly-block {
+padding: 0px;
+border-radius: 0px;
+margin-top: 0px;
+font-size: 0.95em;
+line-height: 1.4;
+display: flex;
+flex-direction: column;
+gap: 5px;
+background-color: transparent !important;
+border: none !important;
+}
+
+.anomaly-heading-line {
+display: flex;
+align-items: center;
+gap: 8px;
+font-weight: 600;
+color: #212529;
+font-size: 1em;
+}
+
+/* For "Executive Summary" heading */
+.account-details-main-box h6.fw-bold {
+    font-size: 1em; /* Explicitly set font size */
+    font-weight: 600; /* Ensure it's bold */
     margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.anomaly-heading-line i {
+font-size: 1.2em;
+color: #dc3545 !important;
+vertical-align: middle;
+transform: translateY(-0.08em);
+}
+
+/* Styling for the anomaly details list */
+.anomaly-details-list {
+list-style: disc;
+padding-left: 25px;
+margin-top: 5px;
+margin-bottom: 0;
+}
+
+.anomaly-details-list li {
+font-size: 0.9em;
+color: #8B4513;
+font-weight: bold;
+margin-bottom: 3px;
+}
+.anomaly-details-list li:last-child {
+margin-bottom: 0;
+}
+
+/* For "No anomalies detected" paragraph */
+.anomaly-details {
+color: #8B4513 !important;
+font-weight: 500;
+padding-left: 26px;
+line-height: 1.3;
+font-size: 0.85em;
+}
+
+.critical-anomaly-block {
+/* color: #721c24; */
+}
+
+.warning-anomaly-block {
+/* color: #856404; */
+}
+
+.no-anomaly-block {
+background-color: transparent !important;
+border: none !important;
+color: #383d41;
+}
+
+
+/* --- Styling for Zoho Opportunities Section within Expanded Row --- */
+.zoho-opportunities-section {
+margin-top: 0;
+margin-bottom: 15px;
+}
+.zoho-opportunities-section strong {
+display: block;
+margin-bottom: 8px;
+color: #333;
+font-size: 1em;
+font-weight: 600; /* Ensured bold */
+}
+
+.zoho-opportunity-value {
+font-weight: 500;
+color: #212529 !important;
+font-size: 0.85em;
+display: block;
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 992px) {
+.dropdown-section {
+max-width: 100%;
+flex-basis: 100%;
+margin-bottom: 15px;
+}
+
+.dropdown-content {
+flex-direction: column;
+gap: 15px;
+}
+
+.card-section {
+flex-basis: calc(50% - 15px);
+max-width: calc(50% - 15px);
+}
+}
+
+@media (max-width: 768px) {
+.card-section {
+flex-basis: 100%;
+max-width: 100%;
+}
+
+.monthly-data-grid {
+grid-template-columns: 1fr 1fr 0.8fr;
+font-size: 0.8em;
+}
+
+.table thead th,
+.table tbody tr td {
+padding: 8px 10px;
+}
+
+.table thead th:first-child,
+.table tbody tr td:first-child {
+padding-left: 8px;
+padding-right: 0;
+}
+
+.monthly-data-table th,
+.monthly-data-table td {
+font-size: 0.7em;
+}
+}
+
+.container-section hr + div {
+margin-bottom: 0 !important;
+}
+
+.account-details-main-box {
+box-sizing: border-box;
+position: relative;
+padding: 20px;
+padding-right: 120px;
+background-color: #f0f0f0 !important; /* Changed to a more visible off-white */
+border-radius: 35px;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+border: 1px solid #e0e0e0;
+
+background-image: linear-gradient(to right,
+#ea4335 0%, #ea4335 25%,
+#34a853 25%, #34a53 50%,
+#4285f4 50%, #4285f4 75%,
+#fbbc05 75%, #fbbc05 100%
+);
+background-size: 100% 2px;
+background-repeat: no-repeat;
+background-position: top;
+
+overflow: visible; /* Changed from hidden to visible */
+}
+
+
+/* NEW HEALTH SCORE WIDGET STYLES */
+.health-score-widget {
+/* Adjusted padding, but keep absolute positioning */
+padding: 1rem;
+display: flex; /* Ensure it's a flex container for its children */
+align-items: center; /* Vertically align items in the center */
+}
+
+.health-score-circle {
+width: 60px; /* Size of the circle */
+height: 60px; /* Size of the circle */
+border-radius: 50%; /* Makes it a perfect circle */
+/* color: white; Removed this, now set by #healthScoreValue */
+font-weight: bold;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+transition: background-color 0.3s ease-in-out; /* Smooth transition for color changes */
+/* Set a default gradient here to ensure it's not grey initially */
+background: linear-gradient(135deg, #a8e6cf, #6ee7b7); /* Default to green - Lighter */
+}
+
+    /* Gradient Color Classes */
+    .health-score-green-gradient {
+    background: linear-gradient(135deg, #74e493, #38c172); /* Light green gradient */
     }
     
-    .ticket-id {
+    .health-score-yellow-gradient {
+    background: linear-gradient(135deg, #eec88a, #ffb300); /* Light yellow gradient */
+    }
+    
+    .health-score-red-gradient {
+    background: linear-gradient(135deg, #ff8a80, #e53935); /* Light red gradient */
+    }
+
+/* Specific style for the health score number to make it black */
+#healthScoreValue {
+    color: black !important; /* Force black color */
+}
+
+
+.speedometer-widget {
+padding: 1rem !important;
+}
+
+.account-details-main-box h5.fw-bold {
+font-size: 1.8rem;
+}
+
+.account-details-main-box p.small.text-secondary {
+font-size: 1rem;
+max-width: none;
+}
+
+.account-info-content {
+width: 100%;
+}
+
+.status-badge {
+padding: 3px 8px;
+border-radius: 5px;
+font-size: 0.85em;
+font-weight: 600;
+color: white;
+display: inline-block;
+white-space: nowrap;
+}
+
+.status-open {
+background-color: #f8d7da;
+color: #721c24;
+}
+
+.status-pending {
+background-color: #fff3cd;
+color: #856404;
+}
+
+.status-in-progress {
+background-color: #d1ecf1;
+color: #0c5460;
+}
+
+.status-closed {
+background-color: #d4edda;
+color: #155724;
+}
+
+/* NEW: Specific styles for the Ticket Details Table */
+/* These rules were moved to consolidate above. Keep this block empty or remove if no new rules are added. */
+
+
+/* Styles for Expanded Ticket Details Row */
+.ticket-detail-expanded-row td {
+padding: 0 !important;
+border-bottom: none !important;
+}
+
+.ticket-dropdown-content {
+display: flex;
+flex-direction: column; /* Stack sections vertically */
+padding: 15px;
+width: 100%;
+box-sizing: border-box;
+background-color: #fcfcfc;
+border-top: 1px solid #e9ecef;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;
+box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+gap: 15px; /* Spacing between sections */
+}
+
+.ticket-dropdown-section {
+background-color: #ffffff;
+border: 1px solid #e9ecef;
+border-radius: 12px; /* Increased radius from 8px to 12px */
+padding: 15px;
+text-align: left;
+}
+
+.ticket-dropdown-section strong {
+display: block;
+margin-bottom: 5px;
+font-size: 1em;
+color: #333;
+font-weight: 600;
+}
+
+.ticket-list {
+list-style: none;
+padding-left: 0;
+margin-top: 10px;
+}
+
+.ticket-item {
+display: flex;
+flex-wrap: wrap; /* Allow tags to wrap */
+align-items: center;
+/* Changed background-color to a lighter, more faded grey */
+background-color: #f5f5f5; /* Faded grey background */
+padding: 8px 12px;
+margin-bottom: 6px;
+border-radius: 18px; /* Increased radius from 12px to 18px */
+border: 1px solid #e0e2e5;
+font-size: 0.9em;
+color: #495057;
+line-height: 1.4;
+}
+
+.ticket-item:last-child {
+margin-bottom: 0;
+}
+
+.ticket-id {
+font-weight: bold;
+margin-right: 8px;
+white-space: nowrap; /* Prevent ID from breaking */
+}
+
+.ticket-summary {
+flex-grow: 1; /* Allow summary to take available space */
+margin-right: 10px;
+}
+
+.ticket-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+margin-top: 5px; /* Space between summary and tags if it wraps */
+margin-left: auto; /* Push tags to the right */
+justify-content: flex-end; /* Align tags to the right when wrapping */
+}
+
+.ticket-tag {
+background-color: #e9ecef;
+color: #495057;
+padding: 3px 7px;
+border-radius: 15px;
+font-size: 0.9em; /* Increased from 0.85em */
+white-space: nowrap;
+text-transform: capitalize;
+}
+
+/* Specific tag colors (optional, but good for visual distinction) */
+/* Mild gradient background colors for tags */
+.tag-dissatisfaction-complaint { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-escalation-request { background: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-repeated-follow-up { background: linear: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-slow-support-delay { background: linear: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-feature-gap { background: linear: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
+.tag-cancel-threat-churn-threat { background: linear: linear: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; } /* Red */
+.tag-competitor-switch { background: linear: linear: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
+.tag-product-regret { background: linear: linear: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
+.tag-service-outage-emergency { background: linear: linear: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
+.tag-security-data-breach { background: linear: linear: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
+.tag-evaluating-alternatives { background: linear: linear: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
+
+
+/* Arrow styling for ticket table */
+.ticket-expand-toggle-arrow {
+display: inline-block;
+width: 1.2em; /* Ensure consistent width */
+text-align: center;
+font-size: 0.8em;
+transition: transform 0.2s ease;
+cursor: pointer;
+}
+
+/* Rotate arrow when expanded */
+tr.expanded .ticket-expand-toggle-arrow {
+transform: rotate(180deg);
+}
+
+/* Applying background directly to the image itself might be covered by the image pixels if the image is opaque. */
+/* REMOVED .needHelp styles */
+
+
+/* Apply background to the parent container for the GIF and button */
+/* Removed #additional-image-widget as its content is moved */
+
+
+/* NEW: Style for the action dropdown */
+.action-dropdown-wrapper {
+    position: relative; /* Container for absolute positioning */
+    display: inline-block; /* Allows the wrapper to size to its content */
+    text-align: center; /* Center the icon within the td */
+    /* Crucial: Allow content to overflow */
+    overflow: visible; 
+}
+
+/* Specific styling for the Need Help button wrapper */
+#need-help-dropdown-wrapper {
+    position: absolute; /* Position relative to .account-details-main-box */
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    width: auto; /* Allow button to size to its content */
+    text-align: center; /* Center the button within its wrapper */
+    z-index: 99; /* Ensure it's above other content in the card */
+}
+
+/* Styles for the toggle element (icon or text that opens the dropdown) */
+.action-toggle-element {
+    cursor: pointer;
+    display: flex; /* Use flex to align icon and text */
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    margin: 0 auto; /* Center the element horizontally */
+    font-size: 0.9em; /* Adjust font size for text */
+    color: #333; /* Default text color */
+    white-space: nowrap;
+    padding: 5px; /* Add some padding for clickability */
+    border-radius: 5px; /* Slight rounding */
+    transition: background-color 0.2s ease;
+}
+
+.action-toggle-element:hover {
+    background-color: #f0f0f0;
+}
+
+.action-toggle-element .bi {
+    margin-right: 5px;
+    font-size: 1em;
+    transition: transform 0.2s ease;
+}
+
+/* Keyframes for the pulsing animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1); /* Slightly larger */
+        opacity: 0.8; /* Slightly faded */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Apply animation to the clickable eye icon */
+.clickable-eye-icon {
+    position: relative;
+    z-index: 2; /* Ensure it's above other elements in the same line */
+    animation: pulse 1.5s infinite ease-in-out; /* Apply the pulse animation */
+}
+
+/* NEW: Pulse animation for the Need Help button */
+.need-help-fab {
+    animation: pulse 1.5s infinite ease-in-out; /* Apply the pulse animation */
+}
+
+
+/* Arrow rotation for the need help toggle */
+/* REMOVED: #need-help-dropdown-wrapper .action-toggle-element .bi-chevron-down {
+    transform: rotate(0deg);
+}
+
+#need-help-dropdown-wrapper .action-dropdown-menu.show + .action-toggle-element .bi-chevron-down {
+    transform: rotate(180deg);
+} */
+
+
+.action-dropdown-menu {
+    position: absolute; 
+    /* NEW: Solid background, border, and shadow for the menu container */
+    background-color: #FFFFFF; /* White background */
+    border: 1px solid #e9ecef; /* Subtle border */
+    border-radius: 10px; /* Rounded corners for the menu container */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    backdrop-filter: none; /* No blur on the menu container itself */
+    -webkit-backdrop-filter: none;
+    
+    padding: 10px; /* Padding inside the menu */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 8px; /* Space between buttons */
+    z-index: 9; /* Ensure it's below the sticky header (z-index 10) */
+    min-width: 200px; /* Minimum width for the dropdown, slightly increased */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Added top to transition */
+}
+
+.action-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Animation for staggered appearance */
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.action-dropdown-menu.show .glass-button {
+    animation: fadeInSlideUp 0.3s ease-out forwards; /* Base animation */
+}
+
+/* Staggered delays for each button */
+.action-dropdown-menu.show .glass-button:nth-child(1) {
+    animation-delay: 0s;
+}
+.action-dropdown-menu.show .glass-button:nth-child(2) {
+    animation-delay: 0.1s; /* Increased delay */
+}
+.action-dropdown-menu.show .glass-button:nth-child(3) {
+    animation-delay: 0.2s; /* Increased delay */
+}
+.action-dropdown-menu.show .glass-button:nth-child(4) {
+    animation-delay: 0.3s; /* Increased delay */
+}
+
+
+/* Positioning for main table action dropdown */
+/* This positions it centered below the triangle icon */
+#applicationTable .action-dropdown-menu {
+    top: calc(100% + 5px); /* Position below the toggle icon with a small gap */
+    left: 80%; /* Start at 50% from the left of the wrapper */
+    transform: translateX(-50%); /* Shift left by half its width to center */
+}
+
+/* Positioning for expanded row action dropdown */
+/* This positions it to the right of the "More Actions" button */
+.expanded-content .action-dropdown-menu {
+    top: calc(100% + 5px); /* Position below the toggle button with a small gap */
+    left: 100%; /* Position its left edge at the right edge of the parent */
+    transform: translateX(0%); /* Ensure no horizontal translation */
+    margin-left: 10px; /* Add a small margin-left to create a gap */
+}
+
+/* Positioning for the Need Help dropdown */
+#need-help-dropdown-menu {
+    top: calc(100% + 10px); /* Position below the toggle element with a gap */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    bottom: auto; /* Override any previous bottom settings */
+}
+
+
+/* Glass button styles */
+.glass-button {
+    background-color: #FFFFFF; /* Changed to solid white */
+    backdrop-filter: none; /* Removed blur */
+    -webkit-backdrop-filter: none;
+    border: 1px solid #e9ecef; /* Subtle border */
+    border-radius: 8px; /* Less pill-shaped, more rounded rectangle */
+    padding: 8px 15px; /* Adjusted padding for better look */
+    color: #333; /* Black font color */
+    font-size: 0.8em; /* Slightly smaller font for buttons */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    text-decoration: none; /* Remove underline for links */
+    display: inline-flex; /* Use flex to align icon and text */
+    align-items: center;
+    white-space: nowrap; /* Ensures text and icon stay on one line */
+    outline: none; /* Remove outline on focus */
+    width: 100%; /* Make buttons take full width of the dropdown */
+    box-sizing: border-box;
+}
+
+.glass-button:hover {
+    background-color: #f8f9fa; /* Lighter background on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Slightly more prominent shadow on hover */
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+.glass-button i {
+    margin-right: 8px; /* More space between icon and text */
+    font-size: 1.1em; /* Adjust icon size within button */
+    color: #333; /* Ensure icons are black by default */
+}
+
+/* Specific button text colors for Actions dropdown */
+.glass-button.email-peer {
+    color: #6f42c1; /* Purple for Email to Peer */
+}
+.glass-button.email-client {
+    color: #28a745; /* Green for Email to Client */
+}
+.glass-button.connect-us {
+    color: #dc3545; /* Red for Chat with an Agent */
+}
+
+/* Specific button icon colors (if different from text) */
+.glass-button.email-peer i {
+    color: #6f42c1; /* Purple for Email to Peer */
+}
+.glass-button.email-client i {
+    color: #28a745; /* Green for Email to Client */
+}
+.glass-button.gc-link i {
+    color: #007bff; /* Blue for Guided Conversation */
+}
+.glass-button.connect-us i {
+    color: #dc3545; /* Red for Chat with an Agent */
+}
+
+/* Specific colors for Store and MICS links */
+.glass-button.store-link {
+    color: #333; /* Default black for Store link */
+}
+.glass-button.mics-link {
+    color: #333; /* Default black for MICS link */
+}
+.glass-button.store-link i {
+    color: #333; /* Default black for Store icon */
+}
+.glass-button.mics-link i {
+    color: #333; /* Default black for MICS icon */
+}
+
+
+/* New style for the "AI" part of the button text */
+.ai-text {
+    color: #007bff; /* A distinct blue color for 'AI' */
+    font-weight: bold; /* Make it bold for emphasis */
+}
+
+/* NEW CSS for Competitor Classification (used for header, not for row data anymore) */
+.competitor-classification-container {
+    display: flex;
+    align-items: flex-start; /* Aligns content to the top of the container */
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.cross-sell-section,
+.threat-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content (label and value/list) within its section */
+    padding: 5px;
+    border-radius: 8px;
+    /* Fixed width for consistent alignment */
+    width: calc(50% - 10px); /* 50% width minus half the gap on each side */
+    box-sizing: border-box; /* Include padding and border in the width */
+    text-align: center; /* Ensures text is centered */
+}
+
+/* New style for the list of competitors */
+.competitor-value-list {
+    margin-top: 5px; /* Space between label and list */
+    font-size: 0.9em;
+    text-align: center; /* Center the list items */
+    width: 100%;
+}
+
+.competitor-value-list ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.competitor-value-list li {
+    white-space: nowrap; /* Prevent wrapping for individual items if possible */
+    margin-bottom: 2px; /* Small space between list items */
+}
+
+.competitor-value-list li:last-child {
+    margin-bottom: 0;
+}
+
+.competitor-value {
+    font-weight: 500;
+    font-size: 0.9em;
+    white-space: nowrap;
+    text-align: center; /* Ensure "None" is centered */
+}
+
+
+.vertical-divider {
+    width: 1px;
+    background-color: #ccc;
+    align-self: stretch; /* Stretch to the height of its parent */
+    margin: 0 5px;
+}
+
+/* Color classes for competitor labels */
+.text-cross-sell {
+    color: #28a745; /* Green color */
+}
+
+.text-threat {
+    color: #dc3545; /* Red color */
+}
+
+/* Ensure the td aligns content to center */
+/* Removed specific td alignment for competitor column as it's now two columns */
+/* #applicationTable tbody tr td:nth-child(8) { 
+    text-align: center;
+} */
+
+/* Also adjust the header to center */
+/* Removed specific th alignment for competitor column as it's now two sub-columns */
+/* #applicationTable thead th:nth-child(8) { 
+    text-align: center;
+} */
+
+/* NEW: Style for individual competitor tags in table rows */
+.competitor-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 15px; /* Pill shape */
+    font-size: 0.85em;
+    margin: 1px; /* Reduced space between tags */
+    white-space: nowrap;
+}
+
+/* Specific colors for cross-sell and threat tags */
+.competitor-tag.cross-sell-tag {
+    background-color: #d4edda; /* Light green */
+    color: #155724; /* Dark green */
+}
+
+.competitor-tag.threat-tag {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red */
+}
+
+/* New CSS for the vertical bar within competitor rows */
+.vertical-bar-in-table {
+    display: inline-block;
+    width: 1px;
+    background-color: #ccc; /* Light grey for the bar */
+    margin: 0 4px; /* Added 4px horizontal margin to separate from tags */
+    vertical-align: middle; /* Align with text */
+    align-self: stretch; /* Make it stretch to the height of the flex container */
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+/* Add padding to the sections adjacent to the vertical bar */
+/* REMOVED: No longer needed as margin on bar handles spacing */
+/* .competitors-cross-sell-section {
+    padding-right: 2px; 
+}
+
+.competitors-threat-section {
+    padding-left: 2px; 
+} */
+
+/* Style for application status arrows */
+.app-status-arrow {
+    font-size: 0.9em; /* Smaller size for subtlety */
+    margin-right: 5px; /* Space between arrow and text */
+    vertical-align: middle; /* Align with text */
+}
+
+/* Keyframes for zoom animation */
+@keyframes zoom-in-out {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); } /* Increased zoom for more visibility */
+    100% { transform: scale(1); }
+}
+
+/* Apply animation to the magnifying glass icon */
+.subscriptions-analysis-icon {
+    animation: zoom-in-out 2s infinite alternate; /* 2s duration, infinite loop, alternates direction */
+    margin-right: 4px; /* Reduced margin for closer proximity */
+    vertical-align: middle; /* Align with text */
+}
+
+/* New styles for the buttons in the middle section of expanded row */
+/* REMOVED: .expanded-row-buttons and .expanded-row-button styles are no longer needed */
+/* The buttons now use .glass-button and are part of .action-dropdown-menu */
+
+
+/* NEW CSS for Status Tags */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px; /* Pill shape */
+    font-size: 0.75em; /* Small font size */
+    font-weight: 600;
+    margin-left: 8px; /* Space from application name */
+    white-space: nowrap; /* Prevent wrapping */
+    vertical-align: middle; /* Align with text */
+}
+
+.status-tag-active {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+}
+
+.status-tag-inactive {
+    /* Adjusted for less brightness */
+    background: linear-gradient(to right, #ffe0b2, #ffcc80); /* Lighter, more muted orange */
+    color: #a0522d; /* A darker, earthier orange-brown for text */
+    font-weight: bold; /* Make font bold */
+}
+
+.status-tag-renewal-risk {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+}
+
+/* Specific styles for the dropdown menu within the expanded row's Actions section */
+/* These are now mostly handled by JS, but keeping relative positioning for the wrapper */
+.expanded-content .action-dropdown-wrapper {
+    margin-left: 10px; /* Add some space to the left of the button */
+    display: inline-flex; /* Ensure it wraps content properly */
+    align-items: center;
+    overflow: visible; /* Crucial for dropdown not to be clipped */
+}
+
+.expanded-content .action-toggle-button {
+    width: auto; /* Allow button to size to its content */
+    max-width: none; /* Remove max-width constraint */
+    display: inline-flex; /* Keep it inline-flex for icon and text alignment */
+    align-items: center;
+    justify-content: center; /* Center content within the button */
+    font-size: 0.85em; /* Slightly larger font for readability */
+    padding: 5px 10px; /* Adjust padding for smaller size */
+}
+
+.expanded-content .action-toggle-button i {
+    margin-right: 5px; /* Adjust icon margin */
+    font-size: 1em; /* Adjust icon size */
+}
+
+/* NEW CSS for the Rating Details Popup */
+.rating-details-popup {
+    position: absolute;
+    left: 100%; /* Position to the right of the parent */
+    top: 50%; /* Align vertically with the middle of the parent */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    background-color: rgba(255, 255, 255, 0.9); /* Faded white background */
+    border: 1px solid #e9ecef;
+    border-radius: 50px; /* Changed to pill shape */
+    padding: 10px; /* Reduced padding */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100; /* Ensure it appears on top of other content */
+    display: none; /* Hidden by default */
+    width: 180px; /* Fixed smaller width */
+    max-width: 180px; /* Max width to prevent it from getting too wide */
+    white-space: normal; /* Allow text wrapping inside popup */
+}
+
+
+.rating-details-popup .d-flex {
+    align-items: center; /* Vertically align items in the center */
+    margin-bottom: 5px; /* Reduced margin between items */
+}
+
+.rating-details-popup .d-flex:last-child {
+    margin-bottom: 0; /* No margin for the last item */
+}
+
+.rating-details-popup .bi-star-fill {
+    font-size: 1em; /* Smaller star icon */
+    margin-right: 5px; /* Space between star and text */
+    flex-shrink: 0; /* Prevent star from shrinking */
+}
+
+.rating-details-popup strong {
+    display: inline; /* Keep strong tag inline */
+    font-size: 0.85em; /* Smaller font for text */
+    color: #333;
+    margin-bottom: 0; /* Remove margin */
+}
+
+.rating-details-popup p {
+    font-size: 0.7em; /* Even smaller font for description */
+    color: #6c757d;
+    margin-bottom: 0;
+    line-height: 1.2; /* Tighter line height */
+}
+
+/* Gradient styles for the main stars */
+.star-red-gradient {
+    background: linear-gradient(to right, #A5D6A7, #66BB6A); /* Medium Green */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Fallback for non-webkit browsers */
+}
+.star-green-gradient {
+    background: linear-gradient(to right, #FFEB3B, #FFC107); /* Medium Yellow */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+.star-purple-gradient {
+    background: linear-gradient(to right, #CE93D8, #AB47BC); /* Medium Purple */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+
+/* NEW CSS for ARR Percentage Text */
+.arr-percentage-text {
+    font-size: 0.75em; /* Smaller font size for percentages */
+    font-weight: 500; /* Keep it readable but not too bold */
+}
+
+/* Specific style for the Need Help toggle text */
+.need-help-toggle-text {
+    color: #fff; /* White text for the FAB */
+    font-weight: 600; /* Make it bold */
+    margin-left: 4px; /* Reduced space between icon and text */
+}
+
+/* NEW FAB style for Need Help button */
+.need-help-fab {
+    background: linear-gradient(135deg, #87ceeb, #4682b4); /* Lighter blue gradient */
+    color: white;
+    border-radius: 50px; /* Pill shape for FAB */
+    padding: 6px 12px; /* Reduced padding further */
+    font-size: 0.85em; /* Reduced font size further */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Stronger shadow */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none; /* Remove default button border */
+}
+
+.need-help-fab:hover {
+    background: linear-gradient(135deg, #4682b4, #007bff); /* Darker blue on hover */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+}
+
+.need-help-fab .bi {
+    font-size: 1.1em; /* Reduced icon size */
+    color: white; /* Ensure icon is white */
+    margin-right: 4px; /* Reduced space between icon and text */
+}
+
+
+/* Styles for the Subscription Chat Modal */
+.subscription-chat-modal {
+    position: absolute; /* Changed from fixed to absolute */
+    background-color: #fff;
+    border-radius: 10px; /* Rounded corners for the dialog box */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 350px; /* Fixed width for the dialog */
+    height: 450px; /* Fixed height for the dialog */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ensure content within modal is clipped */
+    z-index: 1000; /* High z-index to appear on top */
+    visibility: hidden; /* Hidden by default */
+    opacity: 0; /* Start with opacity 0 for fade-in effect */
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Added top to transition */
+    right: 20px; /* Keep it 20px from the right edge of the viewport */
+    top: 0; /* Initial top, will be set dynamically by JS */
+}
+
+.subscription-chat-modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.subscription-chat-modal-header {
+    padding: 15px;
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-weight: bold;
-    margin-right: 8px;
-    white-space: nowrap; /* Prevent ID from breaking */
-    }
-    
-    .ticket-summary {
-    flex-grow: 1; /* Allow summary to take available space */
-    margin-right: 10px;
-    }
-    
-    .ticket-tags {
+    color: #333;
+}
+
+.subscription-chat-modal-header .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+.subscription-chat-modal-header .close-button:hover {
+    color: #333;
+}
+
+.subscription-chat-modal-body {
+    flex-grow: 1; /* Allow body to take available space */
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove iframe default border */
+    display: block; /* Ensure no extra space around iframe */
+}
+
+.subscription-chat-iframe {
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove iframe default border */
+    display: block; /* Ensure no extra space around iframe */
+}
+
+/* NEW CSS for Threat Pop-up */
+.threat-popup-wrapper {
+    position: relative; /* For positioning the popup */
+    display: flex; /* Make it a flex container to align elements inside */
+    align-items: center; /* Vertically center items */
+    /* Removed: display: inline-block; as it will be handled by flex container */
+}
+
+.threat-tag-display {
+    font-size: 0.7em; /* Very small font size for the displayed tag */
+    padding: 3px 6px;
+    border-radius: 15px;
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red */
+    white-space: nowrap;
+    display: inline-block; /* Ensure it respects padding/margin */
+    vertical-align: middle;
+}
+
+.threat-more-indicator {
+    font-size: 0.7em; /* Very small font size for +N */
+    color: #007bff; /* Blue to indicate clickability */
+    cursor: pointer;
+    margin-left: 4px; /* Small space from the tag */
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.threat-popup-container {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px; /* Rounded corners for the popup */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 8px 12px; /* Padding inside the popup */
+    z-index: 100; /* Ensure it's on top */
+    display: none; /* Hidden by default */
+    top: 50%; /* Center vertically relative to the trigger */
+    left: calc(100% + 5px); /* Position to the right of the trigger with a small gap */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    min-width: 120px; /* Minimum width for readability */
+    white-space: nowrap; /* Prevent wrapping of individual items */
+}
+
+.threat-popup-container.show {
+    display: block;
+}
+
+.threat-popup-item {
+    font-size: 0.7em; /* Small font size for items in popup */
+    color: #721c24; /* Dark red for threat items */
+    display: block; /* Each item on its own line */
+    margin-bottom: 4px; /* Space between items */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.threat-popup-item:last-child {
+    margin-bottom: 0;
+}
+
+/* NEW CSS for Competitors Column Alignment */
+/* Specific styling for the Competitors column TD */
+#applicationTable tbody tr td:nth-child(8) {
+    /* Reverted to default display for TD to maintain horizontal lines */
+    display: table-cell; 
+    text-align: center; /* Center the content within the cell */
+    vertical-align: middle;
+    padding: 12px 20px; /* Restore default padding */
+}
+
+/* Ensure the wrapper inside the TD takes full width */
+.competitors-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the entire flex container within the TD */
+    width: 100%; /* Take full width of the TD */
+}
+
+.competitors-cross-sell-section {
+    width: calc(50% - 5px); /* Half the width minus half the bar's margin */
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 5px; /* Space between summary and tags if it wraps */
-    margin-left: auto; /* Push tags to the right */
-    justify-content: flex-end; /* Align tags to the right when wrapping */
-    }
-    
-    .ticket-tag {
-    background-color: #e9ecef;
-    color: #495057;
-    padding: 3px 7px;
-    border-radius: 15px;
-    font-size: 0.9em; /* Increased from 0.85em */
-    white-space: nowrap;
-    text-transform: capitalize;
-    }
-    
-    /* Specific tag colors (optional, but good for visual distinction) */
-    /* Mild gradient background colors for tags */
-    .tag-dissatisfaction-complaint { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-    .tag-escalation-request { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-    .tag-repeated-follow-up { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-    .tag-slow-support-delay { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-    .tag-feature-gap { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; } /* Light red */
-    .tag-cancel-threat-churn-threat { background: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; } /* Red */
-    .tag-competitor-switch { background: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; } /* Orange */
-    .tag-product-regret { background: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; } /* Yellow (darker text for contrast) */
-    .tag-service-outage-emergency { background: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; } /* Purple */
-    .tag-security-data-breach { background: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; } /* Grey for dark tag, dark text */
-    .tag-evaluating-alternatives { background: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; } /* Blue for new tag, dark text */
-    
-    
-    /* Arrow styling for ticket table */
-    .ticket-expand-toggle-arrow {
+    gap: 2px;
+    align-items: center;
+    justify-content: flex-end; /* Align tags to the right */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+.competitors-threat-section {
+    width: calc(50% - 5px); /* Half the width minus half the bar's margin */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    justify-content: flex-start; /* Align tags to the left */
+    box-sizing: border-box;
+}
+
+.vertical-bar-in-table {
     display: inline-block;
-    width: 1.2em; /* Ensure consistent width */
-    text-align: center;
-    font-size: 0.8em;
-    transition: transform 0.2s ease;
+    width: 1px;
+    background-color: #ccc; /* Light grey for the bar */
+    margin: 0 4px; /* Added 4px horizontal margin to separate from tags */
+    vertical-align: middle; /* Align with text */
+    align-self: stretch; /* Make it stretch to the height of the flex container */
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+/* Add padding to the sections adjacent to the vertical bar */
+/* REMOVED: No longer needed as margin on bar handles spacing */
+/* .competitors-cross-sell-section {
+    padding-right: 2px; 
+}
+
+.competitors-threat-section {
+    padding-left: 2px; 
+} */
+
+/* NEW CSS for Application Category Font Size */
+.application-category {
+    font-size: 0.8em; /* Smaller font size */
+    color: #6c757d; /* Muted color */
+    display: block; /* Ensure it's on a new line */
+    margin-top: 2px; /* Small space from app name */
+}
+
+/* NEW CSS for ARR Capsule */
+.arr-capsule-container {
+    background: #e0e0e0; /* Grey background for the capsule */
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 18px; /* Pill shape */
+    padding: 3px; /* Padding inside the capsule */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    flex-shrink: 0;
+    margin-left: 10px;
+    margin-right: 15px;
+    height: 36px; /* Fixed height */
+    width: 160px; /* Reduced width */
+}
+
+.arr-segment {
+    display: flex;
+    flex-direction: row; /* Keep as row for side-by-side text and count */
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 10px; /* Increased horizontal padding */
     cursor: pointer;
-    }
-    
-    /* Rotate arrow when expanded */
-    tr.expanded .ticket-expand-toggle-arrow {
-    transform: rotate(180deg);
-    }
-    
-    /* Applying background directly to the image itself might be covered by the image pixels if the image is opaque. */
-    /* REMOVED .needHelp styles */
-    
-    
-    /* Apply background to the parent container for the GIF and button */
-    /* Removed #additional-image-widget as its content is moved */
-    
-    
-    /* NEW: Style for the action dropdown */
-    .action-dropdown-wrapper {
-        position: relative; /* Container for absolute positioning */
-        display: inline-block; /* Allows the wrapper to size to its content */
-        text-align: center; /* Center the icon within the td */
-        /* Crucial: Allow content to overflow */
-        overflow: visible; 
-    }
-    
-    /* Specific styling for the Need Help button wrapper */
-    #need-help-dropdown-wrapper {
-        position: absolute; /* Position relative to .account-details-main-box */
-        bottom: 10px; /* Adjust as needed */
-        right: 10px; /* Adjust as needed */
-        width: auto; /* Allow button to size to its content */
-        text-align: center; /* Center the button within its wrapper */
-        z-index: 99; /* Ensure it's above other content in the card */
-    }
-    
-    /* Styles for the toggle element (icon or text that opens the dropdown) */
-    .action-toggle-element {
-        cursor: pointer;
-        display: flex; /* Use flex to align icon and text */
-        align-items: center;
-        justify-content: center; /* Center content horizontally */
-        margin: 0 auto; /* Center the element horizontally */
-        font-size: 0.9em; /* Adjust font size for text */
-        color: #333; /* Default text color */
-        white-space: nowrap;
-        padding: 5px; /* Add some padding for clickability */
-        border-radius: 5px; /* Slight rounding */
-        transition: background-color 0.2s ease;
-    }
-    
-    .action-toggle-element:hover {
-        background-color: #f0f0f0;
-    }
-    
-    .action-toggle-element .bi {
-        margin-right: 5px;
-        font-size: 1em;
-        transition: transform 0.2s ease;
-    }
-    
-    /* Keyframes for the pulsing animation */
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(1.1); /* Slightly larger */
-            opacity: 0.8; /* Slightly faded */
-        }
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-    
-    /* Apply animation to the clickable eye icon */
-    .clickable-eye-icon {
-        position: relative;
-        z-index: 2; /* Ensure it's above other elements in the same line */
-        animation: pulse 1.5s infinite ease-in-out; /* Apply the pulse animation */
-    }
-    
-    /* NEW: Pulse animation for the Need Help button */
-    .need-help-fab {
-        animation: pulse 1.5s infinite ease-in-out; /* Apply the pulse animation */
-    }
-    
-    
-    /* Arrow rotation for the need help toggle */
-    /* REMOVED: #need-help-dropdown-wrapper .action-toggle-element .bi-chevron-down {
-        transform: rotate(0deg);
-    }
-    
-    #need-help-dropdown-wrapper .action-dropdown-menu.show + .action-toggle-element .bi-chevron-down {
-        transform: rotate(180deg);
-    } */
-    
-    
-    .action-dropdown-menu {
-        position: absolute; 
-        /* NEW: Solid background, border, and shadow for the menu container */
-        background-color: #FFFFFF; /* White background */
-        border: 1px solid #e9ecef; /* Subtle border */
-        border-radius: 10px; /* Rounded corners for the menu container */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
-        backdrop-filter: none; /* No blur on the menu container itself */
-        -webkit-backdrop-filter: none;
-        
-        padding: 10px; /* Padding inside the menu */
-        display: flex;
-        flex-direction: column; /* Stack buttons vertically */
-        gap: 8px; /* Space between buttons */
-        z-index: 9; /* Ensure it's below the sticky header (z-index 10) */
-        min-width: 200px; /* Minimum width for the dropdown, slightly increased */
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Added top to transition */
-    }
-    
-    .action-dropdown-menu.show {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    /* Animation for staggered appearance */
-    @keyframes fadeInSlideUp {
-        0% {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .action-dropdown-menu.show .glass-button {
-        animation: fadeInSlideUp 0.3s ease-out forwards; /* Base animation */
-    }
-    
-    /* Staggered delays for each button */
-    .action-dropdown-menu.show .glass-button:nth-child(1) {
-        animation-delay: 0s;
-    }
-    .action-dropdown-menu.show .glass-button:nth-child(2) {
-        animation-delay: 0.1s; /* Increased delay */
-    }
-    .action-dropdown-menu.show .glass-button:nth-child(3) {
-        animation-delay: 0.2s; /* Increased delay */
-    }
-    .action-dropdown-menu.show .glass-button:nth-child(4) {
-        animation-delay: 0.3s; /* Increased delay */
-    }
-    
-    
-    /* Positioning for main table action dropdown */
-    /* This positions it centered below the triangle icon */
-    #applicationTable .action-dropdown-menu {
-        top: calc(100% + 5px); /* Position below the toggle icon with a small gap */
-        left: 80%; /* Start at 50% from the left of the wrapper */
-        transform: translateX(-50%); /* Shift left by half its width to center */
-    }
-    
-    /* Positioning for expanded row action dropdown */
-    /* This positions it to the right of the "More Actions" button */
-    .expanded-content .action-dropdown-menu {
-        top: calc(100% + 5px); /* Position below the toggle button with a small gap */
-        left: 100%; /* Position its left edge at the right edge of the parent */
-        transform: translateX(0%); /* Ensure no horizontal translation */
-        margin-left: 10px; /* Add a small margin-left to create a gap */
-    }
-    
-    /* Positioning for the Need Help dropdown */
-    #need-help-dropdown-menu {
-        top: calc(100% + 10px); /* Position below the toggle element with a gap */
-        left: 50%; /* Center horizontally */
-        transform: translateX(-50%); /* Adjust for centering */
-        bottom: auto; /* Override any previous bottom settings */
-    }
-    
-    
-    /* Glass button styles */
-    .glass-button {
-        background-color: #FFFFFF; /* Changed to solid white */
-        backdrop-filter: none; /* Removed blur */
-        -webkit-backdrop-filter: none;
-        border: 1px solid #e9ecef; /* Subtle border */
-        border-radius: 8px; /* Less pill-shaped, more rounded rectangle */
-        padding: 8px 15px; /* Adjusted padding for better look */
-        color: #333; /* Black font color */
-        font-size: 0.8em; /* Slightly smaller font for buttons */
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
-        text-decoration: none; /* Remove underline for links */
-        display: inline-flex; /* Use flex to align icon and text */
-        align-items: center;
-        white-space: nowrap; /* Ensures text and icon stay on one line */
-        outline: none; /* Remove outline on focus */
-        width: 100%; /* Make buttons take full width of the dropdown */
-        box-sizing: border-box;
-    }
-    
-    .glass-button:hover {
-        background-color: #f8f9fa; /* Lighter background on hover */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Slightly more prominent shadow on hover */
-        transform: translateY(-1px); /* Slight lift effect */
-    }
-    
-    .glass-button i {
-        margin-right: 8px; /* More space between icon and text */
-        font-size: 1.1em; /* Adjust icon size within button */
-        color: #333; /* Ensure icons are black by default */
-    }
-    
-    /* Specific button text colors for Actions dropdown */
-    .glass-button.email-peer {
-        color: #6f42c1; /* Purple for Email to Peer */
-    }
-    .glass-button.email-client {
-        color: #28a745; /* Green for Email to Client */
-    }
-    .glass-button.connect-us {
-        color: #dc3545; /* Red for Chat with an Agent */
-    }
-    
-    /* Specific button icon colors (if different from text) */
-    .glass-button.email-peer i {
-        color: #6f42c1; /* Purple for Email to Peer */
-    }
-    .glass-button.email-client i {
-        color: #28a745; /* Green for Email to Client */
-    }
-    .glass-button.gc-link i {
-        color: #007bff; /* Blue for Guided Conversation */
-    }
-    .glass-button.connect-us i {
-        color: #dc3545; /* Red for Chat with an Agent */
-    }
-    
-    /* Specific colors for Store and MICS links */
-    .glass-button.store-link {
-        color: #333; /* Default black for Store link */
-    }
-    .glass-button.mics-link {
-        color: #333; /* Default black for MICS link */
-    }
-    .glass-button.store-link i {
-        color: #333; /* Default black for Store icon */
-    }
-    .glass-button.mics-link i {
-        color: #333; /* Default black for MICS icon */
-    }
-    
-    
-    /* New style for the "AI" part of the button text */
-    .ai-text {
-        color: #007bff; /* A distinct blue color for 'AI' */
-        font-weight: bold; /* Make it bold for emphasis */
-    }
-    
-    /* NEW CSS for Competitor Classification (used for header, not for row data anymore) */
-    .competitor-classification-container {
-        display: flex;
-        align-items: flex-start; /* Aligns content to the top of the container */
-        justify-content: center;
-        gap: 5px;
-        width: 100%;
-    }
-    
-    .cross-sell-section,
-    .threat-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centers content (label and value/list) within its section */
-        padding: 5px;
-        border-radius: 8px;
-        /* Fixed width for consistent alignment */
-        width: calc(50% - 10px); /* 50% width minus half the gap on each side */
-        box-sizing: border-box; /* Include padding and border in the width */
-        text-align: center; /* Ensures text is centered */
-    }
-    
-    /* New style for the list of competitors */
-    .competitor-value-list {
-        margin-top: 5px; /* Space between label and list */
-        font-size: 0.9em;
-        text-align: center; /* Center the list items */
-        width: 100%;
-    }
-    
-    .competitor-value-list ul {
-        list-style: none; /* Remove bullet points */
-        padding: 0;
-        margin: 0;
-    }
-    
-    .competitor-value-list li {
-        white-space: nowrap; /* Prevent wrapping for individual items if possible */
-        margin-bottom: 2px; /* Small space between list items */
-    }
-    
-    .competitor-value-list li:last-child {
-        margin-bottom: 0;
-    }
-    
-    .competitor-value {
-        font-weight: 500;
-        font-size: 0.9em;
-        white-space: nowrap;
-        text-align: center; /* Ensure "None" is centered */
-    }
-    
-    
-    .vertical-divider {
-        width: 1px;
-        background-color: #ccc;
-        align-self: stretch; /* Stretch to the height of its parent */
-        margin: 0 5px;
-    }
-    
-    /* Color classes for competitor labels */
-    .text-cross-sell {
-        color: #28a745; /* Green color */
-    }
-    
-    .text-threat {
-        color: #dc3545; /* Red color */
-    }
-    
-    /* Ensure the td aligns content to center */
-    /* Removed specific td alignment for competitor column as it's now two columns */
-    /* #applicationTable tbody tr td:nth-child(8) { 
-        text-align: center;
-    } */
-    
-    /* Also adjust the header to center */
-    /* Removed specific th alignment for competitor column as it's now two sub-columns */
-    /* #applicationTable thead th:nth-child(8) { 
-        text-align: center;
-    } */
-    
-    /* NEW: Style for individual competitor tags in table rows */
-    .competitor-tag {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 15px; /* Pill shape */
-        font-size: 0.85em;
-        margin: 1px; /* Reduced space between tags */
-        white-space: nowrap;
-    }
-    
-    /* Specific colors for cross-sell and threat tags */
-    .competitor-tag.cross-sell-tag {
-        background-color: #d4edda; /* Light green */
-        color: #155724; /* Dark green */
-    }
-    
-    .competitor-tag.threat-tag {
-        background-color: #f8d7da; /* Light red */
-        color: #721c24; /* Dark red */
-    }
-    
-    /* New CSS for the vertical bar within competitor rows */
-    .vertical-bar-in-table {
-        display: inline-block;
-        width: 1px;
-        background-color: #ccc; /* Light grey for the bar */
-        margin: 0 4px; /* Added 4px horizontal margin to separate from tags */
-        vertical-align: middle; /* Align with text */
-        align-self: stretch; /* Make it stretch to the height of the flex container */
-        flex-shrink: 0; /* Prevent it from shrinking */
-    }
-    
-    /* Add padding to the sections adjacent to the vertical bar */
-    /* REMOVED: No longer needed as margin on bar handles spacing */
-    /* .competitors-cross-sell-section {
-        padding-right: 2px; 
-    }
-    
-    .competitors-threat-section {
-        padding-left: 2px; 
-    } */
-    
-    /* Style for application status arrows */
-    .app-status-arrow {
-        font-size: 0.9em; /* Smaller size for subtlety */
-        margin-right: 5px; /* Space between arrow and text */
-        vertical-align: middle; /* Align with text */
-    }
-    
-    /* Keyframes for zoom animation */
-    @keyframes zoom-in-out {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.2); } /* Increased zoom for more visibility */
-        100% { transform: scale(1); }
-    }
-    
-    /* Apply animation to the magnifying glass icon */
-    .subscriptions-analysis-icon {
-        animation: zoom-in-out 2s infinite alternate; /* 2s duration, infinite loop, alternates direction */
-        margin-right: 4px; /* Reduced margin for closer proximity */
-        vertical-align: middle; /* Align with text */
-    }
-    
-    /* New styles for the buttons in the middle section of expanded row */
-    /* REMOVED: .expanded-row-buttons and .expanded-row-button styles are no longer needed */
-    /* The buttons now use .glass-button and are part of .action-dropdown-menu */
-    
-    
-    /* NEW CSS for Status Tags */
-    .status-tag {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 12px; /* Pill shape */
-        font-size: 0.75em; /* Small font size */
-        font-weight: 600;
-        margin-left: 8px; /* Space from application name */
-        white-space: nowrap; /* Prevent wrapping */
-        vertical-align: middle; /* Align with text */
-    }
-    
-    .status-tag-active {
-        background-color: #d4edda; /* Light green background */
-        color: #155724; /* Dark green text */
-    }
-    
-    .status-tag-inactive {
-        /* Adjusted for less brightness */
-        background: linear-gradient(to right, #ffe0b2, #ffcc80); /* Lighter, more muted orange */
-        color: #a0522d; /* A darker, earthier orange-brown for text */
-        font-weight: bold; /* Make font bold */
-    }
-    
-    .status-tag-renewal-risk {
-        background-color: #f8d7da; /* Light red background */
-        color: #721c24; /* Dark red text */
-    }
-    
-    /* Specific styles for the dropdown menu within the expanded row's Actions section */
-    /* These are now mostly handled by JS, but keeping relative positioning for the wrapper */
-    .expanded-content .action-dropdown-wrapper {
-        margin-left: 10px; /* Add some space to the left of the button */
-        display: inline-flex; /* Ensure it wraps content properly */
-        align-items: center;
-        overflow: visible; /* Crucial for dropdown not to be clipped */
-    }
-    
-    .expanded-content .action-toggle-button {
-        width: auto; /* Allow button to size to its content */
-        max-width: none; /* Remove max-width constraint */
-        display: inline-flex; /* Keep it inline-flex for icon and text alignment */
-        align-items: center;
-        justify-content: center; /* Center content within the button */
-        font-size: 0.85em; /* Slightly larger font for readability */
-        padding: 5px 10px; /* Adjust padding for smaller size */
-    }
-    
-    .expanded-content .action-toggle-button i {
-        margin-right: 5px; /* Adjust icon margin */
-        font-size: 1em; /* Adjust icon size */
-    }
-    
-    /* NEW CSS for the Rating Details Popup */
-    .rating-details-popup {
-        position: absolute;
-        left: 100%; /* Position to the right of the parent */
-        top: 50%; /* Align vertically with the middle of the parent */
-        transform: translateY(-50%); /* Adjust for vertical centering */
-        background-color: rgba(255, 255, 255, 0.9); /* Faded white background */
-        border: 1px solid #e9ecef;
-        border-radius: 50px; /* Changed to pill shape */
-        padding: 10px; /* Reduced padding */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        z-index: 100; /* Ensure it appears on top of other content */
-        display: none; /* Hidden by default */
-        width: 180px; /* Fixed smaller width */
-        max-width: 180px; /* Max width to prevent it from getting too wide */
-        white-space: normal; /* Allow text wrapping inside popup */
-    }
-    
-    
-    .rating-details-popup .d-flex {
-        align-items: center; /* Vertically align items in the center */
-        margin-bottom: 5px; /* Reduced margin between items */
-    }
-    
-    .rating-details-popup .d-flex:last-child {
-        margin-bottom: 0; /* No margin for the last item */
-    }
-    
-    .rating-details-popup .bi-star-fill {
-        font-size: 1em; /* Smaller star icon */
-        margin-right: 5px; /* Space between star and text */
-        flex-shrink: 0; /* Prevent star from shrinking */
-    }
-    
-    .rating-details-popup strong {
-        display: inline; /* Keep strong tag inline */
-        font-size: 0.85em; /* Smaller font for text */
-        color: #333;
-        margin-bottom: 0; /* Remove margin */
-    }
-    
-    .rating-details-popup p {
-        font-size: 0.7em; /* Even smaller font for description */
-        color: #6c757d;
-        margin-bottom: 0;
-        line-height: 1.2; /* Tighter line height */
-    }
-    
-    /* Gradient styles for the main stars */
-    .star-red-gradient {
-        background: linear-gradient(to right, #A5D6A7, #66BB6A); /* Medium Green */
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        color: transparent; /* Fallback for non-webkit browsers */
-    }
-    .star-green-gradient {
-        background: linear-gradient(to right, #FFEB3B, #FFC107); /* Medium Yellow */
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        color: transparent;
-    }
-    .star-purple-gradient {
-        background: linear-gradient(to right, #CE93D8, #AB47BC); /* Medium Purple */
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        color: transparent;
-    }
-    
-    
-    /* NEW CSS for ARR Percentage Text */
-    .arr-percentage-text {
-        font-size: 0.75em; /* Smaller font size for percentages */
-        font-weight: 500; /* Keep it readable but not too bold */
-    }
-    
-    /* Specific style for the Need Help toggle text */
-    .need-help-toggle-text {
-        color: #fff; /* White text for the FAB */
-        font-weight: 600; /* Make it bold */
-        margin-left: 4px; /* Reduced space between icon and text */
-    }
-    
-    /* NEW FAB style for Need Help button */
-    .need-help-fab {
-        background: linear-gradient(135deg, #87ceeb, #4682b4); /* Lighter blue gradient */
-        color: white;
-        border-radius: 50px; /* Pill shape for FAB */
-        padding: 6px 12px; /* Reduced padding further */
-        font-size: 0.85em; /* Reduced font size further */
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Stronger shadow */
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border: none; /* Remove default button border */
-    }
-    
-    .need-help-fab:hover {
-        background: linear-gradient(135deg, #4682b4, #007bff); /* Darker blue on hover */
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        transform: translateY(-2px);
-    }
-    
-    .need-help-fab .bi {
-        font-size: 1.1em; /* Reduced icon size */
-        color: white; /* Ensure icon is white */
-        margin-right: 4px; /* Reduced space between icon and text */
-    }
-    
-    
-    /* Styles for the Subscription Chat Modal */
-    .subscription-chat-modal {
-        position: absolute; /* Changed from fixed to absolute */
-        background-color: #fff;
-        border-radius: 10px; /* Rounded corners for the dialog box */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        width: 350px; /* Fixed width for the dialog */
-        height: 450px; /* Fixed height for the dialog */
-        display: flex;
-        flex-direction: column;
-        overflow: hidden; /* Ensure content within modal is clipped */
-        z-index: 1000; /* High z-index to appear on top */
-        visibility: hidden; /* Hidden by default */
-        opacity: 0; /* Start with opacity 0 for fade-in effect */
-        transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Added top to transition */
-        right: 20px; /* Keep it 20px from the right edge of the viewport */
-        top: 0; /* Initial top, will be set dynamically by JS */
-    }
-    
-    .subscription-chat-modal.show {
-        visibility: visible;
-        opacity: 1;
-    }
-    
-    .subscription-chat-modal-header {
-        padding: 15px;
-        background-color: #f0f2f5;
-        border-bottom: 1px solid #e9ecef;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-        color: #333;
-    }
-    
-    .subscription-chat-modal-header .close-button {
-        background: none;
-        border: none;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: #6c757d;
-        transition: color 0.2s;
-    }
-    
-    .subscription-chat-modal-header .close-button:hover {
-        color: #333;
-    }
-    
-    .subscription-chat-modal-body {
-        flex-grow: 1; /* Allow body to take available space */
-        width: 100%;
-        height: 100%;
-        border: none; /* Remove iframe default border */
-        display: block; /* Ensure no extra space around iframe */
-    }
-    
-    .subscription-chat-iframe {
-        width: 100%;
-        height: 100%;
-        border: none; /* Remove iframe default border */
-        display: block; /* Ensure no extra space around iframe */
-    }
-    
-    /* NEW CSS for Threat Pop-up */
-    .threat-popup-wrapper {
-        position: relative; /* For positioning the popup */
-        display: flex; /* Make it a flex container to align elements inside */
-        align-items: center; /* Vertically center items */
-        /* Removed: display: inline-block; as it will be handled by flex container */
-    }
-    
-    .threat-tag-display {
-        font-size: 0.7em; /* Very small font size for the displayed tag */
-        padding: 3px 6px;
-        border-radius: 15px;
-        background-color: #f8d7da; /* Light red */
-        color: #721c24; /* Dark red */
-        white-space: nowrap;
-        display: inline-block; /* Ensure it respects padding/margin */
-        vertical-align: middle;
-    }
-    
-    .threat-more-indicator {
-        font-size: 0.7em; /* Very small font size for +N */
-        color: #007bff; /* Blue to indicate clickability */
-        cursor: pointer;
-        margin-left: 4px; /* Small space from the tag */
-        font-weight: 600;
-        white-space: nowrap;
-        vertical-align: middle;
-    }
-    
-    .threat-popup-container {
-        position: absolute;
-        background-color: #fff;
-        border: 1px solid #e9ecef;
-        border-radius: 10px; /* Rounded corners for the popup */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        padding: 8px 12px; /* Padding inside the popup */
-        z-index: 100; /* Ensure it's on top */
-        display: none; /* Hidden by default */
-        top: 50%; /* Center vertically relative to the trigger */
-        left: calc(100% + 5px); /* Position to the right of the trigger with a small gap */
-        transform: translateY(-50%); /* Adjust for vertical centering */
-        min-width: 120px; /* Minimum width for readability */
-        white-space: nowrap; /* Prevent wrapping of individual items */
-    }
-    
-    .threat-popup-container.show {
-        display: block;
-    }
-    
-    .threat-popup-item {
-        font-size: 0.7em; /* Small font size for items in popup */
-        color: #721c24; /* Dark red for threat items */
-        display: block; /* Each item on its own line */
-        margin-bottom: 4px; /* Space between items */
-        white-space: nowrap; /* Prevent wrapping */
-    }
-    
-    .threat-popup-item:last-child {
-        margin-bottom: 0;
-    }
-    
-    /* NEW CSS for Competitors Column Alignment */
-    /* Specific styling for the Competitors column TD */
-    #applicationTable tbody tr td:nth-child(8) {
-        /* Reverted to default display for TD to maintain horizontal lines */
-        display: table-cell; 
-        text-align: center; /* Center the content within the cell */
-        vertical-align: middle;
-        padding: 12px 20px; /* Restore default padding */
-    }
-    
-    /* Ensure the wrapper inside the TD takes full width */
-    .competitors-flex-container {
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Center the entire flex container within the TD */
-        width: 100%; /* Take full width of the TD */
-    }
-    
-    .competitors-cross-sell-section {
-        width: calc(50% - 5px); /* Half the width minus half the bar's margin */
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2px;
-        align-items: center;
-        justify-content: flex-end; /* Align tags to the right */
-        box-sizing: border-box; /* Include padding and border in width */
-    }
-    
-    .competitors-threat-section {
-        width: calc(50% - 5px); /* Half the width minus half the bar's margin */
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2px;
-        align-items: center;
-        justify-content: flex-start; /* Align tags to the left */
-        box-sizing: border-box;
-    }
-    
-    .vertical-bar-in-table {
-        display: inline-block;
-        width: 1px;
-        background-color: #ccc; /* Light grey for the bar */
-        margin: 0 4px; /* Added 4px horizontal margin to separate from tags */
-        vertical-align: middle; /* Align with text */
-        align-self: stretch; /* Make it stretch to the height of the flex container */
-        flex-shrink: 0; /* Prevent it from shrinking */
-    }
-    
-    /* Add padding to the sections adjacent to the vertical bar */
-    /* REMOVED: No longer needed as margin on bar handles spacing */
-    /* .competitors-cross-sell-section {
-        padding-right: 2px; 
-    }
-    
-    .competitors-threat-section {
-        padding-left: 2px; 
-    } */
-    
-    /* NEW CSS for Application Category Font Size */
-    .application-category {
-        font-size: 0.8em; /* Smaller font size */
-        color: #6c757d; /* Muted color */
-        display: block; /* Ensure it's on a new line */
-        margin-top: 2px; /* Small space from app name */
-    }
-    
-    /* NEW CSS for ARR Capsule */
-    .arr-capsule-container {
-        background: #e0e0e0; /* Grey background for the capsule */
-        border: 1px solid #ccc; /* Subtle border */
-        border-radius: 18px; /* Pill shape */
-        padding: 3px; /* Padding inside the capsule */
-        display: flex;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
-        flex-shrink: 0;
-        margin-left: 10px;
-        margin-right: 15px;
-        height: 36px; /* Fixed height */
-        width: 160px; /* Reduced width */
-    }
-    
-    .arr-segment {
-        display: flex;
-        flex-direction: row; /* Keep as row for side-by-side text and count */
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        padding: 0 10px; /* Increased horizontal padding */
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-        white-space: nowrap;
-        height: 100%; /* Ensure segments fill the capsule height */
-        border-radius: 16px; /* Match capsule border radius for segments */
-    }
-    
-    .arr-segment:first-child {
-        border-top-left-radius: 16px;
-        border-bottom-left-radius: 16px;
-    }
-    
-    .arr-segment:last-child {
-        border-top-right-radius: 16px;
-        border-bottom-right-radius: 16px;
-    }
-    
-    .arr-segment:hover {
-        background-color: rgba(255, 255, 255, 0.7); /* Lighter hover effect */
-    }
-    
-    .arr-segment.active-arr-filter {
-        background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Liquid glass background */
-        color: #333; /* Dark text for readability on light background */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Keep subtle shadow for depth */
-        border: 2px solid #a0c0e0; /* Light blue-grey border */
-        animation: none; /* Remove pulse animation as per screenshot */
-    }
-    
-    .arr-segment.active-arr-filter:hover {
-        background: linear-gradient(to right, rgba(210, 225, 239, 0.9), rgba(180, 200, 220, 0.9)); /* Slightly darker liquid glass on hover */
-        border-color: #80a0c0; /* Slightly darker border on hover */
-    }
-    
-    
-    .arr-label {
-        font-size: 0.9em; /* Larger font for label */
-        font-weight: 500;
-        color: #333; /* Darker text for inactive state */
-        line-height: 1;
-        margin-right: 4px; /* Space between label and count */
-    }
-    
-    .arr-count {
-        font-size: 0.8em; /* Smaller font for count */
-        font-weight: 600;
-        color: #666; /* Muted color for count in inactive state */
-        line-height: 1;
-    }
-    
-    /* Styles for active segment text and count */
-    .arr-segment.active-arr-filter .arr-label,
-    .arr-segment.active-arr-filter .arr-count {
-        color: #333; /* Dark text for readability on light background */
-    }
-    
-    /* Remove vertical divider */
-    .arr-capsule-container .arr-segment:first-child {
-        border-right: none;
-    }
-    
-    /* Keyframes for ARR border pulse animation (removed as per new design) */
-    /* @keyframes arr-border-pulse {
-        0% {
-            border: 2px solid rgba(135, 206, 235, 0.5); 
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
-        }
-        50% {
-            border: 2px solid rgba(135, 206, 235, 1); 
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 5px rgba(135, 206, 235, 0); 
-        }
-        100% {
-            border: 2px solid rgba(135, 206, 235, 0.5); 
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
-        }
-    } */
-    
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+    height: 100%; /* Ensure segments fill the capsule height */
+    border-radius: 16px; /* Match capsule border radius for segments */
+}
+
+.arr-segment:first-child {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.arr-segment:last-child {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.arr-segment:hover {
+    background-color: rgba(255, 255, 255, 0.7); /* Lighter hover effect */
+}
+
+.arr-segment.active-arr-filter {
+    background: linear-gradient(to right, rgba(224, 237, 249, 0.9), rgba(200, 220, 240, 0.9)); /* Liquid glass background */
+    color: #333; /* Dark text for readability on light background */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Keep subtle shadow for depth */
+    border: 2px solid #a0c0e0; /* Light blue-grey border */
+    animation: none; /* Remove pulse animation as per screenshot */
+}
+
+.arr-segment.active-arr-filter:hover {
+    background: linear-gradient(to right, rgba(210, 225, 239, 0.9), rgba(180, 200, 220, 0.9)); /* Slightly darker liquid glass on hover */
+    border-color: #80a0c0; /* Slightly darker border on hover */
+}
+
+
+.arr-label {
+    font-size: 0.9em; /* Larger font for label */
+    font-weight: 500;
+    color: #333; /* Darker text for inactive state */
+    line-height: 1;
+    margin-right: 4px; /* Space between label and count */
+}
+
+.arr-count {
+    font-size: 0.8em; /* Smaller font for count */
+    font-weight: 600;
+    color: #666; /* Muted color for count in inactive state */
+    line-height: 1;
+}
+
+/* Styles for active segment text and count */
+.arr-segment.active-arr-filter .arr-label,
+.arr-segment.active-arr-filter .arr-count {
+    color: #333; /* Dark text for readability on light background */
+}
+
+/* Remove vertical divider */
+.arr-capsule-container .arr-segment:first-child {
+    border-right: none;
+}
+
+/* Keyframes for ARR border pulse animation (removed as per new design) */
+/* @keyframes arr-border-pulse {
+    0% {
+        border: 2px solid rgba(135, 206, 235, 0.5); 
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
+    }
+    50% {
+        border: 2px solid rgba(135, 206, 235, 1); 
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 5px rgba(135, 206, 235, 0); 
+    }
+    100% {
+        border: 2px solid rgba(135, 206, 235, 0.5); 
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(135, 206, 235, 0.7);
+    }
+} */
     /* NEW CSS for Small Info Cards */
     .small-info-card {
         background: linear-gradient(to right, rgba(240, 248, 255, 0.9), rgba(220, 235, 250, 0.9)); /* Light liquid glass */
@@ -2002,4 +2002,3 @@ body {
         gap: 0.2rem; /* smaller than Bootstrap's default */
         z-index: 2; /* optional: bring above if needed */
       }
-      
