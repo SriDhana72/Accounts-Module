@@ -18,25 +18,22 @@
                     <p class="text-muted small mb-2">
                         <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
                     </p>
-
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-person-fill text-success me-2"></i>
-                        <span class="small">50 Active Subscriptions</span>
+                        <span class="small">20 Active Subscriptions</span>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <i class="bi bi-person-x-fill text-danger me-2"></i>
-                        <span class="small">12 Inactive Subscriptions</span>
+                        <span class="small">8 Inactive Subscriptions</span>
                     </div>
-
-                    <div class="d-flex align-items-center mb-2"> <!-- Removed position-relative here, moved to eye icon -->
+                    <div class="d-flex align-items-center mb-2">
                         <span class="fs-5">
                             <i class="bi bi-star-fill star-red-gradient"></i>
                             <i class="bi bi-star-fill star-green-gradient"></i>
                             <i class="bi bi-star-fill star-purple-gradient"></i>
                         </span>
-                        <span class="ms-2 text-muted small">24/07/2025</span>
+                        <span class="ms-2 text-muted small">25/07/2025</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
-                            <!-- Rating Details Pop-up is now a child of the eye icon for positioning -->
                             <div id="ratingDetailsPopup" class="rating-details-popup">
                                 <div class="d-flex">
                                     <i class="bi bi-star-fill star-red-gradient"></i>
@@ -62,12 +59,10 @@
                             </div>
                         </i>
                     </div>
-
                     <div class="d-flex align-items-center mb-2">
                         <span class="fw-bold me-1">Business Category:</span>
                         <span class="small text-dark">Software & Technology</span>
                     </div>
-
                     <div class="d-flex align-items-baseline mb-2">
                         <h6 class="fw-bold text-dark me-1 mb-0 flex-shrink-0">Executive Summary:</h6>
                         <p class="small text-dark mb-0 flex-grow-1">
@@ -75,39 +70,38 @@
                         </p>
                     </div>
                 </div>
-                <!-- NEW: Small Cards - Positioned absolutely to the right, below health score -->
-<!-- NEW: Small Cards - Positioned absolutely to the right, below health score -->
-<div class="top-right-cards">
-    <div class="small-info-card">
-        <strong>ARR</strong>
-        <span class="value">$12,500</span>
-    </div>
-    <div class="small-info-card">
-        <strong>Last Invoice</strong>
-        <span class="value">2025-06-30</span>
-    </div>
-    <div class="small-info-card">
-        <strong>Next Renewal</strong>
-        <span class="value">2025-09-15</span>
-    </div>
-</div>
-                <div class="health-score-widget position-absolute top-0 end-0 p-3 d-flex align-items-center">
-                    <!-- Text block (Health Score, Status) -->
-                    <div class="d-flex flex-column align-items-start me-2"> <!-- Added margin-right here -->
+                <div class="health-score-widget d-flex align-items-center">
+                    <div class="d-flex flex-column align-items-start me-2">
                         <span class="fw-bold text-dark mb-0">Health Score</span>
                         <div class="d-flex align-items-center"> <span id="healthScoreStatus" class="fw-bold text-dark small text-success">Excellent</span>
                             <i id="healthScoreCheck" class="bi ms-1 fs-5 bi-check-circle-fill text-success" style="display: inline-block;"></i>
                         </div>
                     </div>
-                    <!-- Circle with number -->
                     <div id="healthScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center health-score-green-gradient">
                         <span id="healthScoreValue" class="fw-bold fs-4">98</span>
                     </div>
                 </div>
 
-                <!-- NEW: Need Help button moved inside this box -->
+                <!-- New Combined Info Card Container -->
+                <div class="combined-info-card-container">
+                    <div class="combined-info-card">
+                        <div class="info-section arr-section">
+                            <strong>ARR</strong>
+                            <span class="value">$12,500</span>
+                        </div>
+                        <div class="info-section recent-purchase-section">
+                            <strong>Recent Purchases</strong>
+                            <span class="clickable-number" id="recentPurchasesCount"></span>
+                        </div>
+                        <div class="info-section next-renewal-section">
+                            <strong>Next Renewals</strong>
+                            <span class="clickable-number" id="nextRenewalsCount"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- End New Combined Info Card Container -->
+
                 <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
-                    <!-- Changed to a button with icon and text -->
                     <button class="action-toggle-element need-help-fab">
                         <i class="bi bi-question-circle-fill"></i>
                         <span class="need-help-toggle-text">Need Help</span>
@@ -127,8 +121,8 @@
                         </button>
                     </div>
                 </div>
-
             </div>
+
             <div>
                 <div class="d-flex flex-wrap justify-content-around g-3">
                     <div class="card-section" id="criticalIssuesCard">
@@ -172,12 +166,11 @@
                 </div>
             </div>
             <hr />
-            <div class="d-flex align-items-center justify-content-between mb-4 flex-nowrap overflow-x-auto"> <!-- Added flex-nowrap overflow-x-auto -->
-                <div class="d-flex align-items-center flex-shrink-0"> <!-- Added flex-shrink-0 -->
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-nowrap overflow-x-auto">
+                <div class="d-flex align-items-center flex-shrink-0">
                     <h4 style="font-weight: 600; margin-bottom: 0;">
                         <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
                     </h4>
-                    <!-- NEW ARR Capsule - Updated to match screenshot -->
                     <div class="arr-capsule-container d-flex align-items-center">
                         <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
                             <span class="arr-label">&lt; 5k</span>
@@ -215,17 +208,16 @@
                 </div>
             </div>
         </div>
-
         <div id="applicationTableContainer" class="table-responsive">
             <table class="table" id="applicationTable">
                 <thead>
                     <tr>
-                        <th></th> <!-- For expand arrow -->
+                        <th></th>
                         <th style="min-width: 200px;">Applications</th>
                         <th>Usage</th>
                         <th>ARR</th>
                         <th>ARR Trend</th>
-                        <th>License</th> <!-- Renamed from Seats -->
+                        <th>License</th>
                         <th>License Trend</th>
                         <th class="text-center">
                             Competitors<br>
@@ -236,15 +228,14 @@
                     </tr>
                 </thead>
                 <tbody id="applicationTableBody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
-
         <div id="ticketDetailsTableContainer" class="table-responsive" style="display: none;">
             <table class="table ticket-details-table" id="ticketDetailsTable">
                 <thead>
                     <tr>
-                        <th></th> <!-- For expand arrow -->
+                        <th></th>
                         <th>Department</th>
                         <th>Open Status</th>
                         <th>Closed Status</th>
@@ -252,26 +243,35 @@
                     </tr>
                 </thead>
                 <tbody id="ticketDetailsTableBody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
-
-    <!-- Subscription Chat Modal Structure (now directly in body, absolutely positioned) -->
     <div id="subscriptionChatModal" class="subscription-chat-modal">
         <div class="subscription-chat-modal-header">
-            <span>What’s Going On?</span>
+            <span>Please post your query</span>
             <button class="close-button" id="closeSubscriptionChatModal">&times;</button>
         </div>
         <div class="subscription-chat-modal-body">
             <iframe id="subscriptionChatIframe" class="subscription-chat-iframe" src="" title="Subscription Chat"></iframe>
         </div>
     </div>
-</tbody>
-            </table>
+
+    <!-- Recent Purchases Pop-up -->
+    <div id="recentPurchasesPopup" class="popup-overlay">
+        <div class="popup-content">
+            <button class="popup-close-btn">&times;</button>
+            <h5>Recent Purchases (Last 6 Months)</h5>
+            <ul id="recentPurchasesList"></ul>
         </div>
     </div>
 
+    <!-- Next Renewals Pop-up -->
+    <div id="nextRenewalsPopup" class="popup-overlay">
+        <div class="popup-content">
+            <button class="popup-close-btn">&times;</button>
+            <h5>Upcoming Renewals</h5>
+            <ul id="nextRenewalsList"></ul>
         </div>
     </div>
 

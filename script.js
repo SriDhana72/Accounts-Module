@@ -1,26 +1,20 @@
 // Dummy data for the application table
-// Removed the setTimeout function that was setting display for .needHelp
-// setTimeout(function() {
-// const element = document.querySelector('.needHelp'); 
-// if (element) {
-// element.style.display = 'block'; 
-// }
-// }, 1000);
-
 const appData = [
 {
 id: 1,
-application: 'CRM Plus', // Updated
+application: 'CRM Plus',
 category: 'Sales',
-usage: 'Medium', // Changed to string
+usage: 'Medium',
 seats: 28,
 license: `Downgraded in M6`,
-paymentFailureCount: 0, // New field
-pauseScheduledCount: 0, // New field
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
-createdTime: '2023-01-15T10:00:00Z', // Earliest, initial signup
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-01-15T10:00:00Z',
+lastInvoiceDate: '2025-07-01', // Dummy data for recent purchase
+nextRenewalDate: '2025-10-15', // Dummy data for next renewal
 monthlyData: [
 { month: 'M1', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -32,17 +26,19 @@ monthlyData: [
 },
 {
 id: 2,
-application: 'Voice', // Updated
+application: 'Voice',
 category: 'Sales',
-usage: 'Low', // Changed to string
+usage: 'Low',
 seats: 21,
 license: 'Downgraded in M6',
-paymentFailureCount: 3, // Example: Warning
+paymentFailureCount: 3,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
-createdTime: '2023-02-01T11:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-02-01T11:00:00Z',
+lastInvoiceDate: '2025-06-20',
+nextRenewalDate: '2025-11-01',
 monthlyData: [
 { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'Medium' },
 { month: 'M2', seats: 24, change: '-1', revenue: 1200, revenueChange: '-50', competitorIntegrations: 'High' },
@@ -54,17 +50,19 @@ monthlyData: [
 },
 {
 id: 3,
-application: 'One', // Updated
+application: 'One',
 category: 'Sales',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 33,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-sales-ops', // NEW: Link to relevant department
-createdTime: '2023-03-10T12:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-03-10T12:00:00Z',
+lastInvoiceDate: '2025-05-10',
+nextRenewalDate: '2026-03-10',
 monthlyData: [
 { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
 { month: 'M2', seats: 31, change: '+1', revenue: 3100, revenueChange: '+100', competitorIntegrations: 'Low' },
@@ -76,17 +74,19 @@ monthlyData: [
 },
 {
 id: 4,
-application: 'Desk', // Updated
+application: 'Desk',
 category: 'Marketing',
-usage: 'Medium', // Changed to string
+usage: 'Medium',
 seats: 41,
 license: 'No changes',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: ['Mailchimp'],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department (general IT for marketing tech)
-createdTime: '2023-04-05T13:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-04-05T13:00:00Z',
+lastInvoiceDate: '2025-04-01',
+nextRenewalDate: '2025-09-05',
 monthlyData: [
 { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
@@ -98,39 +98,43 @@ monthlyData: [
 },
 {
 id: 5,
-application: 'Inventory', // Updated
+application: 'Inventory',
 category: 'Marketing',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 46,
 license: 'Downgraded in M6',
-paymentFailureCount: 6, // Example: Critical
+paymentFailureCount: 6,
 pauseScheduledCount: 0,
 competitors: ['MailChimp'],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2023-05-20T14:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-05-20T14:00:00Z',
+lastInvoiceDate: '2025-03-15',
+nextRenewalDate: '2025-08-20',
 monthlyData: [
 { month: 'M1', seats: 50, change: '0', revenue: 2500, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 49, change: '-1', revenue: 2450, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-{ month: 'M3', seats: 48, change: '-1', revenue: 2400, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-{ month: 'M4', seats: 47, change: '-1', revenue: 2350, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-{ month: 'M5', seats: 47, change: '0', revenue: 2350, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-{ month: 'M6', seats: 46, change: '-1', revenue: 2300, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+{ month: 'M3', seats: 48, change: '-1', revenue: 2400, revenueChange: '-50', competitorIntegrations: 'High' },
+{ month: 'M4', seats: 47, change: '-1', revenue: 2350, revenueChange: '-50', competitorIntegrations: 'High' },
+{ month: 'M5', seats: 47, change: '0', revenue: 2350, revenueChange: '0', competitorIntegrations: 'High' },
+{ month: 'M6', seats: 46, change: '-1', revenue: 2300, revenueChange: '-50', competitorIntegrations: 'High' },
 ]
 },
 {
 id: 6,
-application: 'FSM', // Updated
+application: 'FSM',
 category: 'Marketing',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 29,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: ['Mailchimp', 'Active campaign'],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2023-06-10T15:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-06-10T15:00:00Z',
+lastInvoiceDate: '2025-02-28',
+nextRenewalDate: '2025-09-10',
 monthlyData: [
 { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 26, change: '+1', revenue: 1300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -142,17 +146,19 @@ monthlyData: [
 },
 {
 id: 7,
-application: 'People Plus', // Updated
+application: 'People Plus',
 category: 'Support',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 46,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2023-07-01T16:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-07-01T16:00:00Z',
+lastInvoiceDate: '2025-01-20',
+nextRenewalDate: '2025-12-01',
 monthlyData: [
 { month: 'M1', seats: 40, change: '0', revenue: 2000, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 41, change: '+1', revenue: 2050, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -164,17 +170,19 @@ monthlyData: [
 },
 {
 id: 8,
-application: 'Payroll', // Updated
+application: 'Payroll',
 category: 'Support',
-usage: 'Medium', // Changed to string
+usage: 'Medium',
 seats: 48,
 license: 'Downgraded in M6',
 paymentFailureCount: 0,
-pauseScheduledCount: 4, // Example: Warning
+pauseScheduledCount: 4,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2023-08-12T17:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-08-12T17:00:00Z',
+lastInvoiceDate: '2024-12-01',
+nextRenewalDate: '2026-01-12',
 monthlyData: [
 { month: 'M1', seats: 52, change: '0', revenue: 260, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 51, change: '-1', revenue: 255, revenueChange: '-5', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -186,17 +194,19 @@ monthlyData: [
 },
 {
 id: 9,
-application: 'Invoice', // Updated
+application: 'Invoice',
 category: 'Support',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 41,
 license: 'Downgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2023-09-01T18:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-09-01T18:00:00Z',
+lastInvoiceDate: '2025-07-20',
+nextRenewalDate: '2025-10-01',
 monthlyData: [
 { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 44, change: '-1', revenue: 440, revenueChange: '-10', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -208,17 +218,19 @@ monthlyData: [
 },
 {
 id: 10,
-application: 'Expense', // Updated
+application: 'Expense',
 category: 'Finance',
-usage: 'Low', // Changed to string
+usage: 'Low',
 seats: 20,
 license: 'Downgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
-createdTime: '2023-10-20T09:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-finance',
+createdTime: '2023-10-20T09:00:00Z',
+lastInvoiceDate: '2025-06-01',
+nextRenewalDate: '2025-09-20',
 monthlyData: [
 { month: 'M1', seats: 22, change: '0', revenue: 2200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 22, change: '0', revenue: 2200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -230,17 +242,19 @@ monthlyData: [
 },
 {
 id: 11,
-application: 'Creator', // Updated
+application: 'Creator',
 category: 'Finance',
-usage: 'Medium', // Changed to string
+usage: 'Medium',
 seats: 12,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
-createdTime: '2023-11-05T10:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-finance',
+createdTime: '2023-11-05T10:00:00Z',
+lastInvoiceDate: '2025-07-10',
+nextRenewalDate: '2025-10-05',
 monthlyData: [
 { month: 'M1', seats: 10, change: '0', revenue: 100, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 11, change: '+1', revenue: 110, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -252,17 +266,19 @@ monthlyData: [
 },
 {
 id: 12,
-application: 'Cliq', // Updated
+application: 'Cliq',
 category: 'Finance',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 31,
 license: 'Downgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-finance', // NEW: Link to relevant department
-createdTime: '2023-12-01T11:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-finance',
+createdTime: '2023-12-01T11:00:00Z',
+lastInvoiceDate: '2025-05-25',
+nextRenewalDate: '2025-11-01',
 monthlyData: [
 { month: 'M1', seats: 35, change: '0', revenue: 3500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 34, change: '-1', revenue: 3400, revenueChange: '-100', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
@@ -274,17 +290,19 @@ monthlyData: [
 },
 {
 id: 13,
-application: 'CRM', // Updated
+application: 'CRM',
 category: 'Operations',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 47,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department (general IT for operational tech)
-createdTime: '2024-01-10T12:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-01-10T12:00:00Z',
+lastInvoiceDate: '2025-07-05',
+nextRenewalDate: '2025-10-10',
 monthlyData: [
 { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 46, change: '+1', revenue: 4600, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -296,17 +314,19 @@ monthlyData: [
 },
 {
 id: 14,
-application: 'BooksZohoGST', // Updated
+application: 'BooksZohoGST',
 category: 'Operations',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 29,
 license: 'No changes',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2024-02-14T13:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-02-14T13:00:00Z',
+lastInvoiceDate: '2025-06-10',
+nextRenewalDate: '2026-02-14',
 monthlyData: [
 { month: 'M1', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
 { month: 'M2', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -318,17 +338,19 @@ monthlyData: [
 },
 {
 id: 15,
-application: 'Workplace', // Updated
+application: 'Workplace',
 category: 'Human Resources',
-usage: 'Low', // Changed to string
+usage: 'Low',
 seats: 26,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: [],
 details: [],
-relevantDepartmentId: 'dept-hr', // NEW: Link to relevant department
-createdTime: '2024-03-01T14:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-hr',
+createdTime: '2024-03-01T14:00:00Z',
+lastInvoiceDate: '2025-07-18',
+nextRenewalDate: '2025-10-01',
 monthlyData: [
 { month: 'M1', seats: 24, change: '0', revenue: 1200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
 { month: 'M2', seats: 25, change: '+1', revenue: 1250, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -340,17 +362,19 @@ monthlyData: [
 },
 {
 id: 16,
-application: 'WorkDrive', // Updated
+application: 'WorkDrive',
 category: 'Productivity',
-usage: 'High', // Changed to string
+usage: 'High',
 seats: 120,
 license: 'Upgraded in M6',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: ['Dropbox', 'Google Drive'],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2024-04-20T15:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-04-20T15:00:00Z',
+lastInvoiceDate: '2025-07-22',
+nextRenewalDate: '2025-09-20',
 monthlyData: [
 { month: 'M1', seats: 100, change: '0', revenue: 500, revenueChange: '0', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
 { month: 'M2', seats: 105, change: '+5', revenue: 525, revenueChange: '+25', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
@@ -362,17 +386,19 @@ monthlyData: [
 },
 {
 id: 17,
-application: 'Sites', // Updated
+application: 'Sites',
 category: 'Communication',
-usage: 'Medium', // Changed to string
+usage: 'Medium',
 seats: 75,
 license: 'No changes',
 paymentFailureCount: 0,
 pauseScheduledCount: 0,
 competitors: ['Zoom', 'Microsoft Teams'],
 details: [],
-relevantDepartmentId: 'dept-it-support', // NEW: Link to relevant department
-createdTime: '2024-05-01T16:00:00Z', // Cross-sell
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-05-01T16:00:00Z',
+lastInvoiceDate: '2025-01-05',
+nextRenewalDate: '2026-05-01',
 monthlyData: [
 { month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
 { month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
@@ -384,7 +410,7 @@ monthlyData: [
 },
 {
     id: 18,
-    application: 'Sign', // New Zoho app
+    application: 'Sign',
     category: 'Productivity',
     usage: 'High',
     seats: 50,
@@ -394,7 +420,9 @@ monthlyData: [
     competitors: [],
     details: [],
     relevantDepartmentId: 'dept-it-support',
-    createdTime: '2024-06-10T17:00:00Z', // Cross-sell
+    createdTime: '2024-06-10T17:00:00Z',
+    lastInvoiceDate: '2025-07-12',
+    nextRenewalDate: '2025-08-10',
     monthlyData: [
         { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
         { month: 'M2', seats: 46, change: '+1', revenue: 460, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -406,7 +434,7 @@ monthlyData: [
 },
 {
     id: 19,
-    application: 'Meeting', // New Zoho app
+    application: 'Meeting',
     category: 'Communication',
     usage: 'Medium',
     seats: 80,
@@ -416,7 +444,9 @@ monthlyData: [
     competitors: ['Google Meet'],
     details: [],
     relevantDepartmentId: 'dept-it-support',
-    createdTime: '2024-07-01T18:00:00Z', // Cross-sell
+    createdTime: '2024-07-01T18:00:00Z',
+    lastInvoiceDate: '2025-07-01',
+    nextRenewalDate: '2025-09-01',
     monthlyData: [
         { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
         { month: 'M2', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
@@ -428,7 +458,7 @@ monthlyData: [
 },
 {
     id: 20,
-    application: 'Mail Suite', // New Zoho app
+    application: 'Mail Suite',
     category: 'Communication',
     usage: 'High',
     seats: 150,
@@ -438,7 +468,9 @@ monthlyData: [
     competitors: ['Outlook', 'Gmail'],
     details: [],
     relevantDepartmentId: 'dept-it-support',
-    createdTime: '2024-07-15T19:00:00Z', // Cross-sell
+    createdTime: '2024-07-15T19:00:00Z',
+    lastInvoiceDate: '2025-06-25',
+    nextRenewalDate: '2025-11-15',
     monthlyData: [
         { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
         { month: 'M2', seats: 142, change: '+2', revenue: 1420, revenueChange: '+20', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
@@ -449,11 +481,8 @@ monthlyData: [
     ]
 }
 ];
-
-// Function to assign initial status based on existing data
 function assignInitialAppStatus(data) {
     data.forEach(app => {
-        // Prioritize Renewal Risk based on new counts
         if (app.paymentFailureCount > 0 || app.pauseScheduledCount > 0) {
             app.status = 'Renewal risk detected';
         } else if (app.license.includes('Downgraded') || app.usage === 'Low') {
@@ -465,65 +494,51 @@ function assignInitialAppStatus(data) {
         }
     });
 }
-
-// Call this function once to initialize statuses in appData
 assignInitialAppStatus(appData);
-
-
-// Function to assign new tags based on ticket summary
 function assignTagsFromSummary(summary) {
-const tags = [];
-const lowerSummary = summary.toLowerCase();
-
-// Mapping keywords to new tags
-if (lowerSummary.includes('dissatisfaction') || lowerSummary.includes('complaint') || lowerSummary.includes('unhappy') || lowerSummary.includes('frustrated') || lowerSummary.includes('poor service')) {
-tags.push('Dissatisfaction/Complaint');
+    const tags = [];
+    const lowerSummary = summary.toLowerCase();
+    if (lowerSummary.includes('dissatisfaction') || lowerSummary.includes('complaint') || lowerSummary.includes('unhappy') || lowerSummary.includes('frustrated') || lowerSummary.includes('poor service')) {
+        tags.push('Dissatisfaction/Complaint');
+    }
+    if (lowerSummary.includes('escalation') || lowerSummary.includes('urgent') || lowerSummary.includes('critical')) {
+        tags.push('Escalation Request');
+    }
+    if (lowerSummary.includes('repeated follow-up') || lowerSummary.includes('still waiting') || lowerSummary.includes('no response')) {
+        tags.push('Repeated Follow-up');
+    }
+    if (lowerSummary.includes('slow support') || lowerSummary.includes('delay') || lowerSummary.includes('lagging') || lowerSummary.includes('unresponsive') || lowerSummary.includes('pending')) {
+        tags.push('Slow Support / Delay');
+    }
+    if (lowerSummary.includes('feature request') || lowerSummary.includes('missing feature') || lowerSummary.includes('feature gap')) {
+        tags.push('Feature Gap');
+    }
+    if (lowerSummary.includes('cancel') || lowerSummary.includes('churn') || lowerSummary.includes('leaving') || lowerSummary.includes('terminate subscription')) {
+        tags.push('Cancel Threat/Churn Threat');
+    }
+    if (lowerSummary.includes('competitor') || lowerSummary.includes('switching to') || lowerSummary.includes('moving to')) {
+        tags.push('Competitor Switch');
+    }
+    if (lowerSummary.includes('regret') || lowerSummary.includes('disappointed with product') || lowerSummary.includes('not meeting expectations')) {
+        tags.push('Product Regret');
+    }
+    if (lowerSummary.includes('outage') || lowerSummary.includes('down') || lowerSummary.includes('emergency') || lowerSummary.includes('not working') || lowerSummary.includes('service disruption') || lowerSummary.includes('access issue') || lowerSummary.includes('cannot log in') || lowerSummary.includes('connectivity problem') || lowerSummary.includes('unreachable')) {
+        tags.push('Service Outage/Emergency');
+    }
+    if (lowerSummary.includes('security') || lowerSummary.includes('data breach') || lowerSummary.includes('unauthorized access') || lowerSummary.includes('vulnerability') || lowerSummary.includes('trust concern') || lowerSummary.includes('privacy issue')) {
+        tags.push('Security/Data Breach');
+    }
+    if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
+        tags.push('Evaluating Alternatives');
+    }
+    return tags;
 }
-if (lowerSummary.includes('escalation') || lowerSummary.includes('urgent') || lowerSummary.includes('critical')) {
-tags.push('Escalation Request');
-}
-if (lowerSummary.includes('repeated follow-up') || lowerSummary.includes('still waiting') || lowerSummary.includes('no response')) {
-tags.push('Repeated Follow-up');
-}
-if (lowerSummary.includes('slow support') || lowerSummary.includes('delay') || lowerSummary.includes('lagging') || lowerSummary.includes('unresponsive') || lowerSummary.includes('pending')) {
-tags.push('Slow Support / Delay');
-}
-if (lowerSummary.includes('feature request') || lowerSummary.includes('missing feature') || lowerSummary.includes('feature gap')) {
-tags.push('Feature Gap');
-}
-if (lowerSummary.includes('cancel') || lowerSummary.includes('churn') || lowerSummary.includes('leaving') || lowerSummary.includes('terminate subscription')) {
-tags.push('Cancel Threat/Churn Threat');
-}
-if (lowerSummary.includes('competitor') || lowerSummary.includes('switching to') || lowerSummary.includes('moving to')) {
-tags.push('Competitor Switch');
-}
-if (lowerSummary.includes('regret') || lowerSummary.includes('disappointed with product') || lowerSummary.includes('not meeting expectations')) {
-tags.push('Product Regret');
-}
-// Updated Service Outage/Emergency to include 'access issue' related keywords
-if (lowerSummary.includes('outage') || lowerSummary.includes('down') || lowerSummary.includes('emergency') || lowerSummary.includes('not working') || lowerSummary.includes('service disruption') || lowerSummary.includes('access issue') || lowerSummary.includes('cannot log in') || lowerSummary.includes('connectivity problem') || lowerSummary.includes('unreachable')) {
-tags.push('Service Outage/Emergency');
-}
-// Updated Security/Data Breach to include 'trust concern' related keywords
-if (lowerSummary.includes('security') || lowerSummary.includes('data breach') || lowerSummary.includes('unauthorized access') || lowerSummary.includes('vulnerability') || lowerSummary.includes('trust concern') || lowerSummary.includes('privacy issue')) {
-tags.push('Security/Data Breach');
-}
-// New tag: Evaluating Alternatives
-if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
-tags.push('Evaluating Alternatives');
-}
-
-return tags;
-}
-
-
-// Dummy data for Ticket Details table - UPDATED TO USE NEW TAG LOGIC
 const ticketDetailsData = [
 {
-id: 'dept-it-support', // Added ID for expansion logic
+id: 'dept-it-support',
 department: "IT Support",
 openStatus: 3,
-closedStatus: 2, // This is explicitly 2
+closedStatus: 2,
 openTicketOwnership: "Loganathan",
 executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
 tickets: [
@@ -538,7 +553,7 @@ tickets: [
 id: 'dept-sales-ops',
 department: "Sales Operations",
 openStatus: 1,
-closedStatus: 0, // This is explicitly 0
+closedStatus: 0,
 openTicketOwnership: "Foumin",
 executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
 tickets: [
@@ -549,7 +564,7 @@ tickets: [
 id: 'dept-finance',
 department: "Finance",
 openStatus: 1,
-closedStatus: 0, // This is explicitly 0
+closedStatus: 0,
 openTicketOwnership: "Dhana",
 executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
 tickets: [
@@ -560,19 +575,19 @@ tickets: [
 id: 'dept-development',
 department: "Development",
 openStatus: 3,
-closedStatus: 0, // This is explicitly 0
+closedStatus: 0,
 openTicketOwnership: "Sivanesan",
 executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
 tickets: [
 { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
-{ id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", status: "Open" },
+{ id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
 { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
 ]
 },
 {
 id: 'dept-hr',
 department: "Human Resources",
-openStatus: 0, // No open tickets for HR in this dummy data for variety
+openStatus: 0,
 closedStatus: 5,
 openTicketOwnership: "Laxman",
 executiveSummary: "No open tickets. All HR-related requests and queries have been resolved promptly.",
@@ -585,28 +600,23 @@ tickets: [
 ]
 }
 ];
-
-// Pre-process ticketDetailsData to assign tags
 ticketDetailsData.forEach(dept => {
 dept.tickets.forEach(ticket => {
 ticket.tags = assignTagsFromSummary(ticket.summary);
 });
 });
-
-
-// Initialize all DOM element references at the top
 let applicationTableContainer = null;
 let ticketDetailsTableContainer = null;
 let applicationTableBody = null;
-let applicationTableHeader = null; // Reference for the applications table header
+let applicationTableHeader = null;
 let ticketDetailsTableBody = null;
-let crossSellBtn = null; // NEW: Cross-sell button
+let crossSellBtn = null;
 let allAppsBtn = null;
 let downgradesBtn = null;
 let competitorsBtn = null;
 let anomaliesBtn = null;
 let ticketDetailsBtn = null;
-let crossSellCountSpan = null; // NEW: Cross-sell count span
+let crossSellCountSpan = null;
 let allAppsCountSpan = null;
 let downgradesCountSpan = null;
 let competitorsCountSpan = null;
@@ -614,61 +624,52 @@ let anomaliesCountSpan = null;
 let criticalIssuesCountSpan = null;
 let warningSignsCountSpan = null;
 let deskTicketsCountSpan = null;
-
-// NEW ARR elements
 let arrLessThan5kCountSpan = null;
 let arrGreaterThan5kCountSpan = null;
 let arrLessThan5kSegment = null;
 let arrGreaterThan5kSegment = null;
-
-
-// Card element references
 let criticalIssuesCard = null;
 let warningSignsCard = null;
-competitorExposureCard = null;
-downgradeRisksCard = null;
-downgradeRisksCard = null;
-deskTicketsCard = null;
-// Health Score elements - Declare globally
+let competitorExposureCard = null; // Corrected declaration
+let downgradeRisksCard = null; // Corrected declaration
+let deskTicketsCard = null;
 let healthScoreCircle = null;
 let healthScoreValue = null;
 let healthScoreStatus = null;
 let healthScoreCheck = null;
-
-// New references for the <strong> elements within the cards
 let competitorExposureCountElement = null;
 let downgradeRisksCountElement = null;
-
-// Global variable to track the currently open dropdown menu and its toggle element
-let currentOpenDropdown = null; 
+let currentOpenDropdown = null;
 let currentOpenDropdownToggle = null;
-
-// Global variable to track the currently open threat popup and its toggle element
 let currentOpenThreatPopup = null;
 let currentOpenThreatPopupToggle = null;
+const npsScore = 70;
+
+// New elements for popups
+let recentPurchasesCountSpan = null;
+let nextRenewalsCountSpan = null;
+let recentPurchasesPopup = null;
+let nextRenewalsPopup = null;
+let recentPurchasesList = null;
+let nextRenewalsList = null;
+let expandedRowId = null; // Define expandedRowId
+let expandedTicketRowId = null; // Define expandedTicketRowId
+let activeSection = 'all-apps'; // Define activeSection
 
 
-// Global NPS Score (for demonstration, you would fetch this from CRM)
-const npsScore = 70; // Example NPS score
-
-// Function to close all dropdowns (action menus)
 function closeAllDropdowns() {
-if (currentOpenDropdown) {
-currentOpenDropdown.classList.remove('show');
-// Remove animation class from buttons when closing
-currentOpenDropdown.querySelectorAll('.glass-button').forEach(button => {
-    button.style.animation = ''; // Reset animation
-});
-// If the closed dropdown was the "Need Help" one, also remove the 'show-arrow' class from its toggle element
-if (currentOpenDropdown.id === 'need-help-dropdown-menu' && currentOpenDropdownToggle) {
-    currentOpenDropdownToggle.classList.remove('show-arrow');
+    if (currentOpenDropdown) {
+        currentOpenDropdown.classList.remove('show');
+        currentOpenDropdown.querySelectorAll('.glass-button').forEach(button => {
+            button.style.animation = '';
+        });
+        if (currentOpenDropdown.id === 'need-help-dropdown-menu' && currentOpenDropdownToggle) {
+            currentOpenDropdownToggle.classList.remove('show-arrow');
+        }
+        currentOpenDropdown = null;
+        currentOpenDropdownToggle = null;
+    }
 }
-currentOpenDropdown = null;
-currentOpenDropdownToggle = null;
-}
-}
-
-// Function to close all threat popups
 function closeAllThreatPopups() {
     if (currentOpenThreatPopup) {
         currentOpenThreatPopup.classList.remove('show');
@@ -677,470 +678,384 @@ function closeAllThreatPopups() {
     }
 }
 
+function closeAllModals() {
+    if (recentPurchasesPopup) recentPurchasesPopup.classList.remove('show');
+    if (nextRenewalsPopup) nextRenewalsPopup.classList.remove('show');
+}
 
-// Function to initialize DOM elements
 function initializeDOMElements() {
-applicationTableContainer = document.getElementById('applicationTableContainer');
-ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContainer');
-applicationTableBody = document.getElementById('applicationTableBody');
-applicationTableHeader = document.querySelector('#applicationTable thead'); // Select the thead of the applications table
-ticketDetailsTableBody = document.getElementById('ticketDetailsTableBody');
-crossSellBtn = document.getElementById('crossSellBtn'); // NEW
-allAppsBtn = document.getElementById('allAppsBtn');
-downgradesBtn = document.getElementById('downgradesBtn');
-competitorsBtn = document.getElementById('competitorsBtn');
-anomaliesBtn = document.getElementById('anomaliesBtn');
-ticketDetailsBtn = document.getElementById('ticketDetailsBtn');
-crossSellCountSpan = document.getElementById('crossSellCount'); // NEW
-allAppsCountSpan = document.getElementById('allAppsCount');
-downgradesCountSpan = document.getElementById('downgradesCount');
-competitorsCountSpan = document.getElementById('competitorsCount');
-anomaliesCountSpan = document.getElementById('anomaliesCount');
-criticalIssuesCountSpan = document.getElementById('criticalIssuesCount');
-warningSignsCountSpan = document.getElementById('warningSignsCount');
+    applicationTableContainer = document.getElementById('applicationTableContainer');
+    ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContainer');
+    applicationTableBody = document.getElementById('applicationTableBody');
+    applicationTableHeader = document.querySelector('#applicationTable thead');
+    ticketDetailsTableBody = document.getElementById('ticketDetailsTableBody');
+    crossSellBtn = document.getElementById('crossSellBtn');
+    allAppsBtn = document.getElementById('allAppsBtn');
+    downgradesBtn = document.getElementById('downgradesBtn');
+    competitorsBtn = document.getElementById('competitorsBtn');
+    anomaliesBtn = document.getElementById('anomaliesBtn');
+    ticketDetailsBtn = document.getElementById('ticketDetailsBtn');
+    crossSellCountSpan = document.getElementById('crossSellCount');
+    allAppsCountSpan = document.getElementById('allAppsCount');
+    downgradesCountSpan = document.getElementById('downgradesCount');
+    competitorsCountSpan = document.getElementById('competitorsCount');
+    anomaliesCountSpan = document.getElementById('anomaliesCount');
+    criticalIssuesCountSpan = document.getElementById('criticalIssuesCount');
+    warningSignsCountSpan = document.getElementById('warningSignsCount');
+    arrLessThan5kCountSpan = document.getElementById('arrLessThan5kCount');
+    arrGreaterThan5kCountSpan = document.getElementById('arrGreaterThan5kCount');
+    arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
+    arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
+    criticalIssuesCard = document.getElementById('criticalIssuesCard');
+    warningSignsCard = document.getElementById('warningSignsCard');
+    competitorExposureCard = document.getElementById('competitorExposureCard');
+    downgradeRisksCard = document.getElementById('downgradeRisksCard');
+    deskTicketsCard = document.getElementById('deskTicketsCard');
+    const openTicketsCountInCard = document.getElementById('openTicketsCount');
+    const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
+    healthScoreCircle = document.getElementById('healthScoreCircle');
+    healthScoreValue = document.getElementById('healthScoreValue');
+    healthScoreStatus = document.getElementById('healthScoreStatus');
+    healthScoreCheck = document.getElementById('healthScoreCheck');
+    subscriptionChatModal = document.getElementById('subscriptionChatModal');
+    closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
+    subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
+    competitorExposureCountElement = document.getElementById('competitorExposureCount');
+    downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
 
-// NEW ARR elements
-arrLessThan5kCountSpan = document.getElementById('arrLessThan5kCount');
-arrGreaterThan5kCountSpan = document.getElementById('arrGreaterThan5kCount');
-arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
-arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
+    // Initialize new elements
+    recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
+    nextRenewalsCountSpan = document.getElementById('nextRenewalsCount');
+    recentPurchasesPopup = document.getElementById('recentPurchasesPopup');
+    nextRenewalsPopup = document.getElementById('nextRenewalsPopup');
+    recentPurchasesList = document.getElementById('recentPurchasesList');
+    nextRenewalsList = document.getElementById('nextRenewalsList');
 
-
-// Card element references
-criticalIssuesCard = document.getElementById('criticalIssuesCard');
-warningSignsCard = document.getElementById('warningSignsCard');
-competitorExposureCard = document.getElementById('competitorExposureCard');
-downgradeRisksCard = document.getElementById('downgradeRisksCard');
-deskTicketsCard = document.getElementById('deskTicketsCard');
-
-// Desk Tickets card count (for the number next to 'Open')
-const openTicketsCountInCard = document.getElementById('openTicketsCount');
-const closedTicketsCountInCard = document.getElementById('closedTicketsCount'); // Also get the closed count span
-if (openTicketsCountInCard && closedTicketsCountInCard) {
-// We don't need deskTicketsCountSpan if we are updating both open and closed counts directly in updateCounts()
-// but keeping it if there's any other specific use. For now, it might be redundant.
-} else {
-console.warn("Element with ID 'openTicketsCount' or 'closedTicketsCount' not found for desk tickets card count.");
+    if (!applicationTableContainer) {
+        console.error('Application table container not found!');
+        return false;
+    }
+    if (!applicationTableBody) {
+        console.error('Application table body not found!');
+        return false;
+    }
+    if (!applicationTableHeader) {
+        console.error('Application table header (thead) not found!');
+        return false;
+    }
+    if (!subscriptionChatModal) {
+        console.error('Subscription chat modal element (subscriptionChatModal) not found!');
+        return false;
+    }
+    return true;
 }
-
-// Correctly reference the strong elements by their specific IDs for Competitor Exposure and Downgrade Risks cards
-competitorExposureCountElement = document.getElementById('competitorExposureCount');
-downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
-// NEW: Health Score elements - Assign here
-healthScoreCircle = document.getElementById('healthScoreCircle');
-healthScoreValue = document.getElementById('healthScoreValue');
-healthScoreStatus = document.getElementById('healthScoreStatus');
-healthScoreCheck = document.getElementById('healthScoreCheck');
-
-// Modal elements
-// Removed subscriptionChatModalOverlay as it's no longer needed
-subscriptionChatModal = document.getElementById('subscriptionChatModal'); // Direct reference to the modal
-closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
-subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
-
-// Check if all required elements exist (add more checks as needed)
-if (!applicationTableContainer) {
-console.error('Application table container not found!');
-return false;
-}
-if (!applicationTableBody) {
-console.error('Application table body not found!');
-return false;
-}
-if (!applicationTableHeader) { // Check for the thead
-console.error('Application table header (thead) not found!');
-return false;
-}
-// Ensure the chat modal itself is found
-if (!subscriptionChatModal) {
-    console.error('Subscription chat modal element (subscriptionChatModal) not found!');
-    return false;
-}
-return true;
-}
-
-// Filtered data arrays (these will be used when switching tabs)
 let allAppsFilteredData = [];
-let crossSellFilteredData = []; // NEW: Cross-sell filtered data
+let crossSellFilteredData = [];
 let downgradesFilteredData = [];
 let competitorsFilteredData = [];
 let criticalIssuesFilteredData = [];
 let warningSignsFilteredData = [];
-let anomaliesFilteredData = []; // Combined critical and warning
-let anomaliesCriticalOnlyData = []; // For Critical Issues card click
-let anomaliesWarningOnlyData = []; // For Warning Signs card click
-
-// NEW: ARR filtered data arrays
+let anomaliesFilteredData = [];
+let anomaliesCriticalOnlyData = [];
+let anomaliesWarningOnlyData = [];
 let arrLessThan5kFilteredData = [];
 let arrGreaterThan5kFilteredData = [];
 
+// New data arrays for popups
+let recentPurchasesData = [];
+let nextRenewalsData = [];
 
-// Function to calculate total ARR for an.application
 function calculateTotalArr(app) {
-    // Assuming the last month's revenue is the current ARR
-    // Or, if a sum is needed, iterate through monthlyData and sum up.
-    // For this context, "Total ARR" seems to refer to the current ARR.
     const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
     return currentMonthData ? currentMonthData.revenue : 0;
 }
 
-// Function to filter data arrays - UPDATED LOGIC HERE
 function filterDataArrays() {
-allAppsFilteredData = appData;
+    allAppsFilteredData = appData;
+    let initialSignupApp = null;
+    let earliestTime = Infinity;
+    appData.forEach(app => {
+        const appCreatedTime = new Date(app.createdTime).getTime();
+        if (appCreatedTime < earliestTime) {
+            earliestTime = appCreatedTime;
+            initialSignupApp = app;
+        }
+    });
+    crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
+    const problematicTicketTagsList = [
+        "Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
+        "Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
+        "Competitor Switch", "Product Regret", "Service Outage/Emergency",
+        "Security/Data Breach", "Evaluating Alternatives"
+    ].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-'));
+    const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === deptId);
 
-// Find the earliest createdTime to identify the initial signup
-let initialSignupApp = null;
-let earliestTime = Infinity;
+    // Declare totalInactiveApps here
+    const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
 
-appData.forEach(app => {
-    const appCreatedTime = new Date(app.createdTime).getTime();
-    if (appCreatedTime < earliestTime) {
-        earliestTime = appCreatedTime;
-        initialSignupApp = app;
-    }
-});
-
-// All applications except the initial signup are cross-sells
-crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
-
-
-// Get account-level metrics that are still relevant
-const totalInactiveApps = appData.filter(a => a.status === 'Inactive').length;
-
-// Pre-define problematic tags for easy lookup
-const problematicTicketTagsList = [
-    "Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
-    "Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
-    "Competitor Switch", "Product Regret", "Service Outage/Emergency",
-    "Security/Data Breach", "Evaluating Alternatives"
-].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-'));
-
-
-// Helper to find a department by ID
-const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === deptId);
-
-
-// Determine Critical Issues
-anomaliesCriticalOnlyData = appData.filter(app => {
-    let isCritical = false;
-
-    // Condition A: Recent Significant Seat Loss (e.g., lost seats in M6)
-    const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-    if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-        isCritical = true;
-    }
-
-    // Condition B: Very Low Usage with Downgraded License
-    if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-        isCritical = true;
-    }
-
-    // Condition C: Consistent Seat Decline (over last 3 months: M4, M5, M6)
-    let totalRecentDecline = 0;
-    const startIndex = app.monthlyData.length - 3;
-    const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-    if (relevantMonths.length === 3) {
-        relevantMonths.forEach(month => {
-            const change = parseInt(month.change);
-            if (change < 0) {
-                totalRecentDecline += change;
-            }
-        });
-    }
-    if (totalRecentDecline <= -3) {
-        isCritical = true;
-    }
-
-    // Payment Failure or Pause Scheduled count >= 5 (Critical)
-    if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
-        isCritical = true;
-    }
-
-    // NEW CRITICAL CONDITIONS (per your latest request)
-    // Seats Utilization - <40% (Critical)
-    let maxSeatsLast6Months = 0;
-    if (app.monthlyData.length >= 6) {
-        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-        maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-        if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.40) {
+    anomaliesCriticalOnlyData = appData.filter(app => {
+        let isCritical = false;
+        const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+        if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
             isCritical = true;
         }
-    }
-
-    // Inactive tags > 4 (Account-level, applied to all apps if true)
-    if (totalInactiveApps > 4) {
-        isCritical = true;
-    }
-
-    // ARR Trend - 40% Decrease (Comparing M6 revenue to M3 revenue)
-    if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (percentageChange < -0.40) { // 40% decrease
+        if (app.usage === 'Low' && app.license.includes('Downgraded')) {
+            isCritical = true;
+        }
+        let totalRecentDecline = 0;
+        const startIndex = app.monthlyData.length - 3;
+        const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+        if (relevantMonths.length === 3) {
+            relevantMonths.forEach(month => {
+                const change = parseInt(month.change);
+                if (change < 0) {
+                    totalRecentDecline += change;
+                }
+            });
+        }
+        if (totalRecentDecline <= -3) {
+            isCritical = true;
+        }
+        if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
+            isCritical = true;
+        }
+        let maxSeatsLast6Months = 0;
+        if (app.monthlyData.length >= 6) {
+            const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+            maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+            if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.40) {
                 isCritical = true;
             }
         }
-    }
-
-    // Desk tickets: relevant department open ticket count > 3 (Critical)
-    const relevantDepartment = findDepartment(app.relevantDepartmentId);
-    if (relevantDepartment && relevantDepartment.openStatus > 3) { // More than 3 open tickets in relevant department
-        isCritical = true;
-    }
-    
-    // Also check for critical problematic tags in relevant department
-    if (relevantDepartment) {
-        const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-        const hasCriticalProblematicTag = openTicketsInDept.some(tkt => 
-            tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-        );
-        if (hasCriticalProblematicTag) {
+        if (totalInactiveApps > 4) { // Use the defined totalInactiveApps
             isCritical = true;
         }
-    }
-
-    return isCritical;
-});
-
-// Determine Warning Signs (must NOT be a Critical Issue)
-anomaliesWarningOnlyData = appData.filter(app => {
-    // First, ensure it's not already a critical issue
-    const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
-    if (isAlreadyCritical) return false;
-
-    let isWarning = false;
-
-    // Payment Failure or Pause Scheduled count < 5 (Warning)
-    if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
-        (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
-        isWarning = true;
-    }
-
-    // Re-introduced previous warning conditions (less severe thresholds):
-    // Seats Utilization - <70% (Warning, if not critical)
-    let maxSeatsLast6Months = 0;
-    if (app.monthlyData.length >= 6) {
-        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-        maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-        if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.70) {
+        if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
+            const m6Revenue = app.monthlyData[5].revenue;
+            const m3Revenue = app.monthlyData[2].revenue;
+            if (m3Revenue > 0) {
+                const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                if (percentageChange < -0.40) {
+                    isCritical = true;
+                }
+            }
+        }
+        const relevantDepartment = findDepartment(app.relevantDepartmentId);
+        if (relevantDepartment && relevantDepartment.openStatus > 3) {
+            isCritical = true;
+        }
+        if (relevantDepartment) {
+            const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+            const hasCriticalProblematicTag = openTicketsInDept.some(tkt =>
+                tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+            );
+            if (hasCriticalProblematicTag) {
+                isCritical = true;
+            }
+        }
+        return isCritical;
+    });
+    anomaliesWarningOnlyData = appData.filter(app => {
+        const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
+        if (isAlreadyCritical) return false;
+        let isWarning = false;
+        if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
+            (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
             isWarning = true;
         }
-    }
-
-    // Inactive tags > 2 (Warning, if not critical)
-    if (totalInactiveApps > 2) { // Note: This applies to all apps if true for the account
-        isWarning = true;
-    }
-
-    // ARR Trend - 30% Decrease (Warning, if not critical)
-    if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (percentageChange < -0.30) { // 30% decrease
+        let maxSeatsLast6Months = 0;
+        if (app.monthlyData.length >= 6) {
+            const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+            maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+            if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.70) {
                 isWarning = true;
             }
         }
-    }
-
-    // Desk tickets: relevant department open ticket count > 1 (Warning, if not critical)
-    const relevantDepartment = findDepartment(app.relevantDepartmentId);
-    if (relevantDepartment && relevantDepartment.openStatus > 1) { // More than 1 open ticket (i.e., 2 or 3)
-        isWarning = true;
-    }
-
-    // Problematic Desk Ticket Tags (Warning) - for less severe tags
-    if (relevantDepartment) {
-        const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-        const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
-            tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-        );
-        if (hasWarningProblematicTag) {
+        if (totalInactiveApps > 2) { // Use the defined totalInactiveApps
             isWarning = true;
         }
-    }
-
-    return isWarning;
-});
-
-
-// Downgrades button still filters by license string.
-downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
-// Competitors button still filters by competitors array.
-competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
-
-
-// Anomalies are the union of Critical and Warning Signs for the main Anomalies button
-const anomaliesSet = new Set();
-anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
-anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
-anomaliesFilteredData = Array.from(anomaliesSet);
-
-// NEW: Filter for ARR categories
-arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
-arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
-}
-
-
-// Function to update the counts on the buttons and top cards
-function updateCounts(specificAnomaliesCount = null) {
-console.log('Updating counts...');
-
-// Update counts for buttons
-if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellFilteredData.length; // NEW
-if (allAppsCountSpan) allAppsCountSpan.textContent = allAppsFilteredData.length;
-if (downgradesCountSpan) downgradesCountSpan.textContent = downgradesFilteredData.length;
-if (competitorsCountSpan) competitorsCountSpan.textContent = competitorsFilteredData.length;
-// --- MODIFIED LOGIC for Anomalies Count ---
-if (anomaliesCountSpan) {
-if (specificAnomaliesCount !== null) {
-// Use the specific count if provided (from card click)
-anomaliesCountSpan.textContent = specificAnomaliesCount;
-} else {
-// Otherwise, use the total combined anomalies count (for direct button click)
-anomaliesCountSpan.textContent = anomaliesFilteredData.length;
-}
-}
-// --- END MODIFIED LOGIC ---
-
-// Update counts for Critical Issues and Warning Signs cards
-if (criticalIssuesCountSpan) criticalIssuesCountSpan.textContent = anomaliesCriticalOnlyData.length; // Uses specific critical count
-if (warningSignsCountSpan) warningSignsCountSpan.textContent = anomaliesWarningOnlyData.length; // Uses specific warning count
-
-// Correctly update counts for Competitor Exposure and Downgrade Risks cards
-if (competitorExposureCountElement) {
-competitorExposureCountElement.textContent = competitorsFilteredData.length;
-}
-if (downgradeRisksCountElement) {
-downgradeRisksCountElement.textContent = downgradesFilteredData.length;
-}
-
-
-// Update counts for Desk Tickets card and button
-const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
-// FIX: Correctly sum closedStatus for totalClosedTickets
-const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
-
-const openTicketsCountSpan = document.getElementById('openTicketsCount');
-const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
-
-if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
-if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
-
-// Ensure the numbers are properly aligned (if needed, typically done via CSS)
-if (openTicketsCountSpan) {
-openTicketsCountSpan.style.minWidth = '50px';
-openTicketsCountSpan.style.textAlign = 'center';
-}
-if (closedTicketsCountSpan) {
-closedTicketsCountSpan.style.minWidth = '50px';
-closedTicketsCountSpan.style.textAlign = 'center';
-}
-
-// NEW: Update ARR capsule counts
-if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
-if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
-}
-
-// Function to generate the status tag HTML with correct styling
-function getStatusTagHtml(status) {
-let colorClass = '';
-let displayText = status;
-if (status === 'Active') {
-colorClass = 'status-tag-active'; // Green
-} else if (status === 'Inactive') {
-colorClass = 'status-tag-inactive'; // Orange background, red bold font
-} else if (status === 'Renewal risk detected') {
-colorClass = 'status-tag-renewal-risk'; // Red
-displayText = 'Renewal risk'; // Change text
-}
-return `<span class="status-tag ${colorClass}">${displayText}</span>`;
-}
-
-
-// Function to render the application table rows based on provided data
-function renderApplicationTable(data) {
-console.log('Starting to render application table with', data.length, 'items');
-
-if (!applicationTableBody) {
-console.error("Application table body element (applicationTableBody) not found!");
-return;
-}
-
-// Clear any existing rows in the table body, including previously expanded rows
-applicationTableBody.innerHTML = '';
-expandedRowId = null; // Reset expanded row state
-
-// If no data, display a message
-if (data.length === 0) {
-const noDataRow = document.createElement('tr');
-noDataRow.innerHTML = `<td colspan="10" class="text-center py-4 text-muted">No data available for this category.</td>`; // Changed colspan to 10
-applicationTableBody.appendChild(noDataRow);
-return;
-}
-
-// Loop through each item (app) in the data array
-data.forEach((app) => {
-// Create a new table row element for the main application entry
-const row = document.createElement('tr');
-row.setAttribute('data-app-id', app.id);
-row.className = 'clickable-row';
-
-// Determine competitor display
-let crossSellCompetitors = [];
-let threatCompetitors = [];
-
-// Hardcoded mapping for demonstration
-const crossSellList = ['Mailchimp', 'Dropbox'];
-const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS']; // Added Sqauare POS
-
-if (app.competitors && app.competitors.length > 0) {
-    app.competitors.forEach(comp => {
-        if (crossSellList.includes(comp)) {
-            crossSellCompetitors.push(comp);
-        } else if (threatList.includes(comp)) {
-            threatCompetitors.push(comp);
-        } else {
-            // Default to threat if not explicitly categorized
-            threatCompetitors.push(comp);
+        if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
+            const m6Revenue = app.monthlyData[5].revenue;
+            const m3Revenue = app.monthlyData[2].revenue;
+            if (m3Revenue > 0) {
+                const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                if (percentageChange < -0.30) {
+                    isWarning = true;
+                }
+            }
         }
+        const relevantDepartment = findDepartment(app.relevantDepartmentId);
+        if (relevantDepartment && relevantDepartment.openStatus > 1) {
+            isWarning = true;
+        }
+        if (relevantDepartment) {
+            const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+            const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
+                tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+            );
+            if (hasWarningProblematicTag) {
+                isWarning = true;
+            }
+        }
+        return isWarning;
     });
+    downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
+    competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
+    const anomaliesSet = new Set();
+    anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
+    anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
+    anomaliesFilteredData = Array.from(anomaliesSet);
+    arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
+    arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
+
+    // Populate recent purchases and next renewals data
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const threeMonthsFromNow = new Date();
+    threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+
+    const availableRecentPurchases = appData.filter(app => {
+        if (app.lastInvoiceDate) {
+            const invoiceDate = new Date(app.lastInvoiceDate);
+            return invoiceDate >= sixMonthsAgo && invoiceDate <= new Date();
+        }
+        return false;
+    }).map(app => ({
+        name: app.application,
+        revenue: app.monthlyData[app.monthlyData.length - 1].revenue
+    }));
+
+    const availableNextRenewals = appData.filter(app => {
+        if (app.nextRenewalDate) {
+            const renewalDate = new Date(app.nextRenewalDate);
+            return renewalDate > new Date() && renewalDate <= threeMonthsFromNow;
+        }
+        return false;
+    }).map(app => ({
+        name: app.application,
+        date: app.nextRenewalDate,
+        revenue: app.monthlyData[app.monthlyData.length - 1].revenue
+    }));
+
+    // Fixed numbers for Recent Purchases (2) and Next Renewals (4)
+    recentPurchasesData = availableRecentPurchases.slice(0, 2);
+    nextRenewalsData = availableNextRenewals.slice(0, 4);
 }
 
-let competitorsCellContent = '';
+function updateCounts(specificAnomaliesCount = null) {
+    console.log('Updating counts...');
+    if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellFilteredData.length;
+    if (allAppsCountSpan) allAppsCountSpan.textContent = allAppsFilteredData.length;
+    if (downgradesCountSpan) downgradesCountSpan.textContent = downgradesFilteredData.length;
+    if (competitorsCountSpan) competitorsCountSpan.textContent = competitorsFilteredData.length;
+    if (anomaliesCountSpan) {
+        if (specificAnomaliesCount !== null) {
+            anomaliesCountSpan.textContent = specificAnomaliesCount;
+        } else {
+            anomaliesCountSpan.textContent = anomaliesFilteredData.length;
+        }
+    }
+    if (criticalIssuesCountSpan) criticalIssuesCountSpan.textContent = anomaliesCriticalOnlyData.length;
+    if (warningSignsCountSpan) warningSignsCountSpan.textContent = anomaliesWarningOnlyData.length;
+    if (competitorExposureCountElement) {
+        competitorExposureCountElement.textContent = competitorsFilteredData.length;
+    }
+    if (downgradeRisksCountElement) {
+        downgradeRisksCountElement.textContent = downgradesFilteredData.length;
+    }
+    const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+    const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
+    const openTicketsCountSpan = document.getElementById('openTicketsCount');
+    const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
+    if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
+    if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
+    if (openTicketsCountSpan) {
+        openTicketsCountSpan.style.minWidth = '50px';
+        openTicketsCountSpan.style.textAlign = 'center';
+    }
+    if (closedTicketsCountSpan) {
+        closedTicketsCountSpan.style.minWidth = '50px';
+        closedTicketsCountSpan.style.textAlign = 'center';
+    }
+    if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
+    if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
 
-// --- MODIFIED LOGIC FOR COMPETITORS CELL CONTENT ---
-if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
-    // Case 1: No competitors at all - show single 'None' centered
-    competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
+    // Update new card counts with fixed numbers
+    if (recentPurchasesCountSpan) recentPurchasesCountSpan.textContent = recentPurchasesData.length;
+    if (nextRenewalsCountSpan) nextRenewalsCountSpan.textContent = nextRenewalsData.length;
+}
+
+function getStatusTagHtml(status) {
+    let colorClass = '';
+    let displayText = status;
+    if (status === 'Active') {
+        colorClass = 'status-tag-active';
+    } else if (status === 'Inactive') {
+        colorClass = 'status-tag-inactive';
+    } else if (status === 'Renewal risk detected') {
+        colorClass = 'status-tag-renewal-risk';
+        displayText = 'Renewal risk';
+    }
+    return `<span class="status-tag ${colorClass}">${displayText}</span>`;
+}
+function renderApplicationTable(data) {
+    console.log('Starting to render application table with', data.length, 'items');
+    if (!applicationTableBody) {
+        console.error("Application table body element (applicationTableBody) not found!");
+        return;
+    }
+    applicationTableBody.innerHTML = '';
+    expandedRowId = null;
+    if (data.length === 0) {
+        const noDataRow = document.createElement('tr');
+        noDataRow.innerHTML = `<td colspan="10" class="text-center py-4 text-muted">No data available for this category.</td>`;
+        applicationTableBody.appendChild(noDataRow);
+        return;
+    }
+    data.forEach((app) => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-app-id', app.id);
+        row.className = 'clickable-row';
+        let crossSellCompetitors = [];
+        let threatCompetitors = [];
+        const crossSellList = ['Mailchimp', 'Dropbox'];
+        const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+        if (app.competitors && app.competitors.length > 0) {
+            app.competitors.forEach(comp => {
+                if (crossSellList.includes(comp)) {
+                    crossSellCompetitors.push(comp);
+                } else if (threatList.includes(comp)) {
+                    threatCompetitors.push(comp);
+                } else {
+                    threatCompetitors.push(comp);
+                }
+            });
+        }
+        let competitorsCellContent = '';
+        if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
+            competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
                                 <span class="text-dark">None</span>
                               </div>`;
-} else {
-    // Case 2: Competitors exist, render the split view
-    const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
-
-    let threatDisplayHtml = '';
-    let threatPopupHtml = '';
-    if (threatCompetitors.length > 0) {
-        threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
-        if (threatCompetitors.length > 1) {
-            const remainingThreatsCount = threatCompetitors.length - 1;
-            threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
-            threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
-            threatPopupHtml = `
+        } else {
+            const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
+            let threatDisplayHtml = '';
+            let threatPopupHtml = '';
+            if (threatCompetitors.length > 0) {
+                threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
+                if (threatCompetitors.length > 1) {
+                    const remainingThreatsCount = threatCompetitors.length - 1;
+                    threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
+                    threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
+                    threatPopupHtml = `
                 <div class="threat-popup-container">
                     ${threatPopupHtml}
                 </div>
             `;
-        }
-    } else {
-        threatDisplayHtml = '<span class="text-dark">None</span>'; // If no threat, display 'None' in black
-    }
-
-    competitorsCellContent = `
+                }
+            } else {
+                threatDisplayHtml = '<span class="text-dark">None</span>';
+            }
+            competitorsCellContent = `
         <div class="competitors-flex-container">
             <div class="competitors-cross-sell-section">
                 ${crossSellTagsHtml || '<span class="text-dark">None</span>'}
@@ -1154,120 +1069,91 @@ if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
             </div>
         </div>
     `;
-}
-// --- END MODIFIED LOGIC FOR COMPETITORS CELL CONTENT ---
-
-
-// Determine license trend icon and color
-let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`; // Default: no change
-if (app.license.includes('Downgraded')) {
-licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
-} else if (app.license.includes('Upgraded')) {
-licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-}
-
-// --- MODIFIED LOGIC FOR USAGE DISPLAY: Directly use app.usage string value ---
-let usageDisplayText = app.usage; // Directly use the string value from app.usage
-let usageBackgroundColorClass = ''; 
-
-// Map the string value to the appropriate background color class
-if (app.usage === 'Low') {
-usageBackgroundColorClass = 'bg-usage-low';
-} else if (app.usage === 'Medium') {
-usageBackgroundColorClass = 'bg-usage-medium';
-} else if (app.usage === 'High') { 
-usageBackgroundColorClass = 'bg-usage-high';
-} else {
-// Fallback for any unexpected usage values
-usageBackgroundColorClass = ''; 
-}
-
-// New HTML structure for the usage cell
-const usageHtml = `
+        }
+        let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+        if (app.license.includes('Downgraded')) {
+            licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+        } else if (app.license.includes('Upgraded')) {
+            licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+        }
+        let usageDisplayText = app.usage;
+        let usageBackgroundColorClass = '';
+        if (app.usage === 'Low') {
+            usageBackgroundColorClass = 'bg-usage-low';
+        } else if (app.usage === 'Medium') {
+            usageBackgroundColorClass = 'bg-usage-medium';
+        } else if (app.usage === 'High') {
+            usageBackgroundColorClass = 'bg-usage-high';
+        } else {
+            usageBackgroundColorClass = '';
+        }
+        const usageHtml = `
 <div class="usage-bar-container ${usageBackgroundColorClass}">
 <span class="usage-bar-text">${usageDisplayText}</span>
 </div>
 `;
-// --- END MODIFIED LOGIC ---
-
-// --- NEW LOGIC for ARR and ARR Trend with Percentage ---
-const currentMonthData = app.monthlyData[app.monthlyData.length - 1]; // Get the last month's data
-const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
-
-let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-let arrPercentageChangeHtml = '';
-let arrPercentageClass = 'text-muted';
-
-if (app.monthlyData.length >= 2) { // Need at least two months to calculate percentage change
-const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
-const currentArrValue = currentMonthData.revenue;
-const previousArr = previousMonthData.revenue;
-
-if (previousArr !== 0) { // Avoid division by zero
-const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
-arrPercentageChangeHtml = `${percentageChange.toFixed(1)}%`; // Format to one decimal place
-
-if (percentageChange > 0) {
-    arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-    arrPercentageClass = 'text-success';
-    arrPercentageChangeHtml = `+${arrPercentageChangeHtml}`; // Add '+' for positive changes
-} else if (percentageChange < 0) {
-    arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
-    arrPercentageClass = 'text-danger';
-} else {
-    arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-    arrPercentageClass = 'text-muted';
-}
-} else if (currentArrValue > 0) {
-// If previous ARR was 0 and current is positive, it's an infinite increase
-arrPercentageChangeHtml = `+Inf%`;
-arrPercentageClass = 'text-success';
-arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-} else {
-arrPercentageChangeHtml = `N/A`; // If both are 0 or previous is 0 and current is 0 or negative
-arrPercentageClass = 'text-muted';
-}
-} else {
-arrPercentageChangeHtml = 'N/A'; // Not enough data for percentage
-arrPercentageClass = 'text-muted';
-}
-
-const arrRevenueCellContent = `
+        const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
+        const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
+        let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+        let arrPercentageChangeHtml = '';
+        let arrPercentageClass = 'text-muted';
+        if (app.monthlyData.length >= 2) {
+            const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
+            const currentArrValue = currentMonthData.revenue;
+            const previousArr = previousMonthData.revenue;
+            if (previousArr !== 0) {
+                const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
+                arrPercentageChangeHtml = `${percentageChange.toFixed(1)}%`;
+                if (percentageChange > 0) {
+                    arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+                    arrPercentageClass = 'text-success';
+                    arrPercentageChangeHtml = `+${arrPercentageChangeHtml}`;
+                } else if (percentageChange < 0) {
+                    arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+                    arrPercentageClass = 'text-danger';
+                } else {
+                    arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    arrPercentageClass = 'text-muted';
+                }
+            } else if (currentArrValue > 0) {
+                arrPercentageChangeHtml = `+Inf%`;
+                arrPercentageClass = 'text-success';
+                arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+            } else {
+                arrPercentageChangeHtml = `N/A`;
+                arrPercentageClass = 'text-muted';
+            }
+        } else {
+            arrPercentageChangeHtml = 'N/A';
+            arrPercentageClass = 'text-muted';
+        }
+        const arrRevenueCellContent = `
 $${currentArr}<br>
 <span class="${arrPercentageClass} arr-percentage-text">${arrPercentageChangeHtml}</span>
 `;
-// --- END NEW LOGIC ---
-
-// --- NEW LOGIC for Application Status Arrow (NO BACKGROUND CIRCLE) ---
-let appStatusArrowHtml = '';
-if (app.license.includes('Upgraded')) {
-appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></i>`; // Changed to bi-arrow-up
-} else if (app.license.includes('Downgraded')) {
-appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`; // Changed to bi-arrow-down
-} else {
-appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`; // Changed to bi-arrow-right and text-primary
-}
-// --- END NEW LOGIC ---
-
-// Generate random status for the new tag
-// const statuses = ["Active", "Inactive", "Renewal risk detected"];
-// const randomStatus = statuses[Math.floor(Math.random() * statuses.length)]; // REMOVED RANDOM ASSIGNMENT
-const appStatus = app.status; // Use the pre-assigned status
-
-row.innerHTML = `
-<td><span class="expand-toggle-arrow">▼</span></td> 
+        let appStatusArrowHtml = '';
+        if (app.license.includes('Upgraded')) {
+            appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></i>`;
+        } else if (app.license.includes('Downgraded')) {
+            appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`;
+        } else {
+            appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`;
+        }
+        const appStatus = app.status;
+        row.innerHTML = `
+<td><span class="expand-toggle-arrow">▼</span></td>
 <td style="min-width: 200px;">
 ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span class="application-category">${app.category}</span>
 </td>
-<td>${usageHtml}</td> 
-<td>${arrRevenueCellContent}</td> <!-- Updated to include percentage -->
-<td>${arrTrendIconHtml}</td> <!-- Only icon here -->
-<td>${app.seats}</td> <!-- Display seats here -->
+<td>${usageHtml}</td>
+<td>${arrRevenueCellContent}</td>
+<td>${arrTrendIconHtml}</td>
+<td>${app.seats}</td>
 <td>${licenseTrendIconHtml} ${app.license}</td>
 <td class="text-center">
     ${competitorsCellContent}
 </td>
-<td>N/A</td> 
+<td>N/A</td>
 <td>
 <div class="action-dropdown-wrapper">
     <i class="bi bi-exclamation-triangle text-danger action-toggle-element"></i>
@@ -1285,348 +1171,280 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
 </div>
 </td>
 `;
-
-// Add click event listener for the action toggle element (icon)
-const actionToggleElement = row.querySelector('.action-toggle-element');
-const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
-
-if (actionToggleElement && actionDropdownMenu) {
-actionToggleElement.addEventListener('click', (event) => {
-event.stopPropagation(); // Prevent the row's click listener from firing
-
-if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
-    // If another dropdown is open, close it first
-    closeAllDropdowns();
-}
-closeAllThreatPopups(); // Close any open threat popups
-
-actionDropdownMenu.classList.toggle('show');
-if (actionDropdownMenu.classList.contains('show')) {
-    currentOpenDropdown = actionDropdownMenu;
-    currentOpenDropdownToggle = actionToggleElement; // Store the toggle element
-} else {
-    closeAllDropdowns(); // Close it if it was just toggled off
-}
-});
-
-// Optional: Close dropdown if any of its buttons are clicked
-actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-button.addEventListener('click', (event) => {
-    event.stopPropagation(); // Prevent document click from immediately closing it again
-    // Perform button action here (e.g., alert, console.log)
-    console.log(`${button.textContent.trim()} clicked!`);
-    
-    // Check if it's the "Chat with Agent (AI)" button
-    if (button.classList.contains('connect-us')) {
-        const subscriptionId = button.dataset.subscriptionId;
-        const subscriptionName = button.dataset.subscriptionName;
-        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target); // Pass the clicked button element
-    }
-
-    closeAllDropdowns(); // Close dropdown after button click
-});
-});
-}
-
-// --- NEW THREAT POPUP EVENT LISTENERS ---
-const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
-if (threatPopupWrapper) {
-    const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
-    const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
-
-    if (threatTrigger && threatPopup) {
-        threatTrigger.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent row click and other clicks
-
-            if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
-                closeAllThreatPopups(); // Close other threat popups
-            }
-            closeAllDropdowns(); // Close any open action dropdowns
-
-            threatPopup.classList.toggle('show');
-            if (threatPopup.classList.contains('show')) {
-                currentOpenThreatPopup = threatPopup;
-                currentOpenThreatPopupToggle = threatTrigger;
-            } else {
+        const actionToggleElement = row.querySelector('.action-toggle-element');
+        const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
+        if (actionToggleElement && actionDropdownMenu) {
+            actionToggleElement.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
+                    closeAllDropdowns();
+                }
                 closeAllThreatPopups();
-            }
-        });
-    }
-}
-// --- END NEW THREAT POPUP EVENT LISTENERS ---
-
-
-// Add click event listener for row expansion/collapse
-row.addEventListener('click', (event) => {
-// Only proceed with row expansion if the click was not on the dropdown wrapper or threat popup wrapper
-if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
-return; // Do nothing if click is inside the action dropdown or threat popup area
-}
-closeAllDropdowns(); // Close any open dropdown when clicking on a row (outside action area)
-closeAllThreatPopups(); // Close any open threat popups
-
-
-const appId = app.id;
-const currentExpandedId = expandedRowId;
-const arrowSpan = row.querySelector('.expand-toggle-arrow');
-
-// If clicking on the currently expanded row, collapse it
-if (appId === currentExpandedId) {
-const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
-if (expandedRowElement) {
-    expandedRowElement.remove();
-}
-expandedRowId = null; // Reset expanded state
-if (arrowSpan) arrowSpan.textContent = '▼'; // Change arrow to down
-} else {
-// Collapse any previously expanded row
-if (currentExpandedId !== null) {
-    const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
-    if (previousExpandedRowElement) {
-        previousExpandedRowElement.remove();
-    }
-    const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
-    if (previousArrow) previousArrow.textContent = '▼'; // Change previous arrow to down
-}
-
-// Expand the new row
-const expandedRow = document.createElement('tr');
-expandedRow.className = 'expanded-row';
-expandedRow.setAttribute('data-parent-app-id', appId); // Link expanded row to its parent
-
-// --- START NEW EXPANDED ROW CONTENT ---
-// Helper to get random usage value
-const getRandomUsage = () => {
-    const usages = ['Low', 'Medium', 'High'];
-    return usages[Math.floor(Math.random() * usages.length)];
-};
-
-// Helper to get random usage trend icon and class
-const getRandomUsageTrend = () => {
-    const trends = [
-        { icon: 'bi-graph-up', class: 'text-success' },
-        { icon: 'bi-graph-down', class: 'text-danger' },
-        { icon: 'bi-dash-lg', class: 'text-muted' }
-    ];
-    return trends[Math.floor(Math.random() * trends.length)];
-};
-
-let monthlyDataHtml = app.monthlyData.map((month, index) => {
-    // Generate random usage for each month
-    const randomUsage = getRandomUsage();
-    const randomUsageTrend = getRandomUsageTrend();
-
-    let changeIcon = '';
-    let changeClass = 'text-muted'; // Default for no change or '0'
-    if (month.change.includes('+')) {
-        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
-        changeClass = 'text-success';
-    } else if (month.change.includes('-')) {
-        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-        changeClass = 'text-danger';
-    } else {
-         changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-    }
-
-    let revenueTrendIcon = '';
-    let revenueTrendClass = 'text-muted';
-    let revenuePercentageChange = 'N/A';
-
-    if (index > 0) { // Need at least two months to calculate percentage change
-        const previousMonthRevenue = app.monthlyData[index - 1].revenue;
-        const currentMonthRevenue = month.revenue;
-
-        if (previousMonthRevenue !== 0) {
-            const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
-            revenuePercentageChange = `${percentage.toFixed(1)}%`;
-            if (percentage > 0) {
-                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                revenueTrendClass = 'text-success';
-                revenuePercentageChange = `+${revenuePercentageChange}`;
-            } else if (percentage < 0) {
-                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                revenueTrendClass = 'text-danger';
-            } else {
-                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                revenueTrendClass = 'text-muted';
-            }
-        } else if (currentMonthRevenue > 0) {
-            revenuePercentageChange = `+Inf%`;
-            revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-            revenueTrendClass = 'text-success';
-        } else {
-            revenuePercentageChange = `N/A`;
-            revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-            revenueTrendClass = 'text-muted';
+                actionDropdownMenu.classList.toggle('show');
+                if (actionDropdownMenu.classList.contains('show')) {
+                    currentOpenDropdown = actionDropdownMenu;
+                    currentOpenDropdownToggle = actionToggleElement;
+                } else {
+                    closeAllDropdowns();
+                }
+            });
+            actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    console.log(`${button.textContent.trim()} clicked!`);
+                    if (button.classList.contains('connect-us')) {
+                        const subscriptionId = button.dataset.subscriptionId;
+                        const subscriptionName = button.dataset.subscriptionName;
+                        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+                    }
+                    closeAllDropdowns();
+                });
+            });
         }
-    } else {
-        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`; // No change for M1
-        revenueTrendClass = 'text-muted';
-        revenuePercentageChange = 'N/A';
-    }
-
-
-    return `
+        const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
+        if (threatPopupWrapper) {
+            const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
+            const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
+            if (threatTrigger && threatPopup) {
+                threatTrigger.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
+                        closeAllThreatPopups();
+                    }
+                    closeAllDropdowns();
+                    threatPopup.classList.toggle('show');
+                    if (threatPopup.classList.contains('show')) {
+                        currentOpenThreatPopup = threatPopup;
+                        currentOpenThreatPopupToggle = threatTrigger;
+                    } else {
+                        closeAllThreatPopups();
+                    }
+                });
+            }
+        }
+        row.addEventListener('click', (event) => {
+            if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
+                return;
+            }
+            closeAllDropdowns();
+            closeAllThreatPopups();
+            const appId = app.id;
+            const currentExpandedId = expandedRowId;
+            const arrowSpan = row.querySelector('.expand-toggle-arrow');
+            if (appId === currentExpandedId) {
+                const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
+                if (expandedRowElement) {
+                    expandedRowElement.remove();
+                }
+                expandedRowId = null;
+                if (arrowSpan) arrowSpan.textContent = '▼';
+            } else {
+                if (currentExpandedId !== null) {
+                    const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
+                    if (previousExpandedRowElement) {
+                        previousExpandedRowElement.remove();
+                    }
+                    const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
+                    if (previousArrow) previousArrow.textContent = '▼';
+                }
+                const expandedRow = document.createElement('tr');
+                expandedRow.className = 'expanded-row';
+                expandedRow.setAttribute('data-parent-app-id', appId);
+                const getRandomUsage = () => {
+                    const usages = ['Low', 'Medium', 'High'];
+                    return usages[Math.floor(Math.random() * usages.length)];
+                };
+                const getRandomUsageTrend = () => {
+                    const trends = [
+                        { icon: 'bi-graph-up', class: 'text-success' },
+                        { icon: 'bi-graph-down', class: 'text-danger' },
+                        { icon: 'bi-dash-lg', class: 'text-muted' }
+                    ];
+                    return trends[Math.floor(Math.random() * trends.length)];
+                };
+                let monthlyDataHtml = app.monthlyData.map((month, index) => {
+                    const randomUsage = getRandomUsage();
+                    const randomUsageTrend = getRandomUsageTrend();
+                    let changeIcon = '';
+                    let changeClass = 'text-muted';
+                    if (month.change.includes('+')) {
+                        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                        changeClass = 'text-success';
+                    } else if (month.change.includes('-')) {
+                        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                        changeClass = 'text-danger';
+                    } else {
+                        changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    }
+                    let revenueTrendIcon = '';
+                    let revenueTrendClass = 'text-muted';
+                    let revenuePercentageChange = 'N/A';
+                    if (index > 0) {
+                        const previousMonthRevenue = app.monthlyData[index - 1].revenue;
+                        const currentMonthRevenue = month.revenue;
+                        if (previousMonthRevenue !== 0) {
+                            const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+                            revenuePercentageChange = `${percentage.toFixed(1)}%`;
+                            if (percentage > 0) {
+                                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                                revenueTrendClass = 'text-success';
+                                revenuePercentageChange = `+${revenuePercentageChange}`;
+                            } else if (percentage < 0) {
+                                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                                revenueTrendClass = 'text-danger';
+                            } else {
+                                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                                revenueTrendClass = 'text-muted';
+                            }
+                        } else if (currentMonthRevenue > 0) {
+                            revenuePercentageChange = `+Inf%`;
+                            revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                            revenueTrendClass = 'text-success';
+                        } else {
+                            revenuePercentageChange = `N/A`;
+                            revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                            revenueTrendClass = 'text-muted';
+                        }
+                    } else {
+                        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                        revenueTrendClass = 'text-muted';
+                        revenuePercentageChange = 'N/A';
+                    }
+                    return `
         <tr>
             <td>${month.month}</td>
-            <td>${randomUsage}</td> <!-- New Usage column -->
-            <td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td> <!-- New Usage Trend column -->
-            <td>${month.seats}</td> <!-- This is where seats data is displayed -->
-            <td class="${changeClass}">${changeIcon} ${month.change}</td> 
+            <td>${randomUsage}</td>
+            <td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
+            <td>${month.seats}</td>
+            <td class="${changeClass}">${changeIcon} ${month.change}</td>
             <td>
                 $${month.revenue}<br>
                 <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
             </td>
-            <td class="${revenueTrendClass}">${revenueTrendIcon}</td>
+            <td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
         </tr>
     `;
-}).join('');
-
-let competitorIntegrationsContent = '';
-if (app.competitors && app.competitors.length > 0) {
-    competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
-} else {
-    competitorIntegrationsContent = `No competitor integrations detected.`;
-}
-
-let anomaliesHtml = '';
-const detectedAnomalies = [];
-
-// Re-evaluate anomalies for the expanded row based on the new filter logic
-// Check Critical Issues
-let isAppCritical = false; // Flag to check if this specific app is critical
-if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
-  isAppCritical = true;
-  const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-  if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-      detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
-  }
-  if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-      detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
-  }
-  let totalRecentDecline = 0;
-  const startIndex = app.monthlyData.length - 3;
-  const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-  if (relevantMonths.length === 3) {
-      relevantMonths.forEach(month => { 
-          const change = parseInt(month.change);
-          if (change < 0) {
-              totalRecentDecline += change;
-          }
-      });
-  }
-  if (totalRecentDecline <= -3) {
-      detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
-  }
-  if (app.paymentFailureCount >= 5) {
-      detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
-  }
-  if (app.pauseScheduledCount >= 5) {
-      detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
-  }
-    // NEW CRITICAL CONDITIONS FOR DISPLAY
-    let maxSeatsLast6MonthsForDisplay = 0;
-    if (app.monthlyData.length >= 6) {
-        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-    }
-    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
-        detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
-    }
-
-    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-    if (totalInactiveAppsForDisplay > 4) {
-        detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
-    }
-
-    if (app.monthlyData.length >= 6) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (percentageChange < -0.40) {
-                detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
-            }
-        }
-    }
-
-    // Desk tickets: relevant department open ticket count > 3 (Critical)
-    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
-        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
-    }
-    // Also check for critical problematic tags in relevant department for display
-    if (relevantDepartmentForDisplay) {
-        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-        const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt => 
-            tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-        );
-        if (hasCriticalProblematicTagForDisplay) {
-            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
-        }
-    }
-
-}
-
-// Check Warning Signs (only if not already a Critical Issue for display in expanded row)
-if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) { // Only add if not already critical
-  
-  // NEW: Payment Failure or Pause Scheduled count < 5 (Warning)
-  if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
-      detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
-  }
-  if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
-      detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
-  }
-  
-    // Re-introduced previous warning conditions (less severe thresholds):
-    // Seats Utilization - <70% (Warning, if not critical)
-    let maxSeatsLast6MonthsForDisplay = 0;
-    if (app.monthlyData.length >= 6) {
-        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-    }
-    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
-        detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
-    }
-
-    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-    if (totalInactiveAppsForDisplay > 2) {
-        detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
-    }
-
-    if (app.monthlyData.length >= 6) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (percentageChange < -0.30) {
-                detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
-            }
-        }
-    }
-
-    // Desk tickets: relevant department open ticket count > 1 (Warning, if not critical)
-    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
-        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
-    }
-    // Problematic Desk Ticket Tags (Warning) - for less severe tags
-    if (relevantDepartmentForDisplay) {
-        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-        const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
-            tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-        );
-        if (hasWarningProblematicTagForDisplay) {
-            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
-        }
-    }
-}
-
-
-if (detectedAnomalies.length > 0) {
-    anomaliesHtml = `
+                }).join('');
+                let competitorIntegrationsContent = '';
+                if (app.competitors && app.competitors.length > 0) {
+                    competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
+                } else {
+                    competitorIntegrationsContent = `No competitor integrations detected.`;
+                }
+                let anomaliesHtml = '';
+                const detectedAnomalies = [];
+                let isAppCritical = false;
+                if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
+                    isAppCritical = true;
+                    const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+                    if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+                        detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
+                    }
+                    if (app.usage === 'Low' && app.license.includes('Downgraded')) {
+                        detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
+                    }
+                    let totalRecentDecline = 0;
+                    const startIndex = app.monthlyData.length - 3;
+                    const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+                    if (relevantMonths.length === 3) {
+                        relevantMonths.forEach(month => {
+                            const change = parseInt(month.change);
+                            if (change < 0) {
+                                totalRecentDecline += change;
+                            }
+                        });
+                    }
+                    if (totalRecentDecline <= -3) {
+                        detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
+                    }
+                    if (app.paymentFailureCount >= 5) {
+                        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
+                    }
+                    if (app.pauseScheduledCount >= 5) {
+                        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
+                    }
+                    let maxSeatsLast6MonthsForDisplay = 0;
+                    if (app.monthlyData.length >= 6) {
+                        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+                        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+                    }
+                    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
+                        detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
+                    }
+                    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+                    if (totalInactiveAppsForDisplay > 4) {
+                        detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
+                    }
+                    if (app.monthlyData.length >= 6) {
+                        const m6Revenue = app.monthlyData[5].revenue;
+                        const m3Revenue = app.monthlyData[2].revenue;
+                        if (m3Revenue > 0) {
+                            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                            if (percentageChange < -0.40) {
+                                detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
+                            }
+                        }
+                    }
+                    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+                    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
+                        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
+                    }
+                    if (relevantDepartmentForDisplay) {
+                        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+                        const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+                            tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+                        );
+                        if (hasCriticalProblematicTagForDisplay) {
+                            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
+                        }
+                    }
+                }
+                if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) {
+                    if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
+                        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
+                    }
+                    if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
+                        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
+                    }
+                    let maxSeatsLast6MonthsForDisplay = 0;
+                    if (app.monthlyData.length >= 6) {
+                        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+                        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+                    }
+                    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
+                        detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
+                    }
+                    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+                    if (totalInactiveAppsForDisplay > 2) {
+                        detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
+                    }
+                    if (app.monthlyData.length >= 6) {
+                        const m6Revenue = app.monthlyData[5].revenue;
+                        const m3Revenue = app.monthlyData[2].revenue;
+                        if (m3Revenue > 0) {
+                            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                            if (percentageChange < -0.30) {
+                                detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
+                            }
+                        }
+                    }
+                    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+                    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
+                        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
+                    }
+                    if (relevantDepartmentForDisplay) {
+                        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+                        const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+                            tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+                        );
+                        if (hasWarningProblematicTagForDisplay) {
+                            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
+                        }
+                    }
+                }
+                if (detectedAnomalies.length > 0) {
+                    anomaliesHtml = `
         <p class="mb-1 fw-bold text-danger">
             <i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
         </p>
@@ -1634,30 +1452,28 @@ if (detectedAnomalies.length > 0) {
             ${detectedAnomalies.join('')}
         </ul>
     `;
-} else {
-    anomaliesHtml = `
+                } else {
+                    anomaliesHtml = `
         <p class="mb-1 fw-bold text-success">
             <i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
         </p>
     `;
-}
-
-
-expandedRow.innerHTML = `
-    <td colspan="10"> <!-- Changed colspan to 10 -->
+                }
+                expandedRow.innerHTML = `
+    <td colspan="10">
         <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
-            <div class="col-md-4 p-2">
+            <div class="col-md-6 p-2"> <!-- Changed to col-md-6 -->
                 <h6 class="mb-2 fw-bold">Usage & License History</h6>
                 <div class="table-responsive">
                     <table class="table table-sm monthly-data-table mb-0">
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Usage</th> <!-- NEW -->
-                                <th>Usage Trend</th> <!-- NEW -->
-                                <th>License</th> <!-- Renamed from Seats -->
-                                <th>Trend</th> <!-- Changed from Change -->
-                                <th>ARR</th> <!-- Changed from Revenue -->
+                                <th>Usage</th>
+                                <th>Trend</th>
+                                <th>License</th>
+                                <th>Trend</th>
+                                <th>ARR</th>
                                 <th>Trend</th>
                             </tr>
                         </thead>
@@ -1667,9 +1483,8 @@ expandedRow.innerHTML = `
                     </table>
                 </div>
             </div>
-
-            <div class="col-md-4 p-2 border-start border-end">
-                <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
+            <div class="col-md-3 p-2 border-start border-end"> <!-- Changed to col-md-3 -->
+                <h6 class="mb-2 fw-bold">Competitor Integrations</h1>
                 <p class="small text-muted mb-3">
                     ${competitorIntegrationsContent}
                 </p>
@@ -1677,15 +1492,12 @@ expandedRow.innerHTML = `
                 <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
                 ${anomaliesHtml}
             </div>
-
-            <div class="col-md-4 p-2 d-flex flex-column justify-content-between">
+            <div class="col-md-3 p-2 d-flex flex-column justify-content-between"> <!-- Changed to col-md-3 -->
                 <div>
                     <h6 class="mb-2 fw-bold">Actions</h6>
                     <div class="action-dropdown-wrapper">
-                        <button class="glass-button action-toggle-button">
-                            <i class="bi bi-gear-fill"></i> More Actions
-                        </button>
-                        <div class="action-dropdown-menu">
+                        <!-- Removed the "More Actions" button -->
+                        <div class="action-dropdown-menu show">
                             <a href="https://www.example.com/store" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
                                 <i class="bi bi-shop"></i> Store
                             </a>
@@ -1702,173 +1514,128 @@ expandedRow.innerHTML = `
         </div>
     </td>
 `;
-// --- END NEW EXPANDED ROW CONTENT ---
+                row.insertAdjacentElement('afterend', expandedRow);
+                expandedRowId = appId;
+                if (arrowSpan) arrowSpan.textContent = '▲';
 
-// Insert expanded row after the clicked row
-row.insertAdjacentElement('afterend', expandedRow);
-expandedRowId = appId; // Set new expanded state
-if (arrowSpan) arrowSpan.textContent = '▲'; // Change current arrow to up
+                // Apply animation to buttons in the expanded row's dropdown
+                const expandedRowDropdownMenu = expandedRow.querySelector('.action-dropdown-menu');
+                if (expandedRowDropdownMenu) {
+                    expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+                    });
 
-// NEW: Add event listener for the new dropdown in the expanded row
-const expandedRowDropdownWrapper = expandedRow.querySelector('.action-dropdown-wrapper');
-if (expandedRowDropdownWrapper) {
-    const expandedRowToggleButton = expandedRowDropdownWrapper.querySelector('.action-toggle-button');
-    const expandedRowDropdownMenu = expandedRowDropdownWrapper.querySelector('.action-dropdown-menu');
-
-    if (expandedRowToggleButton && expandedRowDropdownMenu) {
-        expandedRowToggleButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent row click from closing it
-
-            if (currentOpenDropdown && currentOpenDropdown !== expandedRowDropdownMenu) {
-                closeAllDropdowns();
-            }
-            closeAllThreatPopups(); // Close any open threat popups
-
-            expandedRowDropdownMenu.classList.toggle('show');
-            if (expandedRowDropdownMenu.classList.contains('show')) {
-                currentOpenDropdown = expandedRowDropdownMenu;
-                currentOpenDropdownToggle = expandedRowToggleButton; // Store the toggle element
-            } else {
-                closeAllDropdowns(); // Close it if it was just toggled off
-            }
-        });
-
-        expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-                console.log(`${button.textContent.trim()} clicked from expanded row!`);
-                
-                // Check if it's the "Chat with Agent (AI)" button
-                if (button.classList.contains('connect-us')) {
-                    const subscriptionId = button.dataset.subscriptionId;
-                    const subscriptionName = button.dataset.subscriptionName;
-                    console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-                    openSubscriptionChatModal(subscriptionId, subscriptionName, event.target); // Pass the clicked button element
+                    // Add event listeners for the buttons directly
+                    expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            event.stopPropagation();
+                            console.log(`${button.textContent.trim()} clicked from expanded row!`);
+                            if (button.classList.contains('connect-us')) {
+                                const subscriptionId = button.dataset.subscriptionId;
+                                const subscriptionName = button.dataset.subscriptionName;
+                                console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                                openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+                            }
+                            // No need to close dropdown as it's always visible
+                        });
+                    });
                 }
-
-                closeAllDropdowns();
-            });
+            }
         });
-    }
+        applicationTableBody.appendChild(row);
+    });
 }
-}
-});
-
-// Append the main row to the table body
-applicationTableBody.appendChild(row);
-});
-}
-
-// Function to render the Ticket Details table
 function renderTicketDetailsTable() {
-if (!ticketDetailsTableBody) {
-console.error("Ticket details table body element (ticketDetailsTableBody) not found!");
-return;
-}
-ticketDetailsTableBody.innerHTML = ''; // Clear existing rows
-expandedTicketRowId = null; // Reset expanded ticket row state
-
-if (ticketDetailsData.length === 0) {
-// Updated colspan to 4 for the message (Department, Open Status, Closed Status, Open Ticket Ownership)
-const noDataRow = document.createElement('tr');
-noDataRow.innerHTML = `<td colspan="5" class="text-center py-4 text-muted">No ticket details available.</td>`;
-ticketDetailsTableBody.appendChild(noDataRow);
-return;
-}
-
-ticketDetailsData.forEach(ticket => {
-const row = document.createElement('tr');
-row.setAttribute('data-ticket-dept-id', ticket.id); // Use the department ID for expansion
-row.className = 'clickable-row';
-
-row.innerHTML = `
+    if (!ticketDetailsTableBody) {
+        console.error("Ticket details table body element (ticketDetailsTableBody) not found!");
+        return;
+    }
+    ticketDetailsTableBody.innerHTML = '';
+    expandedTicketRowId = null;
+    if (ticketDetailsData.length === 0) {
+        const noDataRow = document.createElement('tr');
+        noDataRow.innerHTML = `<td colspan="5" class="text-center py-4 text-muted">No ticket details available.</td>`;
+        ticketDetailsTableBody.appendChild(noDataRow);
+        return;
+    }
+    ticketDetailsData.forEach(ticket => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-ticket-dept-id', ticket.id);
+        row.className = 'clickable-row';
+        row.innerHTML = `
 <td><span class="ticket-expand-toggle-arrow">▼</span></td>
 <td>${ticket.department}</td>
 <td>${ticket.openStatus}</td>
 <td>${ticket.closedStatus}</td>
 <td>${ticket.openTicketOwnership}</td>
 `;
-
-// Add click event listener for row expansion/collapse for ticket details table
-row.addEventListener('click', (event) => {
-const deptId = ticket.id;
-const currentExpandedTicketId = expandedTicketRowId;
-const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
-
-// If clicking on the currently expanded row, collapse it
-if (deptId === currentExpandedTicketId) {
-const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
-if (expandedRowElement) {
-    expandedRowElement.remove();
-    row.classList.remove('expanded'); // Remove expanded class from parent
-}
-expandedTicketRowId = null; // Reset expanded state
-if (arrowSpan) arrowSpan.textContent = '▼'; // Change arrow to down
-} else {
-// Collapse any previously expanded row in this table
-if (currentExpandedTicketId !== null) {
-    const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
-    if (previousExpandedRowElement) {
-        previousExpandedRowElement.remove();
-        // Also remove 'expanded' class from its original parent row
-        const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
-        if(prevParentRow) prevParentRow.classList.remove('expanded');
-    }
-    const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
-    if (previousArrow) previousArrow.textContent = '▼'; // Change previous arrow to down
-}
-
-// Expand the new row
-const expandedTicketRow = document.createElement('tr');
-expandedTicketRow.className = 'ticket-detail-expanded-row';
-expandedTicketRow.setAttribute('data-parent-dept-id', deptId); // Link expanded row to its parent
-row.classList.add('expanded'); // Add expanded class to parent for arrow rotation
-
-const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
-const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
-
-let openTicketsHtml = '';
-if (openTickets && openTickets.length > 0) {
-    openTicketsHtml = openTickets.map(tkt => {
-        // Generate tags dynamically based on summary
-        const currentTicketTags = assignTagsFromSummary(tkt.summary);
-        const tagsHtml = currentTicketTags.map(tag => {
-            // Convert tag to a class-friendly format (lowercase, replace spaces/slashes with hyphens)
-            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-        }).join('');
-        return `
+        row.addEventListener('click', (event) => {
+            const deptId = ticket.id;
+            const currentExpandedTicketId = expandedTicketRowId;
+            const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
+            if (deptId === currentExpandedTicketId) {
+                const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
+                if (expandedRowElement) {
+                    expandedRowElement.remove();
+                    row.classList.remove('expanded');
+                }
+                expandedTicketRowId = null;
+                if (arrowSpan) arrowSpan.textContent = '▼';
+            } else {
+                if (currentExpandedTicketId !== null) {
+                    const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
+                    if (previousExpandedRowElement) {
+                        previousExpandedRowElement.remove();
+                        const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
+                        if(prevParentRow) prevParentRow.classList.remove('expanded');
+                    }
+                    const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
+                    if (previousArrow) previousArrow.textContent = '▼';
+                }
+                const expandedTicketRow = document.createElement('tr');
+                expandedTicketRow.className = 'ticket-detail-expanded-row';
+                expandedTicketRow.setAttribute('data-parent-dept-id', deptId);
+                row.classList.add('expanded');
+                const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
+                const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
+                let openTicketsHtml = '';
+                if (openTickets && openTickets.length > 0) {
+                    openTicketsHtml = openTickets.map(tkt => {
+                        const currentTicketTags = assignTagsFromSummary(tkt.summary);
+                        const tagsHtml = currentTicketTags.map(tag => {
+                            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                        }).join('');
+                        return `
             <li class="ticket-item">
                 <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
                 <span class="ticket-summary">${tkt.summary}</span>
                 <div class="ticket-tags">${tagsHtml}</div>
             </li>
         `;
-    }).join('');
-} else {
-    openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
-}
-
-let closedTicketsHtml = '';
-if (closedTickets && closedTickets.length > 0) {
-    closedTicketsHtml = closedTickets.map(tkt => {
-        const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
-            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-        }).join('');
-        return `
+                    }).join('');
+                } else {
+                    openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
+                }
+                let closedTicketsHtml = '';
+                if (closedTickets && closedTickets.length > 0) {
+                    closedTicketsHtml = closedTickets.map(tkt => {
+                        const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
+                            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                        }).join('');
+                        return `
             <li class="ticket-item">
                 <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
                 <span class="ticket-summary">${tkt.summary}</span>
                 <div class="ticket-tags">${tagsHtml}</div>
             </li>
         `;
-    }).join('');
-} else {
-    closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
-}
-
-expandedTicketRow.innerHTML = `
+                    }).join('');
+                } else {
+                    closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
+                }
+                expandedTicketRow.innerHTML = `
     <td colspan="5">
         <div class="ticket-dropdown-content">
             <div class="ticket-dropdown-section">
@@ -1890,556 +1657,459 @@ expandedTicketRow.innerHTML = `
         </div>
     </td>
 `;
-
-// Insert expanded row after the clicked row
-row.insertAdjacentElement('afterend', expandedTicketRow);
-expandedTicketRowId = deptId; // Set new expanded state
-if (arrowSpan) arrowSpan.textContent = '▲'; // Change current arrow to up
+                row.insertAdjacentElement('afterend', expandedTicketRow);
+                expandedTicketRowId = deptId;
+                if (arrowSpan) arrowSpan.textContent = '▲';
+            }
+        });
+        ticketDetailsTableBody.appendChild(row);
+    });
 }
-});
-ticketDetailsTableBody.appendChild(row);
-});
-}
-
-
-// Function to handle tab switching
-// This function now accepts an optional 'dataToRender' argument
 function switchTab(selectedCategory, dataToRender = null) {
-// Close any open dropdown when switching tabs
-closeAllDropdowns();
-closeAllThreatPopups(); // Close any open threat popups
-closeSubscriptionChatModal(); // Close chat modal when switching tabs
-
-// Remove 'active' class from the currently active button
-clearAllButtonHighlights();
-clearAllArrSegmentHighlights();
-
-
-// Explicitly hide BOTH table containers before showing the selected one
-// Aggressively hide applicationTableContainer and clear its content
-if (applicationTableContainer) {
-applicationTableContainer.classList.add('d-none'); // Hide with Bootstrap class
-applicationTableContainer.style.display = 'none'; // Also set inline display to none as a fallback
-if (applicationTableBody) applicationTableBody.innerHTML = ''; // Clear body content
-// Explicitly hide the thead of the applications table
-if (applicationTableHeader) {
-applicationTableHeader.style.display = 'none';
-console.log('Hiding application table header.');
-}
-console.log('Hiding and clearing applicationTableContainer.');
-}
-// Hide ticketDetailsTableContainer with style.display = 'none'
-if (ticketDetailsTableContainer) {
-ticketDetailsTableContainer.style.display = 'none';
-ticketDetailsTableContainer.classList.remove('d-none'); // Ensure d-none is not interfering
-console.log('Hiding ticketDetailsTableContainer.');
-}
-
-
-// Show the appropriate table and render data
-switch (selectedCategory) {
-case 'cross-sell': // NEW: Cross-sell case
-    if (crossSellBtn) crossSellBtn.classList.add('active');
+    closeAllDropdowns();
+    closeAllThreatPopups();
+    closeSubscriptionChatModal();
+    clearAllButtonHighlights();
+    clearAllArrSegmentHighlights();
     if (applicationTableContainer) {
-        applicationTableContainer.classList.remove('d-none');
-        applicationTableContainer.style.display = 'block';
+        applicationTableContainer.classList.add('d-none');
+        applicationTableContainer.style.display = 'none';
+        if (applicationTableBody) applicationTableBody.innerHTML = '';
         if (applicationTableHeader) {
-            applicationTableHeader.style.display = 'table-header-group';
+            applicationTableHeader.style.display = 'none';
+            console.log('Hiding application table header.');
         }
+        console.log('Hiding and clearing applicationTableContainer.');
     }
-    renderApplicationTable(crossSellFilteredData);
-    activeSection = 'cross-sell';
-    updateCounts();
-    break;
-case 'all-apps':
-if (allAppsBtn) allAppsBtn.classList.add('active');
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block'; // Show it
-// Show the thead for applications table
-if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group'; // Default display for thead
-    console.log('Showing application table header for All Apps.');
-}
-console.log('Showing applicationTableContainer for All Apps.');
-}
-renderApplicationTable(allAppsFilteredData); // Re-render content
-activeSection = 'all-apps';
-updateCounts(); // <<< IMPORTANT: Added here
-break;
-case 'downgrades':
-if (downgradesBtn) downgradesBtn.classList.add('active');
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block'; // Show it
-// Show the thead for applications table
-if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group';
-}
-console.log('Showing applicationTableContainer for Downgrades.');
-}
-renderApplicationTable(downgradesFilteredData); // Re-render content
-activeSection = 'downgrades';
-updateCounts(); // <<< IMPORTANT: Added here
-break;
-case 'competitors':
-if (competitorsBtn) competitorsBtn.classList.add('active');
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block'; // Show it
-// Show the thead for applications table
-if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group';
-}
-console.log('Showing applicationTableContainer for Competitors.');
-}
-renderApplicationTable(competitorsFilteredData); // Re-render content
-activeSection = 'competitors';
-updateCounts(); // <<< IMPORTANT: Added here
-break;
-case 'anomalies':
-if (anomaliesBtn) anomaliesBtn.classList.add('active');
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block'; // Show it
-// Show the thead for applications table
-if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group';
-}
-console.log('Showing applicationTableContainer for Anomalies.');
-}
-// Use dataToRender if provided (from card clicks), otherwise use the combined anomaliesFilteredData
-renderApplicationTable(dataToRender || anomaliesFilteredData);
-activeSection = 'anomalies';
-// --- NEW LOGIC: Call updateCounts with specific anomalies count if dataToRender exists ---
-if (dataToRender !== null) {
-updateCounts(dataToRender.length); // Pass the specific count for anomalies
-} else {
-updateCounts(); // No specific count, so update all counts normally (anomalies shows total)
-}
-// --- END NEW LOGIC ---
-break;
-case 'ticket-details':
-if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
-if (ticketDetailsTableContainer) {
-ticketDetailsTableContainer.style.display = 'block'; // Show using style.display
-console.log('Showing ticketDetailsTableContainer for Ticket Details.');
-}
-renderTicketDetailsTable(); // Render content
-activeSection = 'ticket-details';
-updateCounts(); // <<< IMPORTANT: Added here
-break;
-// NEW ARR Cases
-case 'arr-less-than-5k':
-    if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
-    if (applicationTableContainer) {
-        applicationTableContainer.classList.remove('d-none');
-        applicationTableContainer.style.display = 'block';
-        if (applicationTableHeader) {
-            applicationTableHeader.style.display = 'table-header-group';
-        }
+    if (ticketDetailsTableContainer) {
+        ticketDetailsTableContainer.style.display = 'none';
+        ticketDetailsTableContainer.classList.remove('d-none');
+        console.log('Hiding ticketDetailsTableContainer.');
     }
-    renderApplicationTable(arrLessThan5kFilteredData);
-    activeSection = 'arr-less-than-5k';
-    updateCounts();
-    break;
-case 'arr-greater-than-5k':
-    if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
-    if (applicationTableContainer) {
-        applicationTableContainer.classList.remove('d-none');
-        applicationTableContainer.style.display = 'block';
-        if (applicationTableHeader) {
-            applicationTableHeader.style.display = 'table-header-group';
-        }
+    switch (selectedCategory) {
+        case 'cross-sell':
+            if (crossSellBtn) crossSellBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+            }
+            renderApplicationTable(crossSellFilteredData);
+            activeSection = 'cross-sell';
+            updateCounts();
+            break;
+        case 'all-apps':
+            if (allAppsBtn) allAppsBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                    console.log('Showing application table header for All Apps.');
+                }
+                console.log('Showing applicationTableContainer for All Apps.');
+            }
+            renderApplicationTable(allAppsFilteredData);
+            activeSection = 'all-apps';
+            updateCounts();
+            break;
+        case 'downgrades':
+            if (downgradesBtn) downgradesBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+                console.log('Showing applicationTableContainer for Downgrades.');
+            }
+            renderApplicationTable(downgradesFilteredData);
+            activeSection = 'downgrades';
+            updateCounts();
+            break;
+        case 'competitors':
+            if (competitorsBtn) competitorsBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+                console.log('Showing applicationTableContainer for Competitors.');
+            }
+            renderApplicationTable(competitorsFilteredData);
+            activeSection = 'competitors';
+            updateCounts();
+            break;
+        case 'anomalies':
+            if (anomaliesBtn) anomaliesBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+                console.log('Showing applicationTableContainer for Anomalies.');
+            }
+            renderApplicationTable(dataToRender || anomaliesFilteredData);
+            activeSection = 'anomalies';
+            if (dataToRender !== null) {
+                updateCounts(dataToRender.length);
+            } else {
+                updateCounts();
+            }
+            break;
+        case 'ticket-details':
+            if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
+            if (ticketDetailsTableContainer) {
+                ticketDetailsTableContainer.style.display = 'block';
+                console.log('Showing ticketDetailsTableContainer for Ticket Details.');
+            }
+            renderTicketDetailsTable();
+            activeSection = 'ticket-details';
+            updateCounts();
+            break;
+        case 'arr-less-than-5k':
+            if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+            }
+            renderApplicationTable(arrLessThan5kFilteredData);
+            activeSection = 'arr-less-than-5k';
+            updateCounts();
+            break;
+        case 'arr-greater-than-5k':
+            if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+            }
+            renderApplicationTable(arrGreaterThan5kFilteredData);
+            activeSection = 'arr-greater-than-5k';
+            updateCounts();
+            break;
+        default:
+            console.warn('Unknown category selected:', selectedCategory);
+            if (allAppsBtn) allAppsBtn.classList.add('active');
+            if (applicationTableContainer) {
+                applicationTableContainer.classList.remove('d-none');
+                applicationTableContainer.style.display = 'block';
+                if (applicationTableHeader) {
+                    applicationTableHeader.style.display = 'table-header-group';
+                }
+            }
+            renderApplicationTable(allAppsFilteredData);
+            activeSection = 'all-apps';
+            updateCounts();
+            break;
     }
-    renderApplicationTable(arrGreaterThan5kFilteredData);
-    activeSection = 'arr-greater-than-5k';
-    updateCounts();
-    break;
-default:
-console.warn('Unknown category selected:', selectedCategory);
-if (allAppsBtn) allAppsBtn.classList.add('active');
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block';
-if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group';
 }
-}
-renderApplicationTable(allAppsFilteredData);
-activeSection = 'all-apps';
-updateCounts(); // <<< IMPORTANT: Added here
-break;
-}
-// <<< IMPORTANT: The 'updateCounts();' call from the very end of switchTab has been REMOVED.
-}
-
-// NEW: Function to clear all main filter button highlights
 function clearAllButtonHighlights() {
     const allBtns = document.querySelectorAll('.btns');
     allBtns.forEach(btn => btn.classList.remove('active'));
 }
-
-// NEW: Function to clear all ARR segment highlights
 function clearAllArrSegmentHighlights() {
     if (arrLessThan5kSegment) arrLessThan5kSegment.classList.remove('active-arr-filter');
     if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.remove('active-arr-filter');
 }
-
-
-// Function to highlight the active card (now globally accessible)
 function highlightActiveCard(activeCardElementId) {
-// Get all card elements
-const allCards = [
-criticalIssuesCard,
-warningSignsCard,
-competitorExposureCard,
-downgradeRisksCard,
-deskTicketsCard
-];
-
-// Remove all specific border classes from all cards first
-allCards.forEach(card => {
-if (card) {
-card.classList.remove('active-highlight',
-                  'card-border-critical',
-                  'card-border-warning',
-                  'card-border-competitor',
-                  'card-border-downgrade',
-                  'card-border-tickets'); // Ensure this is also removed
+    const allCards = [
+        criticalIssuesCard,
+        warningSignsCard,
+        competitorExposureCard,
+        downgradeRisksCard,
+        deskTicketsCard
+    ];
+    allCards.forEach(card => {
+        if (card) {
+            card.classList.remove('active-highlight',
+                'card-border-critical',
+                'card-border-warning',
+                'card-border-competitor',
+                'card-border-downgrade',
+                'card-border-tickets');
+        }
+    });
+    if (activeCardElementId) {
+        const activeCard = document.getElementById(activeCardElementId);
+        if (activeCard) {
+            activeCard.classList.add('active-highlight');
+            console.log(`Adding active-highlight to: ${activeCardElementId}`);
+            if (activeCardElementId === 'criticalIssuesCard') {
+                activeCard.classList.add('card-border-critical');
+                console.log(`Adding card-border-critical to: ${activeCardElementId}`);
+            } else if (activeCardElementId === 'warningSignsCard') {
+                activeCard.classList.add('card-border-warning');
+                console.log(`Adding card-border-warning to: ${activeCardElementId}`);
+            } else if (activeCardElementId === 'competitorExposureCard') {
+                activeCard.classList.add('card-border-competitor');
+                console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
+            } else if (activeCardElementId === 'downgradeRisksCard') {
+                activeCard.classList.add('card-border-downgrade');
+                console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
+            } else if (activeCardElementId === 'deskTicketsCard') {
+                console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
+            }
+            console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
+        }
+    }
 }
-});
-
-// Add highlight and specific color class to the active card if an ID is provided
-if (activeCardElementId) {
-const activeCard = document.getElementById(activeCardElementId);
-if (activeCard) {
-activeCard.classList.add('active-highlight'); // Adds the general active styles
-// Log to console to check if classes are being added
-console.log(`Adding active-highlight to: ${activeCardElementId}`);
-
-// Add specific border class based on card ID
-if (activeCardElementId === 'criticalIssuesCard') {
-activeCard.classList.add('card-border-critical');
-console.log(`Adding card-border-critical to: ${activeCardElementId}`);
-} else if (activeCardElementId === 'warningSignsCard') {
-activeCard.classList.add('card-border-warning');
-console.log(`Adding card-border-warning to: ${activeCardElementId}`);
-} else if (activeCardElementId === 'competitorExposureCard') {
-activeCard.classList.add('card-border-competitor');
-console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
-} else if (activeCardElementId === 'downgradeRisksCard') {
-activeCard.classList.add('card-border-downgrade');
-console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
-} else if (activeCardElementId === 'deskTicketsCard') {
-// For Desk Tickets, the border style is now applied directly to #deskTicketsCard.active-highlight
-// So, just adding active-highlight is enough. The specific border-color class is no longer strictly needed
-// for applying border-color.
-console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
-}
-// Log all classes on the element after modification
-console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
-}
-}
-}
-
-
-// NEW: Modal functions
-let subscriptionChatModal = null; // Changed from subscriptionChatModalOverlay
+let subscriptionChatModal = null;
 let closeSubscriptionChatModalBtn = null;
 let subscriptionChatIframe = null;
-
-/**
- * Opens the subscription chat modal, positioning it relative to the clicked row.
- * @param {number} subscriptionId The ID of the subscription.
- * @param {string} subscriptionName The name of the subscription.
- * @param {HTMLElement} clickedButton The button element that was clicked to open the modal.
- */
 function openSubscriptionChatModal(subscriptionId, subscriptionName, clickedButton) {
     if (!subscriptionChatModal || !subscriptionChatIframe || !clickedButton) {
         console.error('Chat modal elements or clicked button not found!');
         return;
     }
-
-    // Find the parent row (<tr>) of the clicked button
     const row = clickedButton.closest('tr');
     if (!row) {
         console.error('Could not find parent row for clicked button.');
         return;
     }
-
-    // Get the bounding rectangle of the row
     const rowRect = row.getBoundingClientRect();
-
-    // Calculate the desired top position for the modal
-    // This positions the modal 10px below the clicked row, relative to the document's top
     const modalTop = window.scrollY + rowRect.bottom + 10;
-
-    // Set the iframe source with the subscription ID as a query parameter
     subscriptionChatIframe.src = `chat_iframe_content.html?subscriptionId=${subscriptionId}`;
-    
-    // Apply the calculated top position and a fixed right position
     subscriptionChatModal.style.top = `${modalTop}px`;
-    subscriptionChatModal.style.right = '20px'; // Keep it 20px from the right edge of the viewport
-
-    // Show the modal
+    subscriptionChatModal.style.right = '20px';
     subscriptionChatModal.classList.add('show');
 }
-
 function closeSubscriptionChatModal() {
     if (subscriptionChatModal) {
         subscriptionChatModal.classList.remove('show');
-        subscriptionChatIframe.src = ''; // Clear iframe src to stop any content/audio
+        subscriptionChatIframe.src = '';
     }
 }
-
-
-// DOMContentLoaded event listener to initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOM loaded, initializing...');
-
-// Initialize DOM elements
-if (!initializeDOMElements()) {
-console.error('Failed to initialize DOM elements, stopping further initialization.');
-return;
-}
-
-// Filter and prepare data arrays
-filterDataArrays();
-
-// Initial rendering of application table (default to 'All Apps')
-console.log('Rendering initial table for "All Apps"');
-renderApplicationTable(allAppsFilteredData);
-
-// Set initial active button
-if (allAppsBtn) {
-allAppsBtn.classList.add('active');
-}
-
-// Calculate and update Health Score based on new logic
-let calculatedHealthScore = 100; // Start with 100 points
-
-// Deduct for Critical Issues
-if (anomaliesCriticalOnlyData.length > 0) {
-    calculatedHealthScore -= 40;
-}
-
-// Deduct for Warning Signs
-if (anomaliesWarningOnlyData.length > 0 && anomaliesWarningOnlyData.length <= 5) {
-    calculatedHealthScore -= 10;
-} else if (anomaliesWarningOnlyData.length > 5) {
-    calculatedHealthScore -= 20;
-}
-
-// Deduct for Competitor Presence
-if (competitorsFilteredData.length > 0) {
-    calculatedHealthScore -= 10;
-}
-
-// Deduct for NPS
-if (npsScore < 20) {
-    calculatedHealthScore -= 20;
-} else if (npsScore >= 20 && npsScore <= 50) { // Changed to <= 50 to include 50
-    calculatedHealthScore -= 10;
-}
-// If NPS > 50, 0 points are deducted, so no else if needed here.
-
-// Update Health Score display with the calculated score
-updateHealthScore(calculatedHealthScore);
-
-
-// Add event listeners for buttons (main navigation buttons)
-if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
-switchTab('all-apps');
-highlightActiveCard(null); // Clear card highlight when main button is clicked
-});
-if (crossSellBtn) crossSellBtn.addEventListener('click', () => { // NEW: Cross-sell button listener
-    switchTab('cross-sell');
-    highlightActiveCard(null);
-});
-if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
-switchTab('downgrades');
-highlightActiveCard(null); // Clear card highlight
-});
-if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
-switchTab('competitors');
-highlightActiveCard(null); // Clear card highlight
-});
-if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
-switchTab('anomalies');
-highlightActiveCard(null); // Clear card highlight
-});
-if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
-switchTab('ticket-details');
-highlightActiveCard(null); // Clear card highlight
-});
-
-// NEW: Add event listeners for ARR segments
-if (arrLessThan5kSegment) {
-    arrLessThan5kSegment.addEventListener('click', () => {
-        switchTab('arr-less-than-5k');
-        highlightActiveCard(null); // Clear card highlight
+    console.log('DOM loaded, initializing...');
+    if (!initializeDOMElements()) {
+        console.error('Failed to initialize DOM elements, stopping further initialization.');
+        return;
+    }
+    filterDataArrays();
+    console.log('Rendering initial table for "All Apps"');
+    renderApplicationTable(allAppsFilteredData);
+    if (allAppsBtn) {
+        allAppsBtn.classList.add('active');
+    }
+    // Set health score to 100 as requested
+    let calculatedHealthScore = 100;
+    updateHealthScore(calculatedHealthScore);
+    if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
+        switchTab('all-apps');
+        highlightActiveCard(null);
     });
-}
-if (arrGreaterThan5kSegment) {
-    arrGreaterThan5kSegment.addEventListener('click', () => {
-        switchTab('arr-greater-than-5k');
-        highlightActiveCard(null); // Clear card highlight
+    if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
+        switchTab('cross-sell');
+        highlightActiveCard(null);
     });
-}
-
-
-// Add event listeners for the top cards - UPDATED TO CALL highlightActiveCard
-if (criticalIssuesCard) {
-criticalIssuesCard.addEventListener('click', () => {
-switchTab('anomalies', anomaliesCriticalOnlyData); // Pass only critical data
-highlightActiveCard('criticalIssuesCard'); // Highlight this card
-});
-criticalIssuesCard.style.cursor = 'pointer'; // Make card clickable visually
-}
-if (warningSignsCard) {
-warningSignsCard.addEventListener('click', () => {
-switchTab('anomalies', anomaliesWarningOnlyData); // Pass only warning data
-highlightActiveCard('warningSignsCard'); // Highlight this card
-});
-warningSignsCard.style.cursor = 'pointer'; // Make card clickable visually
-}
-if (competitorExposureCard) {
-competitorExposureCard.addEventListener('click', () => {
-switchTab('competitors');
-highlightActiveCard('competitorExposureCard'); // Highlight this card
-});
-competitorExposureCard.style.cursor = 'pointer'; // Make card clickable visually
-}
-if (downgradeRisksCard) {
-downgradeRisksCard.addEventListener('click', () => {
-switchTab('downgrades');
-highlightActiveCard('downgradeRisksCard'); // Highlight this card
-});
-downgradeRisksCard.style.cursor = 'pointer'; // Make card clickable visually
-}
-if (deskTicketsCard) {
-deskTicketsCard.addEventListener('click', () => {
-switchTab('ticket-details');
-highlightActiveCard('deskTicketsCard'); // Highlight this card
-});
-deskTicketsCard.style.cursor = 'pointer'; // Make card clickable visually
-}
-
-// Initial visibility settings on page load
-// applicationTableContainer should be visible by default
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('d-none');
-applicationTableContainer.style.display = 'block';
-if (applicationTableHeader) {
-applicationTableHeader.style.display = 'table-header-group'; // Ensure headers are visible initially
-}
-}
-// ticketDetailsTableContainer should be hidden by default
-if (ticketDetailsTableContainer) {
-ticketDetailsTableContainer.style.display = 'none';
-}
-
-// --- NEW: Call updateCounts() after initial rendering and filterDataArrays()
-updateCounts(); // Call updateCounts initially to set all button counts
-
-// Add a global click listener to close dropdowns and popups when clicking outside
-document.addEventListener('click', (event) => {
-// If a dropdown is open and the click is not inside it or its toggle element
-if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
-closeAllDropdowns();
-}
-// If a threat popup is open and the click is not inside it or its trigger
-if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
-    closeAllThreatPopups();
-}
-// If the chat modal is open and the click is outside the modal content
-// Note: The chat modal is now absolutely positioned, so it's part of the document flow.
-// We need to check if the click is outside the modal itself.
-if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-    !event.target.closest('.subscription-chat-modal')) {
-    closeSubscriptionChatModal();
-}
-});
-
-// JavaScript for the new eye icon pop-up
-const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
-const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
-
-if (clickableEyeIcon && ratingDetailsPopup) {
-    clickableEyeIcon.addEventListener('click', (event) => {
-        console.log('Eye icon clicked!'); // Debugging log
-        event.stopPropagation(); // Stop propagation to prevent document click from immediately closing
-
-        // Toggle visibility
-        if (ratingDetailsPopup.style.display === 'block') {
-            ratingDetailsPopup.style.display = 'none';
-        } else {
-            ratingDetailsPopup.style.display = 'block';
-        }
+    if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
+        switchTab('downgrades');
+        highlightActiveCard(null);
     });
-
-    // Global click listener to close popup if click is outside
-    document.addEventListener('click', (event) => {
-        // If the popup is visible AND the click was NOT on the eye icon AND the click was NOT inside the popup
-        if (ratingDetailsPopup.style.display === 'block' &&
-            !clickableEyeIcon.contains(event.target) && // Check if click target is the eye icon itself or its children
-            !ratingDetailsPopup.contains(event.target)) { // Check if click target is inside the popup
-            console.log('Closing popup due to outside click.'); // Debugging log
-            ratingDetailsPopup.style.display = 'none';
-        }
+    if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
+        switchTab('competitors');
+        highlightActiveCard(null);
     });
-}
-
-// NEW: Need Help dropdown functionality
-const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
-if (needHelpDropdownWrapper) {
-    const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element'); // Changed to action-toggle-element
-    const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
-
-    if (needHelpToggleElement && needHelpDropdownMenu) {
-        needHelpToggleElement.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent document click from immediately closing
-
-            if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-                closeAllDropdowns();
-            }
-            closeAllThreatPopups(); // Close any open threat popups
-
-            needHelpDropdownMenu.classList.toggle('show');
-            // Toggle the 'show' class on the toggle element itself for arrow rotation
-            // Removed specific arrow rotation class toggle as the arrow icon is replaced by an image
-            // needHelpToggleElement.classList.toggle('show-arrow');
-
-            if (needHelpDropdownMenu.classList.contains('show')) {
-                // When showing, apply staggered animation
-                needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                    button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`; // Increased delay
-                });
-                currentOpenDropdown = needHelpDropdownMenu;
-                currentOpenDropdownToggle = needHelpToggleElement; // Store the toggle element
-            } else {
-                // When hiding, reset animation
-                needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                    button.style.animation = ''; // Reset animation
-                });
-                closeAllDropdowns();
-            }
-        });
-
-        needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-                console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-                closeAllDropdowns();
-            });
+    if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
+        switchTab('anomalies');
+        highlightActiveCard(null);
+    });
+    if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
+        switchTab('ticket-details');
+        highlightActiveCard(null);
+    });
+    if (arrLessThan5kSegment) {
+        arrLessThan5kSegment.addEventListener('click', () => {
+            switchTab('arr-less-than-5k');
+            highlightActiveCard(null);
         });
     }
-}
+    if (arrGreaterThan5kSegment) {
+        arrGreaterThan5kSegment.addEventListener('click', () => {
+            switchTab('arr-greater-than-5k');
+            highlightActiveCard(null);
+        });
+    }
+    if (criticalIssuesCard) {
+        criticalIssuesCard.addEventListener('click', () => {
+            switchTab('anomalies', anomaliesCriticalOnlyData);
+            highlightActiveCard('criticalIssuesCard');
+        });
+        criticalIssuesCard.style.cursor = 'pointer';
+    }
+    if (warningSignsCard) {
+        warningSignsCard.addEventListener('click', () => {
+            switchTab('anomalies', anomaliesWarningOnlyData);
+            highlightActiveCard('warningSignsCard');
+        });
+        warningSignsCard.style.cursor = 'pointer';
+    }
+    if (competitorExposureCard) {
+        competitorExposureCard.addEventListener('click', () => {
+            switchTab('competitors');
+            highlightActiveCard('competitorExposureCard');
+        });
+        competitorExposureCard.style.cursor = 'pointer';
+    }
+    if (downgradeRisksCard) {
+        downgradeRisksCard.addEventListener('click', () => {
+            switchTab('downgrades');
+            highlightActiveCard('downgradeRisksCard');
+        });
+        downgradeRisksCard.style.cursor = 'pointer';
+    }
+    if (deskTicketsCard) {
+        deskTicketsCard.addEventListener('click', () => {
+            switchTab('ticket-details');
+            highlightActiveCard('deskTicketsCard');
+        });
+        deskTicketsCard.style.cursor = 'pointer';
+    }
+    if (applicationTableContainer) {
+        applicationTableContainer.classList.remove('d-none');
+        applicationTableContainer.style.display = 'block';
+        if (applicationTableHeader) {
+            applicationTableHeader.style.display = 'table-header-group';
+        }
+    }
+    if (ticketDetailsTableContainer) {
+        ticketDetailsTableContainer.style.display = 'none';
+    }
+    updateCounts();
+    document.addEventListener('click', (event) => {
+        if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
+            closeAllDropdowns();
+        }
+        if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
+            closeAllThreatPopups();
+        }
+        if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
+            !event.target.closest('.subscription-chat-modal')) {
+            closeSubscriptionChatModal();
+        }
+        // Close popups on outside click
+        if (recentPurchasesPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#recentPurchasesCount')) {
+            closeAllModals();
+        }
+        if (nextRenewalsPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#nextRenewalsCount')) {
+            closeAllModals();
+        }
+    });
 
-// Event listener for the close button on the chat modal
-if (closeSubscriptionChatModalBtn) {
-    closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
-}
+    const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
+    const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
+    if (clickableEyeIcon && ratingDetailsPopup) {
+        clickableEyeIcon.addEventListener('click', (event) => {
+            console.log('Eye icon clicked!');
+            event.stopPropagation();
+            if (ratingDetailsPopup.style.display === 'block') {
+                ratingDetailsPopup.style.display = 'none';
+            } else {
+                ratingDetailsPopup.style.display = 'block';
+            }
+        });
+        document.addEventListener('click', (event) => {
+            if (ratingDetailsPopup.style.display === 'block' &&
+                !clickableEyeIcon.contains(event.target) &&
+                !ratingDetailsPopup.contains(event.target)) {
+                console.log('Closing popup due to outside click.');
+                ratingDetailsPopup.style.display = 'none';
+            }
+        });
+    }
+    const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
+    if (needHelpDropdownWrapper) {
+        const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
+        const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
+        if (needHelpToggleElement && needHelpDropdownMenu) {
+            needHelpToggleElement.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
+                    closeAllDropdowns();
+                }
+                closeAllThreatPopups();
+                needHelpDropdownMenu.classList.toggle('show');
+                if (needHelpDropdownMenu.classList.contains('show')) {
+                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+                    });
+                    currentOpenDropdown = needHelpDropdownMenu;
+                    currentOpenDropdownToggle = needHelpToggleElement;
+                } else {
+                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                        button.style.animation = '';
+                    });
+                    closeAllDropdowns();
+                }
+            });
+            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+                    closeAllDropdowns();
+                });
+            });
+        }
+    }
+    if (closeSubscriptionChatModalBtn) {
+        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
+    }
 
+    // Event listeners for new popups
+    if (recentPurchasesCountSpan) {
+        recentPurchasesCountSpan.addEventListener('click', () => {
+            closeAllModals(); // Close other popups
+            recentPurchasesList.innerHTML = ''; // Clear previous content
+            if (recentPurchasesData.length > 0) {
+                recentPurchasesData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                    li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                    recentPurchasesList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No recent purchases in the last 6 months.';
+                recentPurchasesList.appendChild(li);
+            }
+            recentPurchasesPopup.classList.add('show');
+        });
+    }
+
+    if (nextRenewalsCountSpan) {
+        nextRenewalsCountSpan.addEventListener('click', () => {
+            closeAllModals(); // Close other popups
+            nextRenewalsList.innerHTML = ''; // Clear previous content
+            if (nextRenewalsData.length > 0) {
+                nextRenewalsData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="renewal-date">${item.date}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                    li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                    nextRenewalsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No upcoming renewals in the next 3 months.';
+                nextRenewalsList.appendChild(li);
+            }
+            nextRenewalsPopup.classList.add('show');
+        });
+    }
+
+    // Close buttons for popups
+    document.querySelectorAll('.popup-close-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            closeAllModals();
+        });
+    });
 });
