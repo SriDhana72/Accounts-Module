@@ -694,13 +694,13 @@ h4 {
         padding: 5px; /* Smaller padding */
     }
     .info-section strong {
-        font-size: 0.7em; /* Smaller font size */
+        font-size: 0.6em; /* Smaller font size */
     }
     .info-section .value, .info-section .clickable-number {
-        font-size: 1em; /* Smaller font size */
+        font-size: 0.8em; /* Smaller font size */
     }
     .popup-content {
-        max-width: 250px; /* Smaller max-width for popups */
+        max-width: 250px; /* Adjusted max-width for popups */
         padding: 10px; /* Smaller padding */
     }
     .popup-content h5 {
@@ -709,10 +709,10 @@ h4 {
     }
     .popup-content li {
         padding: 6px 8px; /* Smaller padding */
-        font-size: 0.75em; /* Smaller font size */
+        font-size: 0.7em; /* Smaller font size */
     }
     .popup-close-btn {
-        font-size: 1.3em; /* Smaller close button */
+        font-size: 1.2em; /* Smaller close button */
         top: 5px;
         right: 8px;
     }
@@ -896,13 +896,13 @@ h4 {
 .tag-escalation-request { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; }
 .tag-repeated-follow-up { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; }
 .tag-slow-support-delay { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; }
-.tag-feature-gap { background: linear: linear: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; }
+.tag-feature-gap { background: linear-gradient(to right, #ffe6e6, #f9d3d3); color: #721c24; }
 .tag-cancel-threat-churn-threat { background: linear-gradient(to right, #ffdddd, #ffbbaa); color: #dc3545; }
 .tag-competitor-switch { background: linear-gradient(to right, #fff0e0, #ffccaa); color: #fd7e14; }
 .tag-product-regret { background: linear-gradient(to right, #fffef0, #fff7a0); color: #856404; }
-.tag-service-outage-emergency { background: linear: linear: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; }
-.tag-security-data-breach { background: linear: linear: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; }
-.tag-evaluating-alternatives { background: linear: linear: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; }
+.tag-service-outage-emergency { background: linear-gradient(to right, #eee6ff, #ccbbff); color: #6f42c1; }
+.tag-security-data-breach { background: linear-gradient(to right, #e0e0e0, #a0a0a0); color: #333; }
+.tag-evaluating-alternatives { background: linear-gradient(to right, #e0f2ff, #a0d4ff); color: #007bff; }
 .ticket-expand-toggle-arrow {
     display: inline-block;
     width: 1.2em;
@@ -1248,46 +1248,88 @@ tr.expanded .ticket-expand-toggle-arrow {
 .expanded-content .action-toggle-button {
     display: none; /* Hide the button */
 }
+
+/* Rating Details Popup Styles */
 .rating-details-popup {
     position: absolute;
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, rgba(170, 180, 255, 0.75), rgba(140, 160, 255, 0.75)); /* Updated to biscuit gradient */
     border: 1px solid #e9ecef;
-    border-radius: 50px;
-    padding: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* Rounded rectangle */
+    padding: 10px; /* Reduced padding */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     z-index: 100;
-    display: none;
-    width: 180px;
-    max-width: 180px;
+    display: none; /* Controlled by JS */
+    width: 180px; /* Increased width */
+    max-width: 180px; /* Increased max-width */
     white-space: normal;
+    opacity: 0; /* Start hidden for animation */
+    animation: zoom-shake-animation 2s ease-out forwards; /* Apply the new animation */
+    transform-origin: center center; /* Keep transform origin for scaling */
 }
+
+/* Chat message tail for rating popup */
+.rating-details-popup::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px; /* Position to the left of the popup */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid rgba(170, 180, 255, 0.75); /* Match popup background start color */
+    filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the tail */
+}
+
+/* New animation keyframes for zoom and shake */
+@keyframes zoom-shake-animation {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.1) translateX(0);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-50%) scale(0.4) translateX(-5px);
+    }
+    40% {
+        transform: translateY(-50%) scale(0.7) translateX(5px);
+    }
+    60% {
+        transform: translateY(-50%) scale(0.9) translateX(-3px);
+    }
+    80% {
+        transform: translateY(-50%) scale(1.05) translateX(3px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1) translateX(0);
+    }
+}
+
+
 .rating-details-popup .d-flex {
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 6px; /* Reduced margin */
 }
 .rating-details-popup .d-flex:last-child {
     margin-bottom: 0;
 }
 .rating-details-popup .bi-star-fill {
-    font-size: 1em;
-    margin-right: 5px;
+    font-size: 1em; /* Reduced font size */
+    margin-right: 6px; /* Reduced margin */
     flex-shrink: 0;
 }
 .rating-details-popup strong {
     display: inline;
-    font-size: 0.85em;
+    font-size: 0.8em; /* Reduced font size from 0.85em to 0.8em */
     color: #333;
     margin-bottom: 0;
 }
-.rating-details-popup p {
-    font-size: 0.7em;
-    color: #6c757d;
-    margin-bottom: 0;
-    line-height: 1.2;
-}
+/* Removed the p tag styles as they are no longer needed */
 .star-red-gradient {
     background: linear-gradient(to right, #A5D6A7, #66BB6A);
     -webkit-background-clip: text;
@@ -1635,13 +1677,21 @@ tr.expanded .ticket-expand-toggle-arrow {
 .info-section .clickable-number {
     cursor: pointer;
     transition: color 0.2s ease;
+    animation: blink 1.5s infinite alternate; /* Apply blinking animation */
 }
 
 .info-section .clickable-number:hover {
     text-decoration: underline;
 }
 
-/* Pop-up styles */
+/* New blinking animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+/* Pop-up overlay */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -1663,22 +1713,54 @@ tr.expanded .ticket-expand-toggle-arrow {
     visibility: visible;
 }
 
+/* Main Popup Content Styles (Recent Purchases & Next Renewals) */
 .popup-content {
-    background-color: rgba(255, 255, 255, 0.8); /* More glassy effect */
-    backdrop-filter: blur(8px); /* More glassy effect */
-    -webkit-backdrop-filter: blur(8px); /* For Safari */
+    background: linear-gradient(135deg, #a8c0ff, #87a0ff); /* Blue gradient */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 10px; /* Reduced padding */
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    max-width: 220px; /* Further reduced max-width */
-    width: 120%;
-    max-height: 60%; /* Further reduced max-height */
+    border-radius: 12px; /* Rounded rectangle */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 250px; /* Increased max-width */
+    width: 100%;
+    max-height: 70%;
     overflow-y: auto;
     position: relative;
     transform: translateY(20px);
     transition: transform 0.3s ease;
-    left: 237px;
-    top: -266px;
+    left: 200px; /* Updated value */
+    top: -230px; /* Updated value */
+    animation: bounce-in 0.6s ease-out forwards, subtle-shake 3s ease-in-out infinite alternate; /* Entry and continuous animation */
+}
+
+/* Chat message tail for main popups */
+.popup-content::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px; /* Position to the left of the popup */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #a8c0ff; /* Match popup background start color */
+    filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the tail */
+}
+
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.7);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(10px) scale(1.05);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
 }
 
 .popup-overlay.show .popup-content {
@@ -1686,10 +1768,11 @@ tr.expanded .ticket-expand-toggle-arrow {
 }
 
 .popup-content h5 {
-    font-size: 0.9em; /* Reduced font size */
-    font-weight: 600;
-    margin-bottom: 8px; /* Reduced margin */
-    color: #333;
+    font-size: 1em; /* Reduced font size */
+    font-weight: 700;
+    margin-bottom: 10px; /* Reduced margin */
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .popup-content ul {
@@ -1705,17 +1788,18 @@ tr.expanded .ticket-expand-toggle-arrow {
 }
 
 .popup-content li {
-    background-color: rgba(248, 249, 250, 0.6); /* More faded background for list items */
+    background-color: rgba(255, 255, 255, 0.7);
     padding: 6px 10px; /* Reduced padding */
-    border-radius: 8px;
-    margin-bottom: 4px; /* Reduced margin */
+    border-radius: 12px;
+    margin-bottom: 5px; /* Reduced margin */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.75em; /* Reduced font size */
-    border: 1px solid rgba(233, 236, 239, 0.6); /* More faded border */
-    animation: flash-in 0.5s ease-out forwards; /* Apply animation */
-    opacity: 0; /* Start hidden for animation */
+    font-size: 0.8em; /* Reduced font size */
+    border: 1px solid rgba(233, 236, 239, 0.8);
+    animation: flash-in 0.5s ease-out forwards;
+    opacity: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .popup-content li:last-child {
@@ -1723,29 +1807,35 @@ tr.expanded .ticket-expand-toggle-arrow {
 }
 
 .popup-content .app-name {
-    font-weight: 500;
-    color: #495057;
+    font-weight: 600;
+    color: #222;
 }
 
 .popup-content .app-revenue, .popup-content .renewal-date {
-    font-weight: 600;
-    color: #000; /* Value color black */
+    font-weight: 700;
+    color: #000;
+}
+
+.popup-content .renewal-date {
+    font-size: 0.7em; /* Further reduced font size for dates */
 }
 
 .popup-close-btn {
     position: absolute;
-    top: -4px; /* Adjusted position */
-    right: 8px; /* Adjusted position */
+    top: 5px;
+    right: 8px; /* Reduced right margin */
     background: none;
     border: none;
-    font-size: 1.6em; /* Reduced font size */
-    color: #6c757d;
+    font-size: 1.5em; /* Reduced font size */
+    color: #fff;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .popup-close-btn:hover {
-    color: #333;
+    color: #eee;
+    transform: scale(1.1);
 }
 
 /* Adjust main box padding for health score widget */

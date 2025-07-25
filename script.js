@@ -236,7 +236,7 @@ monthlyData: [
 { month: 'M2', seats: 22, change: '0', revenue: 2200, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M3', seats: 21, change: '-1', revenue: 2100, revenueChange: '-100', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 { month: 'M4', seats: 21, change: '0', revenue: 2100, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-{ month: 'M5', seats: 21, change: '0', revenue: 2100, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+{ month: 'M5', seats: 21, change: '0', revenue: 2100, revenueChange: '0', competitorIntegrations: 'High' },
 { month: 'M6', seats: 20, change: '-1', revenue: 2000, revenueChange: '-100', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
 ]
 },
@@ -1307,9 +1307,9 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
                             revenueTrendClass = 'text-muted';
                         }
                     } else {
+                        revenuePercentageChange = 'N/A';
                         revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
                         revenueTrendClass = 'text-muted';
-                        revenuePercentageChange = 'N/A';
                     }
                     return `
         <tr>
@@ -1526,7 +1526,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
                     });
 
                     // Add event listeners for the buttons directly
-                    expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                    expandedRowDropdownMenu.querySelectorAll('button.connect-us').forEach(button => {
                         button.addEventListener('click', (event) => {
                             event.stopPropagation();
                             console.log(`${button.textContent.trim()} clicked from expanded row!`);
