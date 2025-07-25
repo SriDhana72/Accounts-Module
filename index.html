@@ -10,6 +10,13 @@
 </head>
 <body>
     <div class="container-fluid px-4 py-3">
+        <!-- Loader Overlay -->
+        <div id="loaderOverlay" class="loader-overlay">
+            <div class="loader-line-container">
+                <div class="loader-line"></div>
+            </div>
+        </div>
+
         <div class="container-section">
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <div class="account-info-content">
@@ -178,6 +185,7 @@
                         All Apps (<span id="allAppsCount">15</span>)
                     </button>
                     <button class="btn btn-light btns" id="crossSellBtn">
+                        <i class="bi bi-arrow-right-circle"></i>
                         Cross-sell (<span id="crossSellCount">0</span>)
                     </button>
                     <button class="btn btn-light btns" id="downgradesBtn">

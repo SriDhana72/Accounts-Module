@@ -656,6 +656,9 @@ let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
 let activeSection = 'all-apps'; // Define activeSection
 
+// Loader elements
+let loaderOverlay = null;
+
 
 function closeAllDropdowns() {
     if (currentOpenDropdown) {
@@ -730,6 +733,7 @@ function initializeDOMElements() {
     nextRenewalsPopup = document.getElementById('nextRenewalsPopup');
     recentPurchasesList = document.getElementById('recentPurchasesList');
     nextRenewalsList = document.getElementById('nextRenewalsList');
+    loaderOverlay = document.getElementById('loaderOverlay'); // Initialize loader overlay
 
     if (!applicationTableContainer) {
         console.error('Application table container not found!');
@@ -745,6 +749,10 @@ function initializeDOMElements() {
     }
     if (!subscriptionChatModal) {
         console.error('Subscription chat modal element (subscriptionChatModal) not found!');
+        return false;
+    }
+    if (!loaderOverlay) {
+        console.error('Loader overlay element (loaderOverlay) not found!');
         return false;
     }
     return true;
@@ -1671,6 +1679,9 @@ function switchTab(selectedCategory, dataToRender = null) {
     closeSubscriptionChatModal();
     clearAllButtonHighlights();
     clearAllArrSegmentHighlights();
+    // Show loader when switching tabs
+    if (loaderOverlay) loaderOverlay.classList.remove('hidden');
+
     if (applicationTableContainer) {
         applicationTableContainer.classList.add('d-none');
         applicationTableContainer.style.display = 'none';
@@ -1686,132 +1697,138 @@ function switchTab(selectedCategory, dataToRender = null) {
         ticketDetailsTableContainer.classList.remove('d-none');
         console.log('Hiding ticketDetailsTableContainer.');
     }
-    switch (selectedCategory) {
-        case 'cross-sell':
-            if (crossSellBtn) crossSellBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
+
+    // Use a setTimeout to allow the loader to render before heavy processing
+    setTimeout(() => {
+        switch (selectedCategory) {
+            case 'cross-sell':
+                if (crossSellBtn) crossSellBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
                 }
-            }
-            renderApplicationTable(crossSellFilteredData);
-            activeSection = 'cross-sell';
-            updateCounts();
-            break;
-        case 'all-apps':
-            if (allAppsBtn) allAppsBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
-                    console.log('Showing application table header for All Apps.');
-                }
-                console.log('Showing applicationTableContainer for All Apps.');
-            }
-            renderApplicationTable(allAppsFilteredData);
-            activeSection = 'all-apps';
-            updateCounts();
-            break;
-        case 'downgrades':
-            if (downgradesBtn) downgradesBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
-                }
-                console.log('Showing applicationTableContainer for Downgrades.');
-            }
-            renderApplicationTable(downgradesFilteredData);
-            activeSection = 'downgrades';
-            updateCounts();
-            break;
-        case 'competitors':
-            if (competitorsBtn) competitorsBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
-                }
-                console.log('Showing applicationTableContainer for Competitors.');
-            }
-            renderApplicationTable(competitorsFilteredData);
-            activeSection = 'competitors';
-            updateCounts();
-            break;
-        case 'anomalies':
-            if (anomaliesBtn) anomaliesBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
-                }
-                console.log('Showing applicationTableContainer for Anomalies.');
-            }
-            renderApplicationTable(dataToRender || anomaliesFilteredData);
-            activeSection = 'anomalies';
-            if (dataToRender !== null) {
-                updateCounts(dataToRender.length);
-            } else {
+                renderApplicationTable(crossSellFilteredData);
+                activeSection = 'cross-sell';
                 updateCounts();
-            }
-            break;
-        case 'ticket-details':
-            if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
-            if (ticketDetailsTableContainer) {
-                ticketDetailsTableContainer.style.display = 'block';
-                console.log('Showing ticketDetailsTableContainer for Ticket Details.');
-            }
-            renderTicketDetailsTable();
-            activeSection = 'ticket-details';
-            updateCounts();
-            break;
-        case 'arr-less-than-5k':
-            if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
+                break;
+            case 'all-apps':
+                if (allAppsBtn) allAppsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                        console.log('Showing application table header for All Apps.');
+                    }
+                    console.log('Showing applicationTableContainer for All Apps.');
                 }
-            }
-            renderApplicationTable(arrLessThan5kFilteredData);
-            activeSection = 'arr-less-than-5k';
-            updateCounts();
-            break;
-        case 'arr-greater-than-5k':
-            if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
+                renderApplicationTable(allAppsFilteredData);
+                activeSection = 'all-apps';
+                updateCounts();
+                break;
+            case 'downgrades':
+                if (downgradesBtn) downgradesBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                    console.log('Showing applicationTableContainer for Downgrades.');
                 }
-            }
-            renderApplicationTable(arrGreaterThan5kFilteredData);
-            activeSection = 'arr-greater-than-5k';
-            updateCounts();
-            break;
-        default:
-            console.warn('Unknown category selected:', selectedCategory);
-            if (allAppsBtn) allAppsBtn.classList.add('active');
-            if (applicationTableContainer) {
-                applicationTableContainer.classList.remove('d-none');
-                applicationTableContainer.style.display = 'block';
-                if (applicationTableHeader) {
-                    applicationTableHeader.style.display = 'table-header-group';
+                renderApplicationTable(downgradesFilteredData);
+                activeSection = 'downgrades';
+                updateCounts();
+                break;
+            case 'competitors':
+                if (competitorsBtn) competitorsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                    console.log('Showing applicationTableContainer for Competitors.');
                 }
-            }
-            renderApplicationTable(allAppsFilteredData);
-            activeSection = 'all-apps';
-            updateCounts();
-            break;
-    }
+                renderApplicationTable(competitorsFilteredData);
+                activeSection = 'competitors';
+                updateCounts();
+                break;
+            case 'anomalies':
+                if (anomaliesBtn) anomaliesBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                    console.log('Showing applicationTableContainer for Anomalies.');
+                }
+                renderApplicationTable(dataToRender || anomaliesFilteredData);
+                activeSection = 'anomalies';
+                if (dataToRender !== null) {
+                    updateCounts(dataToRender.length);
+                } else {
+                    updateCounts();
+                }
+                break;
+            case 'ticket-details':
+                if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
+                if (ticketDetailsTableContainer) {
+                    ticketDetailsTableContainer.style.display = 'block';
+                    console.log('Showing ticketDetailsTableContainer for Ticket Details.');
+                }
+                renderTicketDetailsTable();
+                activeSection = 'ticket-details';
+                updateCounts();
+                break;
+            case 'arr-less-than-5k':
+                if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(arrLessThan5kFilteredData);
+                activeSection = 'arr-less-than-5k';
+                updateCounts();
+                break;
+            case 'arr-greater-than-5k':
+                if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(arrGreaterThan5kFilteredData);
+                activeSection = 'arr-greater-than-5k';
+                updateCounts();
+                break;
+            default:
+                console.warn('Unknown category selected:', selectedCategory);
+                if (allAppsBtn) allAppsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.classList.remove('d-none');
+                    applicationTableContainer.style.display = 'block';
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(allAppsFilteredData);
+                activeSection = 'all-apps';
+                updateCounts();
+                break;
+        }
+        // Hide loader after content is rendered
+        if (loaderOverlay) loaderOverlay.classList.add('hidden');
+    }, 100); // Small delay to ensure loader is visible
 }
 function clearAllButtonHighlights() {
     const allBtns = document.querySelectorAll('.btns');
@@ -1891,225 +1908,237 @@ function closeSubscriptionChatModal() {
 }
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...');
+    // Show loader immediately on DOMContentLoaded
+    if (loaderOverlay) loaderOverlay.classList.remove('hidden');
+
     if (!initializeDOMElements()) {
         console.error('Failed to initialize DOM elements, stopping further initialization.');
+        // Hide loader even on failure
+        if (loaderOverlay) loaderOverlay.classList.add('hidden');
         return;
     }
-    filterDataArrays();
-    console.log('Rendering initial table for "All Apps"');
-    renderApplicationTable(allAppsFilteredData);
-    if (allAppsBtn) {
-        allAppsBtn.classList.add('active');
-    }
-    // Set health score to 100 as requested
-    let calculatedHealthScore = 100;
-    updateHealthScore(calculatedHealthScore);
-    if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
-        switchTab('all-apps');
-        highlightActiveCard(null);
-    });
-    if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
-        switchTab('cross-sell');
-        highlightActiveCard(null);
-    });
-    if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
-        switchTab('downgrades');
-        highlightActiveCard(null);
-    });
-    if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
-        switchTab('competitors');
-        highlightActiveCard(null);
-    });
-    if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
-        switchTab('anomalies');
-        highlightActiveCard(null);
-    });
-    if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
-        switchTab('ticket-details');
-        highlightActiveCard(null);
-    });
-    if (arrLessThan5kSegment) {
-        arrLessThan5kSegment.addEventListener('click', () => {
-            switchTab('arr-less-than-5k');
+
+    // Wrap the main initialization logic in a setTimeout to allow loader to show
+    setTimeout(() => {
+        filterDataArrays();
+        console.log('Rendering initial table for "All Apps"');
+        renderApplicationTable(allAppsFilteredData);
+        if (allAppsBtn) {
+            allAppsBtn.classList.add('active');
+        }
+        // Set health score to 100 as requested
+        let calculatedHealthScore = 100;
+        updateHealthScore(calculatedHealthScore);
+        if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
+            switchTab('all-apps');
             highlightActiveCard(null);
         });
-    }
-    if (arrGreaterThan5kSegment) {
-        arrGreaterThan5kSegment.addEventListener('click', () => {
-            switchTab('arr-greater-than-5k');
+        if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
+            switchTab('cross-sell');
             highlightActiveCard(null);
         });
-    }
-    if (criticalIssuesCard) {
-        criticalIssuesCard.addEventListener('click', () => {
-            switchTab('anomalies', anomaliesCriticalOnlyData);
-            highlightActiveCard('criticalIssuesCard');
-        });
-        criticalIssuesCard.style.cursor = 'pointer';
-    }
-    if (warningSignsCard) {
-        warningSignsCard.addEventListener('click', () => {
-            switchTab('anomalies', anomaliesWarningOnlyData);
-            highlightActiveCard('warningSignsCard');
-        });
-        warningSignsCard.style.cursor = 'pointer';
-    }
-    if (competitorExposureCard) {
-        competitorExposureCard.addEventListener('click', () => {
-            switchTab('competitors');
-            highlightActiveCard('competitorExposureCard');
-        });
-        competitorExposureCard.style.cursor = 'pointer';
-    }
-    if (downgradeRisksCard) {
-        downgradeRisksCard.addEventListener('click', () => {
+        if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
             switchTab('downgrades');
-            highlightActiveCard('downgradeRisksCard');
+            highlightActiveCard(null);
         });
-        downgradeRisksCard.style.cursor = 'pointer';
-    }
-    if (deskTicketsCard) {
-        deskTicketsCard.addEventListener('click', () => {
+        if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
+            switchTab('competitors');
+            highlightActiveCard(null);
+        });
+        if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
+            switchTab('anomalies');
+            highlightActiveCard(null);
+        });
+        if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
             switchTab('ticket-details');
-            highlightActiveCard('deskTicketsCard');
+            highlightActiveCard(null);
         });
-        deskTicketsCard.style.cursor = 'pointer';
-    }
-    if (applicationTableContainer) {
-        applicationTableContainer.classList.remove('d-none');
-        applicationTableContainer.style.display = 'block';
-        if (applicationTableHeader) {
-            applicationTableHeader.style.display = 'table-header-group';
+        if (arrLessThan5kSegment) {
+            arrLessThan5kSegment.addEventListener('click', () => {
+                switchTab('arr-less-than-5k');
+                highlightActiveCard(null);
+            });
         }
-    }
-    if (ticketDetailsTableContainer) {
-        ticketDetailsTableContainer.style.display = 'none';
-    }
-    updateCounts();
-    document.addEventListener('click', (event) => {
-        if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
-            closeAllDropdowns();
+        if (arrGreaterThan5kSegment) {
+            arrGreaterThan5kSegment.addEventListener('click', () => {
+                switchTab('arr-greater-than-5k');
+                highlightActiveCard(null);
+            });
         }
-        if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
-            closeAllThreatPopups();
+        if (criticalIssuesCard) {
+            criticalIssuesCard.addEventListener('click', () => {
+                switchTab('anomalies', anomaliesCriticalOnlyData);
+                highlightActiveCard('criticalIssuesCard');
+            });
+            criticalIssuesCard.style.cursor = 'pointer';
         }
-        if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-            !event.target.closest('.subscription-chat-modal')) {
-            closeSubscriptionChatModal();
+        if (warningSignsCard) {
+            warningSignsCard.addEventListener('click', () => {
+                switchTab('anomalies', anomaliesWarningOnlyData);
+                highlightActiveCard('warningSignsCard');
+            });
+            warningSignsCard.style.cursor = 'pointer';
         }
-        // Close popups on outside click
-        if (recentPurchasesPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#recentPurchasesCount')) {
-            closeAllModals();
+        if (competitorExposureCard) {
+            competitorExposureCard.addEventListener('click', () => {
+                switchTab('competitors');
+                highlightActiveCard('competitorExposureCard');
+            });
+            competitorExposureCard.style.cursor = 'pointer';
         }
-        if (nextRenewalsPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#nextRenewalsCount')) {
-            closeAllModals();
+        if (downgradeRisksCard) {
+            downgradeRisksCard.addEventListener('click', () => {
+                switchTab('downgrades');
+                highlightActiveCard('downgradeRisksCard');
+            });
+            downgradeRisksCard.style.cursor = 'pointer';
         }
-    });
-
-    const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
-    const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
-    if (clickableEyeIcon && ratingDetailsPopup) {
-        clickableEyeIcon.addEventListener('click', (event) => {
-            console.log('Eye icon clicked!');
-            event.stopPropagation();
-            if (ratingDetailsPopup.style.display === 'block') {
-                ratingDetailsPopup.style.display = 'none';
-            } else {
-                ratingDetailsPopup.style.display = 'block';
+        if (deskTicketsCard) {
+            deskTicketsCard.addEventListener('click', () => {
+                switchTab('ticket-details');
+                highlightActiveCard('deskTicketsCard');
+            });
+            deskTicketsCard.style.cursor = 'pointer';
+        }
+        if (applicationTableContainer) {
+            applicationTableContainer.classList.remove('d-none');
+            applicationTableContainer.style.display = 'block';
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
             }
-        });
+        }
+        if (ticketDetailsTableContainer) {
+            ticketDetailsTableContainer.style.display = 'none';
+        }
+        updateCounts();
         document.addEventListener('click', (event) => {
-            if (ratingDetailsPopup.style.display === 'block' &&
-                !clickableEyeIcon.contains(event.target) &&
-                !ratingDetailsPopup.contains(event.target)) {
-                console.log('Closing popup due to outside click.');
-                ratingDetailsPopup.style.display = 'none';
+            if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
+                closeAllDropdowns();
+            }
+            if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
+                closeAllThreatPopups();
+            }
+            if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
+                !event.target.closest('.subscription-chat-modal')) {
+                closeSubscriptionChatModal();
+            }
+            // Close popups on outside click
+            if (recentPurchasesPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#recentPurchasesCount')) {
+                closeAllModals();
+            }
+            if (nextRenewalsPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#nextRenewalsCount')) {
+                closeAllModals();
             }
         });
-    }
-    const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
-    if (needHelpDropdownWrapper) {
-        const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
-        const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
-        if (needHelpToggleElement && needHelpDropdownMenu) {
-            needHelpToggleElement.addEventListener('click', (event) => {
+
+        const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
+        const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
+        if (clickableEyeIcon && ratingDetailsPopup) {
+            clickableEyeIcon.addEventListener('click', (event) => {
+                console.log('Eye icon clicked!');
                 event.stopPropagation();
-                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-                    closeAllDropdowns();
-                }
-                closeAllThreatPopups();
-                needHelpDropdownMenu.classList.toggle('show');
-                if (needHelpDropdownMenu.classList.contains('show')) {
-                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
-                    });
-                    currentOpenDropdown = needHelpDropdownMenu;
-                    currentOpenDropdownToggle = needHelpToggleElement;
+                if (ratingDetailsPopup.style.display === 'block') {
+                    ratingDetailsPopup.style.display = 'none';
                 } else {
-                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                        button.style.animation = '';
-                    });
-                    closeAllDropdowns();
+                    ratingDetailsPopup.style.display = 'block';
                 }
             });
-            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-                    closeAllDropdowns();
-                });
+            document.addEventListener('click', (event) => {
+                if (ratingDetailsPopup.style.display === 'block' &&
+                    !clickableEyeIcon.contains(event.target) &&
+                    !ratingDetailsPopup.contains(event.target)) {
+                    console.log('Closing popup due to outside click.');
+                    ratingDetailsPopup.style.display = 'none';
+                }
             });
         }
-    }
-    if (closeSubscriptionChatModalBtn) {
-        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
-    }
+        const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
+        if (needHelpDropdownWrapper) {
+            const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
+            const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
+            if (needHelpToggleElement && needHelpDropdownMenu) {
+                needHelpToggleElement.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
+                        closeAllDropdowns();
+                    }
+                    closeAllThreatPopups();
+                    needHelpDropdownMenu.classList.toggle('show');
+                    if (needHelpDropdownMenu.classList.contains('show')) {
+                        needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                            button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+                        });
+                        currentOpenDropdown = needHelpDropdownMenu;
+                        currentOpenDropdownToggle = needHelpToggleElement;
+                    } else {
+                        needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                            button.style.animation = '';
+                        });
+                        closeAllDropdowns();
+                    }
+                });
+                needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+                        closeAllDropdowns();
+                    });
+                });
+            }
+        }
+        if (closeSubscriptionChatModalBtn) {
+            closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
+        }
 
-    // Event listeners for new popups
-    if (recentPurchasesCountSpan) {
-        recentPurchasesCountSpan.addEventListener('click', () => {
-            closeAllModals(); // Close other popups
-            recentPurchasesList.innerHTML = ''; // Clear previous content
-            if (recentPurchasesData.length > 0) {
-                recentPurchasesData.forEach((item, index) => {
+        // Event listeners for new popups
+        if (recentPurchasesCountSpan) {
+            recentPurchasesCountSpan.addEventListener('click', () => {
+                closeAllModals(); // Close other popups
+                recentPurchasesList.innerHTML = ''; // Clear previous content
+                if (recentPurchasesData.length > 0) {
+                    recentPurchasesData.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                        li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                        recentPurchasesList.appendChild(li);
+                    });
+                } else {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
-                    li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                    li.textContent = 'No recent purchases in the last 6 months.';
                     recentPurchasesList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No recent purchases in the last 6 months.';
-                recentPurchasesList.appendChild(li);
-            }
-            recentPurchasesPopup.classList.add('show');
-        });
-    }
+                }
+                recentPurchasesPopup.classList.add('show');
+            });
+        }
 
-    if (nextRenewalsCountSpan) {
-        nextRenewalsCountSpan.addEventListener('click', () => {
-            closeAllModals(); // Close other popups
-            nextRenewalsList.innerHTML = ''; // Clear previous content
-            if (nextRenewalsData.length > 0) {
-                nextRenewalsData.forEach((item, index) => {
+        if (nextRenewalsCountSpan) {
+            nextRenewalsCountSpan.addEventListener('click', () => {
+                closeAllModals(); // Close other popups
+                nextRenewalsList.innerHTML = ''; // Clear previous content
+                if (nextRenewalsData.length > 0) {
+                    nextRenewalsData.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span class="app-name">${item.name}</span> <span class="renewal-date">${item.date}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                        li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                        nextRenewalsList.appendChild(li);
+                    });
+                } else {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="renewal-date">${item.date}</span> <span class="app-revenue">$${item.revenue}</span>`;
-                    li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                    li.textContent = 'No upcoming renewals in the next 3 months.';
                     nextRenewalsList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No upcoming renewals in the next 3 months.';
-                nextRenewalsList.appendChild(li);
-            }
-            nextRenewalsPopup.classList.add('show');
-        });
-    }
+                }
+                nextRenewalsPopup.classList.add('show');
+            });
+        }
 
-    // Close buttons for popups
-    document.querySelectorAll('.popup-close-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            closeAllModals();
+        // Close buttons for popups
+        document.querySelectorAll('.popup-close-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                closeAllModals();
+            });
         });
-    });
+
+        // Hide loader after all initial rendering is done
+        if (loaderOverlay) loaderOverlay.classList.add('hidden');
+    }, 500); // Increased delay for better visibility of loader
 });
