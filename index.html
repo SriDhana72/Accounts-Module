@@ -10,13 +10,6 @@
 </head>
 <body>
     <div class="container-fluid px-4 py-3">
-        <!-- Loader Overlay -->
-        <div id="loaderOverlay" class="loader-overlay">
-            <div class="loader-line-container">
-                <div class="loader-line"></div>
-            </div>
-        </div>
-
         <div class="container-section">
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <div class="account-info-content">
@@ -79,7 +72,6 @@
                         <span id="healthScoreValue" class="fw-bold fs-4">98</span>
                     </div>
                 </div>
-
                 <!-- New Combined Info Card Container -->
                 <div class="combined-info-card-container">
                     <div class="combined-info-card">
@@ -98,7 +90,6 @@
                     </div>
                 </div>
                 <!-- End New Combined Info Card Container -->
-
                 <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
                     <button class="action-toggle-element need-help-fab">
                         <i class="bi bi-question-circle-fill"></i>
@@ -114,13 +105,12 @@
                         <a href="https://gc.zoho.com/org/746519053/widgets/4398000001962393" target="_blank" rel="noopener noreferrer" class="glass-button gc-link">
                             <i class="bi bi-chat-dots"></i> Guided conversation
                         </a>
-                        <button class="glass-button connect-us">
+                        <button class="glass-button connect-us" id="needHelpChatAgentBtn">
                             <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
                         </button>
                     </div>
                 </div>
             </div>
-
             <div>
                 <div class="d-flex flex-wrap justify-content-around g-3">
                     <div class="card-section" id="criticalIssuesCard">
@@ -182,7 +172,7 @@
                 </div>
                 <div class="Buttons-section">
                     <button class="btn btn-light btns active" id="allAppsBtn">
-                        All Apps (<span id="allAppsCount">15</span>)
+                        All Apps (<span id="allAppsCount">14</span>)
                     </button>
                     <button class="btn btn-light btns" id="crossSellBtn">
                         <i class="bi bi-arrow-right-circle"></i>
@@ -248,14 +238,13 @@
     </div>
     <div id="subscriptionChatModal" class="subscription-chat-modal">
         <div class="subscription-chat-modal-header">
-            <span>Please post your query</span>
+            <span>What's up dude 👋</span>
             <button class="close-button" id="closeSubscriptionChatModal">&times;</button>
         </div>
         <div class="subscription-chat-modal-body">
             <iframe id="subscriptionChatIframe" class="subscription-chat-iframe" src="" title="Subscription Chat"></iframe>
         </div>
     </div>
-
     <!-- Recent Purchases Pop-up -->
     <div id="recentPurchasesPopup" class="popup-overlay">
         <div class="popup-content">
@@ -264,7 +253,6 @@
             <ul id="recentPurchasesList"></ul>
         </div>
     </div>
-
     <!-- Next Renewals Pop-up -->
     <div id="nextRenewalsPopup" class="popup-overlay">
         <div class="popup-content">
