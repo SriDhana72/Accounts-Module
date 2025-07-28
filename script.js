@@ -1302,7 +1302,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
     <td colspan="10">
         <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
             <div class="col-md-6 p-2"> <!-- Changed to col-md-6 -->
-                <h6 class="mb-2 fw-bold">Usage | License History</h6>
+                <h6 class="mb-2 fw-bold">Usage & License History</h6>
                 <div class="table-responsive">
                     <table class="table table-sm monthly-data-table mb-0">
                         <thead>

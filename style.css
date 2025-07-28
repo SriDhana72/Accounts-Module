@@ -1177,12 +1177,6 @@
     .competitor-value-list li:last-child {
         margin-bottom: 0;
     }
-    .competitor-value {
-        font-weight: 500;
-        font-size: 0.9em;
-        white-space: nowrap;
-        text-align: center;
-    }
     .vertical-divider {
         width: 1px;
         background-color: #ccc;
@@ -1267,33 +1261,33 @@
         left: 100%;
         top: 50%;
         transform: translateY(-50%);
-        background: linear-gradient(135deg, rgba(170, 180, 255, 0.75), rgba(140, 160, 255, 0.75)); /* Updated to biscuit gradient */
+        background: linear-gradient(135deg, rgba(170, 180, 255, 0.08), rgba(140, 160, 255, 0.08)), #ffffff; /* Updated background */
         border: 1px solid #e9ecef;
-        border-radius: 12px; /* Rounded rectangle */
-        padding: 10px; /* Reduced padding */
+        border-radius: 12px;
+        padding: 8px; /* Reduced padding */
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         z-index: 100;
-        display: none; /* Controlled by JS */
-        width: 180px; /* Increased width */
-        max-width: 180px; /* Increased max-width */
+        display: none;
+        width: 140px; /* Reduced width */
+        max-width: 140px; /* Reduced max-width */
         white-space: normal;
-        opacity: 0; /* Start hidden for animation */
-        animation: zoom-shake-animation 2s ease-out forwards; /* Apply the new animation */
-        transform-origin: center center; /* Keep transform origin for scaling */
+        opacity: 0;
+        animation: zoom-shake-animation 2s ease-out forwards;
+        transform-origin: center center;
     }
     /* Chat message tail for rating popup */
     .rating-details-popup::before {
         content: '';
         position: absolute;
         top: 50%;
-        left: -10px; /* Position to the left of the popup */
+        left: -10px;
         transform: translateY(-50%);
         width: 0;
         height: 0;
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
-        border-right: 10px solid rgba(170, 180, 255, 0.75); /* Match popup background start color */
-        filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the tail */
+        border-right: 10px solid rgba(170, 180, 255, 0.08); /* Match popup background start color */
+        filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1));
     }
     /* New animation keyframes for zoom and shake */
     @keyframes zoom-shake-animation {
@@ -1321,19 +1315,19 @@
     }
     .rating-details-popup .d-flex {
         align-items: center;
-        margin-bottom: 6px; /* Reduced margin */
+        margin-bottom: 4px; /* Reduced margin */
     }
     .rating-details-popup .d-flex:last-child {
         margin-bottom: 0;
     }
     .rating-details-popup .bi-star-fill {
-        font-size: 1em; /* Reduced font size */
-        margin-right: 6px; /* Reduced margin */
+        font-size: 0.9em; /* Reduced font size */
+        margin-right: 4px; /* Reduced margin */
         flex-shrink: 0;
     }
     .rating-details-popup strong {
         display: inline;
-        font-size: 0.8em; /* Reduced font size from 0.85em to 0.8em */
+        font-size: 0.7em; /* Reduced font size */
         color: #333;
         margin-bottom: 0;
     }
