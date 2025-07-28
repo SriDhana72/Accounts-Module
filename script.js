@@ -512,6 +512,26 @@
     let expandedRowId = null; // Define expandedRowId
     let expandedTicketRowId = null; // Define expandedTicketRowId
     let activeSection = 'all-apps'; // Define activeSection
+    let widgetLoaderOverlay = null; // Loader element
+
+    /**
+     * Shows the widget loader overlay.
+     */
+    function showWidgetLoader() {
+        if (widgetLoaderOverlay) {
+            widgetLoaderOverlay.classList.add('show');
+        }
+    }
+
+    /**
+     * Hides the widget loader overlay.
+     */
+    function hideWidgetLoader() {
+        if (widgetLoaderOverlay) {
+            widgetLoaderOverlay.classList.remove('show');
+        }
+    }
+
     function closeAllDropdowns() {
         if (currentOpenDropdown) {
             currentOpenDropdown.classList.remove('show');
@@ -582,6 +602,8 @@
         nextRenewalsPopup = document.getElementById('nextRenewalsPopup');
         recentPurchasesList = document.getElementById('recentPurchasesList');
         nextRenewalsList = document.getElementById('nextRenewalsList');
+        widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
+
         if (!applicationTableContainer) {
             console.error('Application table container not found!');
             return false;
@@ -596,6 +618,10 @@
         }
         if (!subscriptionChatModal) {
             console.error('Subscription chat modal element (subscriptionChatModal) not found!');
+            return false;
+        }
+        if (!widgetLoaderOverlay) {
+            console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
             return false;
         }
         return true;
@@ -1737,15 +1763,25 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
             console.error('Failed to initialize DOM elements, stopping further initialization.');
             return;
         }
-        filterDataArrays();
-        console.log('Rendering initial table for "All Apps"');
-        renderApplicationTable(allAppsFilteredData);
-        if (allAppsBtn) {
-            allAppsBtn.classList.add('active');
-        }
-        // Set health score to 100 as requested
-        let calculatedHealthScore = 100;
-        updateHealthScore(calculatedHealthScore);
+
+        // Show loader immediately
+        showWidgetLoader();
+
+        // Simulate data loading delay
+        setTimeout(() => {
+            filterDataArrays();
+            console.log('Rendering initial table for "All Apps"');
+            renderApplicationTable(allAppsFilteredData);
+            if (allAppsBtn) {
+                allAppsBtn.classList.add('active');
+            }
+            // Set health score to 100 as requested
+            let calculatedHealthScore = 100;
+            updateHealthScore(calculatedHealthScore);
+            updateCounts();
+            hideWidgetLoader(); // Hide loader after content is loaded
+        }, 1000); // Simulate 1 second loading time
+
         if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
             switchTab('all-apps');
             highlightActiveCard(null);
@@ -1831,7 +1867,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
             ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
             ticketDetailsTableContainer.style.display = 'none';
         }
-        updateCounts();
+        
         document.addEventListener('click', (event) => {
             if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
                 closeAllDropdowns();
