@@ -1558,7 +1558,7 @@
     }
     .arr-segment {
         display: flex;
-        flex-direction: row;
+        flex-direction: row; /* Ensure horizontal alignment of label and count */
         align-items: center;
         justify-content: center;
         flex: 1;
@@ -1596,20 +1596,34 @@
         font-weight: 500;
         color: #333;
         line-height: 1;
-        margin-right: 4px;
     }
     .arr-count {
         font-size: 0.8em;
         font-weight: 600;
-        color: #666;
+        color: #28a745; /* Green color for the count */
         line-height: 1;
     }
     .arr-segment.active-arr-filter .arr-label,
     .arr-segment.active-arr-filter .arr-count {
-        color: #333;
+        color: #333; /* Reset label color when active, but keep count green */
     }
+    /* Specific spacing for the new format */
+    .arr-less-than-5k .arr-count {
+        margin-right: 4px; /* Space between (count) and < 5k */
+    }
+    .arr-greater-than-5k .arr-label {
+        margin-right: 4px; /* Space between > 5k and (count) */
+    }
+    /* Vertical bar between segments */
+    .vertical-bar-arr {
+        width: 1px;
+        background-color: #ccc;
+        height: 80%; /* Adjust height as needed */
+        margin: 0 5px; /* Space around the bar */
+    }
+
     .arr-capsule-container .arr-segment:first-child {
-        border-right: none;
+        border-right: none; /* Remove default border-right if present */
     }
     /* New Combined Card Styles */
     .combined-info-card-container {
@@ -1846,19 +1860,40 @@
         visibility: visible;
     }
 
+    /* New styles for the loader content circle */
+    .loader-content-circle {
+        width: 200px; /* Increased width for better text fit */
+        height: 200px; /* Increased height */
+        border-radius: 50%;
+        background-color: #f0f0f0; /* Grey background */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+        border: 1px solid #e0e0e0; /* Subtle border */
+        position: relative;
+        overflow: hidden; /* Ensure dots don't spill */
+        /* Subtle dot pattern using radial gradient */
+        background-image: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.05) 1px, transparent 1px),
+                          radial-gradient(circle at 90% 80%, rgba(0,0,0,0.05) 1px, transparent 1px),
+                          radial-gradient(circle at 50% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
+        background-size: 20px 20px; /* Size of the dot pattern */
+    }
+
     /* Cube Loader Styles */
     .cube-loader {
-        width: 60px;
-        height: 60px;
+        width: 40px; /* Reduced size */
+        height: 40px; /* Reduced size */
         position: relative;
         transform-style: preserve-3d;
         transform: rotateX(-30deg) rotateY(45deg);
-        margin-bottom: 20px; /* Space between loader and text */
+        margin-bottom: 10px; /* Reduced space between loader and text */
     }
 
     .cube-loader .cube {
-        width: 30px;
-        height: 30px;
+        width: 20px; /* Reduced size */
+        height: 20px; /* Reduced size */
         position: absolute;
         opacity: 0;
         animation: cube-fade 2s infinite ease-in-out;
@@ -1873,7 +1908,7 @@
 
     .cube-loader .cube:nth-child(2) {
         background-color: #0d9e0d; /* Green */
-        left: 30px;
+        left: 20px; /* Adjusted position based on new cube size */
         top: 0;
         animation-delay: 0.2s;
     }
@@ -1881,14 +1916,14 @@
     .cube-loader .cube:nth-child(3) {
         background-color: #f6f040; /* Yellow */
         left: 0;
-        top: 30px;
+        top: 20px; /* Adjusted position based on new cube size */
         animation-delay: 0.4s;
     }
 
     .cube-loader .cube:nth-child(4) {
         background-color: #238ee6; /* Blue */
-        left: 30px;
-        top: 30px;
+        left: 20px; /* Adjusted position based on new cube size */
+        top: 20px; /* Adjusted position based on new cube size */
         animation-delay: 0.6s;
     }
 
@@ -1912,15 +1947,21 @@
     }
 
     .widget-loader-message {
-        font-size: 1.25em;
+        font-size: 0.9em; /* Reduced font size */
         color: #000; /* Black font color */
         font-weight: 600;
         text-align: center;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.03em; /* Slightly reduced letter spacing */
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        /* Removed gradient for text as per request for black font */
         -webkit-background-clip: unset;
         -webkit-text-fill-color: unset;
         background-clip: unset;
         color: #000; /* Ensure text is black */
+        padding: 0 15px; /* Add some horizontal padding to prevent text from touching edges */
     }
+    .vertical-bar-arr {
+        width: 5px;                /* makes it bolder */
+        height: 30px;             /* adjust as needed */
+        background-color: #000;    /* solid black for strong visibility */
+    }
+    

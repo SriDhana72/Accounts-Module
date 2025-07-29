@@ -441,21 +441,6 @@
                 { id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
                 { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
             ]
-        },
-        {
-            id: 'dept-hr',
-            department: "Human Resources",
-            openStatus: 0,
-            closedStatus: 5,
-            openTicketOwnership: "Laxman",
-            executiveSummary: "No open tickets. All HR-related requests and queries have been resolved promptly.",
-            tickets: [
-                { id: "TKT-CLOSED-HR-001", summary: "Onboarding process completed for new employee.", url: "#", status: "Closed" },
-                { id: "TKT-CLOSED-HR-002", summary: "Payroll discrepancy resolved for John Doe.", url: "#", status: "Closed" },
-                { id: "TKT-CLOSED-HR-003", summary: "Policy clarification provided for leave request.", url: "#", "status": "Closed" },
-                { id: "TKT-CLOSED-HR-004", summary: "Benefits enrollment assistance provided.", url: "#", status: "Closed" },
-                { id: "TKT-CLOSED-HR-005", summary: "Performance review scheduling completed.", url: "#", status: "Closed" }
-            ]
         }
     ];
     ticketDetailsData.forEach(dept => {
@@ -844,8 +829,15 @@
             closedTicketsCountSpan.style.minWidth = '50px';
             closedTicketsCountSpan.style.textAlign = 'center';
         }
-        if (arrLessThan5kCountSpan) arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
-        if (arrGreaterThan5kCountSpan) arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
+        // Update ARR segment counts with parentheses and green color
+        if (arrLessThan5kCountSpan) {
+            arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
+            arrLessThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+        }
+        if (arrGreaterThan5kCountSpan) {
+            arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
+            arrGreaterThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+        }
         // Update new card counts with fixed numbers
         if (recentPurchasesCountSpan) recentPurchasesCountSpan.textContent = recentPurchasesData.length;
         if (nextRenewalsCountSpan) nextRenewalsCountSpan.textContent = nextRenewalsData.length;
@@ -1664,7 +1656,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
                         if (applicationTableHeader) {
                             applicationTableHeader.style.display = 'table-header-group';
                         }
-                    }
+                        }
                     renderApplicationTable(arrGreaterThan5kFilteredData);
                     activeSection = 'arr-greater-than-5k';
                     updateCounts();

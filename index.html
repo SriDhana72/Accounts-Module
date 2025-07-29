@@ -14,13 +14,15 @@
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <!-- Widget Loader Overlay -->
                 <div id="widgetLoaderOverlay" class="widget-loader-overlay">
-                    <div class="cube-loader">
-                        <div class="cube"></div>
-                        <div class="cube"></div>
-                        <div class="cube"></div>
-                        <div class="cube"></div>
+                    <div class="loader-content-circle">
+                        <div class="cube-loader">
+                            <div class="cube"></div>
+                            <div class="cube"></div>
+                            <div class="cube"></div>
+                            <div class="cube"></div>
+                        </div>
+                        <span class="widget-loader-message">Just a moment — progress is on the way.. ✨</span>
                     </div>
-                    <span class="widget-loader-message">Loading... because even tech needs a moment. ✨</span>
                 </div>
 
                 <div class="account-info-content">
@@ -172,12 +174,13 @@
                     </h4>
                     <div class="arr-capsule-container d-flex align-items-center">
                         <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
-                            <span class="arr-count" id="arrLessThan5kCount"></span>
-                            <span class="arr-label">5k&lt;</span>
+                            <span class="arr-count" id="arrLessThan5kCount">0</span>
+                            <span class="arr-label">&lt; 5k</span>
                         </div>
+                        <div class="vertical-bar-arr"></div> <!-- New vertical bar -->
                         <div class="arr-segment arr-greater-than-5k" id="arrGreaterThan5kSegment">
-                            <span class="arr-label">&gt;5k</span>
-                            <span class="arr-count" id="arrGreaterThan5kCount"></span>
+                            <span class="arr-label">&gt; 5k</span>
+                            <span class="arr-count" id="arrGreaterThan5kCount">0</span>
                         </div>
                     </div>
                 </div>
