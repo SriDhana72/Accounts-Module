@@ -708,11 +708,17 @@
             max-width: calc(33% - 10px);
             padding: 5px; /* Smaller padding */
         }
-        .info-section strong {
+        .info-section .main-value {
+            font-size: 1.2em; /* Smaller font size */
+        }
+        .info-section .main-value .bi {
+            font-size: 0.9em; /* Smaller icon size */
+        }
+        .info-section .label {
             font-size: 0.6em; /* Smaller font size */
         }
-        .info-section .value, .info-section .clickable-number {
-            font-size: 0.8em; /* Smaller font size */
+        .info-section .trend-data {
+            display: none; /* Hide the trend data */
         }
         .popup-content {
             max-width: 250px; /* Adjusted max-width for popups */
@@ -1264,16 +1270,17 @@
         background: linear-gradient(135deg, rgba(170, 180, 255, 0.08), rgba(140, 160, 255, 0.08)), #ffffff; /* Updated background */
         border: 1px solid #e9ecef;
         border-radius: 12px;
-        padding: 8px; /* Reduced padding */
+        padding: 5px; /* Reduced padding */
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         z-index: 100;
         display: none;
-        width: 140px; /* Reduced width */
-        max-width: 140px; /* Reduced max-width */
+        width: 193px; /* Updated width */
+        max-width: 194px; /* Updated max-width */
         white-space: normal;
         opacity: 0;
-        animation: zoom-shake-animation 2s ease-out forwards;
+        animation: zoom-shake-animation 1s ease-out forwards;
         transform-origin: center center;
+        height: 132px; /* Reduced height */
     }
     /* Chat message tail for rating popup */
     .rating-details-popup::before {
@@ -1313,12 +1320,14 @@
             transform: translateY(-50%) scale(1) translateX(0);
         }
     }
-    .rating-details-popup .d-flex {
-        align-items: center;
-        margin-bottom: 4px; /* Reduced margin */
+    .rating-details-popup .d-flex.flex-column { /* Target the outer d-flex for each point */
+        margin-bottom: 0px; /* Reduced margin to remove space between points */
     }
-    .rating-details-popup .d-flex:last-child {
+    .rating-details-popup .d-flex.flex-column:last-child {
         margin-bottom: 0;
+    }
+    .rating-details-popup .d-flex.align-items-center { /* This targets the inner d-flex for star and strong */
+        margin-bottom: 1px; /* Keep a small margin between title and description */
     }
     .rating-details-popup .bi-star-fill {
         font-size: 0.9em; /* Reduced font size */
@@ -1331,7 +1340,16 @@
         color: #333;
         margin-bottom: 0;
     }
-    /* Removed the p tag styles as they are no longer needed */
+    /* New style for the small description text */
+    .rating-description {
+        font-size: 0.6em; /* Very small font size */
+        color: #a0a0a0; /* Light grey font color */
+        margin-left: 8px; /* Space from the strong tag */
+        white-space: normal; /* Allow text to wrap */
+        line-height: 1.2; /* Adjust line height for wrapped text */
+        margin-top: 0; /* Ensure no top margin */
+        margin-bottom: 0; /* Ensure no bottom margin */
+    }
     .star-red-gradient {
         background: linear-gradient(to right, #A5D6A7, #66BB6A);
         -webkit-background-clip: text;
@@ -1616,10 +1634,9 @@
     }
     /* Vertical bar between segments */
     .vertical-bar-arr {
-        width: 1px;
-        background-color: #ccc;
-        height: 80%; /* Adjust height as needed */
-        margin: 0 5px; /* Space around the bar */
+        width: 5px;                /* makes it bolder */
+        height: 30px;             /* adjust as needed */
+        background-color: #000;    /* solid black for strong visibility */
     }
 
     .arr-capsule-container .arr-segment:first-child {
@@ -1627,66 +1644,75 @@
     }
     /* New Combined Card Styles */
     .combined-info-card-container {
-        position: absolute; /* Position absolutely within the main box */
-        top: 100px; /* Adjust based on health score height and desired spacing */
-        right: 4px; /* Align with health score */
-        width: 320px; /* Increased width for horizontal layout */
+        position: absolute;
+        top: 95px;
+        right: 31px;
+        width: 300px;
         display: flex;
         flex-direction: column;
-        gap: 10px; /* Space between sections */
-        z-index: 5; /* Ensure it's above other content but below health score widget if needed */
+        gap: 10px;
+        z-index: 5;
+        background-color: transparent; /* Changed to transparent */
     }
     .combined-info-card {
-        background-color: rgba(240, 240, 240, 0.7); /* Glassy faded background */
-        backdrop-filter: blur(5px); /* Glassy effect */
-        -webkit-backdrop-filter: blur(5px); /* For Safari */
-        border-radius: 15px; /* Smaller border-radius for smaller card */
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Increased shadow for depth */
-        border: 1px solid rgba(224, 224, 224, 0.7); /* Faded border */
-        padding: 8px; /* Smaller padding */
+        background-color: transparent; /* Changed to transparent */
+        border-radius: 15px; /* Rounded corners for the whole card */
+        box-shadow: none; /* Removed box-shadow */
+        border: none; /* Removed border */
+        padding: 4px; /* Padding for the whole card */
         display: flex;
-        flex-direction: row; /* Arranged horizontally */
+        flex-direction: row; /* Arrange sections horizontally */
         justify-content: space-around;
         align-items: center;
-        flex-wrap: nowrap; /* Keep items in one line */
-        gap: 5px; /* Smaller gap between sections */
+        flex-wrap: nowrap;
+        gap: 5px; /* No gap between sections, separator will provide spacing */
+        height: 101px; /* Increased height for the combined card */
+        width: 325px;
     }
     .info-section {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column; /* Stack icon/number and label vertically */
+        align-items: center; /* Horizontally center content */
+        justify-content: center;
         text-align: center;
-        padding: 5px 8px; /* Smaller padding */
-        border-radius: 10px; /* Smaller border-radius for sections */
-        background-color: rgba(255, 255, 255, 0.6); /* Glassy faded background for sections */
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        flex: 1; /* Allow sections to grow/shrink */
-        min-width: 0; /* Allow shrinking below content size */
+        padding: 5px 8px; /* Padding for each section */
+        flex: 1; /* Allow sections to grow/shrink equally */
+        min-width: 0;
         box-sizing: border-box;
-        white-space: normal; /* Allow text to wrap within the section */
+        white-space: nowrap; /* Keep content on one line */
     }
-    .info-section.arr-section {
-        background: linear-gradient(to right, rgba(224, 237, 249, 0.6), rgba(200, 220, 240, 0.6)); /* Glassy faded */
-    }
-    .info-section.recent-purchase-section {
-        background: linear-gradient(to right, rgba(232, 245, 233, 0.6), rgba(221, 246, 222, 0.6)); /* Glassy faded */
-    }
+    /* Remove specific background gradients for info-sections */
+    .info-section.arr-section,
+    .info-section.recent-purchase-section,
     .info-section.next-renewal-section {
-        background: linear-gradient(to right, rgba(255, 230, 230, 0.6), rgba(249, 211, 211, 0.6)); /* Glassy faded */
+        background: transparent; /* Ensure no background */
     }
-    .info-section strong {
-        font-size: 0.65em; /* Further reduced label font size */
+
+    /* Updated styles for large numbers and small labels */
+    .info-section .main-value {
+        font-size: 1.1em;
+        font-weight: 700; /* Updated from 3400 to 700, as 3400 is not a valid CSS font-weight value */
+        color: #000;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .info-section .main-value .bi {
+        font-size: 0.9em; /* Adjusted Icon size relative to the main value */
+        margin-right: 4px; /* Space between icon and number */
+    }
+    .info-section .label {
+        font-size: 0.7em; /* Smaller font size for the label */
         color: #007bff;
-        margin-bottom: 2px; /* Reduced margin */
-        white-space: normal; /* Allow text to wrap */
-        line-height: 1.2; /* Adjust line height for wrapped text */
+        margin-bottom: 0; /* No bottom margin */
+        white-space: nowrap; /* Keep label on one line */
+        line-height: 1; /* Tighter line height */
     }
-    .info-section .value, .info-section .clickable-number {
-        font-size: 0.9em; /* Further reduced value font size */
-        font-weight: 700;
-        color: #000; /* Value color black */
-        margin-bottom: 2px; /* Reduced margin */
-        white-space: nowrap; /* Keep numbers on one line */
+    .info-section .trend-data {
+        display: none; /* Hide the trend data */
     }
     .info-section .clickable-number {
         cursor: pointer;
@@ -1701,6 +1727,13 @@
         0% { opacity: 1; }
         50% { opacity: 0.4; }
         100% { opacity: 1; }
+    }
+    /* Vertical separator between info sections */
+    .info-separator {
+        width: 1px;
+        background-color: #e0e0e0; /* Light grey separator */
+        height: 40px; /* Height of the separator */
+        flex-shrink: 0;
     }
     /* Pop-up overlay */
     .popup-overlay {
@@ -1796,7 +1829,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.8em; /* Reduced font size */
+        font-size: 0.8em;
         border: 1px solid rgba(233, 236, 239, 0.8);
         animation: flash-in 0.5s ease-out forwards;
         opacity: 0;
@@ -1891,14 +1924,6 @@
         margin-bottom: 10px; /* Reduced space between loader and text */
     }
 
-    .cube-loader .cube {
-        width: 20px; /* Reduced size */
-        height: 20px; /* Reduced size */
-        position: absolute;
-        opacity: 0;
-        animation: cube-fade 2s infinite ease-in-out;
-    }
-
     .cube-loader .cube:nth-child(1) {
         background-color: #f01717; /* Red */
         left: 0;
@@ -1959,9 +1984,8 @@
         color: #000; /* Ensure text is black */
         padding: 0 15px; /* Add some horizontal padding to prevent text from touching edges */
     }
-    .vertical-bar-arr {
+        .vertical-bar-arr {
         width: 5px;                /* makes it bolder */
         height: 30px;             /* adjust as needed */
         background-color: #000;    /* solid black for strong visibility */
     }
-    

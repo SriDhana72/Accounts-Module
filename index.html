@@ -48,17 +48,26 @@
                         <span class="ms-2 text-muted small">25/07/2025</span>
                         <i class="bi bi-eye-fill ms-2 text-primary clickable-eye-icon" style="cursor: pointer;">
                             <div id="ratingDetailsPopup" class="rating-details-popup">
-                                <div class="d-flex">
-                                    <i class="bi bi-star-fill star-red-gradient"></i>
-                                    <strong>Engagement</strong>
+                                <div class="d-flex flex-column align-items-start">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="bi bi-star-fill star-red-gradient"></i>
+                                        <strong>Engagement</strong>
+                                    </div>
+                                    <p class="rating-description">User activity and feature adoption</p>
                                 </div>
-                                <div class="d-flex">
-                                    <i class="bi bi-star-fill star-green-gradient"></i>
-                                    <strong>Interaction</strong>
+                                <div class="d-flex flex-column align-items-start">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="bi bi-star-fill star-green-gradient"></i>
+                                        <strong>Interaction</strong>
+                                    </div>
+                                    <p class="rating-description">Communication and support history</p>
                                 </div>
-                                <div class="d-flex">
-                                    <i class="bi bi-star-fill star-purple-gradient"></i>
-                                    <strong>Revenue Growth</strong>
+                                <div class="d-flex flex-column align-items-start">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="bi bi-star-fill star-purple-gradient"></i>
+                                        <strong>Revenue Growth</strong>
+                                    </div>
+                                    <p class="rating-description">Historical ARR and expansion</p>
                                 </div>
                             </div>
                         </i>
@@ -89,16 +98,27 @@
                 <div class="combined-info-card-container">
                     <div class="combined-info-card">
                         <div class="info-section arr-section">
-                            <strong>ARR</strong>
-                            <span class="value">$12,500</span>
+                            <div class="main-value">
+                                <i class="bi bi-currency-dollar text-success"></i>
+                                <span class="value">$12,500</span>
+                            </div>
+                            <span class="label">ARR</span>
                         </div>
+                        <div class="info-separator"></div>
                         <div class="info-section recent-purchase-section">
-                            <strong>Recent Purchases</strong>
-                            <span class="clickable-number" id="recentPurchasesCount"></span>
+                            <div class="main-value">
+                                <i class="bi bi-file-earmark-text-fill text-success"></i>
+                                <span class="clickable-number" id="recentPurchasesCount"></span>
+                            </div>
+                            <span class="label">Recent Purchase</span>
                         </div>
+                        <div class="info-separator"></div>
                         <div class="info-section next-renewal-section">
-                            <strong>Next Renewals</strong>
-                            <span class="clickable-number" id="nextRenewalsCount"></span>
+                            <div class="main-value">
+                                <i class="bi bi-calendar2-week-fill text-danger"></i>
+                                <span class="clickable-number" id="nextRenewalsCount"></span>
+                            </div>
+                            <span class="label">Next Renewals</span>
                         </div>
                     </div>
                 </div>
@@ -175,11 +195,11 @@
                     <div class="arr-capsule-container d-flex align-items-center">
                         <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
                             <span class="arr-count" id="arrLessThan5kCount">0</span>
-                            <span class="arr-label">&lt; 5k</span>
+                            <span class="arr-label">&lt;5k</span>
                         </div>
                         <div class="vertical-bar-arr"></div> <!-- New vertical bar -->
                         <div class="arr-segment arr-greater-than-5k" id="arrGreaterThan5kSegment">
-                            <span class="arr-label">&gt; 5k</span>
+                            <span class="arr-label">&gt;5k</span>
                             <span class="arr-count" id="arrGreaterThan5kCount">0</span>
                         </div>
                     </div>
