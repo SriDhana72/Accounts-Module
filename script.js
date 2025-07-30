@@ -22,7 +22,9 @@
                 { month: 'M4', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
                 { month: 'M5', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
                 { month: 'M6', seats: 28, change: '-1', revenue: 1400, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-            ]
+            ],
+            inactiveMonths: 3, // Added inactive months
+            cancellationReason: 'Found a cheaper alternative with similar features.' // Added cancellation reason
         },
         {
             id: 2,
@@ -46,7 +48,9 @@
                 { month: 'M4', seats: 22, change: '-1', revenue: 1100, revenueChange: '-50', competitorIntegrations: 'High' },
                 { month: 'M5', seats: 22, change: '0', revenue: 1100, revenueChange: '0', competitorIntegrations: 'High' },
                 { month: 'M6', seats: 21, change: '-1', revenue: 1050, revenueChange: '-50', competitorIntegrations: 'High' },
-            ]
+            ],
+            inactiveMonths: 6, // Added inactive months
+            cancellationReason: 'Product did not meet performance expectations.' // Added cancellation reason
         },
         {
             id: 3,
@@ -76,7 +80,7 @@
             id: 4,
             application: 'Desk',
             category: 'Marketing',
-            usage: 'Medium',
+            usage: 'Medium', // This will make it inactive
             seats: 41,
             license: 'No changes',
             paymentFailureCount: 0,
@@ -94,7 +98,9 @@
                 { month: 'M4', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
                 { month: 'M5', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'High' },
                 { month: 'M6', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            ]
+            ],
+            inactiveMonths: 2, // Added inactive months
+            cancellationReason: 'Service no longer required due to internal process changes.' // Added cancellation reason
         },
         {
             id: 5,
@@ -102,7 +108,7 @@
             category: 'Marketing',
             usage: 'High',
             seats: 46,
-            license: 'Downgraded in M6',
+            license: 'Downgraded in M6', // This will make it inactive
             paymentFailureCount: 6,
             pauseScheduledCount: 0,
             competitors: ['MailChimp'],
@@ -118,7 +124,9 @@
                 { month: 'M4', seats: 47, change: '-1', revenue: 2350, revenueChange: '-50', competitorIntegrations: 'High' },
                 { month: 'M5', seats: 47, change: '0', revenue: 2350, revenueChange: '0', competitorIntegrations: 'High' },
                 { month: 'M6', seats: 46, change: '-1', revenue: 2300, revenueChange: '-50', competitorIntegrations: 'High' },
-            ]
+            ],
+            inactiveMonths: 4, // Added inactive months
+            cancellationReason: 'Integration issues with existing systems.' // Added cancellation reason
         },
         {
             id: 6,
@@ -244,7 +252,7 @@
             id: 17,
             application: 'Sites',
             category: 'Communication',
-            usage: 'Medium',
+            usage: 'Medium', // This will make it inactive
             seats: 75,
             license: 'No changes',
             paymentFailureCount: 0,
@@ -262,7 +270,9 @@
                 { month: 'M4', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
                 { month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
                 { month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            ]
+            ],
+            inactiveMonths: 8, // Added inactive months
+            cancellationReason: 'Switched to a different platform for website management.' // Added cancellation reason
         },
         {
             id: 18,
@@ -292,7 +302,7 @@
             id: 19,
             application: 'Meeting',
             category: 'Communication',
-            usage: 'Medium',
+            usage: 'Medium', // This will make it inactive
             seats: 80,
             license: 'No changes',
             paymentFailureCount: 0,
@@ -310,7 +320,9 @@
                 { month: 'M4', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
                 { month: 'M5', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
                 { month: 'M6', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            ]
+            ],
+            inactiveMonths: 1, // Added inactive months
+            cancellationReason: 'Prefer in-person meetings over virtual tools.' // Added cancellation reason
         },
         {
             id: 20,
@@ -343,10 +355,11 @@
         data.forEach(app => {
             if (app.paymentFailureCount > 0 || app.pauseScheduledCount > 0) {
                 app.status = 'Renewal risk detected';
-            } else if (app.license.includes('Downgraded') || app.usage === 'Low') {
-                app.status = 'Inactive';
-            } else if (app.usage === 'Medium') {
-                app.status = 'Inactive';
+            } else if (app.license.includes('Downgraded') || app.usage === 'Low' || app.usage === 'Medium') {
+                // If already marked as inactive, keep it, otherwise set it
+                if (!app.status || app.status !== 'Inactive') {
+                    app.status = 'Inactive';
+                }
             } else {
                 app.status = 'Active';
             }
@@ -1028,10 +1041,29 @@
                 appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`;
             }
             const appStatus = app.status;
+
+            // New: Inactive status and cancellation reason display
+            let inactiveInfoHtml = '';
+            if (appStatus === 'Inactive' && app.inactiveMonths && app.cancellationReason) {
+                inactiveInfoHtml = `
+                    <div class="inactive-info-container">
+                        <span class="inactive-months-text">Inactive for ${app.inactiveMonths} months</span>
+                        <i class="bi bi-info-circle-fill info-tooltip-icon">
+                            <div class="cancellation-reason-tooltip">
+                                ${app.cancellationReason}
+                            </div>
+                        </i>
+                    </div>
+                `;
+            }
+
+
             row.innerHTML = `
 <td><span class="expand-toggle-arrow">▼</span></td>
 <td style="min-width: 200px;">
-${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span class="application-category">${app.category}</span>
+${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>
+<span class="application-category">${app.category}</span>
+${inactiveInfoHtml} <!-- Insert inactive info here -->
 </td>
 <td>${usageHtml}</td>
 <td>${arrRevenueCellContent}</td>
