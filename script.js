@@ -503,10 +503,12 @@
     // New elements for popups
     let recentPurchasesCountSpan = null;
     let nextRenewalsCountSpan = null;
-    let recentPurchasesPopup = null;
-    let nextRenewalsPopup = null;
-    let recentPurchasesList = null;
-    let nextRenewalsList = null;
+    // Removed recentPurchasesPopup, nextRenewalsPopup
+    let recentPurchasesHoverPopup = null;
+    let nextRenewalsHoverPopup = null;
+    let recentPurchasesHoverList = null;
+    let nextRenewalsHoverList = null;
+
     let expandedRowId = null; // Define expandedRowId
     let expandedTicketRowId = null; // Define expandedTicketRowId
     let activeSection = 'all-apps'; // Define activeSection
@@ -551,10 +553,7 @@
             currentOpenThreatPopupToggle = null;
         }
     }
-    function closeAllModals() {
-        if (recentPurchasesPopup) recentPurchasesPopup.classList.remove('show');
-        if (nextRenewalsPopup) nextRenewalsPopup.classList.remove('show');
-    }
+    // Removed closeAllModals function as it's no longer needed for these popups
     function initializeDOMElements() {
         applicationTableContainer = document.getElementById('applicationTableContainer');
         ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContainer');
@@ -594,13 +593,14 @@
         subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
         competitorExposureCountElement = document.getElementById('competitorExposureCount');
         downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
-        // Initialize new elements
+        // Initialize new elements for hover popups
         recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
         nextRenewalsCountSpan = document.getElementById('nextRenewalsCount');
-        recentPurchasesPopup = document.getElementById('recentPurchasesPopup');
-        nextRenewalsPopup = document.getElementById('nextRenewalsPopup');
-        recentPurchasesList = document.getElementById('recentPurchasesList');
-        nextRenewalsList = document.getElementById('nextRenewalsList');
+        recentPurchasesHoverPopup = document.getElementById('recentPurchasesHoverPopup');
+        nextRenewalsHoverPopup = document.getElementById('nextRenewalsHoverPopup');
+        recentPurchasesHoverList = document.getElementById('recentPurchasesHoverList');
+        nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
+
         widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
         executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
 
@@ -1936,13 +1936,7 @@ ${inactiveInfoHtml} <!-- Insert inactive info here -->
                 !event.target.closest('.subscription-chat-modal')) {
                 closeSubscriptionChatModal();
             }
-            // Close popups on outside click
-            if (recentPurchasesPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#recentPurchasesCount')) {
-                closeAllModals();
-            }
-            if (nextRenewalsPopup.classList.contains('show') && !event.target.closest('.popup-content') && !event.target.closest('#nextRenewalsCount')) {
-                closeAllModals();
-            }
+            // Removed popup-overlay closing logic as it's no longer used for these popups
         });
         const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
         const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
@@ -2016,49 +2010,46 @@ ${inactiveInfoHtml} <!-- Insert inactive info here -->
         if (closeSubscriptionChatModalBtn) {
             closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
         }
-        // Event listeners for new popups
-        if (recentPurchasesCountSpan) {
-            recentPurchasesCountSpan.addEventListener('click', () => {
-                closeAllModals(); // Close other popups
-                recentPurchasesList.innerHTML = ''; // Clear previous content
+        // Event listeners for new hover popups
+        if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
+            recentPurchasesCountSpan.addEventListener('mouseenter', () => {
+                recentPurchasesHoverList.innerHTML = ''; // Clear previous content
                 if (recentPurchasesData.length > 0) {
                     recentPurchasesData.forEach((item, index) => {
                         const li = document.createElement('li');
                         li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
-                        li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
-                        recentPurchasesList.appendChild(li);
+                        recentPurchasesHoverList.appendChild(li);
                     });
                 } else {
                     const li = document.createElement('li');
                     li.textContent = 'No recent purchases in the last 6 months.';
-                    recentPurchasesList.appendChild(li);
+                    recentPurchasesHoverList.appendChild(li);
                 }
-                recentPurchasesPopup.classList.add('show');
+                recentPurchasesHoverPopup.classList.add('show');
+            });
+            recentPurchasesCountSpan.addEventListener('mouseleave', () => {
+                recentPurchasesHoverPopup.classList.remove('show');
             });
         }
-        if (nextRenewalsCountSpan) {
-            nextRenewalsCountSpan.addEventListener('click', () => {
-                closeAllModals(); // Close other popups
-                nextRenewalsList.innerHTML = ''; // Clear previous content
+
+        if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
+            nextRenewalsCountSpan.addEventListener('mouseenter', () => {
+                nextRenewalsHoverList.innerHTML = ''; // Clear previous content
                 if (nextRenewalsData.length > 0) {
                     nextRenewalsData.forEach((item, index) => {
                         const li = document.createElement('li');
                         li.innerHTML = `<span class="app-name">${item.name}</span> <span class="renewal-date">${item.date}</span> <span class="app-revenue">$${item.revenue}</span>`;
-                        li.style.animationDelay = `${index * 0.1}s`; // Stagger animation
-                        nextRenewalsList.appendChild(li);
+                        nextRenewalsHoverList.appendChild(li);
                     });
                 } else {
                     const li = document.createElement('li');
                     li.textContent = 'No upcoming renewals in the next 3 months.';
-                    nextRenewalsList.appendChild(li);
+                    nextRenewalsHoverList.appendChild(li);
                 }
-                nextRenewalsPopup.classList.add('show');
+                nextRenewalsHoverPopup.classList.add('show');
+            });
+            nextRenewalsCountSpan.addEventListener('mouseleave', () => {
+                nextRenewalsHoverPopup.classList.remove('show');
             });
         }
-        // Close buttons for popups
-        document.querySelectorAll('.popup-close-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                closeAllModals();
-            });
-        });
     });

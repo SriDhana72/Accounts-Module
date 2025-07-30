@@ -349,7 +349,10 @@
         color: #1a1d1f;
         font-weight: 600;
         font-size: 0.95em;
+        padding: 12px 20px;
         border-bottom: 1px solid #dee2e6;
+        vertical-align: middle;
+        text-align: left;
     }
     #applicationTable thead th:first-child {
         padding-left: 12px;
@@ -563,7 +566,7 @@
         padding-bottom: 8px;
         color: #333;
         background-color: #e9ecef;
-        border-radius: 4px;
+        border-radius: 44px;
     }
     .monthly-data-col .bi {
         font-size: 1.1em;
@@ -1681,6 +1684,7 @@
         min-width: 0;
         box-sizing: border-box;
         white-space: nowrap; /* Keep content on one line */
+        position: relative; /* Make it a positioning context for absolute popups */
     }
     /* Remove specific background gradients for info-sections */
     .info-section.arr-section,
@@ -1715,20 +1719,13 @@
     .info-section .trend-data {
         display: none; /* Hide the trend data */
     }
-    .info-section .clickable-number {
-        cursor: pointer;
-        transition: color 0.2s ease;
-        animation: blink 1.5s infinite alternate; /* Apply blinking animation */
-        color: #1a2b4d; /* Dark blue for clickable numbers */
+    /* Removed clickable styles for numbers */
+    .info-section .main-value span {
+        cursor: default; /* Ensure no pointer cursor */
+        animation: none; /* Remove blinking animation */
     }
-    .info-section .clickable-number:hover {
-        text-decoration: underline;
-    }
-    /* New blinking animation */
-    @keyframes blink {
-        0% { opacity: 1; }
-        50% { opacity: 0.4; }
-        100% { opacity: 1; }
+    .info-section .main-value span:hover {
+        text-decoration: none; /* Remove underline on hover */
     }
     /* Vertical separator between info sections */
     .info-separator {
@@ -1737,136 +1734,102 @@
         height: 45px; /* Height of the separator */
         flex-shrink: 0;
     }
-    /* Pop-up overlay */
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4); /* Faded nice background color */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-    .popup-overlay.show {
-        opacity: 1;
-        visibility: visible;
-    }
-    /* Main Popup Content Styles (Recent Purchases & Next Renewals) */
-    .popup-content {
-        background: linear-gradient(135deg, #a8c0ff, #87a0ff); /* Blue gradient */
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        padding: 10px; /* Reduced padding */
-        border-radius: 12px; /* Rounded rectangle */
+    /* Hover Popup Styles */
+    .hover-popup {
+        position: absolute;
+        background: #ffffff; /* Solid white background */
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 8px; /* Reduced padding */
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        max-width: 250px; /* Increased max-width */
-        width: 100%;
-        max-height: 70%;
+        max-width: 180px; /* Reduced max-width */
+        width: max-content;
+        max-height: 150px; /* Reduced max-height */
         overflow-y: auto;
-        position: relative;
-        transform: translateY(20px);
-        transition: transform 0.3s ease;
-        left: 200px; /* Updated value */
-        top: -230px; /* Updated value */
-        animation: bounce-in 0.6s ease-out forwards, subtle-shake 3s ease-in-out infinite alternate; /* Entry and continuous animation */
+        z-index: 100;
+        display: none;
+        top: -162%;
+        left: -361%;
+        transform: translateX(-50%) translateY(10px);
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        white-space: normal;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
-    /* Chat message tail for main popups */
-    .popup-content::before {
+
+    .hover-popup.show {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .hover-popup::before {
         content: '';
         position: absolute;
-        top: 50%;
-        left: -10px; /* Position to the left of the popup */
-        transform: translateY(-50%);
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
         width: 0;
         height: 0;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-right: 10px solid #a8c0ff; /* Match popup background start color */
-        filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the tail */
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #ffffff; /* Match popup background color */
+        filter: drop-shadow(0px -1px 1px rgba(0, 0, 0, 0.1));
     }
-    @keyframes bounce-in {
-        0% {
-            opacity: 0;
-            transform: translateY(-50px) scale(0.7);
-        }
-        60% {
-            opacity: 1;
-            transform: translateY(10px) scale(1.05);
-        }
-        100% {
-            transform: translateY(0) scale(1);
-        }
-    }
-    .popup-overlay.show .popup-content {
-        transform: translateY(0);
-    }
-    .popup-content h5 {
-        font-size: 1em; /* Reduced font size */
+
+    .hover-popup h5 {
+        font-size: 0.65em; /* Reduced font-size */
         font-weight: 700;
-        margin-bottom: 10px; /* Reduced margin */
-        color: #fff;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        margin-bottom: 8px; /* Reduced margin-bottom */
+        color: #333;
+        text-shadow: none;
     }
-    .popup-content ul {
+
+    .hover-popup ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-    @keyframes flash-in {
-        0% { opacity: 0; transform: translateY(10px); }
-        50% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .popup-content li {
-        background-color: rgba(255, 255, 255, 0.7);
-        padding: 6px 10px; /* Reduced padding */
-        border-radius: 12px;
-        margin-bottom: 5px; /* Reduced margin */
+
+    .hover-popup li {
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 6px 0; /* Adjusted padding */
+        margin-bottom: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.8em;
-        border: 1px solid rgba(233, 236, 239, 0.8);
-        animation: flash-in 0.5s ease-out forwards;
-        opacity: 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-wrap: nowrap;
+        gap: 5px; /* Reduced gap */
     }
-    .popup-content li:last-child {
-        margin-bottom: 0;
+
+    .hover-popup li:last-child {
+        border-bottom: none;
     }
-    .popup-content .app-name {
+
+    .hover-popup .app-name {
         font-weight: 600;
         color: #222;
+        flex-grow: 1;
+        text-align: left;
+        font-size: 0.5em; /* Explicitly set font size */
     }
-    .popup-content .app-revenue, .popup-content .renewal-date {
-        font-weight: 700;
-        color: #1a2b4d; /* Dark blue for popup values */
+
+    .hover-popup .app-revenue, .hover-popup .renewal-date {
+        font-weight: 400;
+        color: #1a2b4d;
+        flex-shrink: 0;
+        text-align: right;
+        font-size: 0.5em; /* Explicitly set font size */
     }
-    .popup-content .renewal-date {
-        font-size: 0.7em; /* Further reduced font size for dates */
+
+    .hover-popup .renewal-date {
+        font-size: 0.55em; /* Reduced font size */
     }
-    .popup-close-btn {
-        position: absolute;
-        top: 5px;
-        right: 8px; /* Reduced right margin */
-        background: none;
-        border: none;
-        font-size: 1.5em; /* Reduced font size */
-        color: #fff;
-        cursor: pointer;
-        transition: color 0.2s ease, transform 0.2s ease;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-    .popup-close-btn:hover {
-        color: #eee;
-        transform: scale(1.1);
-    }
+
     /* Adjust main box padding for health score widget */
     .account-details-main-box {
         padding-right: 20px; /* Reset padding-right */
@@ -2027,7 +1990,7 @@
         bottom: 100%; /* Position above the icon */
         left: 50%;
         transform: translateX(-50%) translateY(-5px); /* Adjust for spacing */
-        background-color: #2b3035;
+        background-color: #333;
         color: #fff;
         padding: 8px 12px;
         border-radius: 8px;
@@ -2058,7 +2021,7 @@
         border-style: solid;
         border-color: #333 transparent transparent transparent;
     }
-    #applicationTable tbody tr td:nth-child(n+4),
+        #applicationTable tbody tr td:nth-child(n+4),
 #applicationTable thead tr th:nth-child(n+4) {
 text-align: center;
 }

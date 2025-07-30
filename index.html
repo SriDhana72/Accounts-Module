@@ -110,7 +110,11 @@
                         <div class="info-section recent-purchase-section">
                             <div class="main-value">
                                 <i class="bi bi-cart-fill text-success"></i>
-                                <span class="clickable-number" id="recentPurchasesCount"></span>
+                                <span id="recentPurchasesCount"></span>
+                                <div id="recentPurchasesHoverPopup" class="hover-popup">
+                                    <h5>Recent Purchases (Last 6 Months)</h5>
+                                    <ul id="recentPurchasesHoverList"></ul>
+                                </div>
                             </div>
                             <span class="label">Recent Purchase</span>
                         </div>
@@ -118,7 +122,11 @@
                         <div class="info-section next-renewal-section">
                             <div class="main-value">
                                 <i class="bi bi-arrow-clockwise text-success"></i>
-                                <span class="clickable-number" id="nextRenewalsCount"></span>
+                                <span id="nextRenewalsCount"></span>
+                                <div id="nextRenewalsHoverPopup" class="hover-popup">
+                                    <h5>Upcoming Renewals</h5>
+                                    <ul id="nextRenewalsHoverList"></ul>
+                                </div>
                             </div>
                             <span class="label">Upcoming Renewals</span>
                         </div>
@@ -287,22 +295,6 @@
         </div>
         <div class="subscription-chat-modal-body">
             <iframe id="subscriptionChatIframe" class="subscription-chat-iframe" src="" title="Subscription Chat"></iframe>
-        </div>
-    </div>
-    <!-- Recent Purchases Pop-up -->
-    <div id="recentPurchasesPopup" class="popup-overlay">
-        <div class="popup-content">
-            <button class="popup-close-btn">&times;</button>
-            <h5>Recent Purchases (Last 6 Months)</h5>
-            <ul id="recentPurchasesList"></ul>
-        </div>
-    </div>
-    <!-- Next Renewals Pop-up -->
-    <div id="nextRenewalsPopup" class="popup-overlay">
-        <div class="popup-content">
-            <button class="popup-close-btn">&times;</button>
-            <h5>Upcoming Renewals</h5>
-            <ul id="nextRenewalsList"></ul>
         </div>
     </div>
     <script src="healthScore.js"></script> 
