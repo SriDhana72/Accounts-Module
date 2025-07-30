@@ -349,10 +349,7 @@
         color: #1a1d1f;
         font-weight: 600;
         font-size: 0.95em;
-        padding: 12px 20px;
         border-bottom: 1px solid #dee2e6;
-        vertical-align: middle;
-        text-align: left;
     }
     #applicationTable thead th:first-child {
         padding-left: 12px;
@@ -2069,4 +2066,18 @@ text-align: center;
 #ticketDetailsTable th:nth-child(n+3),
 #ticketDetailsTable td:nth-child(n+3) {
 text-align: center;
+}
+.header-text { 
+    display: block;
+    margin-bottom: 4px;
+}       
+.help-text {
+    display: block;
+    font-weight: normal;
+    line-height: 1.3;
+}       
+        
+th {
+    padding: 12px;
+    vertical-align: top;
 }
