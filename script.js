@@ -498,6 +498,7 @@
     let expandedTicketRowId = null; // Define expandedTicketRowId
     let activeSection = 'all-apps'; // Define activeSection
     let widgetLoaderOverlay = null; // Loader element
+    let executiveSummaryTextElement = null; // For word-by-word effect
 
     /**
      * Shows the widget loader overlay.
@@ -588,6 +589,7 @@
         recentPurchasesList = document.getElementById('recentPurchasesList');
         nextRenewalsList = document.getElementById('nextRenewalsList');
         widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
+        executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
 
         if (!applicationTableContainer) {
             console.error('Application table container not found!');
@@ -609,6 +611,10 @@
             console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
             return false;
         }
+        if (!executiveSummaryTextElement) {
+            console.error('Executive summary text element (executiveSummaryText) not found!');
+            return false;
+        }
         return true;
     }
     let allAppsFilteredData = [];
@@ -625,6 +631,31 @@
     // New data arrays for popups
     let recentPurchasesData = [];
     let nextRenewalsData = [];
+    // Original executive summary text
+    const originalExecutiveSummaryText = "This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.";
+
+    /**
+     * Implements a word-by-word typing effect for a given element.
+     * @param {HTMLElement} element The DOM element to type into.
+     * @param {string} text The full text to be typed.
+     * @param {number} speed The delay in milliseconds between each word.
+     */
+    function typeWriterEffect(element, text, speed) {
+        if (!element) return;
+        const words = text.split(' ');
+        let i = 0;
+        element.textContent = ''; // Clear existing text
+
+        function typeWord() {
+            if (i < words.length) {
+                element.textContent += words[i] + ' ';
+                i++;
+                setTimeout(typeWord, speed);
+            }
+        }
+        typeWord();
+    }
+
     function calculateTotalArr(app) {
         const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
         return currentMonthData ? currentMonthData.revenue : 0;
@@ -985,7 +1016,7 @@
                 arrPercentageClass = 'text-muted';
             }
             const arrRevenueCellContent = `
-$${currentArr}<br>
+<span style="color: #1a2b4d; font-weight: 700;">$${currentArr}</span><br>
 <span class="${arrPercentageClass} arr-percentage-text">${arrPercentageChangeHtml}</span>
 `;
             let appStatusArrowHtml = '';
@@ -1176,7 +1207,7 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
             <td>${month.seats}</td>
             <td class="${changeClass}">${changeIcon} ${month.change}</td>
             <td>
-                $${month.revenue}<br>
+                <span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
                 <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
             </td>
             <td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
@@ -1771,6 +1802,8 @@ ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br><span 
             let calculatedHealthScore = 100;
             updateHealthScore(calculatedHealthScore);
             updateCounts();
+            // Start the typewriter effect for the executive summary
+            typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
             hideWidgetLoader(); // Hide loader after content is loaded
         }, 1000); // Simulate 1 second loading time
 

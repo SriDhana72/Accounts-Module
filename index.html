@@ -78,8 +78,8 @@
                     </div>
                     <div class="d-flex align-items-baseline mb-2">
                         <h6 class="fw-bold text-dark me-1 mb-0 flex-shrink-0">Executive Summary:</h6>
-                        <p class="small text-dark mb-0 flex-grow-1">
-                            This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.
+                        <p class="small text-dark mb-0 flex-grow-1 executive-summary-text" id="executiveSummaryText">
+                            <!-- Content will be typed here by JavaScript -->
                         </p>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         <div class="info-separator"></div>
                         <div class="info-section recent-purchase-section">
                             <div class="main-value">
-                                <i class="bi bi-file-earmark-text-fill text-success"></i>
+                                <i class="bi bi-cart-fill text-success"></i>
                                 <span class="clickable-number" id="recentPurchasesCount"></span>
                             </div>
                             <span class="label">Recent Purchase</span>
@@ -115,7 +115,7 @@
                         <div class="info-separator"></div>
                         <div class="info-section next-renewal-section">
                             <div class="main-value">
-                                <i class="bi bi-calendar2-week-fill text-danger"></i>
+                                <i class="bi bi-arrow-clockwise text-success"></i>
                                 <span class="clickable-number" id="nextRenewalsCount"></span>
                             </div>
                             <span class="label">Next Renewals</span>
@@ -178,8 +178,8 @@
                                 <span class="closed-label">Closed</span>
                             </div>
                             <div class="ticket-counts-numbers d-flex justify-content-between">
-                                <span id="openTicketsCount" class="open-count"></span>
-                                <span id="closedTicketsCount" class="closed-count"></span>
+                                <span id="openTicketsCount"></span>
+                                <span id="closedTicketsCount"></span>
                             </div>
                         </div>
                         <p>sentiment/volume/severity</p>
