@@ -1742,20 +1742,27 @@
         border-radius: 12px;
         padding: 8px; /* Reduced padding */
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        max-width: 180px; /* Reduced max-width */
-        width: max-content;
+        max-width: 255px; /* Reduced max-width */
+        width: 250px;
         max-height: 150px; /* Reduced max-height */
         overflow-y: auto;
         z-index: 100;
         display: none;
-        top: -162%;
-        left: -361%;
+        top: -210%;
+        left: -566%;
         transform: translateX(-50%) translateY(10px);
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
         white-space: normal;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
+        font-size: 15px;
+    }
+
+    /* Increased size for Next Renewals popup */
+    #nextRenewalsHoverPopup {
+        max-width: 280px; /* Increased max-width */
+        max-height: 250px; /* Increased max-height */
     }
 
     .hover-popup.show {
@@ -1779,7 +1786,7 @@
     }
 
     .hover-popup h5 {
-        font-size: 0.65em; /* Reduced font-size */
+        font-size: 0.85em; /* Reduced font-size */
         font-weight: 700;
         margin-bottom: 8px; /* Reduced margin-bottom */
         color: #333;
@@ -1793,41 +1800,38 @@
     }
 
     .hover-popup li {
-        background-color: transparent;
-        box-shadow: none;
-        border: none;
-        border-bottom: 1px solid #eee;
-        padding: 6px 0; /* Adjusted padding */
-        margin-bottom: 0;
-        display: flex;
-        justify-content: space-between;
+        display: flex; /* Use flexbox for alignment */
+        justify-content: space-between; /* Distribute items evenly */
         align-items: center;
-        flex-wrap: nowrap;
-        gap: 5px; /* Reduced gap */
+        padding: 8px 0; /* Consistent padding */
+        border-bottom: 1px solid #eee; /* Separator */
     }
 
     .hover-popup li:last-child {
-        border-bottom: none;
+        border-bottom: none; /* No border for the last item */
     }
 
     .hover-popup .app-name {
         font-weight: 600;
         color: #222;
-        flex-grow: 1;
+        flex-basis: 40%; /* Allocate space for the name */
         text-align: left;
-        font-size: 0.5em; /* Explicitly set font size */
-    }
-
-    .hover-popup .app-revenue, .hover-popup .renewal-date {
-        font-weight: 400;
-        color: #1a2b4d;
-        flex-shrink: 0;
-        text-align: right;
-        font-size: 0.5em; /* Explicitly set font size */
+        font-size: 0.8em;
     }
 
     .hover-popup .renewal-date {
-        font-size: 0.55em; /* Reduced font size */
+        font-size: 0.75em; /* Slightly increased font size for readability */
+        color: #6c757d;
+        flex-basis: 30%; /* Allocate space for the date */
+        text-align: center;
+    }
+
+    .hover-popup .app-revenue {
+        font-weight: 700;
+        color: #1a2b4d;
+        flex-basis: 30%; /* Allocate space for the revenue */
+        text-align: right;
+        font-size: 0.8em;
     }
 
     /* Adjust main box padding for health score widget */
@@ -1972,7 +1976,7 @@
         display: flex;
         align-items: center;
         font-size: 0.8em;
-        color: #8B4513; /* Brownish color for inactive info */
+        color:#F44336; /* Red color for inactive info */
         margin-top: 4px;
         font-weight: 500;
     }
@@ -1983,7 +1987,7 @@
         position: relative;
         cursor: pointer;
         font-size: 1.1em;
-        color: #8B4513; /* Brownish color for icon */
+        color:#4A90E2; /* Brownish color for icon */
     }
     .cancellation-reason-tooltip {
         position: absolute;
@@ -2021,7 +2025,7 @@
         border-style: solid;
         border-color: #333 transparent transparent transparent;
     }
-        #applicationTable tbody tr td:nth-child(n+4),
+            #applicationTable tbody tr td:nth-child(n+4),
 #applicationTable thead tr th:nth-child(n+4) {
 text-align: center;
 }

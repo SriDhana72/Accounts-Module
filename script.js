@@ -2036,11 +2036,45 @@ ${inactiveInfoHtml} <!-- Insert inactive info here -->
             nextRenewalsCountSpan.addEventListener('mouseenter', () => {
                 nextRenewalsHoverList.innerHTML = ''; // Clear previous content
                 if (nextRenewalsData.length > 0) {
+                    // Sort the data by date before rendering
+                    nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
                     nextRenewalsData.forEach((item, index) => {
                         const li = document.createElement('li');
-                        li.innerHTML = `<span class="app-name">${item.name}</span> <span class="renewal-date">${item.date}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                        // Apply flexbox styles directly to the list item for alignment
+                        li.style.display = 'flex';
+                        li.style.justifyContent = 'space-between';
+                        li.style.alignItems = 'center';
+                        li.style.padding = '8px 0'; // Add padding for visual separation
+                        li.style.borderBottom = '1px solid #eee'; // Keep border for separation
+
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'app-name';
+                        nameSpan.textContent = item.name;
+                        nameSpan.style.flexBasis = '40%'; // Allocate space for name
+                        nameSpan.style.textAlign = 'left';
+
+                        const dateSpan = document.createElement('span');
+                        dateSpan.className = 'renewal-date';
+                        dateSpan.textContent = item.date;
+                        dateSpan.style.flexBasis = '30%'; // Allocate space for date
+                        dateSpan.style.textAlign = 'center';
+
+                        const revenueSpan = document.createElement('span');
+                        revenueSpan.className = 'app-revenue';
+                        revenueSpan.textContent = `$${item.revenue}`;
+                        revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
+                        revenueSpan.style.textAlign = 'right';
+
+                        li.appendChild(nameSpan);
+                        li.appendChild(dateSpan);
+                        li.appendChild(revenueSpan);
                         nextRenewalsHoverList.appendChild(li);
                     });
+                    // Remove border from the last item
+                    if (nextRenewalsHoverList.lastChild) {
+                        nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
+                    }
                 } else {
                     const li = document.createElement('li');
                     li.textContent = 'No upcoming renewals in the next 3 months.';
