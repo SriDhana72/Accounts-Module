@@ -12,7 +12,6 @@
     <div class="container-fluid px-4 py-3">
         <div class="container-section">
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
-                <!-- Widget Loader Overlay -->
                 <div id="widgetLoaderOverlay" class="widget-loader-overlay">
                     <div class="loader-content-circle">
                         <div class="cube-loader">
@@ -26,10 +25,10 @@
                           </span>                          
                     </div>
                 </div>
-
                 <div class="account-info-content">
                     <h5 class="fw-bold mb-1 text-primary d-inline-block">Global Innovations Inc</h5>
                     <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter</span>
+                    <i class="bi bi-arrow-clockwise ms-2 text-muted" id="refreshIcon" style="cursor: pointer;"></i> <!-- Refresh icon added here -->
                     <p class="text-muted small mb-2">
                         <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
                     </p>
@@ -81,7 +80,6 @@
                     <div class="d-flex align-items-baseline mb-2">
                         <h6 class="fw-bold text-dark me-1 mb-0 flex-shrink-0">Executive Summary:</h6>
                         <p class="small text-dark mb-0 flex-grow-1 executive-summary-text" id="executiveSummaryText">
-                            <!-- Content will be typed here by JavaScript -->
                         </p>
                     </div>
                 </div>
@@ -96,7 +94,6 @@
                         <span id="healthScoreValue" class="fw-bold fs-4">98</span>
                     </div>
                 </div>
-                <!-- New Combined Info Card Container -->
                 <div class="combined-info-card-container">
                     <div class="combined-info-card">
                         <div class="info-section arr-section">
@@ -111,8 +108,8 @@
                             <div class="main-value">
                                 <i class="bi bi-cart-fill text-success"></i>
                                 <span id="recentPurchasesCount"></span>
-                                <div id="recentPurchasesHoverPopup" class="hover-popup hover-popup-recent">
-                                    <h5>Recent Purchases</h5>
+                                <div id="recentPurchasesHoverPopup" class="hover-popup">
+                                    <h5>Recent Purchases (Last 6 Months)</h5>
                                     <ul id="recentPurchasesHoverList"></ul>
                                 </div>
                             </div>
@@ -123,7 +120,7 @@
                             <div class="main-value">
                                 <i class="bi bi-arrow-clockwise text-success"></i>
                                 <span id="nextRenewalsCount"></span>
-                                <div id="nextRenewalsHoverPopup" class="hover-popup hover-popup-1">
+                                <div id="nextRenewalsHoverPopup" class="hover-popup">
                                     <h5>Upcoming Renewals</h5>
                                     <ul id="nextRenewalsHoverList"></ul>
                                 </div>
@@ -132,7 +129,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- End New Combined Info Card Container -->
                 <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
                     <button class="action-toggle-element need-help-fab">
                         <i class="bi bi-question-circle-fill"></i>
@@ -260,7 +256,7 @@
    <span class="header-text"> Competitors </span>
    <small class="help-text">
       <span class="text-success"> Cross-sell   </span> 
-      &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; 
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
       <span class="text-danger">   Threat </span>
    </small>
 </th>
