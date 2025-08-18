@@ -2050,4 +2050,8 @@ vertical-align: top;
 left:71%;
 
 }
+.blur-text {
+    color: #4692d4; /* muted/blurry base color (grayish) */
+    text-shadow: 0 0 2px rgba(96, 130, 214, 0.5); /* blur effect */
+  }
 </style>

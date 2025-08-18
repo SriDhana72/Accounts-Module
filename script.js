@@ -1538,7 +1538,7 @@ function renderTicketDetailsTable() {
 <td colspan="5">
     <div class="ticket-dropdown-content">
         <div class="ticket-dropdown-section">
-            <strong>Open Ticket Executive Summary:</strong>
+            <strong>Executive Summary (Open Tickets) </strong>
             <p class="small text-dark mb-0">${ticket.executiveSummary}</p>
         </div>
         <div class="ticket-dropdown-section">
@@ -1945,6 +1945,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
         const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
         const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
+        const needResolvedIssuesBtn = document.getElementById('needResolvedIssuesBtn'); // Get the specific chat button
         if (needHelpToggleElement && needHelpDropdownMenu) {
             needHelpToggleElement.addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -1967,7 +1968,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
-            if (needHelpChatAgentBtn) {
+            if (needHelpChatAgentBtn || needResolvedIssuesBtn) {
                 needHelpChatAgentBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
                     console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
@@ -1975,7 +1976,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     openSubscriptionChatModal(null, null, event.target);
                     closeAllDropdowns(); // Close the Need Help dropdown after opening chat
                 });
+                needResolvedIssuesBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
+                    // Pass generic values for subscriptionId and subscriptionName
+                   // openSubscriptionChatModal(null, null, event.target);
+                    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+                });
             }
+            
             needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
                 // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
                 if (button.id !== 'needHelpChatAgentBtn') {
