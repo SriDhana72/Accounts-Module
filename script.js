@@ -1767,6 +1767,7 @@ function highlightActiveCard(activeCardElementId) {
                 activeCard.classList.add('card-border-downgrade');
                 console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
             } else if (activeCardElementId === 'deskTicketsCard') {
+                activeCard.classList.add('card-border-downgrade');
                 console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
             }
             console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
@@ -1793,6 +1794,15 @@ function closeSubscriptionChatModal() {
         subscriptionChatIframe.src = '';
     }
 }
+function switchAnamoly(){
+     switchTab('anomalies');
+     highlightActiveCard(null);
+}
+function switchTicket(){
+     switchTab('ticket-details');
+     highlightActiveCard(null);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...');
     if (!initializeDOMElements()) {
@@ -1945,7 +1955,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
         const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
         const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
-        const needResolvedIssuesBtn = document.getElementById('needResolvedIssuesBtn'); // Get the specific chat button
+        const threatButton = document.getElementById('threat-button');
+        const ticketButton = document.getElementById('ticket-button');
         if (needHelpToggleElement && needHelpDropdownMenu) {
             needHelpToggleElement.addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -1968,7 +1979,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
-            if (needHelpChatAgentBtn || needResolvedIssuesBtn) {
+            if (needHelpChatAgentBtn ) {
                 needHelpChatAgentBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
                     console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
@@ -1976,14 +1987,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     openSubscriptionChatModal(null, null, event.target);
                     closeAllDropdowns(); // Close the Need Help dropdown after opening chat
                 });
-                needResolvedIssuesBtn.addEventListener('click', (event) => {
+               
+            }
+             /**needResolvedIssuesBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
                     console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
                     // Pass generic values for subscriptionId and subscriptionName
-                   // openSubscriptionChatModal(null, null, event.target);
+                    openSubscriptionChatModal(null, null, event.target);
+                     threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
+                    ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
                     closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-                });
-            }
+                });**/
             
             needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
                 // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
@@ -2078,9 +2092,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event listener for the new refresh icon
-    if (refreshIcon) {
         refreshIcon.addEventListener('click', () => {
             location.reload(); // Reload the entire page
         });
-    }
 });
