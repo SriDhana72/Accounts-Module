@@ -1068,1031 +1068,1062 @@ ${competitorsCellContent}
     <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
         <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
     </button>
+<button class="glass-button store-link" onclick="window.open('https://store.zoho.com/zstore#customers', '_blank')">
+    <i class="bi bi-shop"></i> Store
+</button>
+    <button class="glass-button mics-link">
+        <i class="bi bi-shop"></i></i> MICS
+    </button>
 </div>
 </div>
 </td>
 `;
-        const actionToggleElement = row.querySelector('.action-toggle-element');
-        const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
-        if (actionToggleElement && actionDropdownMenu) {
-            actionToggleElement.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
-                    closeAllDropdowns();
-                }
-                closeAllThreatPopups();
-                actionDropdownMenu.classList.toggle('show');
-                if (actionDropdownMenu.classList.contains('show')) {
-                    currentOpenDropdown = actionDropdownMenu;
-                    currentOpenDropdownToggle = actionToggleElement;
-                } else {
-                    closeAllDropdowns();
-                }
-            });
-            actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    console.log(`${button.textContent.trim()} clicked!`);
-                    if (button.classList.contains('connect-us')) {
-                        const subscriptionId = button.dataset.subscriptionId;
-                        const subscriptionName = button.dataset.subscriptionName;
-                        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-                        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
-                    }
-                    closeAllDropdowns();
-                });
-            });
+const actionToggleElement = row.querySelector('.action-toggle-element');
+const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
+if (actionToggleElement && actionDropdownMenu) {
+    actionToggleElement.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
+            closeAllDropdowns();
         }
-        const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
-        if (threatPopupWrapper) {
-            const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
-            const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
-            if (threatTrigger && threatPopup) {
-                threatTrigger.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
-                        closeAllThreatPopups();
-                    }
-                    closeAllDropdowns();
-                    threatPopup.classList.toggle('show');
-                    if (threatPopup.classList.contains('show')) {
-                        currentOpenThreatPopup = threatPopup;
-                        currentOpenThreatPopupToggle = threatTrigger;
-                    } else {
-                        closeAllThreatPopups();
-                    }
-                });
-            }
+        closeAllThreatPopups();
+        actionDropdownMenu.classList.toggle('show');
+        if (actionDropdownMenu.classList.contains('show')) {
+            currentOpenDropdown = actionDropdownMenu;
+            currentOpenDropdownToggle = actionToggleElement;
+        } else {
+            closeAllDropdowns();
         }
-        row.addEventListener('click', (event) => {
-            if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
-                return;
+    });
+    actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            console.log(`${button.textContent.trim()} clicked!`);
+            if (button.classList.contains('connect-us')) {
+                const subscriptionId = button.dataset.subscriptionId;
+                const subscriptionName = button.dataset.subscriptionName;
+                console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
             }
             closeAllDropdowns();
-            closeAllThreatPopups();
-            const appId = app.id;
-            const currentExpandedId = expandedRowId;
-            const arrowSpan = row.querySelector('.expand-toggle-arrow');
-            if (appId === currentExpandedId) {
-                const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
-                if (expandedRowElement) {
-                    expandedRowElement.remove();
-                }
-                expandedRowId = null;
-                if (arrowSpan) arrowSpan.textContent = '▼';
+        });
+    });
+}
+const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
+if (threatPopupWrapper) {
+    const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
+    const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
+    if (threatTrigger && threatPopup) {
+        threatTrigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
+                closeAllThreatPopups();
+            }
+            closeAllDropdowns();
+            threatPopup.classList.toggle('show');
+            if (threatPopup.classList.contains('show')) {
+                currentOpenThreatPopup = threatPopup;
+                currentOpenThreatPopupToggle = threatTrigger;
             } else {
-                if (currentExpandedId !== null) {
-                    const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
-                    if (previousExpandedRowElement) {
-                        previousExpandedRowElement.remove();
-                    }
-                    const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
-                    if (previousArrow) previousArrow.textContent = '▼';
-                }
-                const expandedRow = document.createElement('tr');
-                expandedRow.className = 'expanded-row';
-                expandedRow.setAttribute('data-parent-app-id', appId);
-                const getRandomUsage = () => {
-                    const usages = ['Low', 'Medium', 'High'];
-                    return usages[Math.floor(Math.random() * usages.length)];
-                };
-                const getRandomUsageTrend = () => {
-                    const trends = [
-                        { icon: 'bi-graph-up', class: 'text-success' },
-                        { icon: 'bi-graph-down', class: 'text-danger' },
-                        { icon: 'bi-dash-lg', class: 'text-muted' }
-                    ];
-                    return trends[Math.floor(Math.random() * trends.length)];
-                };
-                let monthlyDataHtml = app.monthlyData.map((month, index) => {
-                    const randomUsage = getRandomUsage();
-                    const randomUsageTrend = getRandomUsageTrend();
-                    let changeIcon = '';
-                    let changeClass = 'text-muted';
-                    if (month.change.includes('+')) {
-                        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                        changeClass = 'text-success';
-                    } else if (month.change.includes('-')) {
-                        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                        changeClass = 'text-danger';
+                closeAllThreatPopups();
+            }
+        });
+    }
+}
+row.addEventListener('click', (event) => {
+    if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
+        return;
+    }
+    closeAllDropdowns();
+    closeAllThreatPopups();
+    const appId = app.id;
+    const currentExpandedId = expandedRowId;
+    const arrowSpan = row.querySelector('.expand-toggle-arrow');
+    if (appId === currentExpandedId) {
+        const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
+        if (expandedRowElement) {
+            expandedRowElement.remove();
+        }
+        expandedRowId = null;
+        if (arrowSpan) arrowSpan.textContent = '▼';
+    } else {
+        if (currentExpandedId !== null) {
+            const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
+            if (previousExpandedRowElement) {
+                previousExpandedRowElement.remove();
+            }
+            const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
+            if (previousArrow) previousArrow.textContent = '▼';
+        }
+        const expandedRow = document.createElement('tr');
+        expandedRow.className = 'expanded-row';
+        expandedRow.setAttribute('data-parent-app-id', appId);
+
+        const isAnomalous = anomaliesFilteredData.some(item => item.id === app.id);
+        let actionsSectionHtml = '';
+        let usageLicenseHistoryColClass = 'col-md-6';
+        let competitorAnomalyColClass = 'col-md-3';
+
+        // Condition for showing the Actions section: only if the app is an anomaly AND the active section is 'anomalies'
+        if (isAnomalous && activeSection === 'anomalies') {
+            actionsSectionHtml = `
+                <div class="col-md-3 p-2 d-flex flex-column justify-content-between">
+                    <div>
+                        <h6 class="mb-2 fw-bold">Actions</h6>
+                        <div class="action-dropdown-wrapper">
+                            <div class="action-dropdown-menu show">
+                                <a href="https://store.zoho.com/zstore#customers" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
+                                    <i class="bi bi-shop"></i> Store
+                                </a>
+                                <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button mics-link">
+                                    <i class="bi bi-file-earmark-text"></i> MICS
+                                </a>
+                                <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
+                                    <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            usageLicenseHistoryColClass = 'col-md-6';
+            competitorAnomalyColClass = 'col-md-3';
+        } else {
+            // Adjust column widths if "Actions" section is not present
+            usageLicenseHistoryColClass = 'col-md-8';
+            competitorAnomalyColClass = 'col-md-4';
+        }
+
+
+        const getRandomUsage = () => {
+            const usages = ['Low', 'Medium', 'High'];
+            return usages[Math.floor(Math.random() * usages.length)];
+        };
+        const getRandomUsageTrend = () => {
+            const trends = [
+                { icon: 'bi-graph-up', class: 'text-success' },
+                { icon: 'bi-graph-down', class: 'text-danger' },
+                { icon: 'bi-dash-lg', class: 'text-muted' }
+            ];
+            return trends[Math.floor(Math.random() * trends.length)];
+        };
+        let monthlyDataHtml = app.monthlyData.map((month, index) => {
+            const randomUsage = getRandomUsage();
+            const randomUsageTrend = getRandomUsageTrend();
+            let changeIcon = '';
+            let changeClass = 'text-muted';
+            if (month.change.includes('+')) {
+                changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                changeClass = 'text-success';
+            } else if (month.change.includes('-')) {
+                changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                changeClass = 'text-danger';
+            } else {
+                changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+            }
+            let revenueTrendIcon = '';
+            let revenueTrendClass = 'text-muted';
+            let revenuePercentageChange = 'N/A';
+            if (index > 0) {
+                const previousMonthRevenue = app.monthlyData[index - 1].revenue;
+                const currentMonthRevenue = month.revenue;
+                if (previousMonthRevenue !== 0) {
+                    const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+                    revenuePercentageChange = `${percentage.toFixed(1)}%`;
+                    if (percentage > 0) {
+                        revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                        revenueTrendClass = 'text-success';
+                        revenuePercentageChange = `+${revenuePercentageChange}`;
+                    } else if (percentage < 0) {
+                        revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                        revenueTrendClass = 'text-danger';
                     } else {
-                        changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                    }
-                    let revenueTrendIcon = '';
-                    let revenueTrendClass = 'text-muted';
-                    let revenuePercentageChange = 'N/A';
-                    if (index > 0) {
-                        const previousMonthRevenue = app.monthlyData[index - 1].revenue;
-                        const currentMonthRevenue = month.revenue;
-                        if (previousMonthRevenue !== 0) {
-                            const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
-                            revenuePercentageChange = `${percentage.toFixed(1)}%`;
-                            if (percentage > 0) {
-                                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                                revenueTrendClass = 'text-success';
-                                revenuePercentageChange = `+${revenuePercentageChange}`;
-                            } else if (percentage < 0) {
-                                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                                revenueTrendClass = 'text-danger';
-                            } else {
-                                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                                revenueTrendClass = 'text-muted';
-                            }
-                        } else if (currentMonthRevenue > 0) {
-                            revenuePercentageChange = `+Inf%`;
-                            revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                            revenueTrendClass = 'text-success';
-                        } else {
-                            revenuePercentageChange = `N/A`;
-                            revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                            revenueTrendClass = 'text-muted';
-                        }
-                    } else {
-                        revenuePercentageChange = 'N/A';
                         revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
                         revenueTrendClass = 'text-muted';
                     }
-                    return `
-    <tr>
-        <td>${month.month}</td>
-        <td>${randomUsage}</td>
-        <td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
-        <td>${month.seats}</td>
-        <td class="${changeClass}">${changeIcon} ${month.change}</td>
-        <td>
-            <span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
-            <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
-        </td>
-        <td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
-    </tr>
-`;
-                }).join('');
-                let competitorIntegrationsContent = '';
-                if (app.competitors && app.competitors.length > 0) {
-                    competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
+                } else if (currentMonthRevenue > 0) {
+                    revenuePercentageChange = `+Inf%`;
+                    revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                    revenueTrendClass = 'text-success';
                 } else {
-                    competitorIntegrationsContent = `No competitor integrations detected.`;
+                    revenuePercentageChange = `N/A`;
+                    revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                    revenueTrendClass = 'text-muted';
                 }
-                let anomaliesHtml = '';
-                const detectedAnomalies = [];
-                let isAppCritical = false;
-                if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
-                    isAppCritical = true;
-                    const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-                    if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-                        detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
-                    }
-                    if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-                        detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
-                    }
-                    let totalRecentDecline = 0;
-                    const startIndex = app.monthlyData.length - 3;
-                    const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-                    if (relevantMonths.length === 3) {
-                        relevantMonths.forEach(month => {
-                            const change = parseInt(month.change);
-                            if (change < 0) {
-                                totalRecentDecline += change;
-                            }
-                        });
-                    }
-                    if (totalRecentDecline <= -3) {
-                        detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
-                    }
-                    if (app.paymentFailureCount >= 5) {
-                        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
-                    }
-                    if (app.pauseScheduledCount >= 5) {
-                        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
-                    }
-                    let maxSeatsLast6MonthsForDisplay = 0;
-                    if (app.monthlyData.length >= 6) {
-                        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-                        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-                    }
-                    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
-                        detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
-                    }
-                    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-                    if (totalInactiveAppsForDisplay > 4) {
-                        detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
-                    }
-                    if (app.monthlyData.length >= 6) {
-                        const m6Revenue = app.monthlyData[5].revenue;
-                        const m3Revenue = app.monthlyData[2].revenue;
-                        if (m3Revenue > 0) {
-                            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                            if (percentageChange < -0.40) {
-                                detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
-                            }
-                        }
-                    }
-                    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-                    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
-                        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
-                    }
-                    if (relevantDepartmentForDisplay) {
-                        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-                        const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
-                            tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-                        );
-                        if (hasCriticalProblematicTagForDisplay) {
-                            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
-                        }
-                    }
-                }
-                if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) {
-                    if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
-                        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
-                    }
-                    if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
-                        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
-                    }
-                    let maxSeatsLast6MonthsForDisplay = 0;
-                    if (app.monthlyData.length >= 6) {
-                        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-                        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-                    }
-                    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
-                        detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
-                    }
-                    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-                    if (totalInactiveAppsForDisplay > 2) {
-                        detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
-                    }
-                    if (app.monthlyData.length >= 6) {
-                        const m6Revenue = app.monthlyData[5].revenue;
-                        const m3Revenue = app.monthlyData[2].revenue;
-                        if (m3Revenue > 0) {
-                            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                            if (percentageChange < -0.30) {
-                                detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
-                            }
-                        }
-                    }
-                    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-                    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
-                        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
-                    }
-                    if (relevantDepartmentForDisplay) {
-                        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-                        const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
-                            tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-                        );
-                        if (hasWarningProblematicTagForDisplay) {
-                            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
-                        }
-                    }
-                }
-                if (detectedAnomalies.length > 0) {
-                    anomaliesHtml = `
-    <p class="mb-1 fw-bold text-danger">
-        <i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
-    </p>
-    <ul class="list-unstyled small ps-3">
-        ${detectedAnomalies.join('')}
-    </ul>
-`;
-                } else {
-                    anomaliesHtml = `
-    <p class="mb-1 fw-bold text-success">
-        <i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
-    </p>
-`;
-                }
-                expandedRow.innerHTML = `
-<td colspan="10">
-    <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
-        <div class="col-md-6 p-2"> <!-- Changed to col-md-6 -->
-            <h6 class="mb-2 fw-bold">Usage & License History</h6>
-            <div class="table-responsive">
-                <table class="table table-sm monthly-data-table mb-0">
-                    <thead>
-                        <tr>
-                            <th>Month</th>
-                            <th>Usage</th>
-                            <th>Trend</th>
-                            <th>License</th>
-                            <th>Trend</th>
-                            <th>ARR</th>
-                            <th>Trend</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${monthlyDataHtml}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-3 p-2 border-start border-end"> <!-- Changed to col-md-3 -->
-            <h6 class="mb-2 fw-bold">Competitor Integrations</h1>
-            <p class="small text-muted mb-3">
-                ${competitorIntegrationsContent}
-            </p>
-            <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
-            <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
-            ${anomaliesHtml}
-        </div>
-        <div class="col-md-3 p-2 d-flex flex-column justify-content-between"> <!-- Changed to col-md-3 -->
-            <div>
-                <h6 class="mb-2 fw-bold">Actions</h6>
-                <div class="action-dropdown-wrapper">
-                    <!-- Removed the "More Actions" button -->
-                    <div class="action-dropdown-menu show">
-                        <a href="https://store.zoho.com/zstore#customers" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
-                            <i class="bi bi-shop"></i> Store
-                        </a>
-                        <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button mics-link">
-                            <i class="bi bi-file-earmark-text"></i> MICS
-                        </a>
-                        <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
-                            <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            } else {
+                revenuePercentageChange = 'N/A';
+                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                revenueTrendClass = 'text-muted';
+            }
+            return `
+<tr>
+<td>${month.month}</td>
+<td>${randomUsage}</td>
+<td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
+<td>${month.seats}</td>
+<td class="${changeClass}">${changeIcon} ${month.change}</td>
+<td>
+    <span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
+    <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
 </td>
+<td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
+</tr>
 `;
-                row.insertAdjacentElement('afterend', expandedRow);
-                expandedRowId = appId;
-                if (arrowSpan) arrowSpan.textContent = '▲';
-                // Apply animation to buttons in the expanded row's dropdown
-                const expandedRowDropdownMenu = expandedRow.querySelector('.action-dropdown-menu');
-                if (expandedRowDropdownMenu) {
-                    expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
-                    });
-                    // Add event listeners for the buttons directly
-                    expandedRowDropdownMenu.querySelectorAll('button.connect-us').forEach(button => {
-                        button.addEventListener('click', (event) => {
-                            event.stopPropagation();
-                            console.log(`${button.textContent.trim()} clicked from expanded row!`);
-                            if (button.classList.contains('connect-us')) {
-                                const subscriptionId = button.dataset.subscriptionId;
-                                const subscriptionName = button.dataset.subscriptionName;
-                                console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-                                openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
-                            }
-                            // No need to close dropdown as it's always visible
-                        });
-                    });
+        }).join('');
+        let competitorIntegrationsContent = '';
+        if (app.competitors && app.competitors.length > 0) {
+            competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
+        } else {
+            competitorIntegrationsContent = `No competitor integrations detected.`;
+        }
+        let anomaliesHtml = '';
+        const detectedAnomalies = [];
+        let isAppCritical = false;
+        if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
+            isAppCritical = true;
+            const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+            if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+                detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
+            }
+            if (app.usage === 'Low' && app.license.includes('Downgraded')) {
+                detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
+            }
+            let totalRecentDecline = 0;
+            const startIndex = app.monthlyData.length - 3;
+            const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+            if (relevantMonths.length === 3) {
+                relevantMonths.forEach(month => {
+                    const change = parseInt(month.change);
+                    if (change < 0) {
+                        totalRecentDecline += change;
+                    }
+                });
+            }
+            if (totalRecentDecline <= -3) {
+                detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
+            }
+            if (app.paymentFailureCount >= 5) {
+                detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
+            }
+            if (app.pauseScheduledCount >= 5) {
+                detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
+            }
+            let maxSeatsLast6MonthsForDisplay = 0;
+            if (app.monthlyData.length >= 6) {
+                const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+                maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+            }
+            if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
+                detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
+            }
+            const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+            if (totalInactiveAppsForDisplay > 4) {
+                detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
+            }
+            if (app.monthlyData.length >= 6) {
+                const m6Revenue = app.monthlyData[5].revenue;
+                const m3Revenue = app.monthlyData[2].revenue;
+                if (m3Revenue > 0) {
+                    const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                    if (percentageChange < -0.40) {
+                        detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
+                    }
                 }
             }
-        });
-        applicationTableBody.appendChild(row);
-    });
+            const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+            if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
+                detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
+            }
+            if (relevantDepartmentForDisplay) {
+                const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+                const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+                    tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+                );
+                if (hasCriticalProblematicTagForDisplay) {
+                    detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
+                }
+            }
+        }
+        if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) {
+            if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
+                detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
+            }
+            if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
+                detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
+            }
+            let maxSeatsLast6MonthsForDisplay = 0;
+            if (app.monthlyData.length >= 6) {
+                const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+                maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+            }
+            if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
+                detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
+            }
+            const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+            if (totalInactiveAppsForDisplay > 2) {
+                detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
+            }
+            if (app.monthlyData.length >= 6) {
+                const m6Revenue = app.monthlyData[5].revenue;
+                const m3Revenue = app.monthlyData[2].revenue;
+                if (m3Revenue > 0) {
+                    const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+                    if (percentageChange < -0.30) {
+                        detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
+                    }
+                }
+            }
+            const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+            if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
+                detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
+            }
+            if (relevantDepartmentForDisplay) {
+                const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+                const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+                    tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+                );
+                if (hasWarningProblematicTagForDisplay) {
+                    detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
+                }
+            }
+        }
+        if (detectedAnomalies.length > 0) {
+            anomaliesHtml = `
+<p class="mb-1 fw-bold text-danger">
+<i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
+</p>
+<ul class="list-unstyled small ps-3">
+${detectedAnomalies.join('')}
+</ul>
+`;
+        } else {
+            anomaliesHtml = `
+<p class="mb-1 fw-bold text-success">
+<i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
+</p>
+`;
+        }
+        expandedRow.innerHTML = `
+<td colspan="10">
+<div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
+<div class="${usageLicenseHistoryColClass} p-2"> <!-- Changed to col-md-6 -->
+    <h6 class="mb-2 fw-bold">Usage & License History</h6>
+    <div class="table-responsive">
+        <table class="table table-sm monthly-data-table mb-0">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Usage</th>
+                    <th>Trend</th>
+                    <th>License</th>
+                    <th>Trend</th>
+                    <th>ARR</th>
+                    <th>Trend</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${monthlyDataHtml}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="${competitorAnomalyColClass} p-2 border-start border-end"> <!-- Changed to col-md-3 -->
+    <h6 class="mb-2 fw-bold">Competitor Integrations</h1>
+    <p class="small text-muted mb-3">
+        ${competitorIntegrationsContent}
+    </p>
+    <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
+    <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
+    ${anomaliesHtml}
+</div>
+${actionsSectionHtml} <!-- Conditionally included -->
+</div>
+</td>
+`;
+        row.insertAdjacentElement('afterend', expandedRow);
+        expandedRowId = appId;
+        if (arrowSpan) arrowSpan.textContent = '▲';
+        // Apply animation to buttons in the expanded row's dropdown
+        if (isAnomalous && activeSection === 'anomalies') {
+            const expandedRowDropdownMenu = expandedRow.querySelector('.action-dropdown-menu');
+            if (expandedRowDropdownMenu) {
+                expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                    button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+                });
+                // Add event listeners for the buttons directly
+                expandedRowDropdownMenu.querySelectorAll('button.connect-us').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        console.log(`${button.textContent.trim()} clicked from expanded row!`);
+                        if (button.classList.contains('connect-us')) {
+                            const subscriptionId = button.dataset.subscriptionId;
+                            const subscriptionName = button.dataset.subscriptionName;
+                            console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                            openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+                        }
+                        // No need to close dropdown as it's always visible
+                    });
+                });
+            }
+        }
+    }
+});
+applicationTableBody.appendChild(row);
+});
 }
 function renderTicketDetailsTable() {
-    if (!ticketDetailsTableBody) {
-        console.error("Ticket details table body element (ticketDetailsTableBody) not found!");
-        return;
-    }
-    ticketDetailsTableBody.innerHTML = '';
-    expandedTicketRowId = null;
-    if (ticketDetailsData.length === 0) {
-        const noDataRow = document.createElement('tr');
-        noDataRow.innerHTML = `<td colspan="5" class="text-center py-4 text-muted">No ticket details available.</td>`;
-        ticketDetailsTableBody.appendChild(noDataRow);
-        return;
-    }
-    ticketDetailsData.forEach(ticket => {
-        const row = document.createElement('tr');
-        row.setAttribute('data-ticket-dept-id', ticket.id);
-        row.className = 'clickable-row';
-        row.innerHTML = `
+if (!ticketDetailsTableBody) {
+console.error("Ticket details table body element (ticketDetailsTableBody) not found!");
+return;
+}
+ticketDetailsTableBody.innerHTML = '';
+expandedTicketRowId = null;
+if (ticketDetailsData.length === 0) {
+const noDataRow = document.createElement('tr');
+noDataRow.innerHTML = `<td colspan="5" class="text-center py-4 text-muted">No ticket details available.</td>`;
+ticketDetailsTableBody.appendChild(noDataRow);
+return;
+}
+ticketDetailsData.forEach(ticket => {
+const row = document.createElement('tr');
+row.setAttribute('data-ticket-dept-id', ticket.id);
+row.className = 'clickable-row';
+row.innerHTML = `
 <td><span class="ticket-expand-toggle-arrow">▼</span></td>
 <td>${ticket.department}</td>
 <td>${ticket.openStatus}</td>
 <td>${ticket.closedStatus}</td>
 <td>${ticket.openTicketOwnership}</td>
 `;
-        row.addEventListener('click', (event) => {
-            const deptId = ticket.id;
-            const currentExpandedTicketId = expandedTicketRowId;
-            const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
-            if (deptId === currentExpandedTicketId) {
-                const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
-                if (expandedRowElement) {
-                    expandedRowElement.remove();
-                    row.classList.remove('expanded');
-                }
-                expandedTicketRowId = null;
-                if (arrowSpan) arrowSpan.textContent = '▼';
-            } else {
-                if (currentExpandedTicketId !== null) {
-                    const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
-                    if (previousExpandedRowElement) {
-                        previousExpandedRowElement.remove();
-                        const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
-                        if(prevParentRow) prevParentRow.classList.remove('expanded');
-                    }
-                    const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
-                    if (previousArrow) previousArrow.textContent = '▼';
-                }
-                const expandedTicketRow = document.createElement('tr');
-                expandedTicketRow.className = 'ticket-detail-expanded-row';
-                expandedTicketRow.setAttribute('data-parent-dept-id', deptId);
-                row.classList.add('expanded');
-                const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
-                const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
-                let openTicketsHtml = '';
-                if (openTickets && openTickets.length > 0) {
-                    openTicketsHtml = openTickets.map(tkt => {
-                        const currentTicketTags = assignTagsFromSummary(tkt.summary);
-                        const tagsHtml = currentTicketTags.map(tag => {
-                            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-                            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-                        }).join('');
-                        return `
-        <li class="ticket-item">
-            <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
-            <span class="ticket-summary">${tkt.summary}</span>
-            <div class="ticket-tags">${tagsHtml}</div>
-        </li>
-    `;
-                    }).join('');
-                } else {
-                    openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
-                }
-                let closedTicketsHtml = '';
-                if (closedTickets && closedTickets.length > 0) {
-                    closedTicketsHtml = closedTickets.map(tkt => {
-                        const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
-                            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-                            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-                        }).join('');
-                        return `
-        <li class="ticket-item">
-            <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
-            <span class="ticket-summary">${tkt.summary}</span>
-            <div class="ticket-tags">${tagsHtml}</div>
-        </li>
-    `;
-                    }).join('');
-                } else {
-                    closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
-                }
-                expandedTicketRow.innerHTML = `
+row.addEventListener('click', (event) => {
+    const deptId = ticket.id;
+    const currentExpandedTicketId = expandedTicketRowId;
+    const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
+    if (deptId === currentExpandedTicketId) {
+        const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
+        if (expandedRowElement) {
+            expandedRowElement.remove();
+            row.classList.remove('expanded');
+        }
+        expandedTicketRowId = null;
+        if (arrowSpan) arrowSpan.textContent = '▼';
+    } else {
+        if (currentExpandedTicketId !== null) {
+            const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
+            if (previousExpandedRowElement) {
+                previousExpandedRowElement.remove();
+                const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
+                if(prevParentRow) prevParentRow.classList.remove('expanded');
+            }
+            const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
+            if (previousArrow) previousArrow.textContent = '▼';
+        }
+        const expandedTicketRow = document.createElement('tr');
+        expandedTicketRow.className = 'ticket-detail-expanded-row';
+        expandedTicketRow.setAttribute('data-parent-dept-id', deptId);
+        row.classList.add('expanded');
+        const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
+        const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
+        let openTicketsHtml = '';
+        if (openTickets && openTickets.length > 0) {
+            openTicketsHtml = openTickets.map(tkt => {
+                const currentTicketTags = assignTagsFromSummary(tkt.summary);
+                const tagsHtml = currentTicketTags.map(tag => {
+                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                }).join('');
+                return `
+<li class="ticket-item">
+    <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
+    <span class="ticket-summary">${tkt.summary}</span>
+    <div class="ticket-tags">${tagsHtml}</div>
+</li>
+`;
+            }).join('');
+        } else {
+            openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
+        }
+        let closedTicketsHtml = '';
+        if (closedTickets && closedTickets.length > 0) {
+            closedTicketsHtml = closedTickets.map(tkt => {
+                const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
+                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+                }).join('');
+                return `
+<li class="ticket-item">
+    <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
+    <span class="ticket-summary">${tkt.summary}</span>
+    <div class="ticket-tags">${tagsHtml}</div>
+</li>
+`;
+            }).join('');
+        } else {
+            closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
+        }
+        expandedTicketRow.innerHTML = `
 <td colspan="5">
-    <div class="ticket-dropdown-content">
-        <div class="ticket-dropdown-section">
-            <strong>Executive Summary (Open Tickets) </strong>
-            <p class="small text-dark mb-0">${ticket.executiveSummary}</p>
-        </div>
-        <div class="ticket-dropdown-section">
-            <strong>Open Tickets:</strong>
-            <ul class="ticket-list">
-                ${openTicketsHtml}
-            </ul>
-        </div>
-        <div class="ticket-dropdown-section">
-            <strong>Closed Tickets:</strong>
-            <ul class="ticket-list">
-                ${closedTicketsHtml}
-            </ul>
-        </div>
-    </div>
+<div class="ticket-dropdown-content">
+<div class="ticket-dropdown-section">
+    <strong>Executive Summary (Open Tickets) </strong>
+    <p class="small text-dark mb-0">${ticket.executiveSummary}</p>
+</div>
+<div class="ticket-dropdown-section">
+    <strong>Open Tickets:</strong>
+    <ul class="ticket-list">
+        ${openTicketsHtml}
+    </ul>
+</div>
+<div class="ticket-dropdown-section">
+    <strong>Closed Tickets:</strong>
+    <ul class="ticket-list">
+        ${closedTicketsHtml}
+    </ul>
+</div>
+</div>
 </td>
 `;
-                row.insertAdjacentElement('afterend', expandedTicketRow);
-                expandedTicketRowId = deptId;
-                if (arrowSpan) arrowSpan.textContent = '▲';
-            }
-        });
-        ticketDetailsTableBody.appendChild(row);
-    });
+        row.insertAdjacentElement('afterend', expandedTicketRow);
+        expandedTicketRowId = deptId;
+        if (arrowSpan) arrowSpan.textContent = '▲';
+    }
+});
+ticketDetailsTableBody.appendChild(row);
+});
 }
 function switchTab(selectedCategory, dataToRender = null) {
-    closeAllDropdowns();
-    closeAllThreatPopups();
-    closeSubscriptionChatModal();
-    clearAllButtonHighlights();
-    clearAllArrSegmentHighlights();
-    // Apply fade-out effect to current visible container
-    if (applicationTableContainer && applicationTableContainer.style.display !== 'none') {
-        applicationTableContainer.classList.add('fade-out');
+closeAllDropdowns();
+closeAllThreatPopups();
+closeSubscriptionChatModal();
+clearAllButtonHighlights();
+clearAllArrSegmentHighlights();
+// Update the activeSection variable
+activeSection = selectedCategory;
+
+// Apply fade-out effect to current visible container
+if (applicationTableContainer && applicationTableContainer.style.display !== 'none') {
+applicationTableContainer.classList.add('fade-out');
+}
+if (ticketDetailsTableContainer && ticketDetailsTableContainer.style.display !== 'none') {
+ticketDetailsTableContainer.classList.add('fade-out');
+}
+// Wait for fade-out transition to complete before changing content
+setTimeout(() => {
+// Hide current content after fade-out
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'none';
+    if (applicationTableBody) applicationTableBody.innerHTML = '';
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'none';
     }
-    if (ticketDetailsTableContainer && ticketDetailsTableContainer.style.display !== 'none') {
-        ticketDetailsTableContainer.classList.add('fade-out');
-    }
-    // Wait for fade-out transition to complete before changing content
-    setTimeout(() => {
-        // Hide current content after fade-out
+}
+if (ticketDetailsTableContainer) {
+    ticketDetailsTableContainer.style.display = 'none';
+}
+// Render new content and apply fade-in
+switch (selectedCategory) {
+    case 'cross-sell':
+        if (crossSellBtn) crossSellBtn.classList.add('active');
         if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'none';
-            if (applicationTableBody) applicationTableBody.innerHTML = '';
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
             if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'none';
+                applicationTableHeader.style.display = 'table-header-group';
             }
         }
+        renderApplicationTable(crossSellFilteredData);
+        activeSection = 'cross-sell';
+        updateCounts();
+        break;
+    case 'all-apps':
+        if (allAppsBtn) allAppsBtn.classList.add('active');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+        }
+        renderApplicationTable(allAppsFilteredData);
+        activeSection = 'all-apps';
+        updateCounts();
+        break;
+    case 'downgrades':
+        if (downgradesBtn) downgradesBtn.classList.add('active');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+        }
+        renderApplicationTable(downgradesFilteredData);
+        activeSection = 'downgrades';
+        updateCounts();
+        break;
+    case 'competitors':
+        if (competitorsBtn) competitorsBtn.classList.add('active');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+        }
+        renderApplicationTable(competitorsFilteredData);
+        activeSection = 'competitors';
+        updateCounts();
+        break;
+    case 'anomalies':
+        if (anomaliesBtn) anomaliesBtn.classList.add('active');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+        }
+        renderApplicationTable(dataToRender || anomaliesFilteredData);
+        activeSection = 'anomalies';
+        if (dataToRender !== null) {
+            updateCounts(dataToRender.length);
+        } else {
+            updateCounts();
+        }
+        break;
+    case 'ticket-details':
+        if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
         if (ticketDetailsTableContainer) {
-            ticketDetailsTableContainer.style.display = 'none';
+            ticketDetailsTableContainer.style.display = 'block';
+            ticketDetailsTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            ticketDetailsTableContainer.classList.add('fade-in');
         }
-        // Render new content and apply fade-in
-        switch (selectedCategory) {
-            case 'cross-sell':
-                if (crossSellBtn) crossSellBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(crossSellFilteredData);
-                activeSection = 'cross-sell';
-                updateCounts();
-                break;
-            case 'all-apps':
-                if (allAppsBtn) allAppsBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(allAppsFilteredData);
-                activeSection = 'all-apps';
-                updateCounts();
-                break;
-            case 'downgrades':
-                if (downgradesBtn) downgradesBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(downgradesFilteredData);
-                activeSection = 'downgrades';
-                updateCounts();
-                break;
-            case 'competitors':
-                if (competitorsBtn) competitorsBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(competitorsFilteredData);
-                activeSection = 'competitors';
-                updateCounts();
-                break;
-            case 'anomalies':
-                if (anomaliesBtn) anomaliesBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(dataToRender || anomaliesFilteredData);
-                activeSection = 'anomalies';
-                if (dataToRender !== null) {
-                    updateCounts(dataToRender.length);
-                } else {
-                    updateCounts();
-                }
-                break;
-            case 'ticket-details':
-                if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
-                if (ticketDetailsTableContainer) {
-                    ticketDetailsTableContainer.style.display = 'block';
-                    ticketDetailsTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    ticketDetailsTableContainer.classList.add('fade-in');
-                }
-                renderTicketDetailsTable();
-                activeSection = 'ticket-details';
-                updateCounts();
-                break;
-            case 'arr-less-than-5k':
-                if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(arrLessThan5kFilteredData);
-                activeSection = 'arr-less-than-5k';
-                updateCounts();
-                break;
-            case 'arr-greater-than-5k':
-                if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                    }
-                renderApplicationTable(arrGreaterThan5kFilteredData);
-                activeSection = 'arr-greater-than-5k';
-                updateCounts();
-                break;
-            default:
-                console.warn('Unknown category selected:', selectedCategory);
-                if (allAppsBtn) allAppsBtn.classList.add('active');
-                if (applicationTableContainer) {
-                    applicationTableContainer.style.display = 'block';
-                    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-                    applicationTableContainer.classList.add('fade-in');
-                    if (applicationTableHeader) {
-                        applicationTableHeader.style.display = 'table-header-group';
-                    }
-                }
-                renderApplicationTable(allAppsFilteredData);
-                activeSection = 'all-apps';
-                updateCounts();
-                break;
+        renderTicketDetailsTable();
+        activeSection = 'ticket-details';
+        updateCounts();
+        break;
+    case 'arr-less-than-5k':
+        if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
         }
-    }, 300); // This delay should match the CSS transition duration for fade-out
+        renderApplicationTable(arrLessThan5kFilteredData);
+        activeSection = 'arr-less-than-5k';
+        updateCounts();
+        break;
+    case 'arr-greater-than-5k':
+        if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+            }
+        renderApplicationTable(arrGreaterThan5kFilteredData);
+        activeSection = 'arr-greater-than-5k';
+        updateCounts();
+        break;
+    default:
+        console.warn('Unknown category selected:', selectedCategory);
+        if (allAppsBtn) allAppsBtn.classList.add('active');
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'block';
+            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+            applicationTableContainer.classList.add('fade-in');
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'table-header-group';
+            }
+        }
+        renderApplicationTable(allAppsFilteredData);
+        activeSection = 'all-apps';
+        updateCounts();
+        break;
+}
+}, 300); // This delay should match the CSS transition duration for fade-out
 }
 function clearAllButtonHighlights() {
-    const allBtns = document.querySelectorAll('.btns');
-    allBtns.forEach(btn => btn.classList.remove('active'));
+const allBtns = document.querySelectorAll('.btns');
+allBtns.forEach(btn => btn.classList.remove('active'));
 }
 function clearAllArrSegmentHighlights() {
-    if (arrLessThan5kSegment) arrLessThan5kSegment.classList.remove('active-arr-filter');
-    if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.remove('active-arr-filter');
+if (arrLessThan5kSegment) arrLessThan5kSegment.classList.remove('active-arr-filter');
+if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.remove('active-arr-filter');
 }
 function highlightActiveCard(activeCardElementId) {
-    const allCards = [
-        criticalIssuesCard,
-        warningSignsCard,
-        competitorExposureCard,
-        downgradeRisksCard,
-        deskTicketsCard
-    ];
-    allCards.forEach(card => {
-        if (card) {
-            card.classList.remove('active-highlight',
-                'card-border-critical',
-                'card-border-warning',
-                'card-border-competitor',
-                'card-border-downgrade',
-                'card-border-tickets');
-        }
-    });
-    if (activeCardElementId) {
-        const activeCard = document.getElementById(activeCardElementId);
-        if (activeCard) {
-            activeCard.classList.add('active-highlight');
-            console.log(`Adding active-highlight to: ${activeCardElementId}`);
-            if (activeCardElementId === 'criticalIssuesCard') {
-                activeCard.classList.add('card-border-critical');
-                console.log(`Adding card-border-critical to: ${activeCardElementId}`);
-            } else if (activeCardElementId === 'warningSignsCard') {
-                activeCard.classList.add('card-border-warning');
-                console.log(`Adding card-border-warning to: ${activeCardElementId}`);
-            } else if (activeCardElementId === 'competitorExposureCard') {
-                activeCard.classList.add('card-border-competitor');
-                console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
-            } else if (activeCardElementId === 'downgradeRisksCard') {
-                activeCard.classList.add('card-border-downgrade');
-                console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
-            } else if (activeCardElementId === 'deskTicketsCard') {
-                activeCard.classList.add('card-border-downgrade');
-                console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
-            }
-            console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
-        }
+const allCards = [
+criticalIssuesCard,
+warningSignsCard,
+competitorExposureCard,
+downgradeRisksCard,
+deskTicketsCard
+];
+allCards.forEach(card => {
+if (card) {
+    card.classList.remove('active-highlight',
+        'card-border-critical',
+        'card-border-warning',
+        'card-border-competitor',
+        'card-border-downgrade',
+        'card-border-tickets');
+}
+});
+if (activeCardElementId) {
+const activeCard = document.getElementById(activeCardElementId);
+if (activeCard) {
+    activeCard.classList.add('active-highlight');
+    console.log(`Adding active-highlight to: ${activeCardElementId}`);
+    if (activeCardElementId === 'criticalIssuesCard') {
+        activeCard.classList.add('card-border-critical');
+        console.log(`Adding card-border-critical to: ${activeCardElementId}`);
+    } else if (activeCardElementId === 'warningSignsCard') {
+        activeCard.classList.add('card-border-warning');
+        console.log(`Adding card-border-warning to: ${activeCardElementId}`);
+    } else if (activeCardElementId === 'competitorExposureCard') {
+        activeCard.classList.add('card-border-competitor');
+        console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
+    } else if (activeCardElementId === 'downgradeRisksCard') {
+        activeCard.classList.add('card-border-downgrade');
+        console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
+    } else if (activeCardElementId === 'deskTicketsCard') {
+        activeCard.classList.add('card-border-downgrade');
+        console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
     }
+    console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
+}
+}
 }
 let subscriptionChatModal = null;
 let closeSubscriptionChatModalBtn = null;
 let subscriptionChatIframe = null;
 function openSubscriptionChatModal(subscriptionId, subscriptionName, clickedButton) {
-    if (!subscriptionChatModal || !subscriptionChatIframe || !clickedButton) {
-        console.error('Chat modal elements or clicked button not found!');
-        return;
-    }
-    // Set generic values if not provided (for "Need Help" button)
-    const chatSubscriptionId = subscriptionId || 'N/A';
-    const chatSubscriptionName = subscriptionName || 'General Inquiry';
-    subscriptionChatIframe.src = `chat_iframe_content.html?subscriptionId=${chatSubscriptionId}&subscriptionName=${encodeURIComponent(chatSubscriptionName)}`;
-    subscriptionChatModal.classList.add('show');
+if (!subscriptionChatModal || !subscriptionChatIframe || !clickedButton) {
+console.error('Chat modal elements or clicked button not found!');
+return;
+}
+// Set generic values if not provided (for "Need Help" button)
+const chatSubscriptionId = subscriptionId || 'N/A';
+const chatSubscriptionName = subscriptionName || 'General Inquiry';
+subscriptionChatIframe.src = `chat_iframe_content.html?subscriptionId=${chatSubscriptionId}&subscriptionName=${encodeURIComponent(chatSubscriptionName)}`;
+subscriptionChatModal.classList.add('show');
 }
 function closeSubscriptionChatModal() {
-    if (subscriptionChatModal) {
-        subscriptionChatModal.classList.remove('show');
-        subscriptionChatIframe.src = '';
-    }
+if (subscriptionChatModal) {
+subscriptionChatModal.classList.remove('show');
+subscriptionChatIframe.src = '';
+}
 }
 function switchAnamoly(){
-     switchTab('anomalies');
-     highlightActiveCard(null);
+switchTab('anomalies');
+highlightActiveCard(null);
 }
 function switchTicket(){
-     switchTab('ticket-details');
-     highlightActiveCard(null);
+switchTab('ticket-details');
+highlightActiveCard(null);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing...');
-    if (!initializeDOMElements()) {
-        console.error('Failed to initialize DOM elements, stopping further initialization.');
-        return;
-    }
+console.log('DOM loaded, initializing...');
+if (!initializeDOMElements()) {
+console.error('Failed to initialize DOM elements, stopping further initialization.');
+return;
+}
 
-    // Show loader immediately
-    showWidgetLoader();
+// Show loader immediately
+showWidgetLoader();
 
-    // Simulate data loading delay
-    setTimeout(() => {
-        filterDataArrays();
-        console.log('Rendering initial table for "All Apps"');
-        renderApplicationTable(allAppsFilteredData);
-        if (allAppsBtn) {
-            allAppsBtn.classList.add('active');
-        }
-        // Set health score to 100 as requested
-        let calculatedHealthScore = 100;
-        updateHealthScore(calculatedHealthScore);
-        updateCounts();
-        // Start the typewriter effect for the executive summary
-        typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
-        hideWidgetLoader(); // Hide loader after content is loaded
-    }, 1000); // Simulate 1 second loading time
+// Simulate data loading delay
+setTimeout(() => {
+filterDataArrays();
+console.log('Rendering initial table for "All Apps"');
+renderApplicationTable(allAppsFilteredData);
+if (allAppsBtn) {
+    allAppsBtn.classList.add('active');
+}
+// Set health score to 100 as requested
+let calculatedHealthScore = 100;
+updateHealthScore(calculatedHealthScore);
+updateCounts();
+// Start the typewriter effect for the executive summary
+typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
+hideWidgetLoader(); // Hide loader after content is loaded
+}, 1000); // Simulate 1 second loading time
 
-    if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
-        switchTab('all-apps');
-        highlightActiveCard(null);
-    });
-    if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
-        switchTab('cross-sell');
-        highlightActiveCard(null);
-    });
-    if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
-        switchTab('downgrades');
-        highlightActiveCard(null);
-    });
-    if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
-        switchTab('competitors');
-        highlightActiveCard(null);
-    });
-    if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
-        switchTab('anomalies');
-        highlightActiveCard(null);
-    });
-    if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
-        switchTab('ticket-details');
-        highlightActiveCard(null);
-    });
-    if (arrLessThan5kSegment) {
-        arrLessThan5kSegment.addEventListener('click', () => {
-            switchTab('arr-less-than-5k');
-            highlightActiveCard(null);
-        });
+if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
+switchTab('all-apps');
+highlightActiveCard(null);
+});
+if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
+switchTab('cross-sell');
+highlightActiveCard(null);
+});
+if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
+switchTab('downgrades');
+highlightActiveCard(null);
+});
+if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
+switchTab('competitors');
+highlightActiveCard(null);
+});
+if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
+switchTab('anomalies');
+highlightActiveCard(null);
+});
+if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
+switchTab('ticket-details');
+highlightActiveCard(null);
+});
+if (arrLessThan5kSegment) {
+arrLessThan5kSegment.addEventListener('click', () => {
+    switchTab('arr-less-than-5k');
+    highlightActiveCard(null);
+});
+}
+if (arrGreaterThan5kSegment) {
+arrGreaterThan5kSegment.addEventListener('click', () => {
+    switchTab('arr-greater-than-5k');
+    highlightActiveCard(null);
+});
+}
+if (criticalIssuesCard) {
+criticalIssuesCard.addEventListener('click', () => {
+    switchTab('anomalies', anomaliesCriticalOnlyData);
+    highlightActiveCard('criticalIssuesCard');
+});
+criticalIssuesCard.style.cursor = 'pointer';
+}
+if (warningSignsCard) {
+warningSignsCard.addEventListener('click', () => {
+    switchTab('anomalies', anomaliesWarningOnlyData);
+    highlightActiveCard('warningSignsCard');
+});
+warningSignsCard.style.cursor = 'pointer';
+}
+if (competitorExposureCard) {
+competitorExposureCard.addEventListener('click', () => {
+    switchTab('competitors');
+    highlightActiveCard('competitorExposureCard');
+});
+competitorExposureCard.style.cursor = 'pointer';
+}
+if (downgradeRisksCard) {
+downgradeRisksCard.addEventListener('click', () => {
+    switchTab('downgrades');
+    highlightActiveCard('downgradeRisksCard');
+});
+downgradeRisksCard.style.cursor = 'pointer';
+}
+if (deskTicketsCard) {
+deskTicketsCard.addEventListener('click', () => {
+    switchTab('ticket-details');
+    highlightActiveCard('deskTicketsCard');
+});
+deskTicketsCard.style.cursor = 'pointer';
+}
+// Initial state: ensure applicationTableContainer is visible and not fading
+if (applicationTableContainer) {
+applicationTableContainer.classList.remove('fade-out', 'd-none');
+applicationTableContainer.classList.add('fade-in');
+applicationTableContainer.style.display = 'block';
+if (applicationTableHeader) {
+    applicationTableHeader.style.display = 'table-header-group';
+}
+}
+if (ticketDetailsTableContainer) {
+ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fading in initially
+ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
+ticketDetailsTableContainer.style.display = 'none';
+}
+
+document.addEventListener('click', (event) => {
+if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
+    closeAllDropdowns();
+}
+if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
+    closeAllThreatPopups();
+}
+if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
+    !event.target.closest('.subscription-chat-modal')) {
+    closeSubscriptionChatModal();
+}
+// Removed popup-overlay closing logic as it's no longer used for these popups
+});
+const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
+const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
+if (clickableEyeIcon && ratingDetailsPopup) {
+clickableEyeIcon.addEventListener('click', (event) => {
+    console.log('Eye icon clicked!');
+    event.stopPropagation();
+    if (ratingDetailsPopup.style.display === 'block') {
+        ratingDetailsPopup.style.display = 'none';
+    } else {
+        ratingDetailsPopup.style.display = 'block';
     }
-    if (arrGreaterThan5kSegment) {
-        arrGreaterThan5kSegment.addEventListener('click', () => {
-            switchTab('arr-greater-than-5k');
-            highlightActiveCard(null);
-        });
+});
+document.addEventListener('click', (event) => {
+    if (ratingDetailsPopup.style.display === 'block' &&
+        !clickableEyeIcon.contains(event.target) &&
+        !ratingDetailsPopup.contains(event.target)) {
+        console.log('Closing popup due to outside click.');
+        ratingDetailsPopup.style.display = 'none';
     }
-    if (criticalIssuesCard) {
-        criticalIssuesCard.addEventListener('click', () => {
-            switchTab('anomalies', anomaliesCriticalOnlyData);
-            highlightActiveCard('criticalIssuesCard');
-        });
-        criticalIssuesCard.style.cursor = 'pointer';
-    }
-    if (warningSignsCard) {
-        warningSignsCard.addEventListener('click', () => {
-            switchTab('anomalies', anomaliesWarningOnlyData);
-            highlightActiveCard('warningSignsCard');
-        });
-        warningSignsCard.style.cursor = 'pointer';
-    }
-    if (competitorExposureCard) {
-        competitorExposureCard.addEventListener('click', () => {
-            switchTab('competitors');
-            highlightActiveCard('competitorExposureCard');
-        });
-        competitorExposureCard.style.cursor = 'pointer';
-    }
-    if (downgradeRisksCard) {
-        downgradeRisksCard.addEventListener('click', () => {
-            switchTab('downgrades');
-            highlightActiveCard('downgradeRisksCard');
-        });
-        downgradeRisksCard.style.cursor = 'pointer';
-    }
-    if (deskTicketsCard) {
-        deskTicketsCard.addEventListener('click', () => {
-            switchTab('ticket-details');
-            highlightActiveCard('deskTicketsCard');
-        });
-        deskTicketsCard.style.cursor = 'pointer';
-    }
-    // Initial state: ensure applicationTableContainer is visible and not fading
-    if (applicationTableContainer) {
-        applicationTableContainer.classList.remove('fade-out', 'd-none');
-        applicationTableContainer.classList.add('fade-in');
-        applicationTableContainer.style.display = 'block';
-        if (applicationTableHeader) {
-            applicationTableHeader.style.display = 'table-header-group';
-        }
-    }
-    if (ticketDetailsTableContainer) {
-        ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fading in initially
-        ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
-        ticketDetailsTableContainer.style.display = 'none';
-    }
-    
-    document.addEventListener('click', (event) => {
-        if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
+});
+}
+const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
+if (needHelpDropdownWrapper) {
+const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
+const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
+const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
+const threatButton = document.getElementById('threat-button');
+const ticketButton = document.getElementById('ticket-button');
+if (needHelpToggleElement && needHelpDropdownMenu) {
+    needHelpToggleElement.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
             closeAllDropdowns();
         }
-        if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
-            closeAllThreatPopups();
-        }
-        if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-            !event.target.closest('.subscription-chat-modal')) {
-            closeSubscriptionChatModal();
-        }
-        // Removed popup-overlay closing logic as it's no longer used for these popups
-    });
-    const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
-    const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
-    if (clickableEyeIcon && ratingDetailsPopup) {
-        clickableEyeIcon.addEventListener('click', (event) => {
-            console.log('Eye icon clicked!');
-            event.stopPropagation();
-            if (ratingDetailsPopup.style.display === 'block') {
-                ratingDetailsPopup.style.display = 'none';
-            } else {
-                ratingDetailsPopup.style.display = 'block';
-            }
-        });
-        document.addEventListener('click', (event) => {
-            if (ratingDetailsPopup.style.display === 'block' &&
-                !clickableEyeIcon.contains(event.target) &&
-                !ratingDetailsPopup.contains(event.target)) {
-                console.log('Closing popup due to outside click.');
-                ratingDetailsPopup.style.display = 'none';
-            }
-        });
-    }
-    const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
-    if (needHelpDropdownWrapper) {
-        const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
-        const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
-        const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
-        const threatButton = document.getElementById('threat-button');
-        const ticketButton = document.getElementById('ticket-button');
-        if (needHelpToggleElement && needHelpDropdownMenu) {
-            needHelpToggleElement.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-                    closeAllDropdowns();
-                }
-                closeAllThreatPopups();
-                needHelpDropdownMenu.classList.toggle('show');
-                if (needHelpDropdownMenu.classList.contains('show')) {
-                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
-                    });
-                    currentOpenDropdown = needHelpDropdownMenu;
-                    currentOpenDropdownToggle = needHelpToggleElement;
-                } else {
-                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                        button.style.animation = '';
-                    });
-                    closeAllDropdowns();
-                }
+        closeAllThreatPopups();
+        needHelpDropdownMenu.classList.toggle('show');
+        if (needHelpDropdownMenu.classList.contains('show')) {
+            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
             });
-            // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
-            if (needHelpChatAgentBtn ) {
-                needHelpChatAgentBtn.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
-                    // Pass generic values for subscriptionId and subscriptionName
-                    openSubscriptionChatModal(null, null, event.target);
-                    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-                });
-               
-            }
-             /**needResolvedIssuesBtn.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
-                    // Pass generic values for subscriptionId and subscriptionName
-                    openSubscriptionChatModal(null, null, event.target);
-                     threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
-                    ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
-                    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-                });**/
-            
+            currentOpenDropdown = needHelpDropdownMenu;
+            currentOpenDropdownToggle = needHelpToggleElement;
+        } else {
             needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
-                if (button.id !== 'needHelpChatAgentBtn') {
-                    button.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-                        closeAllDropdowns();
-                    });
-                }
+                button.style.animation = '';
+            });
+            closeAllDropdowns();
+        }
+    });
+    // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
+    if (needHelpChatAgentBtn ) {
+        needHelpChatAgentBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
+            // Pass generic values for subscriptionId and subscriptionName
+            openSubscriptionChatModal(null, null, event.target);
+            closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+        });
+       
+    }
+     /**needResolvedIssuesBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
+            // Pass generic values for subscriptionId and subscriptionName
+            openSubscriptionChatModal(null, null, event.target);
+             threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
+            ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
+            closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+        });**/
+    
+    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+        // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
+        if (button.id !== 'needHelpChatAgentBtn') {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+                closeAllDropdowns();
             });
         }
+    });
+}
+}
+if (closeSubscriptionChatModalBtn) {
+closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
+}
+// Event listeners for new hover popups
+if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
+recentPurchasesCountSpan.addEventListener('mouseenter', () => {
+    recentPurchasesHoverList.innerHTML = ''; // Clear previous content
+    if (recentPurchasesData.length > 0) {
+        recentPurchasesData.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
+            recentPurchasesHoverList.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No recent purchases in the last 6 months.';
+        recentPurchasesHoverList.appendChild(li);
     }
-    if (closeSubscriptionChatModalBtn) {
-        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
-    }
-    // Event listeners for new hover popups
-    if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
-        recentPurchasesCountSpan.addEventListener('mouseenter', () => {
-            recentPurchasesHoverList.innerHTML = ''; // Clear previous content
-            if (recentPurchasesData.length > 0) {
-                recentPurchasesData.forEach((item, index) => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
-                    recentPurchasesHoverList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No recent purchases in the last 6 months.';
-                recentPurchasesHoverList.appendChild(li);
-            }
-            recentPurchasesHoverPopup.classList.add('show');
-        });
-        recentPurchasesCountSpan.addEventListener('mouseleave', () => {
-            recentPurchasesHoverPopup.classList.remove('show');
-        });
-    }
-
-    if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
-        nextRenewalsCountSpan.addEventListener('mouseenter', () => {
-            nextRenewalsHoverList.innerHTML = ''; // Clear previous content
-            if (nextRenewalsData.length > 0) {
-                // Sort the data by date before rendering
-                nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                nextRenewalsData.forEach((item, index) => {
-                    const li = document.createElement('li');
-                    // Apply flexbox styles directly to the list item for alignment
-                    li.style.display = 'flex';
-                    li.style.justifyContent = 'space-between';
-                    li.style.alignItems = 'center';
-                    li.style.padding = '8px 0'; // Add padding for visual separation
-                    li.style.borderBottom = '1px solid #eee'; // Keep border for separation
-
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'app-name';
-                    nameSpan.textContent = item.name;
-                    nameSpan.style.flexBasis = '40%'; // Allocate space for name
-                    nameSpan.style.textAlign = 'left';
-
-                    const dateSpan = document.createElement('span');
-                    dateSpan.className = 'renewal-date';
-                    dateSpan.textContent = item.date;
-                    dateSpan.style.flexBasis = '30%'; // Allocate space for date
-                    dateSpan.style.textAlign = 'center';
-
-                    const revenueSpan = document.createElement('span');
-                    revenueSpan.className = 'app-revenue';
-                    revenueSpan.textContent = `$${item.revenue}`;
-                    revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
-                    revenueSpan.style.textAlign = 'right';
-
-                    li.appendChild(nameSpan);
-                    li.appendChild(dateSpan);
-                    li.appendChild(revenueSpan);
-                    nextRenewalsHoverList.appendChild(li);
-                });
-                // Remove border from the last item
-                if (nextRenewalsHoverList.lastChild) {
-                    nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
-                }
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No upcoming renewals in the next 3 months.';
-                nextRenewalsHoverList.appendChild(li);
-            }
-            nextRenewalsHoverPopup.classList.add('show');
-        });
-        nextRenewalsCountSpan.addEventListener('mouseleave', () => {
-            nextRenewalsHoverPopup.classList.remove('show');
-        });
-    }
-
-    // Event listener for the new refresh icon
-        refreshIcon.addEventListener('click', () => {
-            location.reload(); // Reload the entire page
-        });
+    recentPurchasesHoverPopup.classList.add('show');
 });
+recentPurchasesCountSpan.addEventListener('mouseleave', () => {
+    recentPurchasesHoverPopup.classList.remove('show');
+});
+}
+
+if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
+nextRenewalsCountSpan.addEventListener('mouseenter', () => {
+    nextRenewalsHoverList.innerHTML = ''; // Clear previous content
+    if (nextRenewalsData.length > 0) {
+        // Sort the data by date before rendering
+        nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        nextRenewalsData.forEach((item, index) => {
+            const li = document.createElement('li');
+            // Apply flexbox styles directly to the list item for alignment
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.padding = '8px 0'; // Add padding for visual separation
+            li.style.borderBottom = '1px solid #eee'; // Keep border for separation
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'app-name';
+            nameSpan.textContent = item.name;
+            nameSpan.style.flexBasis = '40%'; // Allocate space for name
+            nameSpan.style.textAlign = 'left';
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'renewal-date';
+            dateSpan.textContent = item.date;
+            dateSpan.style.flexBasis = '30%'; // Allocate space for date
+            nameSpan.style.textAlign = 'center';
+
+            const revenueSpan = document.createElement('span');
+            revenueSpan.className = 'app-revenue';
+            revenueSpan.textContent = `$${item.revenue}`;
+            revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
+            revenueSpan.style.textAlign = 'right';
+
+            li.appendChild(nameSpan);
+            li.appendChild(dateSpan);
+            li.appendChild(revenueSpan);
+            nextRenewalsHoverList.appendChild(li);
+        });
+        // Remove border from the last item
+        if (nextRenewalsHoverList.lastChild) {
+            nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
+        }
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No upcoming renewals in the next 3 months.';
+        nextRenewalsHoverList.appendChild(li);
+    }
+    nextRenewalsHoverPopup.classList.add('show');
+});
+nextRenewalsCountSpan.addEventListener('mouseleave', () => {
+    nextRenewalsHoverPopup.classList.remove('show');
+});
+}
+
+// Event listener for the new refresh icon
+refreshIcon.addEventListener('click', () => {
+    location.reload(); // Reload the entire page
+});
+});
+
