@@ -1169,17 +1169,14 @@ row.addEventListener('click', (event) => {
             actionsSectionHtml = `
                 <div class="col-md-3 p-2 d-flex flex-column justify-content-between">
                     <div>
-                        <h6 class="mb-2 fw-bold">Actions</h6>
+                        <h6 class="mb-2 fw-bold">Resolve (Anomalies)</h6>
                         <div class="action-dropdown-wrapper">
                             <div class="action-dropdown-menu show">
-                                <a href="https://store.zoho.com/zstore#customers" target="_blank" rel="noopener noreferrer" class="glass-button store-link">
-                                    <i class="bi bi-shop"></i> Store
-                                </a>
-                                <a href="https://www.example.com/mics" target="_blank" rel="noopener noreferrer" class="glass-button mics-link">
-                                    <i class="bi bi-file-earmark-text"></i> MICS
-                                </a>
-                                <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
-                                    <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
+                                <button class="glass-button threat-link">
+                                    <i class="bi bi-exclamation-octagon"></i>Competitors (<strong>Threat</strong>)
+                                </button>
+                                <button class="glass-button desk-tickets-link">
+                                    <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;"> Tickets (<strong>Escalated</strong>)
                                 </button>
                             </div>
                         </div>
