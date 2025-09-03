@@ -1840,6 +1840,9 @@ return;
 // Show loader immediately
 showWidgetLoader();
 
+setTimeout(()=>{
+hideWidgetLoader();
+},3000);
 // Simulate data loading delay
 setTimeout(() => {
 filterDataArrays();
@@ -1854,8 +1857,8 @@ updateHealthScore(calculatedHealthScore);
 updateCounts();
 // Start the typewriter effect for the executive summary
 typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
-hideWidgetLoader(); // Hide loader after content is loaded
-}, 1000); // Simulate 1 second loading time
+//hideWidgetLoader(); // Hide loader after content is loaded
+}, 3500); // Simulate 1 second loading time
 
 if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
 switchTab('all-apps');
@@ -2124,3 +2127,15 @@ refreshIcon.addEventListener('click', () => {
 });
 });
 
+
+ const loader = document.getElementById('widgetLoaderOverlay');
+const container = document.getElementById('container-id');
+setTimeout(() => {
+            // Hide the loader
+            loader.style.display = 'none';
+
+            // Show the container
+            container.style.display = 'block';
+        }, 3000); 
+
+        

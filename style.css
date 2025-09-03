@@ -747,7 +747,7 @@ body {
     border: 1px solid #e0e0e0;
     background-image: linear-gradient(to right,
     #ea4335 0%, #ea4335 25%,
-    #34a853 25%, #34a53 50%,
+    #34a853 25%, #34a523 50%,
     #4285f4 50%, #4285f4 75%,
     #fbbc05 75%, #fbbc05 100%
     );
@@ -1833,6 +1833,58 @@ body {
     .account-details-main-box {
     padding-right: 20px; /* Reset padding-right */
     }
+
+    /* Style for the message with the typewriter effect */
+.widget-loader-message {
+  font-size: 1.2rem; /* Increased font size */
+  font-family: 'Times New Roman', Times, serif; /* A classic typewriter font */
+  font-weight: bold; /* Makes the text bold */
+  overflow: hidden; /* Ensures the text is not visible until typed */
+  border-right: .15em solid orange; /* The typewriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Centers the animation */
+  letter-spacing: .10em; /* Adjusts spacing between characters */
+  /* The animation magic */
+  animation: 
+    typing 2.5s steps(40, end), /* The typing animation */
+    blink-caret .75s step-end infinite; /* The blinking cursor animation */
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+
+/* --- (Keep your other loader styles as they are) --- */
+
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: white; /* Example background */
+    z-index: 9999;
+}
+
+.zoho-logo-loader img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 2rem;
+}
     
     /* Loader Styles */
     .widget-loader-overlay {
@@ -1849,7 +1901,7 @@ body {
     z-index: 10000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 3s ease, visibility 3s ease;
     }
     
     .widget-loader-overlay.show {
@@ -1876,53 +1928,48 @@ body {
                       radial-gradient(circle at 90% 80%, rgba(0,0,0,0.05) 1px, transparent 1px),
                       radial-gradient(circle at 50% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
     background-size: 20px 20px; /* Size of the dot pattern */
-    }
-    
-    /* Cube Loader Styles */
-    .cube-loader {
-    width: 40px; /* Reduced size */
-    height: 40px; /* Reduced size */
-    position: relative;
-    transform-style: preserve-3d;
-    transform: rotateX(-30deg) rotateY(45deg);
-    margin-bottom: 10px; /* Reduced space between loader and text */
-    }
-    
-    /* Added styles for individual cubes */
-    .cube-loader .cube {
-    width: 20px; /* Each cube is 20x20px */
-    height: 20px; /* Each cube is 20x20px */
-    position: absolute; /* Position absolutely within the loader */
-    animation: cube-fade 2s infinite ease-in-out;
-    }
-    
-    .cube-loader .cube:nth-child(1) {
-    background-color: #f01717; /* Red */
-    left: 0;
-    top: 0;
-    animation-delay: 0s;
-    }
-    
-    .cube-loader .cube:nth-child(2) {
-    background-color: #0d9e0d; /* Green */
-    left: 20px; /* Adjusted position based on new cube size */
-    top: 0;
-    animation-delay: 0.2s;
-    }
-    
-    .cube-loader .cube:nth-child(3) {
-    background-color: #f6f040; /* Yellow */
-    left: 0;
-    top: 20px; /* Adjusted position based on new cube size */
-    animation-delay: 0.4s;
-    }
-    
-    .cube-loader .cube:nth-child(4) {
-    background-color: #238ee6; /* Blue */
-    left: 20px; /* Adjusted position based on new cube size */
-    top: 20px; /* Adjusted position based on new cube size */
-    animation-delay: 0.6s;
-    }
+    }             
+        /* Container for the loader and message */
+        .loader-container {
+          position: fixed; /* Fixes the loader to the viewport */
+            top: 0;
+            left: 0;
+            width: 100%; /* Takes up the full width */
+            height: 100%; /* Takes up the full height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: var(--background-color); /* Ensures the background covers the entire page */
+            z-index: 9999; /* Ensures the loader is on top of other content */
+        }
+         
+       .zoho-logo-loader {
+            width: 150px;
+            height: 80px;
+        }
+
+        .zoho-logo-loader img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain; /* Ensures the image fits without distortion */
+        }
+         
+       .loader-message {
+            margin-top: 2rem;
+            font-size: 1rem;
+            opacity: 0.8;
+            /* Fade-in animation for the message */
+            animation: fadeIn 5s forwards;
+            animation-delay: 5s;
+        }
+         
+        /* Keyframe animation for a smooth fade-in effect */
+        @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 0.8; }
+        }
     
     @keyframes cube-fade {
     0% {
@@ -1941,8 +1988,7 @@ body {
         opacity: 0;
         transform: scale(0.5) rotateX(360deg) rotateY(360deg);
     }
-    }
-    
+    }  
     .widget-loader-message {
     font-size: 0.9em; /* Reduced font size */
     color: #000; /* Black font color */
