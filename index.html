@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Health Overview</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   <link rel="stylesheet" href="style.css">
+   <script src="script.js"></script>
 </head>
 <body>
     <div class="container-fluid px-4 py-3">
@@ -296,7 +297,33 @@
             <iframe id="subscriptionChatIframe" class="subscription-chat-iframe" src="" title="Subscription Chat"></iframe>
         </div>
     </div>
-    <script src="healthScore.js"></script> 
-    <script src="script.js"></script>
+    <div id="threatDetailsPopup" class="threat-popup-overlay">
+        <div class="threat-popup-content">
+            <h4 class="threat-popup-title">Threat Details</h4>
+            <div id="threatListContainer" class="threat-list-container">
+                <!-- Dynamically populated -->
+            </div>
+            <button id="threatPopupCloseBtn" class="threat-popup-close-btn">Close</button>
+        </div>
+    </div>
+    <div id="resolveNotesPopup" class="resolve-notes-popup-overlay">
+        <div class="resolve-notes-popup-content">
+            <h4 class="resolve-notes-popup-title">Enter Notes</h4>
+            <textarea id="resolveNotesTextarea" class="resolve-notes-textarea" placeholder="Type your notes here..."></textarea>
+            <div class="resolve-notes-popup-actions">
+                <button id="resolveNotesCancelBtn" class="resolve-notes-popup-btn resolve-notes-cancel-btn">Cancel</button>
+                <button id="resolveNotesSubmitBtn" class="resolve-notes-popup-btn resolve-notes-submit-btn">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div id="resolvedHistoryPopup" class="resolved-history-popup-overlay">
+        <div class="resolved-history-popup-content">
+            <h4 class="resolved-history-popup-title">Resolved History</h4>
+            <div id="resolvedHistoryListContainer" class="resolved-history-list-container">
+                <!-- Dynamically populated -->
+            </div>
+            <button id="resolvedHistoryPopupCloseBtn" class="resolved-history-popup-close-btn">Close</button>
+        </div>
+    </div>    
 </body>
 </html>

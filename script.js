@@ -1,4 +1,61 @@
-let appData = [
+        /**
+         * Updates the display of the health score widget based on the given score.
+         * This function dynamically changes the circle's background color,
+         * the textual status (Excellent, Good, Poor), and the accompanying icon.
+         *
+         * It relies on the following global DOM element variables to be defined and assigned
+         * in another script (e.g., script.js) before this function is called:
+         * - healthScoreCircle (HTML div for the circular background)
+         * - healthScoreValue (HTML span for the numeric score)
+         * - healthScoreStatus (HTML span for the status text like 'Excellent')
+         * - healthScoreCheck (HTML i tag for the Bootstrap icon)
+         *
+         * @param {number} score The health score value (e.g., 87, 75, 45).
+         */
+        function updateHealthScore(score) {
+            // Perform null checks to ensure DOM elements are available before attempting to manipulate them.
+            // If any element is null, log an error and exit the function.
+            if (!healthScoreValue || !healthScoreCircle || !healthScoreStatus || !healthScoreCheck) {
+                console.error('Health score elements not found. Cannot update health score display. Ensure they are correctly initialized in initializeDOMElements() in script.js and that healthScore.js is loaded BEFORE script.js in index.html.');
+                return; // Exit if elements are missing
+            }
+
+            // Set the numeric value of the health score in the designated span.
+            healthScoreValue.textContent = score;
+
+            // --- Reset all existing dynamic classes before applying new ones ---
+            // This prevents residual styles from previous score updates.
+            healthScoreCircle.classList.remove('health-score-green-gradient', 'health-score-yellow-gradient', 'health-score-red-gradient');
+            healthScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
+            // Also remove existing icon classes and text colors.
+            healthScoreCheck.classList.remove('bi-check-circle-fill', 'bi-exclamation-triangle-fill', 'bi-x-circle-fill', 'text-success', 'text-warning', 'text-danger');
+
+
+            // --- Apply styles and text based on the score range ---
+            if (score >= 70) {
+                // Score is Healthy (70-100)
+                healthScoreCircle.classList.add('health-score-green-gradient'); // Apply green gradient
+                healthScoreStatus.textContent = 'Healthy'; // Set status text
+                healthScoreStatus.classList.add('text-success'); // Apply Bootstrap success text color
+                healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success'); // Apply green checkmark icon
+                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+            } else if (score >= 40) {
+                // Score is At Risk (40-69)
+                healthScoreCircle.classList.add('health-score-yellow-gradient'); // Apply yellow gradient
+                healthScoreStatus.textContent = 'At Risk'; // Set status text
+                healthScoreStatus.classList.add('text-warning'); // Apply Bootstrap warning text color
+                healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning'); // Apply yellow warning icon
+                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+            } else {
+                // Score is Critical (< 40)
+                healthScoreCircle.classList.add('health-score-red-gradient'); // Apply red gradient
+                healthScoreStatus.textContent = 'Critical'; // Set status text
+                healthScoreStatus.classList.add('text-danger'); // Apply Bootstrap danger text color
+                healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Apply red 'x' icon
+                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+            }
+        }
+        let appData = [
     {
         id: 1,
         application: 'CRM Plus',
@@ -508,6 +565,21 @@ let nextRenewalsHoverPopup = null;
 let recentPurchasesHoverList = null;
 let nextRenewalsHoverList = null;
 
+let threatDetailsPopup = null;
+let threatListContainer = null;
+let threatPopupCloseBtn = null;
+
+let resolveNotesPopup = null;
+let resolveNotesTextarea = null;
+let resolveNotesSubmitBtn = null;
+let resolveNotesCancelBtn = null;
+let currentThreatToResolve = null; // To store {appId, threatName}
+
+let resolvedHistoryPopup = null;
+let resolvedHistoryListContainer = null;
+let resolvedHistoryPopupCloseBtn = null;
+let resolvedThreatsHistory = []; // To store resolved items
+
 let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
 let activeSection = 'all-apps'; // Define activeSection
@@ -592,7 +664,20 @@ function initializeDOMElements() {
     nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
     widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
     executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
-    refreshIcon = document.getElementById('refreshIcon'); // Initialize refresh icon element
+    refreshIcon = document.getElementById('refreshIcon'); // Added refresh icon element
+    threatDetailsPopup = document.getElementById('threatDetailsPopup');
+    threatListContainer = document.getElementById('threatListContainer');
+    threatPopupCloseBtn = document.getElementById('threatPopupCloseBtn');
+
+    resolveNotesPopup = document.getElementById('resolveNotesPopup');
+    resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
+    resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
+    resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
+
+    resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
+    resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
+    resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
+
 
     if (!applicationTableContainer) {
         console.error('Application table container not found!');
@@ -959,6 +1044,8 @@ function renderApplicationTable(data) {
             licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
         } else if (app.license.includes('Upgraded')) {
             licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+        } else {
+            licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
         }
         let usageDisplayText = app.usage;
         let usageBackgroundColorClass = '';
@@ -1166,14 +1253,44 @@ row.addEventListener('click', (event) => {
 
         // Condition for showing the Actions section: only if the app is an anomaly AND the active section is 'anomalies'
         if (isAnomalous && activeSection === 'anomalies') {
+            let threatCompetitors = [];
+            const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+            const crossSellList = ['Mailchimp', 'Dropbox'];
+            if (app.competitors && app.competitors.length > 0) {
+                app.competitors.forEach(comp => {
+                    // A competitor is a threat if it's on the threat list OR not on the cross-sell list.
+                    if (threatList.includes(comp) || !crossSellList.includes(comp)) {
+                        threatCompetitors.push(comp);
+                    }
+                });
+            }
+            const threatCompetitorsCount = threatCompetitors.length;
+
+            const threatCountBadge = threatCompetitorsCount > 0
+                ? `<span class="badge bg-danger rounded-pill">${threatCompetitorsCount}</span>`
+                : '';
+            
+            // Encode threats for data attribute
+            const threatsDataAttribute = `data-threats='${JSON.stringify(threatCompetitors)}'`;
+
+            const resolvedItemsForApp = resolvedThreatsHistory.filter(item => item.appName === app.application);
+            const showResolvedIcon = resolvedItemsForApp.length > 0 ? 'inline-block' : 'none';
+
+
             actionsSectionHtml = `
                 <div class="col-md-3 p-2 d-flex flex-column justify-content-between">
                     <div>
-                        <h6 class="mb-2 fw-bold">Resolve (Anomalies)</h6>
+                         <h6 class="mb-2 fw-bold d-flex justify-content-between align-items-center">
+                            <span>Resolve (Anomalies)</span>
+                            <i class="bi bi-check-circle-fill text-success resolved-history-trigger animated" style="cursor: pointer; display: ${showResolvedIcon};" data-app-name="${app.application}" data-tooltip="Resolved History"></i>
+                        </h6>
                         <div class="action-dropdown-wrapper">
                             <div class="action-dropdown-menu show">
-                                <button class="glass-button threat-link">
-                                    <i class="bi bi-exclamation-octagon"></i>Competitors (<strong>Threat</strong>)
+                                <button class="glass-button threat-link threat-details-trigger d-flex justify-content-between align-items-center" ${threatsDataAttribute} data-app-id="${app.id}" ${threatCompetitorsCount === 0 ? 'disabled' : ''}>
+                                    <span>
+                                        <i class="bi bi-exclamation-octagon"></i> Competitors (<strong>Threat</strong>)
+                                    </span>
+                                    ${threatCountBadge}
                                 </button>
                                 <button class="glass-button desk-tickets-link">
                                     <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;"> Tickets (<strong>Escalated</strong>)
@@ -1438,6 +1555,28 @@ ${actionsSectionHtml} <!-- Conditionally included -->
 </td>
 `;
         row.insertAdjacentElement('afterend', expandedRow);
+
+        // Add listener for the new threat popup trigger
+        const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
+        if (threatDetailsTrigger) {
+            threatDetailsTrigger.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent row from collapsing
+                const threats = JSON.parse(e.currentTarget.dataset.threats);
+                const appId = e.currentTarget.dataset.appId;
+                showThreatDetailsPopup(threats, appId);
+            });
+        }
+        
+        // Add listener for the new resolved history trigger
+        const resolvedHistoryTrigger = expandedRow.querySelector('.resolved-history-trigger');
+        if (resolvedHistoryTrigger) {
+            resolvedHistoryTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const appName = e.currentTarget.dataset.appName;
+                showResolvedHistoryPopup(appName, e.currentTarget);
+            });
+        }
+
         expandedRowId = appId;
         if (arrowSpan) arrowSpan.textContent = '▲';
         // Apply animation to buttons in the expanded row's dropdown
@@ -1830,6 +1969,120 @@ switchTab('ticket-details');
 highlightActiveCard(null);
 }
 
+function showResolveNotesPopup(appId, threatName) {
+    if (!resolveNotesPopup) return;
+    // Store the current threat context to be used on submit
+    currentThreatToResolve = { appId, threatName };
+    // Clear the textarea from previous entries
+    if(resolveNotesTextarea) resolveNotesTextarea.value = '';
+    // Show the notes popup
+    resolveNotesPopup.style.display = 'flex';
+}
+
+function closeResolveNotesPopup() {
+    if (resolveNotesPopup) {
+        resolveNotesPopup.style.display = 'none';
+    }
+    // Clear the context so we don't accidentally resolve the wrong item
+    currentThreatToResolve = null;
+}
+
+function showThreatDetailsPopup(threats, appId) {
+    if (!threatDetailsPopup || !threatListContainer) return;
+
+    // Clear previous threats
+    threatListContainer.innerHTML = '';
+
+    // Populate with new threats
+    if (threats && threats.length > 0) {
+        threats.forEach(threatName => {
+            const threatItem = document.createElement('div');
+            threatItem.className = 'threat-item';
+            threatItem.setAttribute('data-threat-name', threatName);
+            threatItem.innerHTML = `
+                <span class="threat-item-name">${threatName}</span>
+                <button class="threat-resolve-btn">Resolve</button>
+            `;
+            threatListContainer.appendChild(threatItem);
+
+            // Add event listener for the resolve button
+            threatItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
+                showResolveNotesPopup(appId, threatName);
+            });
+        });
+    }
+
+    // Show the popup
+    threatDetailsPopup.style.display = 'flex';
+}
+
+function closeThreatDetailsPopup() {
+    if (threatDetailsPopup) {
+        threatDetailsPopup.style.display = 'none';
+    }
+}
+
+function showResolvedHistoryPopup(appName, triggerElement) {
+    if (!resolvedHistoryPopup || !resolvedHistoryListContainer || !triggerElement) return;
+
+    // Filter history for the specific app
+    const relevantHistory = resolvedThreatsHistory.filter(item => item.appName === appName);
+
+    resolvedHistoryListContainer.innerHTML = ''; // Clear
+
+    if (relevantHistory.length > 0) {
+            relevantHistory.forEach(item => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'resolved-history-item';
+            
+            const timestamp = item.resolvedAt.toLocaleString('en-US', {
+                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            historyItem.innerHTML = `
+                <div class="resolved-item-header">
+                    <span class="resolved-item-name">${item.threatName}</span>
+                    <span class="resolved-item-timestamp">${timestamp}</span>
+                </div>
+                <div class="resolved-item-notes">${item.notes || 'No notes provided.'}</div>
+            `;
+            resolvedHistoryListContainer.appendChild(historyItem);
+        });
+    } else {
+            resolvedHistoryListContainer.innerHTML = '<p class="text-muted text-center">No resolved items for this application yet.</p>';
+    }
+
+    const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
+    resolvedHistoryPopup.style.display = 'block'; // Show overlay to calculate dimensions
+
+    const rect = triggerElement.getBoundingClientRect();
+    const popupRect = popupContent.getBoundingClientRect();
+    
+    let top = rect.top - popupRect.height - 10; // 10px space above the icon
+    let left = rect.left + (rect.width / 2) - popupRect.width + 20; // Align right side near the icon
+
+     // Boundary checks
+    if (top < 10) { top = rect.bottom + 10; }
+    if (left < 10) { left = 10; }
+    if (left + popupRect.width > window.innerWidth) {
+        left = window.innerWidth - popupRect.width - 10;
+    }
+
+    popupContent.style.top = `${top}px`;
+    popupContent.style.left = `${left}px`;
+}
+
+function closeResolvedHistoryPopup() {
+    if (resolvedHistoryPopup) {
+        resolvedHistoryPopup.style.display = 'none';
+        const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
+        if (popupContent) {
+            popupContent.style.top = '';
+            popupContent.style.left = '';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 console.log('DOM loaded, initializing...');
 if (!initializeDOMElements()) {
@@ -1945,6 +2198,126 @@ ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fadi
 ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
 ticketDetailsTableContainer.style.display = 'none';
 }
+
+if (threatPopupCloseBtn) {
+    threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
+}
+if (threatDetailsPopup) {
+    threatDetailsPopup.addEventListener('click', (e) => {
+        if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
+            closeThreatDetailsPopup();
+        }
+    });
+}
+
+if (resolveNotesCancelBtn) {
+    resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
+}
+
+if (resolveNotesSubmitBtn) {
+    resolveNotesSubmitBtn.addEventListener('click', () => {
+        if (!currentThreatToResolve) return;
+
+        const { appId, threatName } = currentThreatToResolve;
+        const notes = resolveNotesTextarea.value; 
+        console.log(`Resolving threat '${threatName}' for app ID ${appId} with notes: ${notes}`);
+
+        // Add to history
+        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
+        resolvedThreatsHistory.push({
+            appName: appForHistory?.application,
+            threatName: threatName,
+            notes: notes,
+            resolvedAt: new Date()
+        });
+
+        // Find the app in the main data array and update its competitors
+        const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+        if (appIndex !== -1) {
+            appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== threatName);
+            
+            // Re-filter all data arrays based on the change
+            filterDataArrays();
+            
+            // Update all counts displayed on the page (KPI cards, filter buttons)
+            updateCounts();
+
+            // --- Targeted DOM Update for the expanded row ---
+            const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
+            if (expandedRow) {
+                // Find the app again to get the *new* threat list
+                const updatedApp = appData[appIndex];
+                
+                let updatedThreatCompetitors = [];
+                const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+                const crossSellList = ['Mailchimp', 'Dropbox'];
+                if (updatedApp.competitors && updatedApp.competitors.length > 0) {
+                    updatedApp.competitors.forEach(comp => {
+                        if (threatList.includes(comp) || !crossSellList.includes(comp)) {
+                            updatedThreatCompetitors.push(comp);
+                        }
+                    });
+                }
+                
+                const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
+                const threatCountBadge = expandedRow.querySelector('.threat-details-trigger .badge');
+
+                if (threatDetailsTrigger) {
+                    // Update data attribute
+                    threatDetailsTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
+                    
+                    // Update badge
+                    if (updatedThreatCompetitors.length > 0) {
+                        if (threatCountBadge) {
+                            threatCountBadge.textContent = updatedThreatCompetitors.length;
+                        }
+                        threatDetailsTrigger.disabled = false;
+                    } else {
+                        if (threatCountBadge) {
+                            threatCountBadge.remove();
+                        }
+                        threatDetailsTrigger.disabled = true;
+                    }
+                }
+                 // Show resolved checkmark icon
+                const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
+                if (resolvedIcon) {
+                    resolvedIcon.style.display = 'inline-block';
+                }
+            }
+        }
+
+        // Close the notes popup
+        closeResolveNotesPopup();
+
+        // --- Update Threat Details Popup ---
+        // Remove the resolved item from the popup list
+        if (threatListContainer) {
+            // Use querySelector with the attribute we added to find the specific item
+            const threatItemToRemove = threatListContainer.querySelector(`.threat-item[data-threat-name="${threatName}"]`);
+            if (threatItemToRemove) {
+                threatItemToRemove.remove();
+            }
+
+            // If the list is now empty, close the threats popup
+            if (threatListContainer.children.length === 0) {
+                closeThreatDetailsPopup();
+            }
+        }
+    });
+}
+
+if (resolvedHistoryPopupCloseBtn) {
+    resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
+}
+if (resolvedHistoryPopup) {
+    resolvedHistoryPopup.addEventListener('click', (e) => {
+        if (e.target === resolvedHistoryPopup) { // Close on overlay click
+            closeResolvedHistoryPopup();
+        }
+    });
+}
+
 
 document.addEventListener('click', (event) => {
 if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
@@ -2136,6 +2509,4 @@ setTimeout(() => {
 
             // Show the container
             container.style.display = 'block';
-        }, 3000); 
-
-        
+        }, 3000); // Your JavaScript goes here
