@@ -1,521 +1,521 @@
-        /**
-         * Updates the display of the health score widget based on the given score.
-         * This function dynamically changes the circle's background color,
-         * the textual status (Excellent, Good, Poor), and the accompanying icon.
-         *
-         * It relies on the following global DOM element variables to be defined and assigned
-         * in another script (e.g., script.js) before this function is called:
-         * - healthScoreCircle (HTML div for the circular background)
-         * - healthScoreValue (HTML span for the numeric score)
-         * - healthScoreStatus (HTML span for the status text like 'Excellent')
-         * - healthScoreCheck (HTML i tag for the Bootstrap icon)
-         *
-         * @param {number} score The health score value (e.g., 87, 75, 45).
-         */
-        function updateHealthScore(score) {
-            // Perform null checks to ensure DOM elements are available before attempting to manipulate them.
-            // If any element is null, log an error and exit the function.
-            if (!healthScoreValue || !healthScoreCircle || !healthScoreStatus || !healthScoreCheck) {
-                console.error('Health score elements not found. Cannot update health score display. Ensure they are correctly initialized in initializeDOMElements() in script.js and that healthScore.js is loaded BEFORE script.js in index.html.');
-                return; // Exit if elements are missing
-            }
-
-            // Set the numeric value of the health score in the designated span.
-            healthScoreValue.textContent = score;
-
-            // --- Reset all existing dynamic classes before applying new ones ---
-            // This prevents residual styles from previous score updates.
-            healthScoreCircle.classList.remove('health-score-green-gradient', 'health-score-yellow-gradient', 'health-score-red-gradient');
-            healthScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
-            // Also remove existing icon classes and text colors.
-            healthScoreCheck.classList.remove('bi-check-circle-fill', 'bi-exclamation-triangle-fill', 'bi-x-circle-fill', 'text-success', 'text-warning', 'text-danger');
-
-
-            // --- Apply styles and text based on the score range ---
-            if (score >= 70) {
-                // Score is Healthy (70-100)
-                healthScoreCircle.classList.add('health-score-green-gradient'); // Apply green gradient
-                healthScoreStatus.textContent = 'Healthy'; // Set status text
-                healthScoreStatus.classList.add('text-success'); // Apply Bootstrap success text color
-                healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success'); // Apply green checkmark icon
-                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
-            } else if (score >= 40) {
-                // Score is At Risk (40-69)
-                healthScoreCircle.classList.add('health-score-yellow-gradient'); // Apply yellow gradient
-                healthScoreStatus.textContent = 'At Risk'; // Set status text
-                healthScoreStatus.classList.add('text-warning'); // Apply Bootstrap warning text color
-                healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning'); // Apply yellow warning icon
-                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
-            } else {
-                // Score is Critical (< 40)
-                healthScoreCircle.classList.add('health-score-red-gradient'); // Apply red gradient
-                healthScoreStatus.textContent = 'Critical'; // Set status text
-                healthScoreStatus.classList.add('text-danger'); // Apply Bootstrap danger text color
-                healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Apply red 'x' icon
-                healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
-            }
-        }
-        let appData = [
-    {
-        id: 1,
-        application: 'CRM Plus',
-        category: 'Sales',
-        usage: 'Medium',
-        seats: 28,
-        license: `Downgraded in M6`,
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-sales-ops',
-        createdTime: '2023-01-15T10:00:00Z',
-        lastInvoiceDate: '2025-07-01', // Dummy data for recent purchase
-        nextRenewalDate: '2025-10-15', // Dummy data for next renewal
-        monthlyData: [
-            { month: 'M1', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M2', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M3', seats: 29, change: '-1', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-            { month: 'M4', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-            { month: 'M5', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-            { month: 'M6', seats: 28, change: '-1', revenue: 1400, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-        ],
-        inactiveMonths: 3, // Added inactive months
-        cancellationReason: 'Found a cheaper alternative with similar features.' // Added cancellation reason
-    },
-    {
-        id: 2,
-        application: 'Voice',
-        category: 'Sales',
-        usage: 'Low',
-        seats: 21,
-        license: 'Downgraded in M6',
-        paymentFailureCount: 3,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-sales-ops',
-        createdTime: '2023-02-01T11:00:00Z',
-        lastInvoiceDate: '2025-06-20',
-        nextRenewalDate: '2025-11-01',
-        monthlyData: [
-            { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M2', seats: 24, change: '-1', revenue: 1200, revenueChange: '-50', competitorIntegrations: 'High' },
-            { month: 'M3', seats: 23, change: '-1', revenue: 1150, revenueChange: '-50', competitorIntegrations: 'High' },
-            { month: 'M4', seats: 22, change: '-1', revenue: 1100, revenueChange: '-50', competitorIntegrations: 'High' },
-            { month: 'M5', seats: 22, change: '0', revenue: 1100, revenueChange: '0', competitorIntegrations: 'High' },
-            { month: 'M6', seats: 21, change: '-1', revenue: 1050, revenueChange: '-50', competitorIntegrations: 'High' },
-        ],
-        inactiveMonths: 6, // Added inactive months
-        cancellationReason: 'Product did not meet performance expectations.' // Added cancellation reason
-    },
-    {
-        id: 3,
-        application: 'One',
-        category: 'Sales',
-        usage: 'High',
-        seats: 33,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-sales-ops',
-        createdTime: '2023-03-10T12:00:00Z',
-        lastInvoiceDate: '2025-05-10',
-        nextRenewalDate: '2026-03-10',
-        monthlyData: [
-            { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
-            { month: 'M2', seats: 31, change: '+1', revenue: 3100, revenueChange: '+100', competitorIntegrations: 'Low' },
-            { month: 'M3', seats: 31, change: '0', revenue: 3100, revenueChange: '0', competitorIntegrations: 'Low' },
-            { month: 'M4', seats: 32, change: '+1', revenue: 3200, revenueChange: '+100', competitorIntegrations: 'Medium' },
-            { month: 'M5', seats: 32, change: '0', revenue: 3200, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M6', seats: 33, change: '+1', revenue: 3300, revenueChange: '+100', competitorIntegrations: 'Medium' },
-        ]
-    },
-    {
-        id: 4,
-        application: 'Desk',
-        category: 'Marketing',
-        usage: 'Medium', // This will make it inactive
-        seats: 41,
-        license: 'No changes',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Mailchimp'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2023-04-05T13:00:00Z',
-        lastInvoiceDate: '2025-04-01',
-        nextRenewalDate: '2025-09-05',
-        monthlyData: [
-            { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            { month: 'M2', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            { month: 'M3', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            { month: 'M4', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            { month: 'M5', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'High' },
-            { month: 'M6', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-        ],
-        inactiveMonths: 2, // Added inactive months
-        cancellationReason: 'Service no longer required due to internal process changes.' // Added cancellation reason
-    },
-    {
-        id: 5,
-        application: 'Inventory',
-        category: 'Marketing',
-        usage: 'High',
-        seats: 46,
-        license: 'Downgraded in M6', // This will make it inactive
-        paymentFailureCount: 6,
-        pauseScheduledCount: 0,
-        competitors: ['MailChimp'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2023-05-20T14:00:00Z',
-        lastInvoiceDate: '2025-03-15',
-        nextRenewalDate: '2025-08-20',
-        monthlyData: [
-            { month: 'M1', seats: 50, change: '0', revenue: 2500, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
-            { month: 'M2', seats: 49, change: '-1', revenue: 2450, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
-            { month: 'M3', seats: 48, change: '-1', revenue: 2400, revenueChange: '-50', competitorIntegrations: 'High' },
-            { month: 'M4', seats: 47, change: '-1', revenue: 2350, revenueChange: '-50', competitorIntegrations: 'High' },
-            { month: 'M5', seats: 47, change: '0', revenue: 2350, revenueChange: '0', competitorIntegrations: 'High' },
-            { month: 'M6', seats: 46, change: '-1', revenue: 2300, revenueChange: '-50', competitorIntegrations: 'High' },
-        ],
-        inactiveMonths: 4, // Added inactive months
-        cancellationReason: 'Integration issues with existing systems.' // Added cancellation reason
-    },
-    {
-        id: 6,
-        application: 'FSM',
-        category: 'Marketing',
-        usage: 'High',
-        seats: 29,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Mailchimp', 'Active campaign'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2023-06-10T15:00:00Z',
-        lastInvoiceDate: '2025-02-28',
-        nextRenewalDate: '2025-09-10',
-        monthlyData: [
-            { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M2', seats: 26, change: '+1', revenue: 1300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M3', seats: 27, change: '+1', revenue: 1350, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M4', seats: 28, change: '+1', revenue: 1400, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M5', seats: 28, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M6', seats: 29, change: '+1', revenue: 1450, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
-    },
-    {
-        id: 7,
-        application: 'People Plus',
-        category: 'Support',
-        usage: 'High',
-        seats: 46,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2023-07-01T16:00:00Z',
-        lastInvoiceDate: '2025-01-20',
-        nextRenewalDate: '2025-12-01',
-        monthlyData: [
-            { month: 'M1', seats: 40, change: '0', revenue: 2000, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M2', seats: 41, change: '+1', revenue: 2050, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M3', seats: 42, change: '+1', revenue: 2100, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M4', seats: 44, change: '+2', revenue: 2200, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M5', seats: 45, change: '+1', revenue: 2250, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M6', seats: 46, change: '+1', revenue: 2300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
-    },
-    {
-        id: 13,
-        application: 'CRM',
-        category: 'Operations',
-        usage: 'High',
-        seats: 47,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-01-10T12:00:00Z',
-        lastInvoiceDate: '2025-07-05',
-        nextRenewalDate: '2025-10-10',
-        monthlyData: [
-            { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M2', seats: 46, change: '+1', revenue: 4600, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M3', seats: 46, change: '0', revenue: 4600, revenueChange: '0', competitorIntegrator: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M4', seats: 47, change: '+1', revenue: 4700, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M5', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M6', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
-    },
-    {
-        id: 14,
-        application: 'BooksZohoGST',
-        category: 'Operations',
-        usage: 'High',
-        seats: 29,
-        license: 'No changes',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-02-14T13:00:00Z',
-        lastInvoiceDate: '2025-06-10',
-        nextRenewalDate: '2026-02-14',
-        monthlyData: [
-            { month: 'M1', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M2', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M3', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M4', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M5', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M6', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
-    },
-    {
-        id: 16,
-        application: 'WorkDrive',
-        category: 'Productivity',
-        usage: 'High',
-        seats: 120,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Dropbox', 'Google Drive'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-04-20T15:00:00Z',
-        lastInvoiceDate: '2025-07-22',
-        nextRenewalDate: '2025-09-20',
-        monthlyData: [
-            { month: 'M1', seats: 100, change: '0', revenue: 500, revenueChange: '0', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
-            { month: 'M2', seats: 105, change: '+5', revenue: 525, revenueChange: '+25', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
-            { month: 'M3', seats: 110, change: '+5', revenue: 550, revenueChange: '+25', competitorIntegrations: 'Google Drive', zohoConversionOpportunities: 'High' },
-            { month: 'M4', seats: 115, change: '+5', revenue: 575, revenueChange: '+25', competitorIntegrations: 'Google Drive', zohoConversionOpportunities: 'High' },
-            { month: 'M5', seats: 120, change: '+5', revenue: 600, revenueChange: '+25', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-            { month: 'M6', seats: 120, change: '0', revenue: 600, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
-        ]
-    },
-    {
-        id: 17,
-        application: 'Sites',
-        category: 'Communication',
-        usage: 'Medium', // This will make it inactive
-        seats: 75,
-        license: 'No changes',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Zoom', 'Microsoft Teams'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-05-01T16:00:00Z',
-        lastInvoiceDate: '2025-01-05',
-        nextRenewalDate: '2026-05-01',
-        monthlyData: [
-            { month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M3', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M4', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-            { month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
-        ],
-        inactiveMonths: 8, // Added inactive months
-        cancellationReason: 'Switched to a different platform for website management.' // Added cancellation reason
-    },
-    {
-        id: 18,
-        application: 'Sign',
-        category: 'Productivity',
-        usage: 'High',
-        seats: 50,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: [],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-06-10T17:00:00Z',
-        lastInvoiceDate: '2025-07-12',
-        nextRenewalDate: '2025-08-10',
-        monthlyData: [
-            { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M2', seats: 46, change: '+1', revenue: 460, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M3', seats: 47, change: '+1', revenue: 470, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M4', seats: 48, change: '+1', revenue: 480, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M5', seats: 49, change: '+1', revenue: 490, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M6', seats: 50, change: '+1', revenue: 500, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
-    },
-    {
-        id: 19,
-        application: 'Meeting',
-        category: 'Communication',
-        usage: 'Medium', // This will make it inactive
-        seats: 80,
-        license: 'No changes',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Google Meet'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-07-01T18:00:00Z',
-        lastInvoiceDate: '2025-07-01',
-        nextRenewalDate: '2025-09-01',
-        monthlyData: [
-            { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            { month: 'M2', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            { month: 'M3', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            { month: 'M4', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            { month: 'M5', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-            { month: 'M6', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
-        ],
-        inactiveMonths: 1, // Added inactive months
-        cancellationReason: 'Prefer in-person meetings over virtual tools.' // Added cancellation reason
-    },
-    {
-        id: 20,
-        application: 'Mail Suite',
-        category: 'Communication',
-        usage: 'High',
-        seats: 150,
-        license: 'Upgraded in M6',
-        paymentFailureCount: 0,
-        pauseScheduledCount: 0,
-        competitors: ['Outlook', 'Gmail'],
-        details: [],
-        relevantDepartmentId: 'dept-it-support',
-        createdTime: '2024-07-15T19:00:00Z',
-        lastInvoiceDate: '2025-06-25',
-        nextRenewalDate: '2025-11-15',
-        monthlyData: [
-            { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
-            { month: 'M2', seats: 142, change: '+2', revenue: 1420, revenueChange: '+20', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
-            { month: 'M3', seats: 144, change: '+2', revenue: 1440, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
-            { month: 'M4', seats: 146, change: '+2', revenue: 1460, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
-            { month: 'M5', seats: 148, change: '+2', revenue: 1480, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-            { month: 'M6', seats: 150, change: '+2', revenue: 1500, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
-        ]
+/**
+ * Updates the display of the health score widget based on the given score.
+ * This function dynamically changes the circle's background color,
+ * the textual status (Excellent, Good, Poor), and the accompanying icon.
+ *
+ * It relies on the following global DOM element variables to be defined and assigned
+ * in another script (e.g., script.js) before this function is called:
+ * - healthScoreCircle (HTML div for the circular background)
+ * - healthScoreValue (HTML span for the numeric score)
+ * - healthScoreStatus (HTML span for the status text like 'Excellent')
+ * - healthScoreCheck (HTML i tag for the Bootstrap icon)
+ *
+ * @param {number} score The health score value (e.g., 87, 75, 45).
+ */
+function updateHealthScore(score) {
+    // Perform null checks to ensure DOM elements are available before attempting to manipulate them.
+    // If any element is null, log an error and exit the function.
+    if (!healthScoreValue || !healthScoreCircle || !healthScoreStatus || !healthScoreCheck) {
+        console.error('Health score elements not found. Cannot update health score display. Ensure they are correctly initialized in initializeDOMElements() in script.js and that healthScore.js is loaded BEFORE script.js in index.html.');
+        return; // Exit if elements are missing
     }
+
+    // Set the numeric value of the health score in the designated span.
+    healthScoreValue.textContent = score;
+
+    // --- Reset all existing dynamic classes before applying new ones ---
+    // This prevents residual styles from previous score updates.
+    healthScoreCircle.classList.remove('health-score-green-gradient', 'health-score-yellow-gradient', 'health-score-red-gradient');
+    healthScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
+    // Also remove existing icon classes and text colors.
+    healthScoreCheck.classList.remove('bi-check-circle-fill', 'bi-exclamation-triangle-fill', 'bi-x-circle-fill', 'text-success', 'text-warning', 'text-danger');
+
+
+    // --- Apply styles and text based on the score range ---
+    if (score >= 70) {
+        // Score is Healthy (70-100)
+        healthScoreCircle.classList.add('health-score-green-gradient'); // Apply green gradient
+        healthScoreStatus.textContent = 'Healthy'; // Set status text
+        healthScoreStatus.classList.add('text-success'); // Apply Bootstrap success text color
+        healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success'); // Apply green checkmark icon
+        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+    } else if (score >= 40) {
+        // Score is At Risk (40-69)
+        healthScoreCircle.classList.add('health-score-yellow-gradient'); // Apply yellow gradient
+        healthScoreStatus.textContent = 'At Risk'; // Set status text
+        healthScoreStatus.classList.add('text-warning'); // Apply Bootstrap warning text color
+        healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning'); // Apply yellow warning icon
+        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+    } else {
+        // Score is Critical (< 40)
+        healthScoreCircle.classList.add('health-score-red-gradient'); // Apply red gradient
+        healthScoreStatus.textContent = 'Critical'; // Set status text
+        healthScoreStatus.classList.add('text-danger'); // Apply Bootstrap danger text color
+        healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Apply red 'x' icon
+        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+    }
+}
+let appData = [
+{
+id: 1,
+application: 'CRM Plus',
+category: 'Sales',
+usage: 'Medium',
+seats: 28,
+license: `Downgraded in M6`,
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-01-15T10:00:00Z',
+lastInvoiceDate: '2025-07-01', // Dummy data for recent purchase
+nextRenewalDate: '2025-10-15', // Dummy data for next renewal
+monthlyData: [
+    { month: 'M1', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M2', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M3', seats: 29, change: '-1', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+    { month: 'M4', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+    { month: 'M5', seats: 29, change: '0', revenue: 1450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+    { month: 'M6', seats: 28, change: '-1', revenue: 1400, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+],
+inactiveMonths: 3, // Added inactive months
+cancellationReason: 'Found a cheaper alternative with similar features.' // Added cancellation reason
+},
+{
+id: 2,
+application: 'Voice',
+category: 'Sales',
+usage: 'Low',
+seats: 21,
+license: 'Downgraded in M6',
+paymentFailureCount: 3,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-02-01T11:00:00Z',
+lastInvoiceDate: '2025-06-20',
+nextRenewalDate: '2025-11-01',
+monthlyData: [
+    { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M2', seats: 24, change: '-1', revenue: 1200, revenueChange: '-50', competitorIntegrations: 'High' },
+    { month: 'M3', seats: 23, change: '-1', revenue: 1150, revenueChange: '-50', competitorIntegrations: 'High' },
+    { month: 'M4', seats: 22, change: '-1', revenue: 1100, revenueChange: '-50', competitorIntegrations: 'High' },
+    { month: 'M5', seats: 22, change: '0', revenue: 1100, revenueChange: '0', competitorIntegrations: 'High' },
+    { month: 'M6', seats: 21, change: '-1', revenue: 1050, revenueChange: '-50', competitorIntegrations: 'High' },
+],
+inactiveMonths: 6, // Added inactive months
+cancellationReason: 'Product did not meet performance expectations.' // Added cancellation reason
+},
+{
+id: 3,
+application: 'One',
+category: 'Sales',
+usage: 'High',
+seats: 33,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-sales-ops',
+createdTime: '2023-03-10T12:00:00Z',
+lastInvoiceDate: '2025-05-10',
+nextRenewalDate: '2026-03-10',
+monthlyData: [
+    { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
+    { month: 'M2', seats: 31, change: '+1', revenue: 3100, revenueChange: '+100', competitorIntegrations: 'Low' },
+    { month: 'M3', seats: 31, change: '0', revenue: 3100, revenueChange: '0', competitorIntegrations: 'Low' },
+    { month: 'M4', seats: 32, change: '+1', revenue: 3200, revenueChange: '+100', competitorIntegrations: 'Medium' },
+    { month: 'M5', seats: 32, change: '0', revenue: 3200, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M6', seats: 33, change: '+1', revenue: 3300, revenueChange: '+100', competitorIntegrations: 'Medium' },
+]
+},
+{
+id: 4,
+application: 'Desk',
+category: 'Marketing',
+usage: 'Medium', // This will make it inactive
+seats: 41,
+license: 'No changes',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Mailchimp'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-04-05T13:00:00Z',
+lastInvoiceDate: '2025-04-01',
+nextRenewalDate: '2025-09-05',
+monthlyData: [
+    { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+    { month: 'M2', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+    { month: 'M3', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+    { month: 'M4', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+    { month: 'M5', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'High' },
+    { month: 'M6', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+],
+inactiveMonths: 2, // Added inactive months
+cancellationReason: 'Service no longer required due to internal process changes.' // Added cancellation reason
+},
+{
+id: 5,
+application: 'Inventory',
+category: 'Marketing',
+usage: 'High',
+seats: 46,
+license: 'Downgraded in M6', // This will make it inactive
+paymentFailureCount: 6,
+pauseScheduledCount: 0,
+competitors: ['MailChimp'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-05-20T14:00:00Z',
+lastInvoiceDate: '2025-03-15',
+nextRenewalDate: '2025-08-20',
+monthlyData: [
+    { month: 'M1', seats: 50, change: '0', revenue: 2500, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
+    { month: 'M2', seats: 49, change: '-1', revenue: 2450, revenueChange: '-50', competitorIntegrations: 'None', zohoConversionOpportunities: 'High' },
+    { month: 'M3', seats: 48, change: '-1', revenue: 2400, revenueChange: '-50', competitorIntegrations: 'High' },
+    { month: 'M4', seats: 47, change: '-1', revenue: 2350, revenueChange: '-50', competitorIntegrations: 'High' },
+    { month: 'M5', seats: 47, change: '0', revenue: 2350, revenueChange: '0', competitorIntegrations: 'High' },
+    { month: 'M6', seats: 46, change: '-1', revenue: 2300, revenueChange: '-50', competitorIntegrations: 'High' },
+],
+inactiveMonths: 4, // Added inactive months
+cancellationReason: 'Integration issues with existing systems.' // Added cancellation reason
+},
+{
+id: 6,
+application: 'FSM',
+category: 'Marketing',
+usage: 'High',
+seats: 29,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Mailchimp', 'Active campaign'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-06-10T15:00:00Z',
+lastInvoiceDate: '2025-02-28',
+nextRenewalDate: '2025-09-10',
+monthlyData: [
+    { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M2', seats: 26, change: '+1', revenue: 1300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M3', seats: 27, change: '+1', revenue: 1350, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M4', seats: 28, change: '+1', revenue: 1400, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M5', seats: 28, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M6', seats: 29, change: '+1', revenue: 1450, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+},
+{
+id: 7,
+application: 'People Plus',
+category: 'Support',
+usage: 'High',
+seats: 46,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2023-07-01T16:00:00Z',
+lastInvoiceDate: '2025-01-20',
+nextRenewalDate: '2025-12-01',
+monthlyData: [
+    { month: 'M1', seats: 40, change: '0', revenue: 2000, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M2', seats: 41, change: '+1', revenue: 2050, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M3', seats: 42, change: '+1', revenue: 2100, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M4', seats: 44, change: '+2', revenue: 2200, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M5', seats: 45, change: '+1', revenue: 2250, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M6', seats: 46, change: '+1', revenue: 2300, revenueChange: '+50', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+},
+{
+id: 13,
+application: 'CRM',
+category: 'Operations',
+usage: 'High',
+seats: 47,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-01-10T12:00:00Z',
+lastInvoiceDate: '2025-07-05',
+nextRenewalDate: '2025-10-10',
+monthlyData: [
+    { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M2', seats: 46, change: '+1', revenue: 4600, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M3', seats: 46, change: '0', revenue: 4600, revenueChange: '0', competitorIntegrator: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M4', seats: 47, change: '+1', revenue: 4700, revenueChange: '+100', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M5', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M6', seats: 47, change: '0', revenue: 4700, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+},
+{
+id: 14,
+application: 'BooksZohoGST',
+category: 'Operations',
+usage: 'High',
+seats: 29,
+license: 'No changes',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-02-14T13:00:00Z',
+lastInvoiceDate: '2025-06-10',
+nextRenewalDate: '2026-02-14',
+monthlyData: [
+    { month: 'M1', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M2', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M3', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M4', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M5', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M6', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+},
+{
+id: 16,
+application: 'WorkDrive',
+category: 'Productivity',
+usage: 'High',
+seats: 120,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Dropbox', 'Google Drive'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-04-20T15:00:00Z',
+lastInvoiceDate: '2025-07-22',
+nextRenewalDate: '2025-09-20',
+monthlyData: [
+    { month: 'M1', seats: 100, change: '0', revenue: 500, revenueChange: '0', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
+    { month: 'M2', seats: 105, change: '+5', revenue: 525, revenueChange: '+25', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
+    { month: 'M3', seats: 110, change: '+5', revenue: 550, revenueChange: '+25', competitorIntegrations: 'Google Drive', zohoConversionOpportunities: 'High' },
+    { month: 'M4', seats: 115, change: '+5', revenue: 575, revenueChange: '+25', competitorIntegrations: 'Google Drive', zohoConversionOpportunities: 'High' },
+    { month: 'M5', seats: 120, change: '+5', revenue: 600, revenueChange: '+25', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+    { month: 'M6', seats: 120, change: '0', revenue: 600, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
+]
+},
+{
+id: 17,
+application: 'Sites',
+category: 'Communication',
+usage: 'Medium', // This will make it inactive
+seats: 75,
+license: 'No changes',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Zoom', 'Microsoft Teams'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-05-01T16:00:00Z',
+lastInvoiceDate: '2025-01-05',
+nextRenewalDate: '2026-05-01',
+monthlyData: [
+    { month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M2', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M3', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M4', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M5', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+    { month: 'M6', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
+],
+inactiveMonths: 8, // Added inactive months
+cancellationReason: 'Switched to a different platform for website management.' // Added cancellation reason
+},
+{
+id: 18,
+application: 'Sign',
+category: 'Productivity',
+usage: 'High',
+seats: 50,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: [],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-06-10T17:00:00Z',
+lastInvoiceDate: '2025-07-12',
+nextRenewalDate: '2025-08-10',
+monthlyData: [
+    { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M2', seats: 46, change: '+1', revenue: 460, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M3', seats: 47, change: '+1', revenue: 470, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M4', seats: 48, change: '+1', revenue: 480, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M5', seats: 49, change: '+1', revenue: 490, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M6', seats: 50, change: '+1', revenue: 500, revenueChange: '+10', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+},
+{
+id: 19,
+application: 'Meeting',
+category: 'Communication',
+usage: 'Medium', // This will make it inactive
+seats: 80,
+license: 'No changes',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Google Meet'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-07-01T18:00:00Z',
+lastInvoiceDate: '2025-07-01',
+nextRenewalDate: '2025-09-01',
+monthlyData: [
+    { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    { month: 'M2', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    { month: 'M3', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    { month: 'M4', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    { month: 'M5', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+    { month: 'M6', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
+],
+inactiveMonths: 1, // Added inactive months
+cancellationReason: 'Prefer in-person meetings over virtual tools.' // Added cancellation reason
+},
+{
+id: 20,
+application: 'Mail Suite',
+category: 'Communication',
+usage: 'High',
+seats: 150,
+license: 'Upgraded in M6',
+paymentFailureCount: 0,
+pauseScheduledCount: 0,
+competitors: ['Outlook', 'Gmail'],
+details: [],
+relevantDepartmentId: 'dept-it-support',
+createdTime: '2024-07-15T19:00:00Z',
+lastInvoiceDate: '2025-06-25',
+nextRenewalDate: '2025-11-15',
+monthlyData: [
+    { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
+    { month: 'M2', seats: 142, change: '+2', revenue: 1420, revenueChange: '+20', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
+    { month: 'M3', seats: 144, change: '+2', revenue: 1440, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
+    { month: 'M4', seats: 146, change: '+2', revenue: 1460, revenueChange: '+20', competitorIntegrations: 'Gmail', zohoConversionOpportunities: 'Medium' },
+    { month: 'M5', seats: 148, change: '+2', revenue: 1480, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+    { month: 'M6', seats: 150, change: '+2', revenue: 1500, revenueChange: '+20', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
+]
+}
 ];
 // Remove "Workplace", "Cliq", "Expense", "Payroll", "Invoice", and "Creator" applications to get 14 apps
 appData = appData.filter(app => !['Workplace', 'Cliq', 'Expense', 'Payroll', 'Invoice', 'Creator'].includes(app.application));
 function assignInitialAppStatus(data) {
-    data.forEach(app => {
-        if (app.paymentFailureCount > 0 || app.pauseScheduledCount > 0) {
-            app.status = 'Renewal risk detected';
-        } else if (app.license.includes('Downgraded') || app.usage === 'Low' || app.usage === 'Medium') {
-            // If already marked as inactive, keep it, otherwise set it
-            if (!app.status || app.status !== 'Inactive') {
-                app.status = 'Inactive';
-            }
-        } else {
-            app.status = 'Active';
-        }
-    });
+data.forEach(app => {
+if (app.paymentFailureCount > 0 || app.pauseScheduledCount > 0) {
+    app.status = 'Renewal risk detected';
+} else if (app.license.includes('Downgraded') || app.usage === 'Low' || app.usage === 'Medium') {
+    // If already marked as inactive, keep it, otherwise set it
+    if (!app.status || app.status !== 'Inactive') {
+        app.status = 'Inactive';
+    }
+} else {
+    app.status = 'Active';
+}
+});
 }
 assignInitialAppStatus(appData);
 function assignTagsFromSummary(summary) {
-    const tags = [];
-    const lowerSummary = summary.toLowerCase();
-    if (lowerSummary.includes('dissatisfaction') || lowerSummary.includes('complaint') || lowerSummary.includes('unhappy') || lowerSummary.includes('frustrated') || lowerSummary.includes('poor service')) {
-        tags.push('Dissatisfaction/Complaint');
-    }
-    if (lowerSummary.includes('escalation') || lowerSummary.includes('urgent') || lowerSummary.includes('critical')) {
-        tags.push('Escalation Request');
-    }
-    if (lowerSummary.includes('repeated follow-up') || lowerSummary.includes('still waiting') || lowerSummary.includes('no response')) {
-        tags.push('Repeated Follow-up');
-    }
-    if (lowerSummary.includes('slow support') || lowerSummary.includes('delay') || lowerSummary.includes('lagging') || lowerSummary.includes('unresponsive') || lowerSummary.includes('pending')) {
-        tags.push('Slow Support / Delay');
-    }
-    if (lowerSummary.includes('feature request') || lowerSummary.includes('missing feature') || lowerSummary.includes('feature gap')) {
-        tags.push('Feature Gap');
-    }
-    if (lowerSummary.includes('cancel') || lowerSummary.includes('churn') || lowerSummary.includes('leaving') || lowerSummary.includes('terminate subscription')) {
-        tags.push('Cancel Threat/Churn Threat');
-    }
-    if (lowerSummary.includes('competitor') || lowerSummary.includes('switching to') || lowerSummary.includes('moving to')) {
-        tags.push('Competitor Switch');
-    }
-    if (lowerSummary.includes('regret') || lowerSummary.includes('disappointed with product') || lowerSummary.includes('not meeting expectations')) {
-        tags.push('Product Regret');
-    }
-    if (lowerSummary.includes('outage') || lowerSummary.includes('down') || lowerSummary.includes('emergency') || lowerSummary.includes('not working') || lowerSummary.includes('service disruption') || lowerSummary.includes('access issue') || lowerSummary.includes('cannot log in') || lowerSummary.includes('connectivity problem') || lowerSummary.includes('unreachable')) {
-        tags.push('Service Outage/Emergency');
-    }
-    if (lowerSummary.includes('security') || lowerSummary.includes('data breach') || lowerSummary.includes('unauthorized access') || lowerSummary.includes('vulnerability') || lowerSummary.includes('trust concern') || lowerSummary.includes('privacy issue')) {
-        tags.push('Security/Data Breach');
-    }
-    if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
-        tags.push('Evaluating Alternatives');
-    }
-    return tags;
+const tags = [];
+const lowerSummary = summary.toLowerCase();
+if (lowerSummary.includes('dissatisfaction') || lowerSummary.includes('complaint') || lowerSummary.includes('unhappy') || lowerSummary.includes('frustrated') || lowerSummary.includes('poor service')) {
+tags.push('Dissatisfaction/Complaint');
+}
+if (lowerSummary.includes('escalation') || lowerSummary.includes('urgent') || lowerSummary.includes('critical')) {
+tags.push('Escalation Request');
+}
+if (lowerSummary.includes('repeated follow-up') || lowerSummary.includes('still waiting') || lowerSummary.includes('no response')) {
+tags.push('Repeated Follow-up');
+}
+if (lowerSummary.includes('slow support') || lowerSummary.includes('delay') || lowerSummary.includes('lagging') || lowerSummary.includes('unresponsive') || lowerSummary.includes('pending')) {
+tags.push('Slow Support / Delay');
+}
+if (lowerSummary.includes('feature request') || lowerSummary.includes('missing feature') || lowerSummary.includes('feature gap')) {
+tags.push('Feature Gap');
+}
+if (lowerSummary.includes('cancel') || lowerSummary.includes('churn') || lowerSummary.includes('leaving') || lowerSummary.includes('terminate subscription')) {
+tags.push('Cancel Threat/Churn Threat');
+}
+if (lowerSummary.includes('competitor') || lowerSummary.includes('switching to') || lowerSummary.includes('moving to')) {
+tags.push('Competitor Switch');
+}
+if (lowerSummary.includes('regret') || lowerSummary.includes('disappointed with product') || lowerSummary.includes('not meeting expectations')) {
+tags.push('Product Regret');
+}
+if (lowerSummary.includes('outage') || lowerSummary.includes('down') || lowerSummary.includes('emergency') || lowerSummary.includes('not working') || lowerSummary.includes('service disruption') || lowerSummary.includes('access issue') || lowerSummary.includes('cannot log in') || lowerSummary.includes('connectivity problem') || lowerSummary.includes('unreachable')) {
+tags.push('Service Outage/Emergency');
+}
+if (lowerSummary.includes('security') || lowerSummary.includes('data breach') || lowerSummary.includes('unauthorized access') || lowerSummary.includes('vulnerability') || lowerSummary.includes('trust concern') || lowerSummary.includes('privacy issue')) {
+tags.push('Security/Data Breach');
+}
+if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
+tags.push('Evaluating Alternatives');
+}
+return tags;
 }
 const ticketDetailsData = [
-    {
-        id: 'dept-it-support',
-        department: "IT Support",
-        openStatus: 3,
-        closedStatus: 2,
-        openTicketOwnership: "Loganathan",
-        executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
-        tickets: [
-            { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department. Urgent!", url: "#", status: "Open" },
-            { id: "TKT-002-IT", summary: "Missing feature: unable to export reports to PDF. Repeated follow-up needed.", url: "#", status: "Open" },
-            { id: "TKT-003-IT", summary: "User is frustrated with slow support response times.", url: "#", status: "Open" },
-            { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", status: "Closed" },
-            { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", status: "Closed" }
-        ]
-    },
-    {
-        id: 'dept-sales-ops',
-        department: "Sales Operations",
-        openStatus: 1,
-        closedStatus: 0,
-        openTicketOwnership: "Foumin",
-        executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
-        tickets: [
-            { id: "TKT-004-SO", summary: "CRM data sync failure with reporting tool, user considering competitor switch.", url: "#", status: "Open" }
-        ]
-    },
-    {
-        id: 'dept-finance',
-        department: "Finance",
-        openStatus: 1,
-        closedStatus: 0,
-        openTicketOwnership: "Dhana",
-        executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
-        tickets: [
-            { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies, dissatisfaction with current system.", url: "#", status: "Open" }
-        ]
-    },
-    {
-        id: 'dept-development',
-        department: "Development",
-        openStatus: 3,
-        closedStatus: 0,
-        openTicketOwnership: "Sivanesan",
-        executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
-        tickets: [
-            { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
-            { id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
-            { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
-        ]
-    }
+{
+id: 'dept-it-support',
+department: "IT Support",
+openStatus: 3,
+closedStatus: 2,
+openTicketOwnership: "Loganathan",
+executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
+tickets: [
+    { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department. Urgent!", url: "#", status: "Open" },
+    { id: "TKT-002-IT", summary: "Missing feature: unable to export reports to PDF. Repeated follow-up needed.", url: "#", status: "Open" },
+    { id: "TKT-003-IT", summary: "User is frustrated with slow support response times.", url: "#", status: "Open" },
+    { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", status: "Closed" },
+    { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", status: "Closed" }
+]
+},
+{
+id: 'dept-sales-ops',
+department: "Sales Operations",
+openStatus: 1,
+closedStatus: 0,
+openTicketOwnership: "Foumin",
+executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
+tickets: [
+    { id: "TKT-004-SO", summary: "CRM data sync failure with reporting tool, user considering competitor switch.", url: "#", status: "Open" }
+]
+},
+{
+id: 'dept-finance',
+department: "Finance",
+openStatus: 1,
+closedStatus: 0,
+openTicketOwnership: "Dhana",
+executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
+tickets: [
+    { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies, dissatisfaction with current system.", url: "#", status: "Open" }
+]
+},
+{
+id: 'dept-development',
+department: "Development",
+openStatus: 3,
+closedStatus: 0,
+openTicketOwnership: "Sivanesan",
+executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
+tickets: [
+    { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
+    { id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
+    { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
+]
+}
 ];
 ticketDetailsData.forEach(dept => {
-    dept.tickets.forEach(ticket => {
-        ticket.tags = assignTagsFromSummary(ticket.summary);
-    });
+dept.tickets.forEach(ticket => {
+ticket.tags = assignTagsFromSummary(ticket.summary);
+});
 });
 let applicationTableContainer = null;
 let ticketDetailsTableContainer = null;
@@ -586,128 +586,129 @@ let activeSection = 'all-apps'; // Define activeSection
 let widgetLoaderOverlay = null; // Loader element
 let executiveSummaryTextElement = null; // For word-by-word effect
 let refreshIcon = null; // Added refresh icon element
+let currentArrFilter = 'all'; // Can be 'all', 'lessThan5k', or 'greaterThan5k'
 
 function showWidgetLoader() {
-    if (widgetLoaderOverlay) {
-        widgetLoaderOverlay.classList.add('show');
-    }
+if (widgetLoaderOverlay) {
+widgetLoaderOverlay.classList.add('show');
+}
 }
 function hideWidgetLoader() {
-    if (widgetLoaderOverlay) {
-        widgetLoaderOverlay.classList.remove('show');
-    }
+if (widgetLoaderOverlay) {
+widgetLoaderOverlay.classList.remove('show');
+}
 }
 function closeAllDropdowns() {
-    if (currentOpenDropdown) {
-        currentOpenDropdown.classList.remove('show');
-        currentOpenDropdown.querySelectorAll('.glass-button').forEach(button => {
-            button.style.animation = '';
-        });
-        if (currentOpenDropdown.id === 'need-help-dropdown-menu' && currentOpenDropdownToggle) {
-            currentOpenDropdownToggle.classList.remove('show-arrow');
-        }
-        currentOpenDropdown = null;
-        currentOpenDropdownToggle = null;
-    }
+if (currentOpenDropdown) {
+currentOpenDropdown.classList.remove('show');
+currentOpenDropdown.querySelectorAll('.glass-button').forEach(button => {
+    button.style.animation = '';
+});
+if (currentOpenDropdown.id === 'need-help-dropdown-menu' && currentOpenDropdownToggle) {
+    currentOpenDropdownToggle.classList.remove('show-arrow');
+}
+currentOpenDropdown = null;
+currentOpenDropdownToggle = null;
+}
 }
 function closeAllThreatPopups() {
-    if (currentOpenThreatPopup) {
-        currentOpenThreatPopup.classList.remove('show');
-        currentOpenThreatPopup = null;
-        currentOpenThreatPopupToggle = null;
-    }
+if (currentOpenThreatPopup) {
+currentOpenThreatPopup.classList.remove('show');
+currentOpenThreatPopup = null;
+currentOpenThreatPopupToggle = null;
+}
 }
 function initializeDOMElements() {
-    applicationTableContainer = document.getElementById('applicationTableContainer');
-    ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContainer');
-    applicationTableBody = document.getElementById('applicationTableBody');
-    applicationTableHeader = document.querySelector('#applicationTable thead');
-    ticketDetailsTableBody = document.getElementById('ticketDetailsTableBody');
-    crossSellBtn = document.getElementById('crossSellBtn');
-    allAppsBtn = document.getElementById('allAppsBtn');
-    downgradesBtn = document.getElementById('downgradesBtn');
-    competitorsBtn = document.getElementById('competitorsBtn');
-    anomaliesBtn = document.getElementById('anomaliesBtn');
-    ticketDetailsBtn = document.getElementById('ticketDetailsBtn');
-    crossSellCountSpan = document.getElementById('crossSellCount');
-    allAppsCountSpan = document.getElementById('allAppsCount');
-    downgradesCountSpan = document.getElementById('downgradesCount');
-    competitorsCountSpan = document.getElementById('competitorsCount');
-    anomaliesCountSpan = document.getElementById('anomaliesCount');
-    criticalIssuesCountSpan = document.getElementById('criticalIssuesCount');
-    warningSignsCountSpan = document.getElementById('warningSignsCount');
-    arrLessThan5kCountSpan = document.getElementById('arrLessThan5kCount');
-    arrGreaterThan5kCountSpan = document.getElementById('arrGreaterThan5kCount');
-    arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
-    arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
-    criticalIssuesCard = document.getElementById('criticalIssuesCard');
-    warningSignsCard = document.getElementById('warningSignsCard');
-    competitorExposureCard = document.getElementById('competitorExposureCard');
-    downgradeRisksCard = document.getElementById('downgradeRisksCard');
-    deskTicketsCard = document.getElementById('deskTicketsCard');
-    const openTicketsCountInCard = document.getElementById('openTicketsCount');
-    const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
-    healthScoreCircle = document.getElementById('healthScoreCircle');
-    healthScoreValue = document.getElementById('healthScoreValue');
-    healthScoreStatus = document.getElementById('healthScoreStatus');
-    healthScoreCheck = document.getElementById('healthScoreCheck');
-    subscriptionChatModal = document.getElementById('subscriptionChatModal');
-    closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
-    subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
-    competitorExposureCountElement = document.getElementById('competitorExposureCount');
-    downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
-    recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
-    nextRenewalsCountSpan = document.getElementById('nextRenewalsCount');
-    recentPurchasesHoverPopup = document.getElementById('recentPurchasesHoverPopup');
-    nextRenewalsHoverPopup = document.getElementById('nextRenewalsHoverPopup');
-    recentPurchasesHoverList = document.getElementById('recentPurchasesHoverList');
-    nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
-    widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
-    executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
-    refreshIcon = document.getElementById('refreshIcon'); // Added refresh icon element
-    threatDetailsPopup = document.getElementById('threatDetailsPopup');
-    threatListContainer = document.getElementById('threatListContainer');
-    threatPopupCloseBtn = document.getElementById('threatPopupCloseBtn');
+applicationTableContainer = document.getElementById('applicationTableContainer');
+ticketDetailsTableContainer = document.getElementById('ticketDetailsTableContainer');
+applicationTableBody = document.getElementById('applicationTableBody');
+applicationTableHeader = document.querySelector('#applicationTable thead');
+ticketDetailsTableBody = document.getElementById('ticketDetailsTableBody');
+crossSellBtn = document.getElementById('crossSellBtn');
+allAppsBtn = document.getElementById('allAppsBtn');
+downgradesBtn = document.getElementById('downgradesBtn');
+competitorsBtn = document.getElementById('competitorsBtn');
+anomaliesBtn = document.getElementById('anomaliesBtn');
+ticketDetailsBtn = document.getElementById('ticketDetailsBtn');
+crossSellCountSpan = document.getElementById('crossSellCount');
+allAppsCountSpan = document.getElementById('allAppsCount');
+downgradesCountSpan = document.getElementById('downgradesCount');
+competitorsCountSpan = document.getElementById('competitorsCount');
+anomaliesCountSpan = document.getElementById('anomaliesCount');
+criticalIssuesCountSpan = document.getElementById('criticalIssuesCount');
+warningSignsCountSpan = document.getElementById('warningSignsCount');
+arrLessThan5kCountSpan = document.getElementById('arrLessThan5kCount');
+arrGreaterThan5kCountSpan = document.getElementById('arrGreaterThan5kCount');
+arrLessThan5kSegment = document.getElementById('arrLessThan5kSegment');
+arrGreaterThan5kSegment = document.getElementById('arrGreaterThan5kSegment');
+criticalIssuesCard = document.getElementById('criticalIssuesCard');
+warningSignsCard = document.getElementById('warningSignsCard');
+competitorExposureCard = document.getElementById('competitorExposureCard');
+downgradeRisksCard = document.getElementById('downgradeRisksCard');
+deskTicketsCard = document.getElementById('deskTicketsCard');
+const openTicketsCountInCard = document.getElementById('openTicketsCount');
+const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
+healthScoreCircle = document.getElementById('healthScoreCircle');
+healthScoreValue = document.getElementById('healthScoreValue');
+healthScoreStatus = document.getElementById('healthScoreStatus');
+healthScoreCheck = document.getElementById('healthScoreCheck');
+subscriptionChatModal = document.getElementById('subscriptionChatModal');
+closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
+subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
+competitorExposureCountElement = document.getElementById('competitorExposureCount');
+downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
+recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
+nextRenewalsCountSpan = document.getElementById('nextRenewalsCount');
+recentPurchasesHoverPopup = document.getElementById('recentPurchasesHoverPopup');
+nextRenewalsHoverPopup = document.getElementById('nextRenewalsHoverPopup');
+recentPurchasesHoverList = document.getElementById('recentPurchasesHoverList');
+nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
+widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
+executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
+refreshIcon = document.getElementById('refreshIcon'); // Added refresh icon element
+threatDetailsPopup = document.getElementById('threatDetailsPopup');
+threatListContainer = document.getElementById('threatListContainer');
+threatPopupCloseBtn = document.getElementById('threatPopupCloseBtn');
 
-    resolveNotesPopup = document.getElementById('resolveNotesPopup');
-    resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
-    resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
-    resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
+resolveNotesPopup = document.getElementById('resolveNotesPopup');
+resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
+resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
+resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
 
-    resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
-    resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
-    resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
+resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
+resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
+resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
 
 
-    if (!applicationTableContainer) {
-        console.error('Application table container not found!');
-        return false;
-    }
-    if (!applicationTableBody) {
-        console.error('Application table body not found!');
-        return false;
-    }
-    if (!applicationTableHeader) {
-        console.error('Application table header (thead) not found!');
-        return false;
-    }
-    if (!subscriptionChatModal) {
-        console.error('Subscription chat modal element (subscriptionChatModal) not found!');
-        return false;
-    }
-    if (!widgetLoaderOverlay) {
-        console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
-        return false;
-    }
-    if (!executiveSummaryTextElement) {
-        console.error('Executive summary text element (executiveSummaryText) not found!');
-        return false;
-    }
-    if (!refreshIcon) {
-        console.error('Refresh icon element (refreshIcon) not found!');
-        return false;
-    }
-    return true;
+if (!applicationTableContainer) {
+console.error('Application table container not found!');
+return false;
+}
+if (!applicationTableBody) {
+console.error('Application table body not found!');
+return false;
+}
+if (!applicationTableHeader) {
+console.error('Application table header (thead) not found!');
+return false;
+}
+if (!subscriptionChatModal) {
+console.error('Subscription chat modal element (subscriptionChatModal) not found!');
+return false;
+}
+if (!widgetLoaderOverlay) {
+console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
+return false;
+}
+if (!executiveSummaryTextElement) {
+console.error('Executive summary text element (executiveSummaryText) not found!');
+return false;
+}
+if (!refreshIcon) {
+console.error('Refresh icon element (refreshIcon) not found!');
+return false;
+}
+return true;
 }
 let allAppsFilteredData = [];
 let crossSellFilteredData = [];
@@ -724,409 +725,547 @@ let recentPurchasesData = [];
 let nextRenewalsData = [];
 const originalExecutiveSummaryText = "This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.";
 function typeWriterEffect(element, text, speed) {
-    if (!element) return;
-    const words = text.split(' ');
-    let i = 0;
-    element.textContent = ''; // Clear existing text
-    function typeWord() {
-        if (i < words.length) {
-            element.textContent += words[i] + ' ';
-            i++;
-            setTimeout(typeWord, speed);
-        }
-    }
-    typeWord();
+if (!element) return;
+const words = text.split(' ');
+let i = 0;
+element.textContent = ''; // Clear existing text
+function typeWord() {
+if (i < words.length) {
+    element.textContent += words[i] + ' ';
+    i++;
+    setTimeout(typeWord, speed);
+}
+}
+typeWord();
 }
 function calculateTotalArr(app) {
-    const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
-    return currentMonthData ? currentMonthData.revenue : 0;
+const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
+return currentMonthData ? currentMonthData.revenue : 0;
 }
 function filterDataArrays() {
-    allAppsFilteredData = appData;
-    let initialSignupApp = null;
-    let earliestTime = Infinity;
-    appData.forEach(app => {
-        const appCreatedTime = new Date(app.createdTime).getTime();
-        if (appCreatedTime < earliestTime) {
-            earliestTime = appCreatedTime;
-            initialSignupApp = app;
+allAppsFilteredData = appData;
+let initialSignupApp = null;
+let earliestTime = Infinity;
+appData.forEach(app => {
+const appCreatedTime = new Date(app.createdTime).getTime();
+if (appCreatedTime < earliestTime) {
+    earliestTime = appCreatedTime;
+    initialSignupApp = app;
+}
+});
+crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
+const problematicTicketTagsList = [
+"Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
+"Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
+"Competitor Switch", "Product Regret", "Service Outage/Emergency",
+"Security/Data Breach", "Evaluating Alternatives"
+].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-'));
+const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === deptId);
+// Declare totalInactiveApps here
+const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
+anomaliesCriticalOnlyData = appData.filter(app => {
+let isCritical = false;
+const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+    isCritical = true;
+}
+if (app.usage === 'Low' && app.license.includes('Downgraded')) {
+    isCritical = true;
+}
+let totalRecentDecline = 0;
+const startIndex = app.monthlyData.length - 3;
+const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+if (relevantMonths.length === 3) {
+    relevantMonths.forEach(month => {
+        const change = parseInt(month.change);
+        if (change < 0) {
+            totalRecentDecline += change;
         }
     });
-    crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
-    const problematicTicketTagsList = [
-        "Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
-        "Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
-        "Competitor Switch", "Product Regret", "Service Outage/Emergency",
-        "Security/Data Breach", "Evaluating Alternatives"
-    ].map(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-'));
-    const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === deptId);
-    // Declare totalInactiveApps here
-    const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
-    anomaliesCriticalOnlyData = appData.filter(app => {
-        let isCritical = false;
-        const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-        if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+}
+if (totalRecentDecline <= -3) {
+    isCritical = true;
+}
+if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
+    isCritical = true;
+}
+let maxSeatsLast6Months = 0;
+if (app.monthlyData.length >= 6) {
+    const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+    maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+    if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.40) {
+        isCritical = true;
+    }
+}
+if (totalInactiveApps > 4) { // Use the defined totalInactiveApps
+    isCritical = true;
+}
+if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
+    const m6Revenue = app.monthlyData[5].revenue;
+    const m3Revenue = app.monthlyData[2].revenue;
+    if (m3Revenue > 0) {
+        const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+        if (percentageChange < -0.40) {
             isCritical = true;
         }
-        if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-            isCritical = true;
-        }
-        let totalRecentDecline = 0;
-        const startIndex = app.monthlyData.length - 3;
-        const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-        if (relevantMonths.length === 3) {
-            relevantMonths.forEach(month => {
-                const change = parseInt(month.change);
-                if (change < 0) {
-                    totalRecentDecline += change;
-                }
-            });
-        }
-        if (totalRecentDecline <= -3) {
-            isCritical = true;
-        }
-        if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
-            isCritical = true;
-        }
-        let maxSeatsLast6Months = 0;
-        if (app.monthlyData.length >= 6) {
-            const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-            maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-            if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.40) {
-                isCritical = true;
-            }
-        }
-        if (totalInactiveApps > 4) { // Use the defined totalInactiveApps
-            isCritical = true;
-        }
-        if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-            const m6Revenue = app.monthlyData[5].revenue;
-            const m3Revenue = app.monthlyData[2].revenue;
-            if (m3Revenue > 0) {
-                const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                if (percentageChange < -0.40) {
-                    isCritical = true;
-                }
-            }
-        }
-        const relevantDepartment = findDepartment(app.relevantDepartmentId);
-        if (relevantDepartment && relevantDepartment.openStatus > 3) {
-            isCritical = true;
-        }
-        if (relevantDepartment) {
-            const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-            const hasCriticalProblematicTag = openTicketsInDept.some(tkt =>
-                tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-            );
-            if (hasCriticalProblematicTag) {
-                isCritical = true;
-            }
-        }
-        return isCritical;
-    });
-    anomaliesWarningOnlyData = appData.filter(app => {
-        const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
-        if (isAlreadyCritical) return false;
-        let isWarning = false;
-        if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
-            (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
+    }
+}
+const relevantDepartment = findDepartment(app.relevantDepartmentId);
+if (relevantDepartment && relevantDepartment.openStatus > 3) {
+    isCritical = true;
+}
+if (relevantDepartment) {
+    const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+    const hasCriticalProblematicTag = openTicketsInDept.some(tkt =>
+        tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+    );
+    if (hasCriticalProblematicTag) {
+        isCritical = true;
+    }
+}
+return isCritical;
+});
+anomaliesWarningOnlyData = appData.filter(app => {
+const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
+if (isAlreadyCritical) return false;
+let isWarning = false;
+if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
+    (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
+    isWarning = true;
+}
+let maxSeatsLast6Months = 0;
+if (app.monthlyData.length >= 6) {
+    const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+    maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+    if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.70) {
+        isWarning = true;
+    }
+}
+if (totalInactiveApps > 2) { // Use the defined totalInactiveApps
+    isWarning = true;
+}
+if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
+    const m6Revenue = app.monthlyData[5].revenue;
+    const m3Revenue = app.monthlyData[2].revenue;
+    if (m3Revenue > 0) {
+        const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+        if (percentageChange < -0.30) {
             isWarning = true;
         }
-        let maxSeatsLast6Months = 0;
-        if (app.monthlyData.length >= 6) {
-            const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-            maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-            if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.70) {
-                isWarning = true;
-            }
-        }
-        if (totalInactiveApps > 2) { // Use the defined totalInactiveApps
-            isWarning = true;
-        }
-        if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-            const m6Revenue = app.monthlyData[5].revenue;
-            const m3Revenue = app.monthlyData[2].revenue;
-            if (m3Revenue > 0) {
-                const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                if (percentageChange < -0.30) {
-                    isWarning = true;
-                }
-            }
-        }
-        const relevantDepartment = findDepartment(app.relevantDepartmentId);
-        if (relevantDepartment && relevantDepartment.openStatus > 1) {
-            isWarning = true;
-        }
-        if (relevantDepartment) {
-            const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-            const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
-                tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-            );
-            if (hasWarningProblematicTag) {
-                isWarning = true;
-            }
-        }
-        return isWarning;
-    });
-    downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
-    competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
-    const anomaliesSet = new Set();
-    anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
-    anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
-    anomaliesFilteredData = Array.from(anomaliesSet);
-    arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
-    arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
-    // Populate recent purchases and next renewals data
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    const threeMonthsFromNow = new Date();
-    threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
-    const availableRecentPurchases = appData.filter(app => {
-        if (app.lastInvoiceDate) {
-            const invoiceDate = new Date(app.lastInvoiceDate);
-            return invoiceDate >= sixMonthsAgo && invoiceDate <= new Date();
-        }
-        return false;
-    }).map(app => ({
-        name: app.application,
-        revenue: app.monthlyData[app.monthlyData.length - 1].revenue
-    }));
-    const availableNextRenewals = appData.filter(app => {
-        if (app.nextRenewalDate) {
-            const renewalDate = new Date(app.nextRenewalDate);
-            return renewalDate > new Date() && renewalDate <= threeMonthsFromNow;
-        }
-        return false;
-    }).map(app => ({
-        name: app.application,
-        date: app.nextRenewalDate,
-        revenue: app.monthlyData[app.monthlyData.length - 1].revenue
-    }));
-    // Fixed numbers for Recent Purchases (2) and Next Renewals (4)
-    recentPurchasesData = availableRecentPurchases.slice(0, 2);
-    nextRenewalsData = availableNextRenewals.slice(0, 4);
+    }
+}
+const relevantDepartment = findDepartment(app.relevantDepartmentId);
+if (relevantDepartment && relevantDepartment.openStatus > 1) {
+    isWarning = true;
+}
+if (relevantDepartment) {
+    const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+    const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
+        tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+    );
+    if (hasWarningProblematicTag) {
+        isWarning = true;
+    }
+}
+return isWarning;
+});
+downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
+competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
+const anomaliesSet = new Set();
+anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
+anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
+anomaliesFilteredData = Array.from(anomaliesSet);
+arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
+arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
+// Populate recent purchases and next renewals data
+const sixMonthsAgo = new Date();
+sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+const threeMonthsFromNow = new Date();
+threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+const availableRecentPurchases = appData.filter(app => {
+if (app.lastInvoiceDate) {
+    const invoiceDate = new Date(app.lastInvoiceDate);
+    return invoiceDate >= sixMonthsAgo && invoiceDate <= new Date();
+}
+return false;
+}).map(app => ({
+name: app.application,
+revenue: app.monthlyData[app.monthlyData.length - 1].revenue
+}));
+const availableNextRenewals = appData.filter(app => {
+if (app.nextRenewalDate) {
+    const renewalDate = new Date(app.nextRenewalDate);
+    return renewalDate > new Date() && renewalDate <= threeMonthsFromNow;
+}
+return false;
+}).map(app => ({
+name: app.application,
+date: app.nextRenewalDate,
+revenue: app.monthlyData[app.monthlyData.length - 1].revenue
+}));
+// Fixed numbers for Recent Purchases (4) and Next Renewals (4)
+recentPurchasesData = availableRecentPurchases.slice(0, 4);
+nextRenewalsData = availableNextRenewals.slice(0, 4);
+}
+/**
+* Handles clicks on the ARR filter segments.
+* Toggles the filter, updates the UI, and renders the appropriate data.
+* @param {string} filterType - The type of filter clicked ('lessThan5k' or 'greaterThan5k').
+*/
+function handleArrFilterClick(filterType) {
+// If the clicked filter is already active, deactivate it and show all apps.
+if (currentArrFilter === filterType) {
+currentArrFilter = 'all';
+updateDashboard(appData);
+if(arrLessThan5kSegment) arrLessThan5kSegment.classList.remove('active-arr-filter');
+if(arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.remove('active-arr-filter');
+// Reselect the 'All Apps' button
+if(allAppsBtn) allAppsBtn.classList.add('active');
+activeSection = 'all-apps';
+} else {
+// Otherwise, activate the new filter.
+currentArrFilter = filterType;
+const dataToRender = filterType === 'lessThan5k' ? arrLessThan5kFilteredData : arrGreaterThan5kFilteredData;
+updateDashboard(dataToRender);
+
+// Update visual state of filter buttons and clear main category highlight
+clearAllButtonHighlights();
+if(arrLessThan5kSegment) arrLessThan5kSegment.classList.toggle('active-arr-filter', filterType === 'lessThan5k');
+if(arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.toggle('active-arr-filter', filterType === 'greaterThan5k');
+activeSection = 'arr-filter-active'; // A custom state to show no main category is selected
+}
+}
+
+
+/**
+* Master function to update the entire dashboard based on a given dataset.
+* @param {Array} data - The array of application data to use for calculations.
+*/
+function updateDashboard(data) {
+// 1. Update Total ARR
+const totalArr = data.reduce((sum, app) => sum + calculateTotalArr(app), 0);
+const totalArrValueElement = document.querySelector('.info-section.arr-section .main-value .value');
+if (totalArrValueElement) {
+totalArrValueElement.textContent = `$${totalArr.toLocaleString()}`;
+}
+
+// 2. Update Recent Purchases
+const sixMonthsAgo = new Date();
+sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+const recentPurchases = data.filter(app => {
+if (app.lastInvoiceDate) {
+    const invoiceDate = new Date(app.lastInvoiceDate);
+    return invoiceDate >= sixMonthsAgo && invoiceDate <= new Date();
+}
+return false;
+});
+// Take only the top 4 for display in both count and popup
+const recentPurchasesToDisplay = recentPurchases.slice(0, 4);
+if (recentPurchasesCountSpan) {
+recentPurchasesCountSpan.textContent = recentPurchasesToDisplay.length;
+}
+recentPurchasesData = recentPurchasesToDisplay.map(app => ({ 
+name: app.application, 
+revenue: app.monthlyData[app.monthlyData.length - 1].revenue 
+}));
+
+// 3. Update Upcoming Renewals
+const threeMonthsFromNow = new Date();
+threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+const upcomingRenewals = data.filter(app => {
+if (app.nextRenewalDate) {
+    const renewalDate = new Date(app.nextRenewalDate);
+    return renewalDate > new Date() && renewalDate <= threeMonthsFromNow;
+}
+return false;
+});
+if (nextRenewalsCountSpan) {
+nextRenewalsCountSpan.textContent = upcomingRenewals.length;
+}
+nextRenewalsData = upcomingRenewals.map(app => ({ name: app.application, date: app.nextRenewalDate, revenue: app.monthlyData[app.monthlyData.length - 1].revenue }));
+
+// 4. Update Health Score
+let totalScore = 0;
+if (data.length > 0) {
+const scoreSum = data.reduce((sum, app) => {
+    let appScore = 100;
+    if (app.usage === 'Low') appScore -= 20;
+    if (app.usage === 'Medium') appScore -= 10;
+    if (app.license.includes('Downgraded')) appScore -= 15;
+    appScore -= (app.paymentFailureCount * 5);
+    return sum + Math.max(0, appScore); // Ensure score doesn't go below 0
+}, 0);
+totalScore = Math.round(scoreSum / data.length);
+} else {
+totalScore = 100; // Default to 100 if no data
+}
+updateHealthScore(totalScore);
+
+// 5. Update KPI Cards & Filter Button Counts
+const dataIds = new Set(data.map(app => app.id));
+
+const criticalCount = anomaliesCriticalOnlyData.filter(app => dataIds.has(app.id)).length;
+const warningCount = anomaliesWarningOnlyData.filter(app => dataIds.has(app.id)).length;
+const competitorCount = competitorsFilteredData.filter(app => dataIds.has(app.id)).length;
+const downgradeCount = downgradesFilteredData.filter(app => dataIds.has(app.id)).length;
+const crossSellCount = crossSellFilteredData.filter(app => dataIds.has(app.id)).length;
+const anomaliesCount = anomaliesFilteredData.filter(app => dataIds.has(app.id)).length;
+
+if (criticalIssuesCountSpan) criticalIssuesCountSpan.textContent = criticalCount;
+if (warningSignsCountSpan) warningSignsCountSpan.textContent = warningCount;
+if (competitorExposureCountElement) competitorExposureCountElement.textContent = competitorCount;
+if (downgradeRisksCountElement) downgradeRisksCountElement.textContent = downgradeCount;
+if (allAppsCountSpan) allAppsCountSpan.textContent = data.length;
+if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellCount;
+if (downgradesCountSpan) downgradesCountSpan.textContent = downgradeCount;
+if (competitorsCountSpan) competitorsCountSpan.textContent = competitorCount;
+if (anomaliesCountSpan) anomaliesCountSpan.textContent = anomaliesCount;
+
+// Desk tickets based on relevant departments
+const relevantDeptIds = new Set(data.map(app => app.relevantDepartmentId));
+const relevantTickets = ticketDetailsData.filter(dept => relevantDeptIds.has(dept.id));
+const openTickets = relevantTickets.reduce((sum, dept) => sum + dept.openStatus, 0);
+const closedTickets = relevantTickets.reduce((sum, dept) => sum + dept.closedStatus, 0);
+const openTicketsCountInCard = document.getElementById('openTicketsCount');
+const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
+if(openTicketsCountInCard) openTicketsCountInCard.textContent = openTickets;
+if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = closedTickets;
+
+// 6. Render the table with the new data
+renderApplicationTable(data);
+}
+function updateArrCapsuleCounts() {
+// Update ARR segment counts with parentheses and green color
+if (arrLessThan5kCountSpan) {
+arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
+arrLessThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+}
+if (arrGreaterThan5kCountSpan) {
+arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
+arrGreaterThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+}
 }
 function updateCounts(specificAnomaliesCount = null) {
-    console.log('Updating counts...');
-    if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellFilteredData.length;
-    if (allAppsCountSpan) allAppsCountSpan.textContent = appData.length; // Use appData.length for total apps
-    if (downgradesCountSpan) downgradesCountSpan.textContent = downgradesFilteredData.length;
-    if (competitorsCountSpan) competitorsCountSpan.textContent = competitorsFilteredData.length;
-    if (anomaliesCountSpan) {
-        if (specificAnomaliesCount !== null) {
-            anomaliesCountSpan.textContent = specificAnomaliesCount;
-        } else {
-            anomaliesCountSpan.textContent = anomaliesFilteredData.length;
-        }
-    }
-    if (criticalIssuesCountSpan) criticalIssuesCountSpan.textContent = anomaliesCriticalOnlyData.length;
-    if (warningSignsCountSpan) warningSignsCountSpan.textContent = anomaliesWarningOnlyData.length;
-    if (competitorExposureCountElement) {
-        competitorExposureCountElement.textContent = competitorsFilteredData.length;
-    }
-    if (downgradeRisksCountElement) {
-        downgradeRisksCountElement.textContent = downgradesFilteredData.length;
-    }
-    const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
-    const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
-    const openTicketsCountSpan = document.getElementById('openTicketsCount');
-    const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
-    if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
-    if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
-    if (openTicketsCountSpan) {
-        openTicketsCountSpan.style.minWidth = '50px';
-        openTicketsCountSpan.style.textAlign = 'center';
-    }
-    if (closedTicketsCountSpan) {
-        closedTicketsCountSpan.style.minWidth = '50px';
-        closedTicketsCountSpan.style.textAlign = 'center';
-    }
-    // Update ARR segment counts with parentheses and green color
-    if (arrLessThan5kCountSpan) {
-        arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
-        arrLessThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
-    }
-    if (arrGreaterThan5kCountSpan) {
-        arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
-        arrGreaterThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
-    }
-    // Update new card counts with fixed numbers
-    if (recentPurchasesCountSpan) recentPurchasesCountSpan.textContent = recentPurchasesData.length;
-    if (nextRenewalsCountSpan) nextRenewalsCountSpan.textContent = nextRenewalsData.length;
+console.log('Updating counts...');
+if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellFilteredData.length;
+if (allAppsCountSpan) allAppsCountSpan.textContent = appData.length; // Use appData.length for total apps
+if (downgradesCountSpan) downgradesCountSpan.textContent = downgradesFilteredData.length;
+if (competitorsCountSpan) competitorsCountSpan.textContent = competitorsFilteredData.length;
+if (anomaliesCountSpan) {
+if (specificAnomaliesCount !== null) {
+    anomaliesCountSpan.textContent = specificAnomaliesCount;
+} else {
+    anomaliesCountSpan.textContent = anomaliesFilteredData.length;
+}
+}
+if (criticalIssuesCountSpan) criticalIssuesCountSpan.textContent = anomaliesCriticalOnlyData.length;
+if (warningSignsCountSpan) warningSignsCountSpan.textContent = anomaliesWarningOnlyData.length;
+if (competitorExposureCountElement) {
+competitorExposureCountElement.textContent = competitorsFilteredData.length;
+}
+if (downgradeRisksCountElement) {
+downgradeRisksCountElement.textContent = downgradesFilteredData.length;
+}
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
+const openTicketsCountSpan = document.getElementById('openTicketsCount');
+const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
+if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
+if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
+if (openTicketsCountSpan) {
+openTicketsCountSpan.style.minWidth = '50px';
+openTicketsCountSpan.style.textAlign = 'center';
+}
+if (closedTicketsCountSpan) {
+closedTicketsCountSpan.style.minWidth = '50px';
+closedTicketsCountSpan.style.textAlign = 'center';
+}
+// Update ARR segment counts with parentheses and green color
+if (arrLessThan5kCountSpan) {
+arrLessThan5kCountSpan.textContent = `(${arrLessThan5kFilteredData.length})`;
+arrLessThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+}
+if (arrGreaterThan5kCountSpan) {
+arrGreaterThan5kCountSpan.textContent = `(${arrGreaterThan5kFilteredData.length})`;
+arrGreaterThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
+}
+// Update new card counts with fixed numbers
+if (recentPurchasesCountSpan) recentPurchasesCountSpan.textContent = recentPurchasesData.length;
+if (nextRenewalsCountSpan) nextRenewalsCountSpan.textContent = nextRenewalsData.length;
 }
 function getStatusTagHtml(status) {
-    let colorClass = '';
-    let displayText = status;
-    if (status === 'Active') {
-        colorClass = 'status-tag-active';
-    } else if (status === 'Inactive') {
-        colorClass = 'status-tag-inactive';
-    } else if (status === 'Renewal risk detected') {
-        colorClass = 'status-tag-renewal-risk';
-        displayText = 'Renewal risk';
-    }
-    return `<span class="status-tag ${colorClass}">${displayText}</span>`;
+let colorClass = '';
+let displayText = status;
+if (status === 'Active') {
+colorClass = 'status-tag-active';
+} else if (status === 'Inactive') {
+colorClass = 'status-tag-inactive';
+} else if (status === 'Renewal risk detected') {
+colorClass = 'status-tag-renewal-risk';
+displayText = 'Renewal risk';
+}
+return `<span class="status-tag ${colorClass}">${displayText}</span>`;
 }
 function renderApplicationTable(data) {
-    console.log('Starting to render application table with', data.length, 'items');
-    if (!applicationTableBody) {
-        console.error("Application table body element (applicationTableBody) not found!");
-        return;
-    }
-    applicationTableBody.innerHTML = '';
-    expandedRowId = null;
-    if (data.length === 0) {
-        const noDataRow = document.createElement('tr');
-        noDataRow.innerHTML = `<td colspan="10" class="text-center py-4 text-muted">No data available for this category.</td>`;
-        applicationTableBody.appendChild(noDataRow);
-        return;
-    }
-    data.forEach((app) => {
-        const row = document.createElement('tr');
-        row.setAttribute('data-app-id', app.id);
-        row.className = 'clickable-row';
-        let crossSellCompetitors = [];
-        let threatCompetitors = [];
-        const crossSellList = ['Mailchimp', 'Dropbox'];
-        const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-        if (app.competitors && app.competitors.length > 0) {
-            app.competitors.forEach(comp => {
-                if (crossSellList.includes(comp)) {
-                    crossSellCompetitors.push(comp);
-                } else if (threatList.includes(comp)) {
-                    threatCompetitors.push(comp);
-                } else {
-                    threatCompetitors.push(comp);
-                }
-            });
-        }
-        let competitorsCellContent = '';
-        if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
-            competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
-                            <span class="text-dark">None</span>
-                          </div>`;
+console.log('Starting to render application table with', data.length, 'items');
+if (!applicationTableBody) {
+console.error("Application table body element (applicationTableBody) not found!");
+return;
+}
+applicationTableBody.innerHTML = '';
+expandedRowId = null;
+if (data.length === 0) {
+const noDataRow = document.createElement('tr');
+noDataRow.innerHTML = `<td colspan="10" class="text-center py-4 text-muted">No data available for this category.</td>`;
+applicationTableBody.appendChild(noDataRow);
+return;
+}
+data.forEach((app) => {
+const row = document.createElement('tr');
+row.setAttribute('data-app-id', app.id);
+row.className = 'clickable-row';
+let crossSellCompetitors = [];
+let threatCompetitors = [];
+const crossSellList = ['Mailchimp', 'Dropbox'];
+const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+if (app.competitors && app.competitors.length > 0) {
+    app.competitors.forEach(comp => {
+        if (crossSellList.includes(comp)) {
+            crossSellCompetitors.push(comp);
+        } else if (threatList.includes(comp)) {
+            threatCompetitors.push(comp);
         } else {
-            const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
-            let threatDisplayHtml = '';
-            let threatPopupHtml = '';
-            if (threatCompetitors.length > 0) {
-                threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
-                if (threatCompetitors.length > 1) {
-                    const remainingThreatsCount = threatCompetitors.length - 1;
-                    threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
-                    threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
-                    threatPopupHtml = `
-            <div class="threat-popup-container">
-                ${threatPopupHtml}
-            </div>
-        `;
-                }
-            } else {
-                threatDisplayHtml = '<span class="text-dark">None</span>';
-            }
-            competitorsCellContent = `
-    <div class="competitors-flex-container">
-        <div class="competitors-cross-sell-section">
-            ${crossSellTagsHtml || '<span class="text-dark">None</span>'}
-        </div>
-        <span class="vertical-bar-in-table"></span>
-        <div class="competitors-threat-section">
-            <div class="threat-popup-wrapper">
-                ${threatDisplayHtml}
-                ${threatPopupHtml}
-            </div>
-        </div>
+            threatCompetitors.push(comp);
+        }
+    });
+}
+let competitorsCellContent = '';
+if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
+    competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
+                    <span class="text-dark">None</span>
+                  </div>`;
+} else {
+    const crossSellTagsHtml = crossSellCompetitors.map(comp => `<span class="competitor-tag cross-sell-tag">${comp}</span>`).join('');
+    let threatDisplayHtml = '';
+    let threatPopupHtml = '';
+    if (threatCompetitors.length > 0) {
+        threatDisplayHtml += `<span class="threat-tag-display">${threatCompetitors[0]}</span>`;
+        if (threatCompetitors.length > 1) {
+            const remainingThreatsCount = threatCompetitors.length - 1;
+            threatDisplayHtml += `<span class="threat-more-indicator">+${remainingThreatsCount}</span>`;
+            threatPopupHtml = threatCompetitors.map(comp => `<span class="threat-popup-item">${comp}</span>`).join('');
+            threatPopupHtml = `
+    <div class="threat-popup-container">
+        ${threatPopupHtml}
     </div>
 `;
         }
-        let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-        if (app.license.includes('Downgraded')) {
-            licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
-        } else if (app.license.includes('Upgraded')) {
-            licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-        } else {
-            licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-        }
-        let usageDisplayText = app.usage;
-        let usageBackgroundColorClass = '';
-        if (app.usage === 'Low') {
-            usageBackgroundColorClass = 'bg-usage-low';
-        } else if (app.usage === 'Medium') {
-            usageBackgroundColorClass = 'bg-usage-medium';
-        } else if (app.usage === 'High') {
-            usageBackgroundColorClass = 'bg-usage-high';
-        } else {
-            usageBackgroundColorClass = '';
-        }
-        const usageHtml = `
+    } else {
+        threatDisplayHtml = '<span class="text-dark">None</span>';
+    }
+    competitorsCellContent = `
+<div class="competitors-flex-container">
+<div class="competitors-cross-sell-section">
+    ${crossSellTagsHtml || '<span class="text-dark">None</span>'}
+</div>
+<span class="vertical-bar-in-table"></span>
+<div class="competitors-threat-section">
+    <div class="threat-popup-wrapper">
+        ${threatDisplayHtml}
+        ${threatPopupHtml}
+    </div>
+</div>
+</div>
+`;
+}
+let licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+if (app.license.includes('Downgraded')) {
+    licenseTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+} else if (app.license.includes('Upgraded')) {
+    licenseTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+} else {
+    licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+}
+let usageDisplayText = app.usage;
+let usageBackgroundColorClass = '';
+if (app.usage === 'Low') {
+    usageBackgroundColorClass = 'bg-usage-low';
+} else if (app.usage === 'Medium') {
+    usageBackgroundColorClass = 'bg-usage-medium';
+} else if (app.usage === 'High') {
+    usageBackgroundColorClass = 'bg-usage-high';
+} else {
+    usageBackgroundColorClass = '';
+}
+const usageHtml = `
 <div class="usage-bar-container ${usageBackgroundColorClass}">
 <span class="usage-bar-text">${usageDisplayText}</span>
 </div>
 `;
-        const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
-        const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
-        let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-        let arrPercentageChangeHtml = '';
-        let arrPercentageClass = 'text-muted';
-        if (app.monthlyData.length >= 2) {
-            const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
-            const currentArrValue = currentMonthData.revenue;
-            const previousArr = previousMonthData.revenue;
-            if (previousArr !== 0) {
-                const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
-                arrPercentageChangeHtml = `${percentageChange.toFixed(1)}%`;
-                if (percentageChange > 0) {
-                    arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-                    arrPercentageClass = 'text-success';
-                    arrPercentageChangeHtml = `+${arrPercentageChangeHtml}`;
-                } else if (percentageChange < 0) {
-                    arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
-                    arrPercentageClass = 'text-danger';
-                } else {
-                    arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
-                    arrPercentageClass = 'text-muted';
-                }
-            } else if (currentArrValue > 0) {
-                arrPercentageChangeHtml = `+Inf%`;
-                arrPercentageClass = 'text-success';
-                arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
-            } else {
-                arrPercentageChangeHtml = `N/A`;
-                arrPercentageClass = 'text-muted';
-            }
+const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
+const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
+let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+let arrPercentageChangeHtml = '';
+let arrPercentageClass = 'text-muted';
+if (app.monthlyData.length >= 2) {
+    const previousMonthData = app.monthlyData[app.monthlyData.length - 2];
+    const currentArrValue = currentMonthData.revenue;
+    const previousArr = previousMonthData.revenue;
+    if (previousArr !== 0) {
+        const percentageChange = ((currentArrValue - previousArr) / previousArr) * 100;
+        arrPercentageChangeHtml = `${percentageChange.toFixed(1)}%`;
+        if (percentageChange > 0) {
+            arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+            arrPercentageClass = 'text-success';
+            arrPercentageChangeHtml = `+${arrPercentageChangeHtml}`;
+        } else if (percentageChange < 0) {
+            arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
+            arrPercentageClass = 'text-danger';
         } else {
-            arrPercentageChangeHtml = 'N/A';
+            arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
             arrPercentageClass = 'text-muted';
         }
-        const arrRevenueCellContent = `
+    } else if (currentArrValue > 0) {
+        arrPercentageChangeHtml = `+Inf%`;
+        arrPercentageClass = 'text-success';
+        arrTrendIconHtml = `<i class="bi bi-graph-up text-success"></i>`;
+    } else {
+        arrPercentageChangeHtml = `N/A`;
+        arrPercentageClass = 'text-muted';
+    }
+} else {
+    arrPercentageChangeHtml = 'N/A';
+    arrPercentageClass = 'text-muted';
+}
+const arrRevenueCellContent = `
 <span style="color: #1a2b4d; font-weight: 700;">$${currentArr}</span><br>
 <span class="${arrPercentageClass} arr-percentage-text">${arrPercentageChangeHtml}</span>
 `;
-        let appStatusArrowHtml = '';
-        if (app.license.includes('Upgraded')) {
-            appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></i>`;
-        } else if (app.license.includes('Downgraded')) {
-            appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`;
-        } else {
-            appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`;
-        }
-        const appStatus = app.status;
+let appStatusArrowHtml = '';
+if (app.license.includes('Upgraded')) {
+    appStatusArrowHtml = `<i class="bi bi-arrow-up text-success app-status-arrow"></i>`;
+} else if (app.license.includes('Downgraded')) {
+    appStatusArrowHtml = `<i class="bi bi-arrow-down text-danger app-status-arrow"></i>`;
+} else {
+    appStatusArrowHtml = `<i class="bi bi-arrow-right text-primary app-status-arrow"></i>`;
+}
+const appStatus = app.status;
 
-        // New: Inactive status and cancellation reason display
-        let inactiveInfoHtml = '';
-        if (appStatus === 'Inactive' && app.inactiveMonths && app.cancellationReason) {
-            inactiveInfoHtml = `
-                <div class="inactive-info-container">
-                    <span class="inactive-months-text">Inactive for ${app.inactiveMonths} months</span>
-                    <i class="bi bi-info-circle-fill info-tooltip-icon">
-                        <div class="cancellation-reason-tooltip">
-                            ${app.cancellationReason}
-                        </div>
-                    </i>
+// New: Inactive status and cancellation reason display
+let inactiveInfoHtml = '';
+if (appStatus === 'Inactive' && app.inactiveMonths && app.cancellationReason) {
+    inactiveInfoHtml = `
+        <div class="inactive-info-container">
+            <span class="inactive-months-text">Inactive for ${app.inactiveMonths} months</span>
+            <i class="bi bi-info-circle-fill info-tooltip-icon">
+                <div class="cancellation-reason-tooltip">
+                    ${app.cancellationReason}
                 </div>
-            `;
-        }
-        row.innerHTML = `
+            </i>
+        </div>
+    `;
+}
+row.innerHTML = `
 <td><span class="expand-toggle-arrow">▼</span></td>
 <td style="min-width: 200px;">
 ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>
@@ -1146,21 +1285,21 @@ ${competitorsCellContent}
 <div class="action-dropdown-wrapper">
 <i class="bi bi-exclamation-triangle text-danger action-toggle-element"></i>
 <div class="action-dropdown-menu">
-    <button class="glass-button email-peer">
-        <i class="bi bi-envelope-fill"></i> Email to Peer
-    </button>
-    <button class="glass-button email-client">
-        <i class="bi bi-person-lines-fill"></i> Email to Client
-    </button>
-    <button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
-        <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
-    </button>
-<button class="glass-button store-link" onclick="window.open('https://store.zoho.com/zstore#customers', '_blank')">
-    <i class="bi bi-shop"></i> Store
+<button class="glass-button email-peer">
+<i class="bi bi-envelope-fill"></i> Email to Peer
 </button>
-    <button class="glass-button mics-link">
-        <i class="bi bi-shop"></i></i> MICS
-    </button>
+<button class="glass-button email-client">
+<i class="bi bi-person-lines-fill"></i> Email to Client
+</button>
+<button class="glass-button connect-us" data-subscription-id="${app.id}" data-subscription-name="${app.application}">
+<i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
+</button>
+<button class="glass-button store-link" onclick="window.open('https://store.zoho.com/zstore#customers', '_blank')">
+<i class="bi bi-shop"></i> Store
+</button>
+<button class="glass-button mics-link">
+<i class="bi bi-shop"></i></i> MICS
+</button>
 </div>
 </div>
 </td>
@@ -1168,208 +1307,208 @@ ${competitorsCellContent}
 const actionToggleElement = row.querySelector('.action-toggle-element');
 const actionDropdownMenu = row.querySelector('.action-dropdown-menu');
 if (actionToggleElement && actionDropdownMenu) {
-    actionToggleElement.addEventListener('click', (event) => {
-        event.stopPropagation();
-        if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
-            closeAllDropdowns();
-        }
-        closeAllThreatPopups();
-        actionDropdownMenu.classList.toggle('show');
-        if (actionDropdownMenu.classList.contains('show')) {
-            currentOpenDropdown = actionDropdownMenu;
-            currentOpenDropdownToggle = actionToggleElement;
-        } else {
-            closeAllDropdowns();
-        }
-    });
-    actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            console.log(`${button.textContent.trim()} clicked!`);
-            if (button.classList.contains('connect-us')) {
-                const subscriptionId = button.dataset.subscriptionId;
-                const subscriptionName = button.dataset.subscriptionName;
-                console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-                openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
-            }
-            closeAllDropdowns();
-        });
-    });
+actionToggleElement.addEventListener('click', (event) => {
+event.stopPropagation();
+if (currentOpenDropdown && currentOpenDropdown !== actionDropdownMenu) {
+    closeAllDropdowns();
+}
+closeAllThreatPopups();
+actionDropdownMenu.classList.toggle('show');
+if (actionDropdownMenu.classList.contains('show')) {
+    currentOpenDropdown = actionDropdownMenu;
+    currentOpenDropdownToggle = actionToggleElement;
+} else {
+    closeAllDropdowns();
+}
+});
+actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    console.log(`${button.textContent.trim()} clicked!`);
+    if (button.classList.contains('connect-us')) {
+        const subscriptionId = button.dataset.subscriptionId;
+        const subscriptionName = button.dataset.subscriptionName;
+        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+    }
+    closeAllDropdowns();
+});
+});
 }
 const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
 if (threatPopupWrapper) {
-    const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
-    const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
-    if (threatTrigger && threatPopup) {
-        threatTrigger.addEventListener('click', (event) => {
-            event.stopPropagation();
-            if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
-                closeAllThreatPopups();
-            }
-            closeAllDropdowns();
-            threatPopup.classList.toggle('show');
-            if (threatPopup.classList.contains('show')) {
-                currentOpenThreatPopup = threatPopup;
-                currentOpenThreatPopupToggle = threatTrigger;
-            } else {
-                closeAllThreatPopups();
+const threatTrigger = threatPopupWrapper.querySelector('.threat-tag-display') || threatPopupWrapper.querySelector('.threat-more-indicator');
+const threatPopup = threatPopupWrapper.querySelector('.threat-popup-container');
+if (threatTrigger && threatPopup) {
+threatTrigger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (currentOpenThreatPopup && currentOpenThreatPopup !== threatPopup) {
+        closeAllThreatPopups();
+    }
+    closeAllDropdowns();
+    threatPopup.classList.toggle('show');
+    if (threatPopup.classList.contains('show')) {
+        currentOpenThreatPopup = threatPopup;
+        currentOpenThreatPopupToggle = threatTrigger;
+    } else {
+        closeAllThreatPopups();
+    }
+});
+}
+}
+row.addEventListener('click', (event) => {
+if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
+return;
+}
+closeAllDropdowns();
+closeAllThreatPopups();
+const appId = app.id;
+const currentExpandedId = expandedRowId;
+const arrowSpan = row.querySelector('.expand-toggle-arrow');
+if (appId === currentExpandedId) {
+const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
+if (expandedRowElement) {
+    expandedRowElement.remove();
+}
+expandedRowId = null;
+if (arrowSpan) arrowSpan.textContent = '▼';
+} else {
+if (currentExpandedId !== null) {
+    const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
+    if (previousExpandedRowElement) {
+        previousExpandedRowElement.remove();
+    }
+    const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
+    if (previousArrow) previousArrow.textContent = '▼';
+}
+const expandedRow = document.createElement('tr');
+expandedRow.className = 'expanded-row';
+expandedRow.setAttribute('data-parent-app-id', appId);
+
+const isAnomalous = anomaliesFilteredData.some(item => item.id === app.id);
+let actionsSectionHtml = '';
+let usageLicenseHistoryColClass = 'col-md-6';
+let competitorAnomalyColClass = 'col-md-3';
+
+// Condition for showing the Actions section: only if the app is an anomaly AND the active section is 'anomalies'
+if (isAnomalous && activeSection === 'anomalies') {
+    let threatCompetitors = [];
+    const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+    const crossSellList = ['Mailchimp', 'Dropbox'];
+    if (app.competitors && app.competitors.length > 0) {
+        app.competitors.forEach(comp => {
+            // A competitor is a threat if it's on the threat list OR not on the cross-sell list.
+            if (threatList.includes(comp) || !crossSellList.includes(comp)) {
+                threatCompetitors.push(comp);
             }
         });
     }
-}
-row.addEventListener('click', (event) => {
-    if (event.target.closest('.action-dropdown-wrapper') || event.target.closest('.threat-popup-wrapper')) {
-        return;
-    }
-    closeAllDropdowns();
-    closeAllThreatPopups();
-    const appId = app.id;
-    const currentExpandedId = expandedRowId;
-    const arrowSpan = row.querySelector('.expand-toggle-arrow');
-    if (appId === currentExpandedId) {
-        const expandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${appId}"]`);
-        if (expandedRowElement) {
-            expandedRowElement.remove();
-        }
-        expandedRowId = null;
-        if (arrowSpan) arrowSpan.textContent = '▼';
-    } else {
-        if (currentExpandedId !== null) {
-            const previousExpandedRowElement = document.querySelector(`tr.expanded-row[data-parent-app-id="${currentExpandedId}"]`);
-            if (previousExpandedRowElement) {
-                previousExpandedRowElement.remove();
-            }
-            const previousArrow = document.querySelector(`tr[data-app-id="${currentExpandedId}"] .expand-toggle-arrow`);
-            if (previousArrow) previousArrow.textContent = '▼';
-        }
-        const expandedRow = document.createElement('tr');
-        expandedRow.className = 'expanded-row';
-        expandedRow.setAttribute('data-parent-app-id', appId);
+    const threatCompetitorsCount = threatCompetitors.length;
 
-        const isAnomalous = anomaliesFilteredData.some(item => item.id === app.id);
-        let actionsSectionHtml = '';
-        let usageLicenseHistoryColClass = 'col-md-6';
-        let competitorAnomalyColClass = 'col-md-3';
+    const threatCountBadge = threatCompetitorsCount > 0
+        ? `<span class="badge bg-danger rounded-pill">${threatCompetitorsCount}</span>`
+        : '';
+    
+    // Encode threats for data attribute
+    const threatsDataAttribute = `data-threats='${JSON.stringify(threatCompetitors)}'`;
 
-        // Condition for showing the Actions section: only if the app is an anomaly AND the active section is 'anomalies'
-        if (isAnomalous && activeSection === 'anomalies') {
-            let threatCompetitors = [];
-            const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-            const crossSellList = ['Mailchimp', 'Dropbox'];
-            if (app.competitors && app.competitors.length > 0) {
-                app.competitors.forEach(comp => {
-                    // A competitor is a threat if it's on the threat list OR not on the cross-sell list.
-                    if (threatList.includes(comp) || !crossSellList.includes(comp)) {
-                        threatCompetitors.push(comp);
-                    }
-                });
-            }
-            const threatCompetitorsCount = threatCompetitors.length;
-
-            const threatCountBadge = threatCompetitorsCount > 0
-                ? `<span class="badge bg-danger rounded-pill">${threatCompetitorsCount}</span>`
-                : '';
-            
-            // Encode threats for data attribute
-            const threatsDataAttribute = `data-threats='${JSON.stringify(threatCompetitors)}'`;
-
-            const resolvedItemsForApp = resolvedThreatsHistory.filter(item => item.appName === app.application);
-            const showResolvedIcon = resolvedItemsForApp.length > 0 ? 'inline-block' : 'none';
+    const resolvedItemsForApp = resolvedThreatsHistory.filter(item => item.appName === app.application);
+    const showResolvedIcon = resolvedItemsForApp.length > 0 ? 'inline-block' : 'none';
 
 
-            actionsSectionHtml = `
-                <div class="col-md-3 p-2 d-flex flex-column justify-content-between">
-                    <div>
-                         <h6 class="mb-2 fw-bold d-flex justify-content-between align-items-center">
-                            <span>Resolve (Anomalies)</span>
-                            <i class="bi bi-check-circle-fill text-success resolved-history-trigger animated" style="cursor: pointer; display: ${showResolvedIcon};" data-app-name="${app.application}" data-tooltip="Resolved History"></i>
-                        </h6>
-                        <div class="action-dropdown-wrapper">
-                            <div class="action-dropdown-menu show">
-                                <button class="glass-button threat-link threat-details-trigger d-flex justify-content-between align-items-center" ${threatsDataAttribute} data-app-id="${app.id}" ${threatCompetitorsCount === 0 ? 'disabled' : ''}>
-                                    <span>
-                                        <i class="bi bi-exclamation-octagon"></i> Competitors (<strong>Threat</strong>)
-                                    </span>
-                                    ${threatCountBadge}
-                                </button>
-                                <button class="glass-button desk-tickets-link">
-                                    <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;"> Tickets (<strong>Escalated</strong>)
-                                </button>
-                            </div>
-                        </div>
+    actionsSectionHtml = `
+        <div class="col-md-3 p-2 d-flex flex-column justify-content-between">
+            <div>
+                 <h6 class="mb-2 fw-bold d-flex justify-content-between align-items-center">
+                    <span>Resolve (Anomalies)</span>
+                    <i class="bi bi-check-circle-fill text-success resolved-history-trigger animated" style="cursor: pointer; display: ${showResolvedIcon};" data-app-name="${app.application}" data-tooltip="Resolved History"></i>
+                </h6>
+                <div class="action-dropdown-wrapper">
+                    <div class="action-dropdown-menu show">
+                        <button class="glass-button threat-link threat-details-trigger d-flex justify-content-between align-items-center" ${threatsDataAttribute} data-app-id="${app.id}" ${threatCompetitorsCount === 0 ? 'disabled' : ''}>
+                            <span>
+                                <i class="bi bi-exclamation-octagon"></i> Competitors (<strong>Threat</strong>)
+                            </span>
+                            ${threatCountBadge}
+                        </button>
+                        <button class="glass-button desk-tickets-link">
+                            <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;"> Tickets (<strong>Escalated</strong>)
+                        </button>
                     </div>
                 </div>
-            `;
-            usageLicenseHistoryColClass = 'col-md-6';
-            competitorAnomalyColClass = 'col-md-3';
-        } else {
-            // Adjust column widths if "Actions" section is not present
-            usageLicenseHistoryColClass = 'col-md-8';
-            competitorAnomalyColClass = 'col-md-4';
-        }
+            </div>
+        </div>
+    `;
+    usageLicenseHistoryColClass = 'col-md-6';
+    competitorAnomalyColClass = 'col-md-3';
+} else {
+    // Adjust column widths if "Actions" section is not present
+    usageLicenseHistoryColClass = 'col-md-8';
+    competitorAnomalyColClass = 'col-md-4';
+}
 
 
-        const getRandomUsage = () => {
-            const usages = ['Low', 'Medium', 'High'];
-            return usages[Math.floor(Math.random() * usages.length)];
-        };
-        const getRandomUsageTrend = () => {
-            const trends = [
-                { icon: 'bi-graph-up', class: 'text-success' },
-                { icon: 'bi-graph-down', class: 'text-danger' },
-                { icon: 'bi-dash-lg', class: 'text-muted' }
-            ];
-            return trends[Math.floor(Math.random() * trends.length)];
-        };
-        let monthlyDataHtml = app.monthlyData.map((month, index) => {
-            const randomUsage = getRandomUsage();
-            const randomUsageTrend = getRandomUsageTrend();
-            let changeIcon = '';
-            let changeClass = 'text-muted';
-            if (month.change.includes('+')) {
-                changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                changeClass = 'text-success';
-            } else if (month.change.includes('-')) {
-                changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                changeClass = 'text-danger';
+const getRandomUsage = () => {
+    const usages = ['Low', 'Medium', 'High'];
+    return usages[Math.floor(Math.random() * usages.length)];
+};
+const getRandomUsageTrend = () => {
+    const trends = [
+        { icon: 'bi-graph-up', class: 'text-success' },
+        { icon: 'bi-graph-down', class: 'text-danger' },
+        { icon: 'bi-dash-lg', class: 'text-muted' }
+    ];
+    return trends[Math.floor(Math.random() * trends.length)];
+};
+let monthlyDataHtml = app.monthlyData.map((month, index) => {
+    const randomUsage = getRandomUsage();
+    const randomUsageTrend = getRandomUsageTrend();
+    let changeIcon = '';
+    let changeClass = 'text-muted';
+    if (month.change.includes('+')) {
+        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
+        changeClass = 'text-success';
+    } else if (month.change.includes('-')) {
+        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+        changeClass = 'text-danger';
+    } else {
+        changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+    }
+    let revenueTrendIcon = '';
+    let revenueTrendClass = 'text-muted';
+    let revenuePercentageChange = 'N/A';
+    if (index > 0) {
+        const previousMonthRevenue = app.monthlyData[index - 1].revenue;
+        const currentMonthRevenue = month.revenue;
+        if (previousMonthRevenue !== 0) {
+            const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+            revenuePercentageChange = `${percentage.toFixed(1)}%`;
+            if (percentage > 0) {
+                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                revenueTrendClass = 'text-success';
+                revenuePercentageChange = `+${revenuePercentageChange}`;
+            } else if (percentage < 0) {
+                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                revenueTrendClass = 'text-danger';
             } else {
-                changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-            }
-            let revenueTrendIcon = '';
-            let revenueTrendClass = 'text-muted';
-            let revenuePercentageChange = 'N/A';
-            if (index > 0) {
-                const previousMonthRevenue = app.monthlyData[index - 1].revenue;
-                const currentMonthRevenue = month.revenue;
-                if (previousMonthRevenue !== 0) {
-                    const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
-                    revenuePercentageChange = `${percentage.toFixed(1)}%`;
-                    if (percentage > 0) {
-                        revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                        revenueTrendClass = 'text-success';
-                        revenuePercentageChange = `+${revenuePercentageChange}`;
-                    } else if (percentage < 0) {
-                        revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
-                        revenueTrendClass = 'text-danger';
-                    } else {
-                        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                        revenueTrendClass = 'text-muted';
-                    }
-                } else if (currentMonthRevenue > 0) {
-                    revenuePercentageChange = `+Inf%`;
-                    revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
-                    revenueTrendClass = 'text-success';
-                } else {
-                    revenuePercentageChange = `N/A`;
-                    revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
-                    revenueTrendClass = 'text-muted';
-                }
-            } else {
-                revenuePercentageChange = 'N/A';
                 revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
                 revenueTrendClass = 'text-muted';
             }
-            return `
+        } else if (currentMonthRevenue > 0) {
+            revenuePercentageChange = `+Inf%`;
+            revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+            revenueTrendClass = 'text-success';
+        } else {
+            revenuePercentageChange = `N/A`;
+            revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+            revenueTrendClass = 'text-muted';
+        }
+    } else {
+        revenuePercentageChange = 'N/A';
+        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+        revenueTrendClass = 'text-muted';
+    }
+    return `
 <tr>
 <td>${month.month}</td>
 <td>${randomUsage}</td>
@@ -1377,132 +1516,132 @@ row.addEventListener('click', (event) => {
 <td>${month.seats}</td>
 <td class="${changeClass}">${changeIcon} ${month.change}</td>
 <td>
-    <span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
-    <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
+<span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
+<span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
 </td>
 <td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
 </tr>
 `;
-        }).join('');
-        let competitorIntegrationsContent = '';
-        if (app.competitors && app.competitors.length > 0) {
-            competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
-        } else {
-            competitorIntegrationsContent = `No competitor integrations detected.`;
-        }
-        let anomaliesHtml = '';
-        const detectedAnomalies = [];
-        let isAppCritical = false;
-        if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
-            isAppCritical = true;
-            const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-            if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-                detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
+}).join('');
+let competitorIntegrationsContent = '';
+if (app.competitors && app.competitors.length > 0) {
+    competitorIntegrationsContent = app.competitors.map(comp => `<li>${comp}</li>`).join('');
+} else {
+    competitorIntegrationsContent = `No competitor integrations detected.`;
+}
+let anomaliesHtml = '';
+const detectedAnomalies = [];
+let isAppCritical = false;
+if (anomaliesCriticalOnlyData.some(item => item.id === app.id)) {
+    isAppCritical = true;
+    const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
+    if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
+        detectedAnomalies.push(`<li>Recent Significant Seat Loss</li>`);
+    }
+    if (app.usage === 'Low' && app.license.includes('Downgraded')) {
+        detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
+    }
+    let totalRecentDecline = 0;
+    const startIndex = app.monthlyData.length - 3;
+    const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
+    if (relevantMonths.length === 3) {
+        relevantMonths.forEach(month => {
+            const change = parseInt(month.change);
+            if (change < 0) {
+                totalRecentDecline += change;
             }
-            if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-                detectedAnomalies.push(`<li>Very Low Usage with Downgraded License</li>`);
-            }
-            let totalRecentDecline = 0;
-            const startIndex = app.monthlyData.length - 3;
-            const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-            if (relevantMonths.length === 3) {
-                relevantMonths.forEach(month => {
-                    const change = parseInt(month.change);
-                    if (change < 0) {
-                        totalRecentDecline += change;
-                    }
-                });
-            }
-            if (totalRecentDecline <= -3) {
-                detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
-            }
-            if (app.paymentFailureCount >= 5) {
-                detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
-            }
-            if (app.pauseScheduledCount >= 5) {
-                detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
-            }
-            let maxSeatsLast6MonthsForDisplay = 0;
-            if (app.monthlyData.length >= 6) {
-                const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-                maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-            }
-            if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
-                detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
-            }
-            const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-            if (totalInactiveAppsForDisplay > 4) {
-                detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
-            }
-            if (app.monthlyData.length >= 6) {
-                const m6Revenue = app.monthlyData[5].revenue;
-                const m3Revenue = app.monthlyData[2].revenue;
-                if (m3Revenue > 0) {
-                    const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                    if (percentageChange < -0.40) {
-                        detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
-                    }
-                }
-            }
-            const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-            if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
-                detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
-            }
-            if (relevantDepartmentForDisplay) {
-                const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-                const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
-                    tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-                );
-                if (hasCriticalProblematicTagForDisplay) {
-                    detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
-                }
+        });
+    }
+    if (totalRecentDecline <= -3) {
+        detectedAnomalies.push(`<li>Consistent Seat Decline</li>`);
+    }
+    if (app.paymentFailureCount >= 5) {
+        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Critical)</li>`);
+    }
+    if (app.pauseScheduledCount >= 5) {
+        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Critical)</li>`);
+    }
+    let maxSeatsLast6MonthsForDisplay = 0;
+    if (app.monthlyData.length >= 6) {
+        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+    }
+    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.40) {
+        detectedAnomalies.push(`<li>Seats Utilization < 40% of max in last 6 months (Critical)</li>`);
+    }
+    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+    if (totalInactiveAppsForDisplay > 4) {
+        detectedAnomalies.push(`<li>More than 4 applications are Inactive (Critical)</li>`);
+    }
+    if (app.monthlyData.length >= 6) {
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m3Revenue > 0) {
+            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+            if (percentageChange < -0.40) {
+                detectedAnomalies.push(`<li>ARR decreased by 40% or more (M3 to M6) (Critical)</li>`);
             }
         }
-        if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) {
-            if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
-                detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
-            }
-            if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
-                detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
-            }
-            let maxSeatsLast6MonthsForDisplay = 0;
-            if (app.monthlyData.length >= 6) {
-                const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-                maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
-            }
-            if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
-                detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
-            }
-            const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
-            if (totalInactiveAppsForDisplay > 2) {
-                detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
-            }
-            if (app.monthlyData.length >= 6) {
-                const m6Revenue = app.monthlyData[5].revenue;
-                const m3Revenue = app.monthlyData[2].revenue;
-                if (m3Revenue > 0) {
-                    const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-                    if (percentageChange < -0.30) {
-                        detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
-                    }
-                }
-            }
-            const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
-            if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
-                detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
-            }
-            if (relevantDepartmentForDisplay) {
-                const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
-                const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
-                    tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-                );
-                if (hasWarningProblematicTagForDisplay) {
-                    detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
-                }
+    }
+    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 3) {
+        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 3 open tickets (Critical)</li>`);
+    }
+    if (relevantDepartmentForDisplay) {
+        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+        const hasCriticalProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+            tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+        );
+        if (hasCriticalProblematicTagForDisplay) {
+            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has critical problematic tags (Critical)</li>`);
+        }
+    }
+}
+if (anomaliesWarningOnlyData.some(item => item.id === app.id) && !isAppCritical) {
+    if (app.paymentFailureCount > 0 && app.paymentFailureCount < 5) {
+        detectedAnomalies.push(`<li>Payment Failure: ${app.paymentFailureCount} (Warning)</li>`);
+    }
+    if (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5) {
+        detectedAnomalies.push(`<li>Pause Scheduled: ${app.pauseScheduledCount} (Warning)</li>`);
+    }
+    let maxSeatsLast6MonthsForDisplay = 0;
+    if (app.monthlyData.length >= 6) {
+        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+        maxSeatsLast6MonthsForDisplay = Math.max(...seatsInLast6Months);
+    }
+    if (maxSeatsLast6MonthsForDisplay > 0 && (app.seats / maxSeatsLast6MonthsForDisplay) < 0.70) {
+        detectedAnomalies.push(`<li>Seats Utilization < 70% of max in last 6 months (Warning)</li>`);
+    }
+    const totalInactiveAppsForDisplay = appData.filter(a => a.status === 'Inactive').length;
+    if (totalInactiveAppsForDisplay > 2) {
+        detectedAnomalies.push(`<li>More than 2 applications are Inactive (Warning)</li>`);
+    }
+    if (app.monthlyData.length >= 6) {
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m3Revenue > 0) {
+            const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
+            if (percentageChange < -0.30) {
+                detectedAnomalies.push(`<li>ARR decreased by 30% or more (M3 to M6) (Warning)</li>`);
             }
         }
-        if (detectedAnomalies.length > 0) {
-            anomaliesHtml = `
+    }
+    const relevantDepartmentForDisplay = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+    if (relevantDepartmentForDisplay && relevantDepartmentForDisplay.openStatus > 1) {
+        detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has > 1 open ticket (Warning)</li>`);
+    }
+    if (relevantDepartmentForDisplay) {
+        const openTicketsInDeptForDisplay = relevantDepartmentForDisplay.tickets.filter(tkt => tkt.status === 'Open');
+        const hasWarningProblematicTagForDisplay = openTicketsInDeptForDisplay.some(tkt =>
+            tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+        );
+        if (hasWarningProblematicTagForDisplay) {
+            detectedAnomalies.push(`<li>Relevant department (${relevantDepartmentForDisplay.department}) has problematic tags (Warning)</li>`);
+        }
+    }
+}
+if (detectedAnomalies.length > 0) {
+    anomaliesHtml = `
 <p class="mb-1 fw-bold text-danger">
 <i class="bi bi-exclamation-triangle-fill me-1"></i> Anomalies Detected:
 </p>
@@ -1510,99 +1649,99 @@ row.addEventListener('click', (event) => {
 ${detectedAnomalies.join('')}
 </ul>
 `;
-        } else {
-            anomaliesHtml = `
+} else {
+    anomaliesHtml = `
 <p class="mb-1 fw-bold text-success">
 <i class="bi bi-check-circle-fill me-1"></i> No Anomalies Detected
 </p>
 `;
-        }
-        expandedRow.innerHTML = `
+}
+expandedRow.innerHTML = `
 <td colspan="10">
 <div class="expanded-content p-3 bg-light rounded-bottom d-flex flex-wrap align-items-stretch">
 <div class="${usageLicenseHistoryColClass} p-2"> <!-- Changed to col-md-6 -->
-    <h6 class="mb-2 fw-bold">Usage & License History</h6>
-    <div class="table-responsive">
-        <table class="table table-sm monthly-data-table mb-0">
-            <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>Usage</th>
-                    <th>Trend</th>
-                    <th>License</th>
-                    <th>Trend</th>
-                    <th>ARR</th>
-                    <th>Trend</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${monthlyDataHtml}
-            </tbody>
-        </table>
-    </div>
+<h6 class="mb-2 fw-bold">Usage & License History</h6>
+<div class="table-responsive">
+<table class="table table-sm monthly-data-table mb-0">
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Usage</th>
+            <th>Trend</th>
+            <th>License</th>
+            <th>Trend</th>
+            <th>ARR</th>
+            <th>Trend</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${monthlyDataHtml}
+    </tbody>
+</table>
+</div>
 </div>
 <div class="${competitorAnomalyColClass} p-2 border-start border-end"> <!-- Changed to col-md-3 -->
-    <h6 class="mb-2 fw-bold">Competitor Integrations</h1>
-    <p class="small text-muted mb-3">
-        ${competitorIntegrationsContent}
-    </p>
-    <h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
-    <p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
-    ${anomaliesHtml}
+<h6 class="mb-2 fw-bold">Competitor Integrations</h1>
+<p class="small text-muted mb-3">
+${competitorIntegrationsContent}
+</p>
+<h6 class="mb-2 fw-bold">Zoho Conversion Opportunities</h1>
+<p class="small text-dark">${app.monthlyData[app.monthlyData.length - 1].zohoConversionOpportunities}</p>
+${anomaliesHtml}
 </div>
 ${actionsSectionHtml} <!-- Conditionally included -->
 </div>
 </td>
 `;
-        row.insertAdjacentElement('afterend', expandedRow);
+row.insertAdjacentElement('afterend', expandedRow);
 
-        // Add listener for the new threat popup trigger
-        const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
-        if (threatDetailsTrigger) {
-            threatDetailsTrigger.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent row from collapsing
-                const threats = JSON.parse(e.currentTarget.dataset.threats);
-                const appId = e.currentTarget.dataset.appId;
-                showThreatDetailsPopup(threats, appId);
-            });
-        }
-        
-        // Add listener for the new resolved history trigger
-        const resolvedHistoryTrigger = expandedRow.querySelector('.resolved-history-trigger');
-        if (resolvedHistoryTrigger) {
-            resolvedHistoryTrigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const appName = e.currentTarget.dataset.appName;
-                showResolvedHistoryPopup(appName, e.currentTarget);
-            });
-        }
+// Add listener for the new threat popup trigger
+const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
+if (threatDetailsTrigger) {
+    threatDetailsTrigger.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent row from collapsing
+        const threats = JSON.parse(e.currentTarget.dataset.threats);
+        const appId = e.currentTarget.dataset.appId;
+        showThreatDetailsPopup(threats, appId);
+    });
+}
 
-        expandedRowId = appId;
-        if (arrowSpan) arrowSpan.textContent = '▲';
-        // Apply animation to buttons in the expanded row's dropdown
-        if (isAnomalous && activeSection === 'anomalies') {
-            const expandedRowDropdownMenu = expandedRow.querySelector('.action-dropdown-menu');
-            if (expandedRowDropdownMenu) {
-                expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                    button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
-                });
-                // Add event listeners for the buttons directly
-                expandedRowDropdownMenu.querySelectorAll('button.connect-us').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        console.log(`${button.textContent.trim()} clicked from expanded row!`);
-                        if (button.classList.contains('connect-us')) {
-                            const subscriptionId = button.dataset.subscriptionId;
-                            const subscriptionName = button.dataset.subscriptionName;
-                            console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-                            openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
-                        }
-                        // No need to close dropdown as it's always visible
-                    });
-                });
-            }
-        }
+// Add listener for the new resolved history trigger
+const resolvedHistoryTrigger = expandedRow.querySelector('.resolved-history-trigger');
+if (resolvedHistoryTrigger) {
+    resolvedHistoryTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const appName = e.currentTarget.dataset.appName;
+        showResolvedHistoryPopup(appName, e.currentTarget);
+    });
+}
+
+expandedRowId = appId;
+if (arrowSpan) arrowSpan.textContent = '▲';
+// Apply animation to buttons in the expanded row's dropdown
+if (isAnomalous && activeSection === 'anomalies') {
+    const expandedRowDropdownMenu = expandedRow.querySelector('.action-dropdown-menu');
+    if (expandedRowDropdownMenu) {
+        expandedRowDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+            button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+        });
+        // Add event listeners for the buttons directly
+        expandedRowDropdownMenu.querySelectorAll('button.connect-us').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                console.log(`${button.textContent.trim()} clicked from expanded row!`);
+                if (button.classList.contains('connect-us')) {
+                    const subscriptionId = button.dataset.subscriptionId;
+                    const subscriptionName = button.dataset.subscriptionName;
+                    console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
+                    openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+                }
+                // No need to close dropdown as it's always visible
+            });
+        });
     }
+}
+}
 });
 applicationTableBody.appendChild(row);
 });
@@ -1632,97 +1771,97 @@ row.innerHTML = `
 <td>${ticket.openTicketOwnership}</td>
 `;
 row.addEventListener('click', (event) => {
-    const deptId = ticket.id;
-    const currentExpandedTicketId = expandedTicketRowId;
-    const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
-    if (deptId === currentExpandedTicketId) {
-        const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
-        if (expandedRowElement) {
-            expandedRowElement.remove();
-            row.classList.remove('expanded');
-        }
-        expandedTicketRowId = null;
-        if (arrowSpan) arrowSpan.textContent = '▼';
-    } else {
-        if (currentExpandedTicketId !== null) {
-            const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
-            if (previousExpandedRowElement) {
-                previousExpandedRowElement.remove();
-                const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
-                if(prevParentRow) prevParentRow.classList.remove('expanded');
-            }
-            const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
-            if (previousArrow) previousArrow.textContent = '▼';
-        }
-        const expandedTicketRow = document.createElement('tr');
-        expandedTicketRow.className = 'ticket-detail-expanded-row';
-        expandedTicketRow.setAttribute('data-parent-dept-id', deptId);
-        row.classList.add('expanded');
-        const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
-        const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
-        let openTicketsHtml = '';
-        if (openTickets && openTickets.length > 0) {
-            openTicketsHtml = openTickets.map(tkt => {
-                const currentTicketTags = assignTagsFromSummary(tkt.summary);
-                const tagsHtml = currentTicketTags.map(tag => {
-                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-                }).join('');
-                return `
+const deptId = ticket.id;
+const currentExpandedTicketId = expandedTicketRowId;
+const arrowSpan = row.querySelector('.ticket-expand-toggle-arrow');
+if (deptId === currentExpandedTicketId) {
+const expandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${deptId}"]`);
+if (expandedRowElement) {
+    expandedRowElement.remove();
+    row.classList.remove('expanded');
+}
+expandedTicketRowId = null;
+if (arrowSpan) arrowSpan.textContent = '▼';
+} else {
+if (currentExpandedTicketId !== null) {
+    const previousExpandedRowElement = document.querySelector(`tr.ticket-detail-expanded-row[data-parent-dept-id="${currentExpandedTicketId}"]`);
+    if (previousExpandedRowElement) {
+        previousExpandedRowElement.remove();
+        const prevParentRow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"]`);
+        if(prevParentRow) prevParentRow.classList.remove('expanded');
+    }
+    const previousArrow = document.querySelector(`tr[data-ticket-dept-id="${currentExpandedTicketId}"] .ticket-expand-toggle-arrow`);
+    if (previousArrow) previousArrow.textContent = '▼';
+}
+const expandedTicketRow = document.createElement('tr');
+expandedTicketRow.className = 'ticket-detail-expanded-row';
+expandedTicketRow.setAttribute('data-parent-dept-id', deptId);
+row.classList.add('expanded');
+const openTickets = ticket.tickets.filter(tkt => tkt.status === 'Open');
+const closedTickets = ticket.tickets.filter(tkt => tkt.status === 'Closed');
+let openTicketsHtml = '';
+if (openTickets && openTickets.length > 0) {
+    openTicketsHtml = openTickets.map(tkt => {
+        const currentTicketTags = assignTagsFromSummary(tkt.summary);
+        const tagsHtml = currentTicketTags.map(tag => {
+            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+        }).join('');
+        return `
 <li class="ticket-item">
-    <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
-    <span class="ticket-summary">${tkt.summary}</span>
-    <div class="ticket-tags">${tagsHtml}</div>
+<a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
+<span class="ticket-summary">${tkt.summary}</span>
+<div class="ticket-tags">${tagsHtml}</div>
 </li>
 `;
-            }).join('');
-        } else {
-            openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
-        }
-        let closedTicketsHtml = '';
-        if (closedTickets && closedTickets.length > 0) {
-            closedTicketsHtml = closedTickets.map(tkt => {
-                const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
-                    const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
-                    return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
-                }).join('');
-                return `
+    }).join('');
+} else {
+    openTicketsHtml = `<p class="text-muted small mb-0">No open tickets for this department.</p>`;
+}
+let closedTicketsHtml = '';
+if (closedTickets && closedTickets.length > 0) {
+    closedTicketsHtml = closedTickets.map(tkt => {
+        const tagsHtml = assignTagsFromSummary(tkt.summary).map(tag => {
+            const classFriendlyTag = tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+            return `<span class="ticket-tag tag-${classFriendlyTag}">${tag}</span>`;
+        }).join('');
+        return `
 <li class="ticket-item">
-    <a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
-    <span class="ticket-summary">${tkt.summary}</span>
-    <div class="ticket-tags">${tagsHtml}</div>
+<a href="${tkt.url}" target="_blank" class="ticket-id text-primary">${tkt.id}</a>
+<span class="ticket-summary">${tkt.summary}</span>
+<div class="ticket-tags">${tagsHtml}</div>
 </li>
 `;
-            }).join('');
-        } else {
-            closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
-        }
-        expandedTicketRow.innerHTML = `
+    }).join('');
+} else {
+    closedTicketsHtml = `<p class="text-muted small mb-0">No closed tickets for this department.</p>`;
+}
+expandedTicketRow.innerHTML = `
 <td colspan="5">
 <div class="ticket-dropdown-content">
 <div class="ticket-dropdown-section">
-    <strong>Executive Summary (Open Tickets) </strong>
-    <p class="small text-dark mb-0">${ticket.executiveSummary}</p>
+<strong>Executive Summary (Open Tickets) </strong>
+<p class="small text-dark mb-0">${ticket.executiveSummary}</p>
 </div>
 <div class="ticket-dropdown-section">
-    <strong>Open Tickets:</strong>
-    <ul class="ticket-list">
-        ${openTicketsHtml}
-    </ul>
+<strong>Open Tickets:</strong>
+<ul class="ticket-list">
+${openTicketsHtml}
+</ul>
 </div>
 <div class="ticket-dropdown-section">
-    <strong>Closed Tickets:</strong>
-    <ul class="ticket-list">
-        ${closedTicketsHtml}
-    </ul>
+<strong>Closed Tickets:</strong>
+<ul class="ticket-list">
+${closedTicketsHtml}
+</ul>
 </div>
 </div>
 </td>
 `;
-        row.insertAdjacentElement('afterend', expandedTicketRow);
-        expandedTicketRowId = deptId;
-        if (arrowSpan) arrowSpan.textContent = '▲';
-    }
+row.insertAdjacentElement('afterend', expandedTicketRow);
+expandedTicketRowId = deptId;
+if (arrowSpan) arrowSpan.textContent = '▲';
+}
 });
 ticketDetailsTableBody.appendChild(row);
 });
@@ -1732,7 +1871,8 @@ closeAllDropdowns();
 closeAllThreatPopups();
 closeSubscriptionChatModal();
 clearAllButtonHighlights();
-clearAllArrSegmentHighlights();
+clearAllArrSegmentHighlights(); // Clear ARR filter highlight
+currentArrFilter = 'all'; // Reset ARR filter state
 // Update the activeSection variable
 activeSection = selectedCategory;
 
@@ -1747,145 +1887,145 @@ ticketDetailsTableContainer.classList.add('fade-out');
 setTimeout(() => {
 // Hide current content after fade-out
 if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'none';
-    if (applicationTableBody) applicationTableBody.innerHTML = '';
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'none';
-    }
+applicationTableContainer.style.display = 'none';
+if (applicationTableBody) applicationTableBody.innerHTML = '';
+if (applicationTableHeader) {
+applicationTableHeader.style.display = 'none';
+}
 }
 if (ticketDetailsTableContainer) {
-    ticketDetailsTableContainer.style.display = 'none';
+ticketDetailsTableContainer.style.display = 'none';
 }
 // Render new content and apply fade-in
 switch (selectedCategory) {
-    case 'cross-sell':
-        if (crossSellBtn) crossSellBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(crossSellFilteredData);
-        activeSection = 'cross-sell';
-        updateCounts();
-        break;
-    case 'all-apps':
-        if (allAppsBtn) allAppsBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(allAppsFilteredData);
-        activeSection = 'all-apps';
-        updateCounts();
-        break;
-    case 'downgrades':
-        if (downgradesBtn) downgradesBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(downgradesFilteredData);
-        activeSection = 'downgrades';
-        updateCounts();
-        break;
-    case 'competitors':
-        if (competitorsBtn) competitorsBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(competitorsFilteredData);
-        activeSection = 'competitors';
-        updateCounts();
-        break;
-    case 'anomalies':
-        if (anomaliesBtn) anomaliesBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(dataToRender || anomaliesFilteredData);
-        activeSection = 'anomalies';
-        if (dataToRender !== null) {
-            updateCounts(dataToRender.length);
-        } else {
-            updateCounts();
-        }
-        break;
-    case 'ticket-details':
-        if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
-        if (ticketDetailsTableContainer) {
-            ticketDetailsTableContainer.style.display = 'block';
-            ticketDetailsTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            ticketDetailsTableContainer.classList.add('fade-in');
-        }
-        renderTicketDetailsTable();
-        activeSection = 'ticket-details';
-        updateCounts();
-        break;
-    case 'arr-less-than-5k':
-        if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(arrLessThan5kFilteredData);
-        activeSection = 'arr-less-than-5k';
-        updateCounts();
-        break;
-    case 'arr-greater-than-5k':
-        if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-            }
-        renderApplicationTable(arrGreaterThan5kFilteredData);
-        activeSection = 'arr-greater-than-5k';
-        updateCounts();
-        break;
-    default:
-        console.warn('Unknown category selected:', selectedCategory);
-        if (allAppsBtn) allAppsBtn.classList.add('active');
-        if (applicationTableContainer) {
-            applicationTableContainer.style.display = 'block';
-            applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-            applicationTableContainer.classList.add('fade-in');
-            if (applicationTableHeader) {
-                applicationTableHeader.style.display = 'table-header-group';
-            }
-        }
-        renderApplicationTable(allAppsFilteredData);
-        activeSection = 'all-apps';
-        updateCounts();
-        break;
+case 'cross-sell':
+if (crossSellBtn) crossSellBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(crossSellFilteredData);
+activeSection = 'cross-sell';
+updateCounts();
+break;
+case 'all-apps':
+if (allAppsBtn) allAppsBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+// This single function now refreshes all KPIs and renders the correct table
+updateDashboard(appData); 
+activeSection = 'all-apps';
+break;
+case 'downgrades':
+if (downgradesBtn) downgradesBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(downgradesFilteredData);
+activeSection = 'downgrades';
+updateCounts();
+break;
+case 'competitors':
+if (competitorsBtn) competitorsBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(competitorsFilteredData);
+activeSection = 'competitors';
+updateCounts();
+break;
+case 'anomalies':
+if (anomaliesBtn) anomaliesBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(dataToRender || anomaliesFilteredData);
+activeSection = 'anomalies';
+if (dataToRender !== null) {
+    updateCounts(dataToRender.length);
+} else {
+    updateCounts();
+}
+break;
+case 'ticket-details':
+if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
+if (ticketDetailsTableContainer) {
+    ticketDetailsTableContainer.style.display = 'block';
+    ticketDetailsTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    ticketDetailsTableContainer.classList.add('fade-in');
+}
+renderTicketDetailsTable();
+activeSection = 'ticket-details';
+updateCounts();
+break;
+case 'arr-less-than-5k':
+if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(arrLessThan5kFilteredData);
+activeSection = 'arr-less-than-5k';
+updateCounts();
+break;
+case 'arr-greater-than-5k':
+if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+    }
+renderApplicationTable(arrGreaterThan5kFilteredData);
+activeSection = 'arr-greater-than-5k';
+updateCounts();
+break;
+default:
+console.warn('Unknown category selected:', selectedCategory);
+if (allAppsBtn) allAppsBtn.classList.add('active');
+if (applicationTableContainer) {
+    applicationTableContainer.style.display = 'block';
+    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
+    applicationTableContainer.classList.add('fade-in');
+    if (applicationTableHeader) {
+        applicationTableHeader.style.display = 'table-header-group';
+    }
+}
+renderApplicationTable(allAppsFilteredData);
+activeSection = 'all-apps';
+updateCounts();
+break;
 }
 }, 300); // This delay should match the CSS transition duration for fade-out
 }
@@ -1907,36 +2047,36 @@ deskTicketsCard
 ];
 allCards.forEach(card => {
 if (card) {
-    card.classList.remove('active-highlight',
-        'card-border-critical',
-        'card-border-warning',
-        'card-border-competitor',
-        'card-border-downgrade',
-        'card-border-tickets');
+card.classList.remove('active-highlight',
+'card-border-critical',
+'card-border-warning',
+'card-border-competitor',
+'card-border-downgrade',
+'card-border-tickets');
 }
 });
 if (activeCardElementId) {
 const activeCard = document.getElementById(activeCardElementId);
 if (activeCard) {
-    activeCard.classList.add('active-highlight');
-    console.log(`Adding active-highlight to: ${activeCardElementId}`);
-    if (activeCardElementId === 'criticalIssuesCard') {
-        activeCard.classList.add('card-border-critical');
-        console.log(`Adding card-border-critical to: ${activeCardElementId}`);
-    } else if (activeCardElementId === 'warningSignsCard') {
-        activeCard.classList.add('card-border-warning');
-        console.log(`Adding card-border-warning to: ${activeCardElementId}`);
-    } else if (activeCardElementId === 'competitorExposureCard') {
-        activeCard.classList.add('card-border-competitor');
-        console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
-    } else if (activeCardElementId === 'downgradeRisksCard') {
-        activeCard.classList.add('card-border-downgrade');
-        console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
-    } else if (activeCardElementId === 'deskTicketsCard') {
-        activeCard.classList.add('card-border-downgrade');
-        console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
-    }
-    console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
+activeCard.classList.add('active-highlight');
+console.log(`Adding active-highlight to: ${activeCardElementId}`);
+if (activeCardElementId === 'criticalIssuesCard') {
+activeCard.classList.add('card-border-critical');
+console.log(`Adding card-border-critical to: ${activeCardElementId}`);
+} else if (activeCardElementId === 'warningSignsCard') {
+activeCard.classList.add('card-border-warning');
+console.log(`Adding card-border-warning to: ${activeCardElementId}`);
+} else if (activeCardElementId === 'competitorExposureCard') {
+activeCard.classList.add('card-border-competitor');
+console.log(`Adding card-border-competitor to: ${activeCardElementId}`);
+} else if (activeCardElementId === 'downgradeRisksCard') {
+activeCard.classList.add('card-border-downgrade');
+console.log(`Adding card-border-downgrade to: ${activeCardElementId}`);
+} else if (activeCardElementId === 'deskTicketsCard') {
+activeCard.classList.add('card-border-downgrade');
+console.log(`Adding card-border-tickets (if defined) to: ${activeCardElementId}`);
+}
+console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`);
 }
 }
 }
@@ -1970,117 +2110,117 @@ highlightActiveCard(null);
 }
 
 function showResolveNotesPopup(appId, threatName) {
-    if (!resolveNotesPopup) return;
-    // Store the current threat context to be used on submit
-    currentThreatToResolve = { appId, threatName };
-    // Clear the textarea from previous entries
-    if(resolveNotesTextarea) resolveNotesTextarea.value = '';
-    // Show the notes popup
-    resolveNotesPopup.style.display = 'flex';
+if (!resolveNotesPopup) return;
+// Store the current threat context to be used on submit
+currentThreatToResolve = { appId, threatName };
+// Clear the textarea from previous entries
+if(resolveNotesTextarea) resolveNotesTextarea.value = '';
+// Show the notes popup
+resolveNotesPopup.style.display = 'flex';
 }
 
 function closeResolveNotesPopup() {
-    if (resolveNotesPopup) {
-        resolveNotesPopup.style.display = 'none';
-    }
-    // Clear the context so we don't accidentally resolve the wrong item
-    currentThreatToResolve = null;
+if (resolveNotesPopup) {
+resolveNotesPopup.style.display = 'none';
+}
+// Clear the context so we don't accidentally resolve the wrong item
+currentThreatToResolve = null;
 }
 
 function showThreatDetailsPopup(threats, appId) {
-    if (!threatDetailsPopup || !threatListContainer) return;
+if (!threatDetailsPopup || !threatListContainer) return;
 
-    // Clear previous threats
-    threatListContainer.innerHTML = '';
+// Clear previous threats
+threatListContainer.innerHTML = '';
 
-    // Populate with new threats
-    if (threats && threats.length > 0) {
-        threats.forEach(threatName => {
-            const threatItem = document.createElement('div');
-            threatItem.className = 'threat-item';
-            threatItem.setAttribute('data-threat-name', threatName);
-            threatItem.innerHTML = `
-                <span class="threat-item-name">${threatName}</span>
-                <button class="threat-resolve-btn">Resolve</button>
-            `;
-            threatListContainer.appendChild(threatItem);
+// Populate with new threats
+if (threats && threats.length > 0) {
+threats.forEach(threatName => {
+    const threatItem = document.createElement('div');
+    threatItem.className = 'threat-item';
+    threatItem.setAttribute('data-threat-name', threatName);
+    threatItem.innerHTML = `
+        <span class="threat-item-name">${threatName}</span>
+        <button class="threat-resolve-btn">Resolve</button>
+    `;
+    threatListContainer.appendChild(threatItem);
 
-            // Add event listener for the resolve button
-            threatItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
-                showResolveNotesPopup(appId, threatName);
-            });
-        });
-    }
+    // Add event listener for the resolve button
+    threatItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
+        showResolveNotesPopup(appId, threatName);
+    });
+});
+}
 
-    // Show the popup
-    threatDetailsPopup.style.display = 'flex';
+// Show the popup
+threatDetailsPopup.style.display = 'flex';
 }
 
 function closeThreatDetailsPopup() {
-    if (threatDetailsPopup) {
-        threatDetailsPopup.style.display = 'none';
-    }
+if (threatDetailsPopup) {
+threatDetailsPopup.style.display = 'none';
+}
 }
 
 function showResolvedHistoryPopup(appName, triggerElement) {
-    if (!resolvedHistoryPopup || !resolvedHistoryListContainer || !triggerElement) return;
+if (!resolvedHistoryPopup || !resolvedHistoryListContainer || !triggerElement) return;
 
-    // Filter history for the specific app
-    const relevantHistory = resolvedThreatsHistory.filter(item => item.appName === appName);
+// Filter history for the specific app
+const relevantHistory = resolvedThreatsHistory.filter(item => item.appName === appName);
 
-    resolvedHistoryListContainer.innerHTML = ''; // Clear
+resolvedHistoryListContainer.innerHTML = ''; // Clear
 
-    if (relevantHistory.length > 0) {
-            relevantHistory.forEach(item => {
-            const historyItem = document.createElement('div');
-            historyItem.className = 'resolved-history-item';
-            
-            const timestamp = item.resolvedAt.toLocaleString('en-US', {
-                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-
-            historyItem.innerHTML = `
-                <div class="resolved-item-header">
-                    <span class="resolved-item-name">${item.threatName}</span>
-                    <span class="resolved-item-timestamp">${timestamp}</span>
-                </div>
-                <div class="resolved-item-notes">${item.notes || 'No notes provided.'}</div>
-            `;
-            resolvedHistoryListContainer.appendChild(historyItem);
-        });
-    } else {
-            resolvedHistoryListContainer.innerHTML = '<p class="text-muted text-center">No resolved items for this application yet.</p>';
-    }
-
-    const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
-    resolvedHistoryPopup.style.display = 'block'; // Show overlay to calculate dimensions
-
-    const rect = triggerElement.getBoundingClientRect();
-    const popupRect = popupContent.getBoundingClientRect();
+if (relevantHistory.length > 0) {
+    relevantHistory.forEach(item => {
+    const historyItem = document.createElement('div');
+    historyItem.className = 'resolved-history-item';
     
-    let top = rect.top - popupRect.height - 10; // 10px space above the icon
-    let left = rect.left + (rect.width / 2) - popupRect.width + 20; // Align right side near the icon
+    const timestamp = item.resolvedAt.toLocaleString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
 
-     // Boundary checks
-    if (top < 10) { top = rect.bottom + 10; }
-    if (left < 10) { left = 10; }
-    if (left + popupRect.width > window.innerWidth) {
-        left = window.innerWidth - popupRect.width - 10;
-    }
+    historyItem.innerHTML = `
+        <div class="resolved-item-header">
+            <span class="resolved-item-name">${item.threatName}</span>
+            <span class="resolved-item-timestamp">${timestamp}</span>
+        </div>
+        <div class="resolved-item-notes">${item.notes || 'No notes provided.'}</div>
+    `;
+    resolvedHistoryListContainer.appendChild(historyItem);
+});
+} else {
+    resolvedHistoryListContainer.innerHTML = '<p class="text-muted text-center">No resolved items for this application yet.</p>';
+}
 
-    popupContent.style.top = `${top}px`;
-    popupContent.style.left = `${left}px`;
+const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
+resolvedHistoryPopup.style.display = 'block'; // Show overlay to calculate dimensions
+
+const rect = triggerElement.getBoundingClientRect();
+const popupRect = popupContent.getBoundingClientRect();
+
+let top = rect.top - popupRect.height - 10; // 10px space above the icon
+let left = rect.left + (rect.width / 2) - popupRect.width + 20; // Align right side near the icon
+
+// Boundary checks
+if (top < 10) { top = rect.bottom + 10; }
+if (left < 10) { left = 10; }
+if (left + popupRect.width > window.innerWidth) {
+left = window.innerWidth - popupRect.width - 10;
+}
+
+popupContent.style.top = `${top}px`;
+popupContent.style.left = `${left}px`;
 }
 
 function closeResolvedHistoryPopup() {
-    if (resolvedHistoryPopup) {
-        resolvedHistoryPopup.style.display = 'none';
-        const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
-        if (popupContent) {
-            popupContent.style.top = '';
-            popupContent.style.left = '';
-        }
-    }
+if (resolvedHistoryPopup) {
+resolvedHistoryPopup.style.display = 'none';
+const popupContent = resolvedHistoryPopup.querySelector('.resolved-history-popup-content');
+if (popupContent) {
+    popupContent.style.top = '';
+    popupContent.style.left = '';
+}
+}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2100,14 +2240,11 @@ hideWidgetLoader();
 setTimeout(() => {
 filterDataArrays();
 console.log('Rendering initial table for "All Apps"');
-renderApplicationTable(allAppsFilteredData);
-if (allAppsBtn) {
-    allAppsBtn.classList.add('active');
+updateArrCapsuleCounts(); // Set the capsule counts which are static
+updateDashboard(appData); // Load the entire dashboard with all data initially
+if (allAppsBtn) { // Set the initial active button
+allAppsBtn.classList.add('active');
 }
-// Set health score to 100 as requested
-let calculatedHealthScore = 100;
-updateHealthScore(calculatedHealthScore);
-updateCounts();
 // Start the typewriter effect for the executive summary
 typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
 //hideWidgetLoader(); // Hide loader after content is loaded
@@ -2138,49 +2275,43 @@ switchTab('ticket-details');
 highlightActiveCard(null);
 });
 if (arrLessThan5kSegment) {
-arrLessThan5kSegment.addEventListener('click', () => {
-    switchTab('arr-less-than-5k');
-    highlightActiveCard(null);
-});
+arrLessThan5kSegment.addEventListener('click', () => handleArrFilterClick('lessThan5k'));
 }
 if (arrGreaterThan5kSegment) {
-arrGreaterThan5kSegment.addEventListener('click', () => {
-    switchTab('arr-greater-than-5k');
-    highlightActiveCard(null);
-});
+arrGreaterThan5kSegment.addEventListener('click', () => handleArrFilterClick('greaterThan5k'));
 }
 if (criticalIssuesCard) {
 criticalIssuesCard.addEventListener('click', () => {
-    switchTab('anomalies', anomaliesCriticalOnlyData);
-    highlightActiveCard('criticalIssuesCard');
+switchTab('anomalies', anomaliesCriticalOnlyData);
+highlightActiveCard('criticalIssuesCard');
 });
 criticalIssuesCard.style.cursor = 'pointer';
 }
 if (warningSignsCard) {
 warningSignsCard.addEventListener('click', () => {
-    switchTab('anomalies', anomaliesWarningOnlyData);
-    highlightActiveCard('warningSignsCard');
+switchTab('anomalies', anomaliesWarningOnlyData);
+highlightActiveCard('warningSignsCard');
 });
 warningSignsCard.style.cursor = 'pointer';
 }
 if (competitorExposureCard) {
 competitorExposureCard.addEventListener('click', () => {
-    switchTab('competitors');
-    highlightActiveCard('competitorExposureCard');
+switchTab('competitors');
+highlightActiveCard('competitorExposureCard');
 });
 competitorExposureCard.style.cursor = 'pointer';
 }
 if (downgradeRisksCard) {
 downgradeRisksCard.addEventListener('click', () => {
-    switchTab('downgrades');
-    highlightActiveCard('downgradeRisksCard');
+switchTab('downgrades');
+highlightActiveCard('downgradeRisksCard');
 });
 downgradeRisksCard.style.cursor = 'pointer';
 }
 if (deskTicketsCard) {
 deskTicketsCard.addEventListener('click', () => {
-    switchTab('ticket-details');
-    highlightActiveCard('deskTicketsCard');
+switchTab('ticket-details');
+highlightActiveCard('deskTicketsCard');
 });
 deskTicketsCard.style.cursor = 'pointer';
 }
@@ -2190,7 +2321,7 @@ applicationTableContainer.classList.remove('fade-out', 'd-none');
 applicationTableContainer.classList.add('fade-in');
 applicationTableContainer.style.display = 'block';
 if (applicationTableHeader) {
-    applicationTableHeader.style.display = 'table-header-group';
+applicationTableHeader.style.display = 'table-header-group';
 }
 }
 if (ticketDetailsTableContainer) {
@@ -2200,135 +2331,135 @@ ticketDetailsTableContainer.style.display = 'none';
 }
 
 if (threatPopupCloseBtn) {
-    threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
+threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
 }
 if (threatDetailsPopup) {
-    threatDetailsPopup.addEventListener('click', (e) => {
-        if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
-            closeThreatDetailsPopup();
-        }
-    });
+threatDetailsPopup.addEventListener('click', (e) => {
+if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
+    closeThreatDetailsPopup();
+}
+});
 }
 
 if (resolveNotesCancelBtn) {
-    resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
+resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
 }
 
 if (resolveNotesSubmitBtn) {
-    resolveNotesSubmitBtn.addEventListener('click', () => {
-        if (!currentThreatToResolve) return;
+resolveNotesSubmitBtn.addEventListener('click', () => {
+if (!currentThreatToResolve) return;
 
-        const { appId, threatName } = currentThreatToResolve;
-        const notes = resolveNotesTextarea.value; 
-        console.log(`Resolving threat '${threatName}' for app ID ${appId} with notes: ${notes}`);
+const { appId, threatName } = currentThreatToResolve;
+const notes = resolveNotesTextarea.value; 
+console.log(`Resolving threat '${threatName}' for app ID ${appId} with notes: ${notes}`);
 
-        // Add to history
-        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
-        resolvedThreatsHistory.push({
-            appName: appForHistory?.application,
-            threatName: threatName,
-            notes: notes,
-            resolvedAt: new Date()
-        });
+// Add to history
+const appForHistory = appData.find(app => app.id.toString() === appId.toString());
+resolvedThreatsHistory.push({
+    appName: appForHistory?.application,
+    threatName: threatName,
+    notes: notes,
+    resolvedAt: new Date()
+});
 
-        // Find the app in the main data array and update its competitors
-        const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-        if (appIndex !== -1) {
-            appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== threatName);
+// Find the app in the main data array and update its competitors
+const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+if (appIndex !== -1) {
+    appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== threatName);
+    
+    // Re-filter all data arrays based on the change
+    filterDataArrays();
+    
+    // Update all counts displayed on the page (KPI cards, filter buttons)
+    updateCounts();
+
+    // --- Targeted DOM Update for the expanded row ---
+    const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
+    if (expandedRow) {
+        // Find the app again to get the *new* threat list
+        const updatedApp = appData[appIndex];
+        
+        let updatedThreatCompetitors = [];
+        const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+        const crossSellList = ['Mailchimp', 'Dropbox'];
+        if (updatedApp.competitors && updatedApp.competitors.length > 0) {
+            updatedApp.competitors.forEach(comp => {
+                if (threatList.includes(comp) || !crossSellList.includes(comp)) {
+                    updatedThreatCompetitors.push(comp);
+                }
+            });
+        }
+        
+        const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
+        const threatCountBadge = expandedRow.querySelector('.threat-details-trigger .badge');
+
+        if (threatDetailsTrigger) {
+            // Update data attribute
+            threatDetailsTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
             
-            // Re-filter all data arrays based on the change
-            filterDataArrays();
-            
-            // Update all counts displayed on the page (KPI cards, filter buttons)
-            updateCounts();
-
-            // --- Targeted DOM Update for the expanded row ---
-            const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
-            if (expandedRow) {
-                // Find the app again to get the *new* threat list
-                const updatedApp = appData[appIndex];
-                
-                let updatedThreatCompetitors = [];
-                const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-                const crossSellList = ['Mailchimp', 'Dropbox'];
-                if (updatedApp.competitors && updatedApp.competitors.length > 0) {
-                    updatedApp.competitors.forEach(comp => {
-                        if (threatList.includes(comp) || !crossSellList.includes(comp)) {
-                            updatedThreatCompetitors.push(comp);
-                        }
-                    });
+            // Update badge
+            if (updatedThreatCompetitors.length > 0) {
+                if (threatCountBadge) {
+                    threatCountBadge.textContent = updatedThreatCompetitors.length;
                 }
-                
-                const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
-                const threatCountBadge = expandedRow.querySelector('.threat-details-trigger .badge');
-
-                if (threatDetailsTrigger) {
-                    // Update data attribute
-                    threatDetailsTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
-                    
-                    // Update badge
-                    if (updatedThreatCompetitors.length > 0) {
-                        if (threatCountBadge) {
-                            threatCountBadge.textContent = updatedThreatCompetitors.length;
-                        }
-                        threatDetailsTrigger.disabled = false;
-                    } else {
-                        if (threatCountBadge) {
-                            threatCountBadge.remove();
-                        }
-                        threatDetailsTrigger.disabled = true;
-                    }
+                threatDetailsTrigger.disabled = false;
+            } else {
+                if (threatCountBadge) {
+                    threatCountBadge.remove();
                 }
-                 // Show resolved checkmark icon
-                const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
-                if (resolvedIcon) {
-                    resolvedIcon.style.display = 'inline-block';
-                }
+                threatDetailsTrigger.disabled = true;
             }
         }
-
-        // Close the notes popup
-        closeResolveNotesPopup();
-
-        // --- Update Threat Details Popup ---
-        // Remove the resolved item from the popup list
-        if (threatListContainer) {
-            // Use querySelector with the attribute we added to find the specific item
-            const threatItemToRemove = threatListContainer.querySelector(`.threat-item[data-threat-name="${threatName}"]`);
-            if (threatItemToRemove) {
-                threatItemToRemove.remove();
-            }
-
-            // If the list is now empty, close the threats popup
-            if (threatListContainer.children.length === 0) {
-                closeThreatDetailsPopup();
-            }
+         // Show resolved checkmark icon
+        const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
+        if (resolvedIcon) {
+            resolvedIcon.style.display = 'inline-block';
         }
-    });
+    }
+}
+
+// Close the notes popup
+closeResolveNotesPopup();
+
+// --- Update Threat Details Popup ---
+// Remove the resolved item from the popup list
+if (threatListContainer) {
+    // Use querySelector with the attribute we added to find the specific item
+    const threatItemToRemove = threatListContainer.querySelector(`.threat-item[data-threat-name="${threatName}"]`);
+    if (threatItemToRemove) {
+        threatItemToRemove.remove();
+    }
+
+    // If the list is now empty, close the threats popup
+    if (threatListContainer.children.length === 0) {
+        closeThreatDetailsPopup();
+    }
+}
+});
 }
 
 if (resolvedHistoryPopupCloseBtn) {
-    resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
+resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
 }
 if (resolvedHistoryPopup) {
-    resolvedHistoryPopup.addEventListener('click', (e) => {
-        if (e.target === resolvedHistoryPopup) { // Close on overlay click
-            closeResolvedHistoryPopup();
-        }
-    });
+resolvedHistoryPopup.addEventListener('click', (e) => {
+if (e.target === resolvedHistoryPopup) { // Close on overlay click
+    closeResolvedHistoryPopup();
+}
+});
 }
 
 
 document.addEventListener('click', (event) => {
 if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
-    closeAllDropdowns();
+closeAllDropdowns();
 }
 if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
-    closeAllThreatPopups();
+closeAllThreatPopups();
 }
 if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-    !event.target.closest('.subscription-chat-modal')) {
-    closeSubscriptionChatModal();
+!event.target.closest('.subscription-chat-modal')) {
+closeSubscriptionChatModal();
 }
 // Removed popup-overlay closing logic as it's no longer used for these popups
 });
@@ -2336,21 +2467,21 @@ const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
 const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
 if (clickableEyeIcon && ratingDetailsPopup) {
 clickableEyeIcon.addEventListener('click', (event) => {
-    console.log('Eye icon clicked!');
-    event.stopPropagation();
-    if (ratingDetailsPopup.style.display === 'block') {
-        ratingDetailsPopup.style.display = 'none';
-    } else {
-        ratingDetailsPopup.style.display = 'block';
-    }
+console.log('Eye icon clicked!');
+event.stopPropagation();
+if (ratingDetailsPopup.style.display === 'block') {
+ratingDetailsPopup.style.display = 'none';
+} else {
+ratingDetailsPopup.style.display = 'block';
+}
 });
 document.addEventListener('click', (event) => {
-    if (ratingDetailsPopup.style.display === 'block' &&
-        !clickableEyeIcon.contains(event.target) &&
-        !ratingDetailsPopup.contains(event.target)) {
-        console.log('Closing popup due to outside click.');
-        ratingDetailsPopup.style.display = 'none';
-    }
+if (ratingDetailsPopup.style.display === 'block' &&
+!clickableEyeIcon.contains(event.target) &&
+!ratingDetailsPopup.contains(event.target)) {
+console.log('Closing popup due to outside click.');
+ratingDetailsPopup.style.display = 'none';
+}
 });
 }
 const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
@@ -2361,57 +2492,57 @@ const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); //
 const threatButton = document.getElementById('threat-button');
 const ticketButton = document.getElementById('ticket-button');
 if (needHelpToggleElement && needHelpDropdownMenu) {
-    needHelpToggleElement.addEventListener('click', (event) => {
-        event.stopPropagation();
-        if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-            closeAllDropdowns();
-        }
-        closeAllThreatPopups();
-        needHelpDropdownMenu.classList.toggle('show');
-        if (needHelpDropdownMenu.classList.contains('show')) {
-            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-                button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
-            });
-            currentOpenDropdown = needHelpDropdownMenu;
-            currentOpenDropdownToggle = needHelpToggleElement;
-        } else {
-            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                button.style.animation = '';
-            });
-            closeAllDropdowns();
-        }
+needHelpToggleElement.addEventListener('click', (event) => {
+event.stopPropagation();
+if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
+    closeAllDropdowns();
+}
+closeAllThreatPopups();
+needHelpDropdownMenu.classList.toggle('show');
+if (needHelpDropdownMenu.classList.contains('show')) {
+    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
     });
-    // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
-    if (needHelpChatAgentBtn ) {
-        needHelpChatAgentBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
-            // Pass generic values for subscriptionId and subscriptionName
-            openSubscriptionChatModal(null, null, event.target);
-            closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-        });
-       
-    }
-     /**needResolvedIssuesBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
-            // Pass generic values for subscriptionId and subscriptionName
-            openSubscriptionChatModal(null, null, event.target);
-             threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
-            ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
-            closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-        });**/
-    
+    currentOpenDropdown = needHelpDropdownMenu;
+    currentOpenDropdownToggle = needHelpToggleElement;
+} else {
     needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-        // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
-        if (button.id !== 'needHelpChatAgentBtn') {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-                console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-                closeAllDropdowns();
-            });
-        }
+        button.style.animation = '';
     });
+    closeAllDropdowns();
+}
+});
+// Add event listener for the "Chat with Agent" button inside the Need Help dropdown
+if (needHelpChatAgentBtn ) {
+needHelpChatAgentBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
+    // Pass generic values for subscriptionId and subscriptionName
+    openSubscriptionChatModal(null, null, event.target);
+    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+});
+
+}
+/**needResolvedIssuesBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
+    // Pass generic values for subscriptionId and subscriptionName
+    openSubscriptionChatModal(null, null, event.target);
+     threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
+    ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
+    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+});**/
+
+needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+// Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
+if (button.id !== 'needHelpChatAgentBtn') {
+    button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+        closeAllDropdowns();
+    });
+}
+});
 }
 }
 if (closeSubscriptionChatModalBtn) {
@@ -2420,93 +2551,97 @@ closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatMod
 // Event listeners for new hover popups
 if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
 recentPurchasesCountSpan.addEventListener('mouseenter', () => {
-    recentPurchasesHoverList.innerHTML = ''; // Clear previous content
-    if (recentPurchasesData.length > 0) {
-        recentPurchasesData.forEach((item, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
-            recentPurchasesHoverList.appendChild(li);
-        });
-    } else {
-        const li = document.createElement('li');
-        li.textContent = 'No recent purchases in the last 6 months.';
-        recentPurchasesHoverList.appendChild(li);
-    }
-    recentPurchasesHoverPopup.classList.add('show');
+recentPurchasesHoverList.innerHTML = ''; // Clear previous content
+if (recentPurchasesData.length > 0) {
+recentPurchasesData.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
+    recentPurchasesHoverList.appendChild(li);
+});
+} else {
+const li = document.createElement('li');
+li.textContent = 'No recent purchases in the last 6 months.';
+recentPurchasesHoverList.appendChild(li);
+}
+recentPurchasesHoverPopup.classList.add('show');
 });
 recentPurchasesCountSpan.addEventListener('mouseleave', () => {
-    recentPurchasesHoverPopup.classList.remove('show');
+recentPurchasesHoverPopup.classList.remove('show');
 });
 }
 
 if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
 nextRenewalsCountSpan.addEventListener('mouseenter', () => {
-    nextRenewalsHoverList.innerHTML = ''; // Clear previous content
-    if (nextRenewalsData.length > 0) {
-        // Sort the data by date before rendering
-        nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+nextRenewalsHoverList.innerHTML = ''; // Clear previous content
+if (nextRenewalsData.length > 0) {
+// Sort the data by date before rendering
+nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        nextRenewalsData.forEach((item, index) => {
-            const li = document.createElement('li');
-            // Apply flexbox styles directly to the list item for alignment
-            li.style.display = 'flex';
-            li.style.justifyContent = 'space-between';
-            li.style.alignItems = 'center';
-            li.style.padding = '8px 0'; // Add padding for visual separation
-            li.style.borderBottom = '1px solid #eee'; // Keep border for separation
+nextRenewalsData.forEach((item, index) => {
+    const li = document.createElement('li');
+    // Apply flexbox styles directly to the list item for alignment
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'center';
+    li.style.padding = '8px 0'; // Add padding for visual separation
+    li.style.borderBottom = '1px solid #eee'; // Keep border for separation
 
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'app-name';
-            nameSpan.textContent = item.name;
-            nameSpan.style.flexBasis = '40%'; // Allocate space for name
-            nameSpan.style.textAlign = 'left';
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'app-name';
+    nameSpan.textContent = item.name;
+    nameSpan.style.flexBasis = '40%'; // Allocate space for name
+    nameSpan.style.textAlign = 'left';
 
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'renewal-date';
-            dateSpan.textContent = item.date;
-            dateSpan.style.flexBasis = '30%'; // Allocate space for date
-            nameSpan.style.textAlign = 'center';
+    const dateSpan = document.createElement('span');
+    dateSpan.className = 'renewal-date';
+    dateSpan.textContent = item.date;
+    dateSpan.style.flexBasis = '30%'; // Allocate space for date
+    nameSpan.style.textAlign = 'center';
 
-            const revenueSpan = document.createElement('span');
-            revenueSpan.className = 'app-revenue';
-            revenueSpan.textContent = `$${item.revenue}`;
-            revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
-            revenueSpan.style.textAlign = 'right';
+    const revenueSpan = document.createElement('span');
+    revenueSpan.className = 'app-revenue';
+    revenueSpan.textContent = `$${item.revenue}`;
+    revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
+    revenueSpan.style.textAlign = 'right';
 
-            li.appendChild(nameSpan);
-            li.appendChild(dateSpan);
-            li.appendChild(revenueSpan);
-            nextRenewalsHoverList.appendChild(li);
-        });
-        // Remove border from the last item
-        if (nextRenewalsHoverList.lastChild) {
-            nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
-        }
-    } else {
-        const li = document.createElement('li');
-        li.textContent = 'No upcoming renewals in the next 3 months.';
-        nextRenewalsHoverList.appendChild(li);
-    }
-    nextRenewalsHoverPopup.classList.add('show');
+    li.appendChild(nameSpan);
+    li.appendChild(dateSpan);
+    li.appendChild(revenueSpan);
+    nextRenewalsHoverList.appendChild(li);
+});
+// Remove border from the last item
+if (nextRenewalsHoverList.lastChild) {
+    nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
+}
+} else {
+const li = document.createElement('li');
+li.textContent = 'No upcoming renewals in the next 3 months.';
+nextRenewalsHoverList.appendChild(li);
+}
+nextRenewalsHoverPopup.classList.add('show');
 });
 nextRenewalsCountSpan.addEventListener('mouseleave', () => {
-    nextRenewalsHoverPopup.classList.remove('show');
+nextRenewalsHoverPopup.classList.remove('show');
 });
 }
 
 // Event listener for the new refresh icon
 refreshIcon.addEventListener('click', () => {
-    location.reload(); // Reload the entire page
+location.reload(); // Reload the entire page
 });
 });
 
 
- const loader = document.getElementById('widgetLoaderOverlay');
+const loader = document.getElementById('widgetLoaderOverlay');
 const container = document.getElementById('container-id');
 setTimeout(() => {
-            // Hide the loader
-            loader.style.display = 'none';
+    // Hide the loader
+    loader.style.display = 'none';
 
-            // Show the container
-            container.style.display = 'block';
-        }, 3000); // Your JavaScript goes here
+    // Show the container
+    container.style.display = 'block';
+}, 3000); 
+
+
+
+
