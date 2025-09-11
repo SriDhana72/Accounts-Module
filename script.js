@@ -2244,6 +2244,49 @@ switchTab('ticket-details');
 highlightActiveCard(null);
 }
 
+function startTypewriterSequence() {
+const summaries = [
+{ id: 'summary-subscription', text: 'The overall health score of this account is classified as healthy, indicating a positive status.' },
+{ id: 'summary-potential', text: 'A user is evaluating the product "Analytics" with a lead type of "MQL". The user has received several emails with different subjects, including "Unlock $100 in wallet credits" and "Tu Período Gratuito de Zoho Analytics llego a su fin!". The user has opened 4 of the 6 emails, with the most opened being "Introducción al Potencial de Zoho Analytics" with 3 opens.' },
+{ id: 'summary-hygiene', text: "A lead, jrodriguez@pasosalexito.com, was contacted by Aziz Chafi, Sales Director at Zoho, on 2025-08-27. The lead mentioned being part of a corporate account with PAE. Pasos Al Exito. A call was made to Bekki Grimm, the lead's owner, on 2025-08-27. Previous attempts were made to contact the lead, including multiple emails and calls, with no response. The lead was marked as Closed Lost on 2024-10-24." }
+];
+
+let summaryIndex = 0;
+const speed = 15; // ms per character
+
+function typeNextSummary() {
+if (summaryIndex >= summaries.length) return;
+
+const summary = summaries[summaryIndex];
+const element = document.getElementById(summary.id);
+const text = summary.text;
+
+if (!element) {
+    summaryIndex++;
+    typeNextSummary();
+    return;
+}
+
+let charIndex = 0;
+element.innerHTML = '';
+
+function typeChar() {
+    if (charIndex < text.length) {
+        element.innerHTML += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, speed);
+    } else {
+        summaryIndex++;
+        typeNextSummary(); // Move to the next summary
+    }
+}
+
+typeChar();
+}
+
+typeNextSummary(); // Start the sequence
+}
+
 function showResolveNotesPopup(appId, threatName) {
 if (!resolveNotesPopup) return;
 // Store the current threat context to be used on submit
@@ -2381,6 +2424,7 @@ if (allAppsBtn) { // Set the initial active button
 allAppsBtn.classList.add('active');
 }
 //hideWidgetLoader(); // Hide loader after content is loaded
+startTypewriterSequence();
 }, 3500); // Simulate 1 second loading time
 
 if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
