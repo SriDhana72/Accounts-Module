@@ -573,12 +573,17 @@ let resolveNotesPopup = null;
 let resolveNotesTextarea = null;
 let resolveNotesSubmitBtn = null;
 let resolveNotesCancelBtn = null;
-let currentThreatToResolve = null; // To store {appId, threatName}
+let currentItemToResolve = null; // To store {appId, threatName}
+
+
+let escalatedTicketsPopup = null;
+let escalatedTicketsListContainer = null;
+let escalatedTicketsPopupCloseBtn = null;
 
 let resolvedHistoryPopup = null;
 let resolvedHistoryListContainer = null;
 let resolvedHistoryPopupCloseBtn = null;
-let resolvedThreatsHistory = []; // To store resolved items
+let resolvedItemsHistory = []; // Generic history storage
 
 let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
@@ -663,6 +668,7 @@ nextRenewalsHoverPopup = document.getElementById('nextRenewalsHoverPopup');
 recentPurchasesHoverList = document.getElementById('recentPurchasesHoverList');
 nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
 widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
+executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
 refreshIcon = document.getElementById('refreshIcon'); // Added refresh icon element
 threatDetailsPopup = document.getElementById('threatDetailsPopup');
 threatListContainer = document.getElementById('threatListContainer');
@@ -672,7 +678,11 @@ resolveNotesPopup = document.getElementById('resolveNotesPopup');
 resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
 resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
 resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
+escalatedTicketsPopup = document.getElementById('escalatedTicketsPopup');
 
+escalatedTicketsListContainer = document.getElementById('escalatedTicketsListContainer');
+
+escalatedTicketsPopupCloseBtn = document.getElementById('escalatedTicketsPopupCloseBtn');
 resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
 resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
 resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
@@ -698,6 +708,8 @@ if (!widgetLoaderOverlay) {
 console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
 return false;
 }
+
+
 if (!refreshIcon) {
 console.error('Refresh icon element (refreshIcon) not found!');
 return false;
@@ -717,6 +729,35 @@ let arrLessThan5kFilteredData = [];
 let arrGreaterThan5kFilteredData = [];
 let recentPurchasesData = [];
 let nextRenewalsData = [];
+const originalExecutiveSummaryText = "This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.";
+
+function typeWriterEffect(element, text, speed) {
+
+if (!element) return;
+
+const words = text.split(' ');
+
+let i = 0;
+
+element.textContent = ''; // Clear existing text
+
+function typeWord() {
+
+if (i < words.length) {
+
+element.textContent += words[i] + ' ';
+
+i++;
+
+setTimeout(typeWord, speed);
+
+}
+
+}
+
+typeWord();
+
+}
 function calculateTotalArr(app) {
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
 return currentMonthData ? currentMonthData.revenue : 0;
@@ -1002,11 +1043,21 @@ if (downgradesCountSpan) downgradesCountSpan.textContent = downgradeCount;
 if (competitorsCountSpan) competitorsCountSpan.textContent = competitorCount;
 if (anomaliesCountSpan) anomaliesCountSpan.textContent = anomaliesCount;
 
+const relevantDeptIds = new Set(data.map(app => app.relevantDepartmentId));
+
+const relevantTickets = ticketDetailsData.filter(dept => relevantDeptIds.has(dept.id));
+
+const openTickets = relevantTickets.reduce((sum, dept) => sum + dept.openStatus, 0);
+
+const closedTickets = relevantTickets.reduce((sum, dept) => sum + dept.closedStatus, 0);
+
 // Desk tickets based on relevant departments
 const openTicketsCountInCard = document.getElementById('openTicketsCount');
 const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
-if(openTicketsCountInCard) openTicketsCountInCard.textContent = 8;
-if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = 2;
+if(openTicketsCountInCard) openTicketsCountInCard.textContent = openTickets;
+
+if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = closedTickets;
+
 
 // 6. Render the table with the new data
 renderApplicationTable(data);
@@ -1045,8 +1096,12 @@ downgradeRisksCountElement.textContent = downgradesFilteredData.length;
 }
 const openTicketsCountSpan = document.getElementById('openTicketsCount');
 const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
-if (openTicketsCountSpan) openTicketsCountSpan.textContent = 8;
-if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = 2;
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+
+const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
+if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
+
+if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
 
 if (openTicketsCountSpan) {
 openTicketsCountSpan.style.minWidth = '50px';
@@ -1550,7 +1605,21 @@ if (isAnomalous && activeSection === 'anomalies') {
     // Encode threats for data attribute
     const threatsDataAttribute = `data-threats='${JSON.stringify(threatCompetitors)}'`;
 
-    const resolvedItemsForApp = resolvedThreatsHistory.filter(item => item.appName === app.application);
+    let escalatedTickets = [];
+            const relevantDept = ticketDetailsData.find(dept => dept.id === app.relevantDepartmentId);
+            if (relevantDept) {
+                const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
+                escalatedTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
+            }
+            const escalatedTicketsCount = escalatedTickets.length;
+            const escalatedTicketsBadge = escalatedTicketsCount > 0
+                ? `<span class="badge bg-danger rounded-pill">${escalatedTicketsCount}</span>`
+                : '';
+
+      // Encode tickets for data attribute
+            const ticketsDataAttribute = `data-tickets='${JSON.stringify(escalatedTickets)}'`;
+
+    const resolvedItemsForApp = resolvedItemsHistory.filter(item => item.appName === app.application);
     const showResolvedIcon = resolvedItemsForApp.length > 0 ? 'inline-block' : 'none';
 
 
@@ -1569,9 +1638,12 @@ if (isAnomalous && activeSection === 'anomalies') {
                             </span>
                             ${threatCountBadge}
                         </button>
-                        <button class="glass-button desk-tickets-link">
+                    <button class="glass-button desk-tickets-link escalated-tickets-trigger d-flex justify-content-between align-items-center" ${ticketsDataAttribute} data-app-id="${app.id}" ${escalatedTicketsCount === 0 ? 'disabled' : ''}>
+                        <span> 
                             <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;"> Tickets (<strong>Escalated</strong>)
-                        </button>
+                        </span>
+                        ${escalatedTicketsBadge}
+                            </button>
                     </div>
                 </div>
             </div>
@@ -1840,7 +1912,16 @@ if (threatDetailsTrigger) {
         showThreatDetailsPopup(threats, appId);
     });
 }
-
+ // Add listener for the new escalated tickets trigger
+        const escalatedTicketsTrigger = expandedRow.querySelector('.escalated-tickets-trigger');
+        if (escalatedTicketsTrigger) {
+            escalatedTicketsTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tickets = JSON.parse(e.currentTarget.dataset.tickets);
+                const appId = e.currentTarget.dataset.appId;
+                showEscalatedTicketsPopup(tickets, appId);
+            });
+        }
 // Add listener for the new resolved history trigger
 const resolvedHistoryTrigger = expandedRow.querySelector('.resolved-history-trigger');
 if (resolvedHistoryTrigger) {
@@ -2287,22 +2368,23 @@ typeChar();
 typeNextSummary(); // Start the sequence
 }
 
-function showResolveNotesPopup(appId, threatName) {
-if (!resolveNotesPopup) return;
-// Store the current threat context to be used on submit
-currentThreatToResolve = { appId, threatName };
-// Clear the textarea from previous entries
-if(resolveNotesTextarea) resolveNotesTextarea.value = '';
-// Show the notes popup
-resolveNotesPopup.style.display = 'flex';
+function showResolveNotesPopup(item) {
+    if (!resolveNotesPopup) return;
+    // Store the current item context to be used on submit
+    currentItemToResolve = item;
+    // Clear the textarea from previous entries
+    if(resolveNotesTextarea) resolveNotesTextarea.value = '';
+    // Show the notes popup
+    resolveNotesPopup.style.display = 'flex';
 }
+
 
 function closeResolveNotesPopup() {
 if (resolveNotesPopup) {
 resolveNotesPopup.style.display = 'none';
 }
 // Clear the context so we don't accidentally resolve the wrong item
-currentThreatToResolve = null;
+currentItemToResolve = null;
 }
 
 function showThreatDetailsPopup(threats, appId) {
@@ -2325,7 +2407,7 @@ threats.forEach(threatName => {
 
     // Add event listener for the resolve button
     threatItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
-        showResolveNotesPopup(appId, threatName);
+        showResolveNotesPopup({ type: 'threat', appId: appId, name: threatName });
     });
 });
 }
@@ -2340,11 +2422,45 @@ threatDetailsPopup.style.display = 'none';
 }
 }
 
+
+function showEscalatedTicketsPopup(tickets, appId) {
+    if (!escalatedTicketsPopup || !escalatedTicketsListContainer) return;
+
+    escalatedTicketsListContainer.innerHTML = ''; // Clear
+
+    if (tickets && tickets.length > 0) {
+        tickets.forEach(ticket => {
+            const ticketItem = document.createElement('div');
+            ticketItem.className = 'escalated-ticket-item';
+            ticketItem.setAttribute('data-ticket-id', ticket.id);
+            ticketItem.innerHTML = `
+                <span class="escalated-ticket-summary">${ticket.summary}</span>
+                <button class="threat-resolve-btn">Resolve</button>
+            `;
+            escalatedTicketsListContainer.appendChild(ticketItem);
+
+            ticketItem.querySelector('.threat-resolve-btn').addEventListener('click', () => {
+                showResolveNotesPopup({ type: 'ticket', appId: appId, id: ticket.id, summary: ticket.summary });
+            });
+        });
+    }
+
+    escalatedTicketsPopup.style.display = 'flex';
+}
+
+function closeEscalatedTicketsPopup() {
+    if (escalatedTicketsPopup) {
+        escalatedTicketsPopup.style.display = 'none';
+    }
+}
+
+
+
 function showResolvedHistoryPopup(appName, triggerElement) {
 if (!resolvedHistoryPopup || !resolvedHistoryListContainer || !triggerElement) return;
 
 // Filter history for the specific app
-const relevantHistory = resolvedThreatsHistory.filter(item => item.appName === appName);
+const relevantHistory = resolvedItemsHistory.filter(item => item.appName === appName);
 
 resolvedHistoryListContainer.innerHTML = ''; // Clear
 
@@ -2356,10 +2472,15 @@ if (relevantHistory.length > 0) {
     const timestamp = item.resolvedAt.toLocaleString('en-US', {
         month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
+    const resolvedItemName = item.type === 'threat'
+
+? `Threat: ${item.name}`
+
+: `Ticket: ${item.summary}`;
 
     historyItem.innerHTML = `
         <div class="resolved-item-header">
-            <span class="resolved-item-name">${item.threatName}</span>
+            <span class="resolved-item-name">${resolvedItemName}</span>
             <span class="resolved-item-timestamp">${timestamp}</span>
         </div>
         <div class="resolved-item-notes">${item.notes || 'No notes provided.'}</div>
@@ -2523,97 +2644,136 @@ resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
 }
 
 if (resolveNotesSubmitBtn) {
-resolveNotesSubmitBtn.addEventListener('click', () => {
-if (!currentThreatToResolve) return;
+    resolveNotesSubmitBtn.addEventListener('click', () => {
+        if (!currentItemToResolve) return;
 
-const { appId, threatName } = currentThreatToResolve;
-const notes = resolveNotesTextarea.value; 
-console.log(`Resolving threat '${threatName}' for app ID ${appId} with notes: ${notes}`);
+        const { type, appId, name, id, summary } = currentItemToResolve;
+        const notes = resolveNotesTextarea.value; 
+        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
 
-// Add to history
-const appForHistory = appData.find(app => app.id.toString() === appId.toString());
-resolvedThreatsHistory.push({
-    appName: appForHistory?.application,
-    threatName: threatName,
-    notes: notes,
-    resolvedAt: new Date()
-});
+        if (type === 'threat') {
+             // Add to history
+            resolvedItemsHistory.push({
+                type: 'threat',
+                appName: appForHistory?.application,
+                name: name,
+                notes: notes,
+                resolvedAt: new Date()
+            });
 
-// Find the app in the main data array and update its competitors
-const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-if (appIndex !== -1) {
-    appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== threatName);
-    
-    // Re-filter all data arrays based on the change
-    filterDataArrays();
-    
-    // Update all counts displayed on the page (KPI cards, filter buttons)
-    updateCounts();
-
-    // --- Targeted DOM Update for the expanded row ---
-    const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
-    if (expandedRow) {
-        // Find the app again to get the *new* threat list
-        const updatedApp = appData[appIndex];
-        
-        let updatedThreatCompetitors = [];
-        const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-        const crossSellList = ['Mailchimp', 'Dropbox'];
-        if (updatedApp.competitors && updatedApp.competitors.length > 0) {
-            updatedApp.competitors.forEach(comp => {
-                if (threatList.includes(comp) || !crossSellList.includes(comp)) {
-                    updatedThreatCompetitors.push(comp);
+            // Find the app and update its competitors
+            const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+            if (appIndex !== -1) {
+                appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name);
+            }
+        } else if (type === 'ticket') {
+            resolvedItemsHistory.push({
+                type: 'ticket',
+                appName: appForHistory?.application,
+                summary: summary,
+                id: id,
+                notes: notes,
+                resolvedAt: new Date()
+            });
+            
+            // Find the ticket in the source data and update its status
+            ticketDetailsData.forEach(dept => {
+                const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
+                if (ticketIndex !== -1) {
+                    dept.tickets[ticketIndex].status = 'Closed'; // Change status
+                    // Decrement open count and increment closed count
+                    dept.openStatus--;
+                    dept.closedStatus++;
                 }
             });
         }
+       
+        // --- UPDATE LOGIC ---
+        filterDataArrays(); // Recalculate all filtered data arrays
+        updateCounts();     // Update counts on KPI cards and filter buttons
         
-        const threatDetailsTrigger = expandedRow.querySelector('.threat-details-trigger');
-        const threatCountBadge = expandedRow.querySelector('.threat-details-trigger .badge');
+        // --- Targeted DOM Update for the expanded row ---
+        const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
+        if (expandedRow) {
+            const updatedApp = appData.find(app => app.id.toString() === appId.toString());
 
-        if (threatDetailsTrigger) {
-            // Update data attribute
-            threatDetailsTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
-            
-            // Update badge
-            if (updatedThreatCompetitors.length > 0) {
-                if (threatCountBadge) {
-                    threatCountBadge.textContent = updatedThreatCompetitors.length;
+            if (type === 'threat') {
+                 let updatedThreatCompetitors = [];
+                const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+                if (updatedApp.competitors && updatedApp.competitors.length > 0) {
+                    updatedApp.competitors.forEach(comp => {
+                        if (threatList.includes(comp) || !['Mailchimp', 'Dropbox'].includes(comp)) {
+                            updatedThreatCompetitors.push(comp);
+                        }
+                    });
                 }
-                threatDetailsTrigger.disabled = false;
-            } else {
-                if (threatCountBadge) {
-                    threatCountBadge.remove();
+                const threatTrigger = expandedRow.querySelector('.threat-details-trigger');
+                if (threatTrigger) {
+                    threatTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
+                    const badge = threatTrigger.querySelector('.badge');
+                    if (updatedThreatCompetitors.length > 0) {
+                        if(badge) badge.textContent = updatedThreatCompetitors.length;
+                        threatTrigger.disabled = false;
+                    } else {
+                        if(badge) badge.remove();
+                        threatTrigger.disabled = true;
+                    }
                 }
-                threatDetailsTrigger.disabled = true;
+            } else if (type === 'ticket') {
+                const relevantDept = ticketDetailsData.find(dept => dept.id === updatedApp.relevantDepartmentId);
+                let updatedEscalatedTickets = [];
+                if (relevantDept) {
+                     updatedEscalatedTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open' && tkt.tags.includes('Escalation Request'));
+                }
+                const ticketTrigger = expandedRow.querySelector('.escalated-tickets-trigger');
+                if (ticketTrigger) {
+                    ticketTrigger.dataset.tickets = JSON.stringify(updatedEscalatedTickets);
+                    const badge = ticketTrigger.querySelector('.badge');
+                    if (updatedEscalatedTickets.length > 0) {
+                        if(badge) badge.textContent = updatedEscalatedTickets.length;
+                        ticketTrigger.disabled = false;
+                    } else {
+                        if(badge) badge.remove();
+                        ticketTrigger.disabled = true;
+                    }
+                }
+            }
+
+             // Show resolved checkmark icon
+            const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
+            if (resolvedIcon) {
+                resolvedIcon.style.display = 'inline-block';
             }
         }
-         // Show resolved checkmark icon
-        const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
-        if (resolvedIcon) {
-            resolvedIcon.style.display = 'inline-block';
-        }
-    }
+
+
+        // Close popups
+        closeResolveNotesPopup();
+        if(type === 'threat') closeThreatDetailsPopup();
+        if(type === 'ticket') closeEscalatedTicketsPopup();
+    });
 }
 
-// Close the notes popup
-closeResolveNotesPopup();
+if (escalatedTicketsPopupCloseBtn) {
 
-// --- Update Threat Details Popup ---
-// Remove the resolved item from the popup list
-if (threatListContainer) {
-    // Use querySelector with the attribute we added to find the specific item
-    const threatItemToRemove = threatListContainer.querySelector(`.threat-item[data-threat-name="${threatName}"]`);
-    if (threatItemToRemove) {
-        threatItemToRemove.remove();
-    }
+escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup);
 
-    // If the list is now empty, close the threats popup
-    if (threatListContainer.children.length === 0) {
-        closeThreatDetailsPopup();
-    }
 }
+
+if (escalatedTicketsPopup) {
+
+escalatedTicketsPopup.addEventListener('click', (e) => {
+
+if (e.target === escalatedTicketsPopup) { // Close on overlay click
+
+closeEscalatedTicketsPopup();
+
+}
+
 });
+
 }
+
 
 if (resolvedHistoryPopupCloseBtn) {
 resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
