@@ -1057,7 +1057,7 @@ width: 100%; /* Take full width of parent col-md-3 */
 .expanded-content .action-dropdown-menu {
 position: absolute; /* Position absolutely within the wrapper */
 top: 35px; /* Adjust to be below the "Actions" heading */
-right: 0; /* Align to the right of the wrapper */
+right: -110px; /* Align to the right of the wrapper */
 width: 230px; /* Increased width for more space */
 opacity: 1; /* Always visible */
 visibility: visible; /* Always visible */
