@@ -584,7 +584,6 @@ let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
 let activeSection = 'all-apps'; // Define activeSection
 let widgetLoaderOverlay = null; // Loader element
-let executiveSummaryTextElement = null; // For word-by-word effect
 let refreshIcon = null; // Added refresh icon element
 let currentArrFilter = 'all'; // Can be 'all', 'lessThan5k', or 'greaterThan5k'
 
@@ -664,7 +663,6 @@ nextRenewalsHoverPopup = document.getElementById('nextRenewalsHoverPopup');
 recentPurchasesHoverList = document.getElementById('recentPurchasesHoverList');
 nextRenewalsHoverList = document.getElementById('nextRenewalsHoverList');
 widgetLoaderOverlay = document.getElementById('widgetLoaderOverlay'); // Initialize loader element
-executiveSummaryTextElement = document.getElementById('executiveSummaryText'); // Initialize executive summary element
 refreshIcon = document.getElementById('refreshIcon'); // Added refresh icon element
 threatDetailsPopup = document.getElementById('threatDetailsPopup');
 threatListContainer = document.getElementById('threatListContainer');
@@ -700,10 +698,6 @@ if (!widgetLoaderOverlay) {
 console.error('Widget loader overlay element (widgetLoaderOverlay) not found!');
 return false;
 }
-if (!executiveSummaryTextElement) {
-console.error('Executive summary text element (executiveSummaryText) not found!');
-return false;
-}
 if (!refreshIcon) {
 console.error('Refresh icon element (refreshIcon) not found!');
 return false;
@@ -723,21 +717,6 @@ let arrLessThan5kFilteredData = [];
 let arrGreaterThan5kFilteredData = [];
 let recentPurchasesData = [];
 let nextRenewalsData = [];
-const originalExecutiveSummaryText = "This account shows strong engagement, but recent usage shifts warrant monitoring. Proactive outreach recommended.";
-function typeWriterEffect(element, text, speed) {
-if (!element) return;
-const words = text.split(' ');
-let i = 0;
-element.textContent = ''; // Clear existing text
-function typeWord() {
-if (i < words.length) {
-    element.textContent += words[i] + ' ';
-    i++;
-    setTimeout(typeWord, speed);
-}
-}
-typeWord();
-}
 function calculateTotalArr(app) {
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
 return currentMonthData ? currentMonthData.revenue : 0;
@@ -903,8 +882,8 @@ name: app.application,
 date: app.nextRenewalDate,
 revenue: app.monthlyData[app.monthlyData.length - 1].revenue
 }));
-// Fixed numbers for Recent Purchases (4) and Next Renewals (4)
-recentPurchasesData = availableRecentPurchases.slice(0, 4);
+// Fixed numbers for Recent Purchases (2) and Next Renewals (4)
+recentPurchasesData = availableRecentPurchases.slice(0, 2);
 nextRenewalsData = availableNextRenewals.slice(0, 4);
 }
 /**
@@ -959,8 +938,8 @@ if (app.lastInvoiceDate) {
 }
 return false;
 });
-// Take only the top 4 for display in both count and popup
-const recentPurchasesToDisplay = recentPurchases.slice(0, 4);
+// Take only the top 2 for display in both count and popup
+const recentPurchasesToDisplay = recentPurchases.slice(0, 2);
 if (recentPurchasesCountSpan) {
 recentPurchasesCountSpan.textContent = recentPurchasesToDisplay.length;
 }
@@ -979,10 +958,12 @@ if (app.nextRenewalDate) {
 }
 return false;
 });
+// Take only the top 4 for display in both count and popup
+const upcomingRenewalsToDisplay = upcomingRenewals.slice(0, 4);
 if (nextRenewalsCountSpan) {
-nextRenewalsCountSpan.textContent = upcomingRenewals.length;
+nextRenewalsCountSpan.textContent = upcomingRenewalsToDisplay.length;
 }
-nextRenewalsData = upcomingRenewals.map(app => ({ name: app.application, date: app.nextRenewalDate, revenue: app.monthlyData[app.monthlyData.length - 1].revenue }));
+nextRenewalsData = upcomingRenewalsToDisplay.map(app => ({ name: app.application, date: app.nextRenewalDate, revenue: app.monthlyData[app.monthlyData.length - 1].revenue }));
 
 // 4. Update Health Score
 let totalScore = 0;
@@ -1022,14 +1003,10 @@ if (competitorsCountSpan) competitorsCountSpan.textContent = competitorCount;
 if (anomaliesCountSpan) anomaliesCountSpan.textContent = anomaliesCount;
 
 // Desk tickets based on relevant departments
-const relevantDeptIds = new Set(data.map(app => app.relevantDepartmentId));
-const relevantTickets = ticketDetailsData.filter(dept => relevantDeptIds.has(dept.id));
-const openTickets = relevantTickets.reduce((sum, dept) => sum + dept.openStatus, 0);
-const closedTickets = relevantTickets.reduce((sum, dept) => sum + dept.closedStatus, 0);
 const openTicketsCountInCard = document.getElementById('openTicketsCount');
 const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
-if(openTicketsCountInCard) openTicketsCountInCard.textContent = openTickets;
-if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = closedTickets;
+if(openTicketsCountInCard) openTicketsCountInCard.textContent = 8;
+if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = 2;
 
 // 6. Render the table with the new data
 renderApplicationTable(data);
@@ -1066,12 +1043,11 @@ competitorExposureCountElement.textContent = competitorsFilteredData.length;
 if (downgradeRisksCountElement) {
 downgradeRisksCountElement.textContent = downgradesFilteredData.length;
 }
-const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
-const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
 const openTicketsCountSpan = document.getElementById('openTicketsCount');
 const closedTicketsCountSpan = document.getElementById('closedTicketsCount');
-if (openTicketsCountSpan) openTicketsCountSpan.textContent = totalOpenTickets;
-if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = totalClosedTickets;
+if (openTicketsCountSpan) openTicketsCountSpan.textContent = 8;
+if (closedTicketsCountSpan) closedTicketsCountSpan.textContent = 2;
+
 if (openTicketsCountSpan) {
 openTicketsCountSpan.style.minWidth = '50px';
 openTicketsCountSpan.style.textAlign = 'center';
@@ -1106,6 +1082,35 @@ displayText = 'Renewal risk';
 }
 return `<span class="status-tag ${colorClass}">${displayText}</span>`;
 }
+const getRandomUsageValue = () => {
+const categories = [
+'Major Decline', 
+'Minor Decline', 
+'Neutral Usage', 
+'Minor Increase', 
+'Major Increase'
+];
+const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+switch (randomCategory) {
+case 'Major Decline':
+    // Range: -100 to -11
+    return Math.floor(Math.random() * 90) - 100;
+case 'Minor Decline':
+    // Range: -10 to -1
+    return Math.floor(Math.random() * 10) - 10;
+case 'Neutral Usage':
+    return 0;
+case 'Minor Increase':
+    // Range: 1 to 10
+    return Math.floor(Math.random() * 10) + 1;
+case 'Major Increase':
+    // Range: 11 to 100
+    return Math.floor(Math.random() * 90) + 11;
+default:
+    return Math.floor(Math.random() * 201) - 100; // Fallback
+}
+};
 function renderApplicationTable(data) {
 console.log('Starting to render application table with', data.length, 'items');
 if (!applicationTableBody) {
@@ -1139,6 +1144,84 @@ if (app.competitors && app.competitors.length > 0) {
         }
     });
 }
+
+const getRandomUsageTrend = () => {
+    const trends = [
+        { icon: 'bi-graph-up', class: 'text-success' },
+        { icon: 'bi-graph-down', class: 'text-danger' },
+        { icon: 'bi-dash-lg', class: 'text-muted' }
+    ];
+    return trends[Math.floor(Math.random() * trends.length)];
+};
+let lastMonthUsageValue = 'N/A'; // To store M6 usage value
+let monthlyDataHtml = app.monthlyData.map((month, index) => {
+    const randomUsageValue = getRandomUsageValue();
+    const randomUsageTrend = getRandomUsageTrend();
+
+    if (month.month === 'M6') {
+        lastMonthUsageValue = randomUsageValue;
+    }
+
+    let changeIcon = '';
+    let changeClass = 'text-muted';
+    if (month.change.includes('+')) {
+        changeIcon = `<i class="bi bi-graph-up text-success"></i>`;
+        changeClass = 'text-success';
+    } else if (month.change.includes('-')) {
+        changeIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+        changeClass = 'text-danger';
+    } else {
+        changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+    }
+    let revenueTrendIcon = '';
+    let revenueTrendClass = 'text-muted';
+    let revenuePercentageChange = 'N/A';
+    if (index > 0) {
+        const previousMonthRevenue = app.monthlyData[index - 1].revenue;
+        const currentMonthRevenue = month.revenue;
+        if (previousMonthRevenue !== 0) {
+            const percentage = ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+            revenuePercentageChange = `${percentage.toFixed(1)}%`;
+            if (percentage > 0) {
+                revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+                revenueTrendClass = 'text-success';
+                revenuePercentageChange = `+${revenuePercentageChange}`;
+            } else if (percentage < 0) {
+                revenueTrendIcon = `<i class="bi bi-graph-down text-danger"></i>`;
+                revenueTrendClass = 'text-danger';
+            } else {
+                revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+                revenueTrendClass = 'text-muted';
+            }
+        } else if (currentMonthRevenue > 0) {
+            revenuePercentageChange = `+Inf%`;
+            revenueTrendIcon = `<i class="bi bi-graph-up text-success"></i>`;
+            revenueTrendClass = 'text-success';
+        } else {
+            revenuePercentageChange = `N/A`;
+            revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+            revenueTrendClass = 'text-muted';
+        }
+    } else {
+        revenuePercentageChange = 'N/A';
+        revenueTrendIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
+        revenueTrendClass = 'text-muted';
+    }
+    return `
+<tr>
+<td>${month.month}</td>
+<td>${randomUsageValue}</td>
+<td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
+<td>${month.seats}</td>
+<td class="${changeClass}">${changeIcon} ${month.change}</td>
+<td>
+<span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
+<span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
+</td>
+<td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
+</tr>
+`;
+}).join('');
 let competitorsCellContent = '';
 if (crossSellCompetitors.length === 0 && threatCompetitors.length === 0) {
     competitorsCellContent = `<div class="competitors-flex-container justify-content-center">
@@ -1186,22 +1269,77 @@ if (app.license.includes('Downgraded')) {
 } else {
     licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
 }
-let usageDisplayText = app.usage;
+
+let usageCategory = '';
 let usageBackgroundColorClass = '';
-if (app.usage === 'Low') {
-    usageBackgroundColorClass = 'bg-usage-low';
-} else if (app.usage === 'Medium') {
-    usageBackgroundColorClass = 'bg-usage-medium';
-} else if (app.usage === 'High') {
-    usageBackgroundColorClass = 'bg-usage-high';
+const usageValue = parseInt(lastMonthUsageValue);
+
+if (usageValue < -10) {
+    usageCategory = 'Major Decline';
+    usageBackgroundColorClass = 'bg-usage-Major-Decline';
+} else if (usageValue >= -10 && usageValue < 0) {
+    usageCategory = 'Minor Decline';
+    usageBackgroundColorClass = 'bg-usage-Minor-Decline';
+} else if (usageValue === 0) {
+    usageCategory = 'Neutral Usage';
+    usageBackgroundColorClass = 'bg-usage-Neutral-Usage';
+} else if (usageValue > 0 && usageValue <= 10) {
+    usageCategory = 'Minor Increase';
+    usageBackgroundColorClass = 'bg-usage-Minor-Increase';
+} else if (usageValue > 10) {
+    usageCategory = 'Major Increase';
+    usageBackgroundColorClass = 'bg-usage-Major-Increase';
 } else {
-    usageBackgroundColorClass = '';
+     usageCategory = 'N/A';
+     usageBackgroundColorClass = 'bg-usage-Neutral-Usage';
 }
-const usageHtml = `
-<div class="usage-bar-container ${usageBackgroundColorClass}">
-<span class="usage-bar-text">${usageDisplayText}</span>
-</div>
+
+let trendPercentage = 0;
+switch (usageCategory) {
+    case 'Major Decline':
+        trendPercentage = -(Math.floor(Math.random() * 15) + 11); // -11% to -25%
+        break;
+    case 'Minor Decline':
+        trendPercentage = -(Math.floor(Math.random() * 10) + 1); // -1% to -10%
+        break;
+    case 'Neutral Usage':
+        trendPercentage = 0;
+        break;
+    case 'Minor Increase':
+        trendPercentage = Math.floor(Math.random() * 10) + 1; // 1% to 10%
+        break;
+    case 'Major Increase':
+        trendPercentage = Math.floor(Math.random() * 15) + 11; // 11% to 25%
+        break;
+}
+
+let trendClass = 'text-muted';
+let trendIcon = 'bi-dash-lg';
+
+if (trendPercentage < 0) {
+    trendClass = 'text-danger';
+    trendIcon = 'bi-graph-down';
+} else if (trendPercentage > 0) {
+    trendClass = 'text-success';
+    trendIcon = 'bi-graph-up';
+}
+
+const usageTrendHtml = `
+    <div class="usage-trend-container ${trendClass}">
+        <i class="bi ${trendIcon}"></i>
+        <span>${trendPercentage}%</span>
+    </div>
 `;
+
+const usageHtml = `
+    <div class="usage-cell-content">
+        <div class="usage-bar-container ${usageBackgroundColorClass}">
+            <span class="usage-bar-text">${usageCategory}</span>
+        </div>
+        ${usageTrendHtml}
+    </div>
+`;
+
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
 const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
 let arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
@@ -1448,10 +1586,6 @@ if (isAnomalous && activeSection === 'anomalies') {
 }
 
 
-const getRandomUsage = () => {
-    const usages = ['Low', 'Medium', 'High'];
-    return usages[Math.floor(Math.random() * usages.length)];
-};
 const getRandomUsageTrend = () => {
     const trends = [
         { icon: 'bi-graph-up', class: 'text-success' },
@@ -1461,7 +1595,7 @@ const getRandomUsageTrend = () => {
     return trends[Math.floor(Math.random() * trends.length)];
 };
 let monthlyDataHtml = app.monthlyData.map((month, index) => {
-    const randomUsage = getRandomUsage();
+    const randomUsageValue = getRandomUsageValue();
     const randomUsageTrend = getRandomUsageTrend();
     let changeIcon = '';
     let changeClass = 'text-muted';
@@ -1474,6 +1608,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     } else {
         changeIcon = `<i class="bi bi-dash-lg text-muted"></i>`;
     }
+
     let revenueTrendIcon = '';
     let revenueTrendClass = 'text-muted';
     let revenuePercentageChange = 'N/A';
@@ -1511,7 +1646,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     return `
 <tr>
 <td>${month.month}</td>
-<td>${randomUsage}</td>
+<td>${randomUsageValue}</td>
 <td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
 <td>${month.seats}</td>
 <td class="${changeClass}">${changeIcon} ${month.change}</td>
@@ -1519,7 +1654,7 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
 <span style="color: #1a2b4d; font-weight: 700;">$${month.revenue}</span><br>
 <span class="${revenueTrendClass} arr-percentage-text">${revenuePercentageChange}</span>
 </td>
-<td>${revenueTrendIcon}</td> <!-- Fixed: Removed revenueTrendClass from td -->
+<td>${revenueTrendIcon}</td>
 </tr>
 `;
 }).join('');
@@ -1839,7 +1974,7 @@ if (closedTickets && closedTickets.length > 0) {
 expandedTicketRow.innerHTML = `
 <td colspan="5">
 <div class="ticket-dropdown-content">
-<div class="ticket-dropdown-section">
+<div class="ticket-dropdown-section summary-highlight">
 <strong>Executive Summary (Open Tickets) </strong>
 <p class="small text-dark mb-0">${ticket.executiveSummary}</p>
 </div>
@@ -2245,8 +2380,6 @@ updateDashboard(appData); // Load the entire dashboard with all data initially
 if (allAppsBtn) { // Set the initial active button
 allAppsBtn.classList.add('active');
 }
-// Start the typewriter effect for the executive summary
-typeWriterEffect(executiveSummaryTextElement, originalExecutiveSummaryText, 40); // 40ms speed
 //hideWidgetLoader(); // Hide loader after content is loaded
 }, 3500); // Simulate 1 second loading time
 
@@ -2641,7 +2774,3 @@ setTimeout(() => {
     // Show the container
     container.style.display = 'block';
 }, 3000); 
-
-
-
-
