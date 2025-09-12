@@ -361,16 +361,20 @@ body {
     /* Smooth transition for table containers */
     #applicationTableContainer,
     #ticketDetailsTableContainer {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    opacity: 1;
-    visibility: visible;
-    display: block; /* Default display */
-    margin-top: 5px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #dee2e6;
-    background-color: #fcfcfc;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        opacity: 1;
+        visibility: visible;
+        display: block;
+        margin-top: 5px;
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid #dee2e600;
+        background-color: #fcfcfc;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.08);
+        margin-bottom: 20px;
+        border-left-width: 10px;
+        border-left-width: 25px;
+        border-right-width: 25px;
     }
     #applicationTableContainer.fade-out,
     #ticketDetailsTableContainer.fade-out {
@@ -420,7 +424,7 @@ body {
     }
     .usage-bar-container {
     position: relative;
-    width: 90px;
+    width: 100px;
     height: 25px;
     border-radius: 10px;
     display: flex;
@@ -430,10 +434,11 @@ body {
     }
     .usage-bar-text {
     position: absolute;
-    color: black;
+    /*color: black;*/
     font-size: 0.78em;
     z-index: 1;
     white-space: nowrap;
+    font-weight: 600;
     }
     .usage-cell-content {
     display: flex;
@@ -452,19 +457,36 @@ body {
     font-size: 1em;
     }
     .bg-usage-Major-Decline {
-    background: linear-gradient(to right, #eda0a0, #de9a9a);
+        background-color: #ffe4e6; /* Soft Rose */
     }
     .bg-usage-Minor-Decline {
-    background: linear-gradient(to right, #f5f564, #efef71);
+        background-color: #fef3c7; /* Soft Amber */
     }
     .bg-usage-Neutral-Usage {
-    background: linear-gradient(to right, #b0e0e6, #b0e0e6);
+        background-color: #e2e8f0; /* Soft Slate */
     }
     .bg-usage-Minor-Increase {
-    background: linear-gradient(to right, #66CDAA, #66CDAA);
+        background-color: #ccfbf1; /* Soft Teal */
     }
     .bg-usage-Major-Increase {
-    background: linear-gradient(to right, #77ee99, #53c975);
+        background-color: #dcfce7; /* Soft Green */
+    }
+
+    /* This will make the font bold and set the specific text color for each pill */
+    .bg-usage-Major-Decline .usage-bar-text {
+        color: #9f1239; /* Dark Rose */
+    }
+    .bg-usage-Minor-Decline .usage-bar-text {
+        color: #92400e; /* Dark Amber */
+    }
+    .bg-usage-Neutral-Usage .usage-bar-text {
+        color: #1e293b; /* Dark Slate */
+    }
+    .bg-usage-Minor-Increase .usage-bar-text {
+        color: #115e59; /* Dark Teal */
+    }
+    .bg-usage-Major-Increase .usage-bar-text {
+        color: #166534; /* Dark Green */
     }
     .red-bg{
     border-radius: 10px;
