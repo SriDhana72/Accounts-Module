@@ -455,7 +455,7 @@ body {
     background: linear-gradient(to right, #eda0a0, #de9a9a);
     }
     .bg-usage-Minor-Decline {
-    background: linear-gradient(to right, #e9e955, #dfdf6c);
+    background: linear-gradient(to right, #f5f564, #efef71);
     }
     .bg-usage-Neutral-Usage {
     background: linear-gradient(to right, #b0e0e6, #b0e0e6);
@@ -464,7 +464,7 @@ body {
     background: linear-gradient(to right, #66CDAA, #66CDAA);
     }
     .bg-usage-Major-Increase {
-    background: linear-gradient(to right, #77e897, #2EBB57);
+    background: linear-gradient(to right, #77ee99, #53c975);
     }
     .red-bg{
     border-radius: 10px;
