@@ -591,6 +591,88 @@ let activeSection = 'all-apps'; // Define activeSection
 let widgetLoaderOverlay = null; // Loader element
 let refreshIcon = null; // Added refresh icon element
 let currentArrFilter = 'all'; // Can be 'all', 'lessThan5k', or 'greaterThan5k'
+// Global DOM Elements (Ensure these are initialized in initializeDOMElements)
+let emailPopupOverlay = null;
+let emailPopupTitle = null;
+let emailPopupSubject = null;
+let emailPopupBodyContent = null;
+let emailPopupCopyBtn = null;
+let emailPopupCloseBtn = null;
+
+
+// 1. Function to show the email modal and populate content
+function showEmailPopup(type) {
+    if (!emailPopupOverlay || !emailPopupTitle || !emailPopupSubject || !emailPopupBodyContent) {
+        console.error('Email popup DOM elements are missing!');
+        return;
+    }
+
+    let title, subject, body;
+    const accountName = document.querySelector('.account-details-main-box h5').textContent.trim();
+    const healthScore = healthScoreValue ? healthScoreValue.textContent : 'N/A';
+    const status = healthScoreStatus ? healthScoreStatus.textContent : 'N/A';
+    const totalArr = document.querySelector('.info-section.arr-section .main-value .value').textContent.trim();
+
+    // --- Dynamic Content Drafting Logic ---
+    if (type === 'client') {
+        title = 'Email to Client';
+        subject = `[Action Required] Review of Your Zoho Account Health - Score: ${healthScore} (${status})`;
+        body = `Dear ${document.querySelector('.account-details-main-box .fw-bold.text-dark.fs-6').textContent.trim()},\n\n`;
+        body += `We recently reviewed the health of your Zoho account, ${accountName}.\n\n`;
+        body += `Your current Health Score is **${healthScore}** (${status}).\n\n`;
+        body += `Our analysis shows: \n`;
+        body += `- Annual Recurring Revenue (ARR): ${totalArr}\n`;
+        body += `- Key Activity: [Insert a positive or neutral observation here, e.g., 'High usage of CRM Plus.']\n\n`;
+        body += 'To ensure continued success, we recommend a brief check-in to discuss recent usage patterns and upcoming renewals. Please let us know your availability.\n\n';
+        body += 'Best regards,\n[Your Name]';
+
+    } else if (type === 'peer') {
+        title = 'Email to Peer (Internal)';
+        subject = `[Internal Alert] Health Review for ${accountName} - Score: ${healthScore} (${status})`;
+        body = `Hi Team,\n\n`;
+        body += `Please be advised on the status of **${accountName}** (Current Health Score: ${healthScore} - ${status}).\n\n`;
+        body += 'Key Callouts:\n';
+        body += `- Status: ${status} (ARR: ${totalArr})\n`;
+        body += `- Critical Anomalies: ${anomaliesCriticalOnlyData.length}\n`;
+        body += `- Downgrade Risks: ${downgradesFilteredData.length}\n`;
+        body += `We need to follow up on the following action item:\n[Insert required action, e.g., 'Re-engage on the BooksZohoGST competitor threat resolution.']\n\n`;
+        body += 'Thanks,\n[Your Name]';
+    } else {
+        return; // Exit if type is invalid
+    }
+
+    // Populate the modal elements
+    emailPopupTitle.textContent = title;
+    emailPopupSubject.textContent = subject;
+    emailPopupBodyContent.value = body;
+
+    // Show the modal
+    emailPopupOverlay.style.display = 'flex';
+}
+
+// 2. Function to close the email modal
+function closeEmailPopup() {
+    if (emailPopupOverlay) {
+        emailPopupOverlay.style.display = 'none';
+    }
+}
+
+// 3. Function to handle the copy action
+function copyEmailContent() {
+    const subject = emailPopupSubject.textContent.trim();
+    const body = emailPopupBodyContent.value;
+    
+    // Combine subject and body into a format suitable for pasting into an email client
+    const fullContent = `Subject: ${subject}\n\n${body}`;
+
+    navigator.clipboard.writeText(fullContent).then(() => {
+        alert('Email content copied to clipboard! You can now paste it into your mail client.');
+        closeEmailPopup();
+    }).catch(err => {
+        console.error('Could not copy text: ', err);
+        alert('Failed to copy content. Please select and copy the text manually.');
+    });
+}
 
 function showWidgetLoader() {
 if (widgetLoaderOverlay) {
@@ -686,6 +768,13 @@ escalatedTicketsPopupCloseBtn = document.getElementById('escalatedTicketsPopupCl
 resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
 resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
 resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
+// New elements for Email Popup
+emailPopupOverlay = document.getElementById('emailPopupOverlay');
+emailPopupTitle = document.getElementById('emailPopupTitle');
+emailPopupSubject = document.getElementById('emailPopupSubject');
+emailPopupBodyContent = document.getElementById('emailPopupBodyContent');
+emailPopupCopyBtn = document.getElementById('emailPopupCopyBtn');
+emailPopupCloseBtn = document.getElementById('emailPopupCloseBtn');
 
 
 if (!applicationTableContainer) {
@@ -2523,449 +2612,500 @@ if (popupContent) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOM loaded, initializing...');
-if (!initializeDOMElements()) {
-console.error('Failed to initialize DOM elements, stopping further initialization.');
-return;
-}
+    console.log('DOM loaded, initializing...');
+    if (!initializeDOMElements()) {
+        console.error('Failed to initialize DOM elements, stopping further initialization.');
+        return;
+    }
 
-// Show loader immediately
-showWidgetLoader();
+    // Show loader immediately
+    showWidgetLoader();
 
-setTimeout(()=>{
-hideWidgetLoader();
-},3000);
-// Simulate data loading delay
-setTimeout(() => {
-filterDataArrays();
-console.log('Rendering initial table for "All Apps"');
-updateArrCapsuleCounts(); // Set the capsule counts which are static
-updateDashboard(appData); // Load the entire dashboard with all data initially
-if (allAppsBtn) { // Set the initial active button
-allAppsBtn.classList.add('active');
-}
-//hideWidgetLoader(); // Hide loader after content is loaded
-startTypewriterSequence();
-}, 3500); // Simulate 1 second loading time
+    setTimeout(()=>{
+        hideWidgetLoader();
+    },3000);
+    // Simulate data loading delay
+    setTimeout(() => {
+        filterDataArrays();
+        console.log('Rendering initial table for "All Apps"');
+        updateArrCapsuleCounts(); // Set the capsule counts which are static
+        updateDashboard(appData); // Load the entire dashboard with all data initially
+        if (allAppsBtn) { // Set the initial active button
+            allAppsBtn.classList.add('active');
+        }
+        //hideWidgetLoader(); // Hide loader after content is loaded
+        startTypewriterSequence();
+    }, 3500); // Simulate 1 second loading time
 
-if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
-switchTab('all-apps');
-highlightActiveCard(null);
-});
-if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
-switchTab('cross-sell');
-highlightActiveCard(null);
-});
-if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
-switchTab('downgrades');
-highlightActiveCard(null);
-});
-if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
-switchTab('competitors');
-highlightActiveCard(null);
-});
-if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
-switchTab('anomalies');
-highlightActiveCard(null);
-});
-if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
-switchTab('ticket-details');
-highlightActiveCard(null);
-});
-if (arrLessThan5kSegment) {
-arrLessThan5kSegment.addEventListener('click', () => handleArrFilterClick('lessThan5k'));
-}
-if (arrGreaterThan5kSegment) {
-arrGreaterThan5kSegment.addEventListener('click', () => handleArrFilterClick('greaterThan5k'));
-}
-if (criticalIssuesCard) {
-criticalIssuesCard.addEventListener('click', () => {
-switchTab('anomalies', anomaliesCriticalOnlyData);
-highlightActiveCard('criticalIssuesCard');
-});
-criticalIssuesCard.style.cursor = 'pointer';
-}
-if (warningSignsCard) {
-warningSignsCard.addEventListener('click', () => {
-switchTab('anomalies', anomaliesWarningOnlyData);
-highlightActiveCard('warningSignsCard');
-});
-warningSignsCard.style.cursor = 'pointer';
-}
-if (competitorExposureCard) {
-competitorExposureCard.addEventListener('click', () => {
-switchTab('competitors');
-highlightActiveCard('competitorExposureCard');
-});
-competitorExposureCard.style.cursor = 'pointer';
-}
-if (downgradeRisksCard) {
-downgradeRisksCard.addEventListener('click', () => {
-switchTab('downgrades');
-highlightActiveCard('downgradeRisksCard');
-});
-downgradeRisksCard.style.cursor = 'pointer';
-}
-if (deskTicketsCard) {
-deskTicketsCard.addEventListener('click', () => {
-switchTab('ticket-details');
-highlightActiveCard('deskTicketsCard');
-});
-deskTicketsCard.style.cursor = 'pointer';
-}
-// Initial state: ensure applicationTableContainer is visible and not fading
-if (applicationTableContainer) {
-applicationTableContainer.classList.remove('fade-out', 'd-none');
-applicationTableContainer.classList.add('fade-in');
-applicationTableContainer.style.display = 'block';
-if (applicationTableHeader) {
-applicationTableHeader.style.display = 'table-header-group';
-}
-}
-if (ticketDetailsTableContainer) {
-ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fading in initially
-ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
-ticketDetailsTableContainer.style.display = 'none';
-}
+    if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
+        switchTab('all-apps');
+        highlightActiveCard(null);
+    });
+    if (crossSellBtn) crossSellBtn.addEventListener('click', () => {
+        switchTab('cross-sell');
+        highlightActiveCard(null);
+    });
+    if (downgradesBtn) downgradesBtn.addEventListener('click', () => {
+        switchTab('downgrades');
+        highlightActiveCard(null);
+    });
+    if (competitorsBtn) competitorsBtn.addEventListener('click', () => {
+        switchTab('competitors');
+        highlightActiveCard(null);
+    });
+    if (anomaliesBtn) anomaliesBtn.addEventListener('click', () => {
+        switchTab('anomalies');
+        highlightActiveCard(null);
+    });
+    if (ticketDetailsBtn) ticketDetailsBtn.addEventListener('click', () => {
+        switchTab('ticket-details');
+        highlightActiveCard(null);
+    });
+    if (arrLessThan5kSegment) {
+        arrLessThan5kSegment.addEventListener('click', () => handleArrFilterClick('lessThan5k'));
+    }
+    if (arrGreaterThan5kSegment) {
+        arrGreaterThan5kSegment.addEventListener('click', () => handleArrFilterClick('greaterThan5k'));
+    }
+    if (criticalIssuesCard) {
+        criticalIssuesCard.addEventListener('click', () => {
+            switchTab('anomalies', anomaliesCriticalOnlyData);
+            highlightActiveCard('criticalIssuesCard');
+        });
+        criticalIssuesCard.style.cursor = 'pointer';
+    }
+    if (warningSignsCard) {
+        warningSignsCard.addEventListener('click', () => {
+            switchTab('anomalies', anomaliesWarningOnlyData);
+            highlightActiveCard('warningSignsCard');
+        });
+        warningSignsCard.style.cursor = 'pointer';
+    }
+    if (competitorExposureCard) {
+        competitorExposureCard.addEventListener('click', () => {
+            switchTab('competitors');
+            highlightActiveCard('competitorExposureCard');
+        });
+        competitorExposureCard.style.cursor = 'pointer';
+    }
+    if (downgradeRisksCard) {
+        downgradeRisksCard.addEventListener('click', () => {
+            switchTab('downgrades');
+            highlightActiveCard('downgradeRisksCard');
+        });
+        downgradeRisksCard.style.cursor = 'pointer';
+    }
+    if (deskTicketsCard) {
+        deskTicketsCard.addEventListener('click', () => {
+            switchTab('ticket-details');
+            highlightActiveCard('deskTicketsCard');
+        });
+        deskTicketsCard.style.cursor = 'pointer';
+    }
+    
+    // ====================================================================
+    // ⬇️ START: NEW EMAIL POPUP LISTENERS ⬇️
+    // ====================================================================
 
-if (threatPopupCloseBtn) {
-threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
-}
-if (threatDetailsPopup) {
-threatDetailsPopup.addEventListener('click', (e) => {
-if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
-    closeThreatDetailsPopup();
-}
-});
-}
-
-if (resolveNotesCancelBtn) {
-resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
-}
-
-if (resolveNotesSubmitBtn) {
-    resolveNotesSubmitBtn.addEventListener('click', () => {
-        if (!currentItemToResolve) return;
-
-        const { type, appId, name, id, summary } = currentItemToResolve;
-        const notes = resolveNotesTextarea.value; 
-        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
-
-        if (type === 'threat') {
-             // Add to history
-            resolvedItemsHistory.push({
-                type: 'threat',
-                appName: appForHistory?.application,
-                name: name,
-                notes: notes,
-                resolvedAt: new Date()
-            });
-
-            // Find the app and update its competitors
-            const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-            if (appIndex !== -1) {
-                appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name);
+    // General Email Popup Listeners (Close and Copy)
+    if (emailPopupCopyBtn) {
+        emailPopupCopyBtn.addEventListener('click', copyEmailContent);
+    }
+    if (emailPopupCloseBtn) {
+        emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
+    }
+    if (emailPopupOverlay) {
+        emailPopupOverlay.addEventListener('click', (e) => {
+            if (e.target === emailPopupOverlay) {
+                closeEmailPopup(); // Close when clicking the overlay itself
             }
-        } else if (type === 'ticket') {
-            resolvedItemsHistory.push({
-                type: 'ticket',
-                appName: appForHistory?.application,
-                summary: summary,
-                id: id,
-                notes: notes,
-                resolvedAt: new Date()
-            });
-            
-            // Find the ticket in the source data and update its status
-            ticketDetailsData.forEach(dept => {
-                const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
-                if (ticketIndex !== -1) {
-                    dept.tickets[ticketIndex].status = 'Closed'; // Change status
-                    // Decrement open count and increment closed count
-                    dept.openStatus--;
-                    dept.closedStatus++;
-                }
+        });
+    }
+
+    // Need Help Dropdown Email Buttons
+    const needHelpDropdownMenu = document.getElementById('need-help-dropdown-menu'); 
+    if (needHelpDropdownMenu) {
+        // Find Email to Client button and add listener
+        const emailClientBtn = needHelpDropdownMenu.querySelector('.glass-button.email-client');
+        if (emailClientBtn) {
+            emailClientBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                showEmailPopup('client'); 
+                closeAllDropdowns();
             });
         }
-       
-        // --- UPDATE LOGIC ---
-        filterDataArrays(); // Recalculate all filtered data arrays
-        updateCounts();     // Update counts on KPI cards and filter buttons
-        
-        // --- Targeted DOM Update for the expanded row ---
-        const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
-        if (expandedRow) {
-            const updatedApp = appData.find(app => app.id.toString() === appId.toString());
+
+        // Find Email to Peer button and add listener
+        const emailPeerBtn = needHelpDropdownMenu.querySelector('.glass-button.email-peer');
+        if (emailPeerBtn) {
+            emailPeerBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                showEmailPopup('peer'); 
+                closeAllDropdowns();
+            });
+        }
+    }
+    
+    // ====================================================================
+    // ⬆️ END: NEW EMAIL POPUP LISTENERS ⬆️
+    // ====================================================================
+
+    // Initial state: ensure applicationTableContainer is visible and not fading
+    if (applicationTableContainer) {
+        applicationTableContainer.classList.remove('fade-out', 'd-none');
+        applicationTableContainer.classList.add('fade-in');
+        applicationTableContainer.style.display = 'block';
+        if (applicationTableHeader) {
+            applicationTableHeader.style.display = 'table-header-group';
+        }
+    }
+    if (ticketDetailsTableContainer) {
+        ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fading in initially
+        ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
+        ticketDetailsTableContainer.style.display = 'none';
+    }
+
+    if (threatPopupCloseBtn) {
+        threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
+    }
+    if (threatDetailsPopup) {
+        threatDetailsPopup.addEventListener('click', (e) => {
+            if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
+                closeThreatDetailsPopup();
+            }
+        });
+    }
+
+    if (resolveNotesCancelBtn) {
+        resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
+    }
+
+    if (resolveNotesSubmitBtn) {
+        resolveNotesSubmitBtn.addEventListener('click', () => {
+            if (!currentItemToResolve) return;
+
+            const { type, appId, name, id, summary } = currentItemToResolve;
+            const notes = resolveNotesTextarea.value; 
+            const appForHistory = appData.find(app => app.id.toString() === appId.toString());
 
             if (type === 'threat') {
-                 let updatedThreatCompetitors = [];
-                const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-                if (updatedApp.competitors && updatedApp.competitors.length > 0) {
-                    updatedApp.competitors.forEach(comp => {
-                        if (threatList.includes(comp) || !['Mailchimp', 'Dropbox'].includes(comp)) {
-                            updatedThreatCompetitors.push(comp);
-                        }
-                    });
-                }
-                const threatTrigger = expandedRow.querySelector('.threat-details-trigger');
-                if (threatTrigger) {
-                    threatTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
-                    const badge = threatTrigger.querySelector('.badge');
-                    if (updatedThreatCompetitors.length > 0) {
-                        if(badge) badge.textContent = updatedThreatCompetitors.length;
-                        threatTrigger.disabled = false;
-                    } else {
-                        if(badge) badge.remove();
-                        threatTrigger.disabled = true;
-                    }
+                 // Add to history
+                resolvedItemsHistory.push({
+                    type: 'threat',
+                    appName: appForHistory?.application,
+                    name: name,
+                    notes: notes,
+                    resolvedAt: new Date()
+                });
+
+                // Find the app and update its competitors
+                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+                if (appIndex !== -1) {
+                    appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name);
                 }
             } else if (type === 'ticket') {
-                const relevantDept = ticketDetailsData.find(dept => dept.id === updatedApp.relevantDepartmentId);
-                let updatedEscalatedTickets = [];
-                if (relevantDept) {
-                     updatedEscalatedTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open' && tkt.tags.includes('Escalation Request'));
-                }
-                const ticketTrigger = expandedRow.querySelector('.escalated-tickets-trigger');
-                if (ticketTrigger) {
-                    ticketTrigger.dataset.tickets = JSON.stringify(updatedEscalatedTickets);
-                    const badge = ticketTrigger.querySelector('.badge');
-                    if (updatedEscalatedTickets.length > 0) {
-                        if(badge) badge.textContent = updatedEscalatedTickets.length;
-                        ticketTrigger.disabled = false;
-                    } else {
-                        if(badge) badge.remove();
-                        ticketTrigger.disabled = true;
+                resolvedItemsHistory.push({
+                    type: 'ticket',
+                    appName: appForHistory?.application,
+                    summary: summary,
+                    id: id,
+                    notes: notes,
+                    resolvedAt: new Date()
+                });
+                
+                // Find the ticket in the source data and update its status
+                ticketDetailsData.forEach(dept => {
+                    const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
+                    if (ticketIndex !== -1) {
+                        dept.tickets[ticketIndex].status = 'Closed'; // Change status
+                        // Decrement open count and increment closed count
+                        dept.openStatus--;
+                        dept.closedStatus++;
+                    }
+                });
+            }
+           
+            // --- UPDATE LOGIC ---
+            filterDataArrays(); // Recalculate all filtered data arrays
+            updateCounts();     // Update counts on KPI cards and filter buttons
+            
+            // --- Targeted DOM Update for the expanded row ---
+            const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
+            if (expandedRow) {
+                const updatedApp = appData.find(app => app.id.toString() === appId.toString());
+
+                if (type === 'threat') {
+                     let updatedThreatCompetitors = [];
+                    const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+                    if (updatedApp.competitors && updatedApp.competitors.length > 0) {
+                        updatedApp.competitors.forEach(comp => {
+                            if (threatList.includes(comp) || !['Mailchimp', 'Dropbox'].includes(comp)) {
+                                updatedThreatCompetitors.push(comp);
+                            }
+                        });
+                    }
+                    const threatTrigger = expandedRow.querySelector('.threat-details-trigger');
+                    if (threatTrigger) {
+                        threatTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
+                        const badge = threatTrigger.querySelector('.badge');
+                        if (updatedThreatCompetitors.length > 0) {
+                            if(badge) badge.textContent = updatedThreatCompetitors.length;
+                            threatTrigger.disabled = false;
+                        } else {
+                            if(badge) badge.remove();
+                            threatTrigger.disabled = true;
+                        }
+                    }
+                } else if (type === 'ticket') {
+                    const relevantDept = ticketDetailsData.find(dept => dept.id === updatedApp.relevantDepartmentId);
+                    let updatedEscalatedTickets = [];
+                    if (relevantDept) {
+                         updatedEscalatedTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open' && tkt.tags.includes('Escalation Request'));
+                    }
+                    const ticketTrigger = expandedRow.querySelector('.escalated-tickets-trigger');
+                    if (ticketTrigger) {
+                        ticketTrigger.dataset.tickets = JSON.stringify(updatedEscalatedTickets);
+                        const badge = ticketTrigger.querySelector('.badge');
+                        if (updatedEscalatedTickets.length > 0) {
+                            if(badge) badge.textContent = updatedEscalatedTickets.length;
+                            ticketTrigger.disabled = false;
+                        } else {
+                            if(badge) badge.remove();
+                            ticketTrigger.disabled = true;
+                        }
                     }
                 }
+
+                 // Show resolved checkmark icon
+                const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
+                if (resolvedIcon) {
+                    resolvedIcon.style.display = 'inline-block';
+                }
             }
 
-             // Show resolved checkmark icon
-            const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
-            if (resolvedIcon) {
-                resolvedIcon.style.display = 'inline-block';
+
+            // Close popups
+            closeResolveNotesPopup();
+            if(type === 'threat') closeThreatDetailsPopup();
+            if(type === 'ticket') closeEscalatedTicketsPopup();
+        });
+    }
+
+    if (escalatedTicketsPopupCloseBtn) {
+
+        escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup);
+
+    }
+
+    if (escalatedTicketsPopup) {
+
+        escalatedTicketsPopup.addEventListener('click', (e) => {
+
+            if (e.target === escalatedTicketsPopup) { // Close on overlay click
+
+                closeEscalatedTicketsPopup();
+
             }
+
+        });
+
+    }
+
+
+    if (resolvedHistoryPopupCloseBtn) {
+        resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
+    }
+    if (resolvedHistoryPopup) {
+        resolvedHistoryPopup.addEventListener('click', (e) => {
+            if (e.target === resolvedHistoryPopup) { // Close on overlay click
+                closeResolvedHistoryPopup();
+            }
+        });
+    }
+
+
+    document.addEventListener('click', (event) => {
+        if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
+            closeAllDropdowns();
         }
-
-
-        // Close popups
-        closeResolveNotesPopup();
-        if(type === 'threat') closeThreatDetailsPopup();
-        if(type === 'ticket') closeEscalatedTicketsPopup();
+        if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
+            closeAllThreatPopups();
+        }
+        if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
+            !event.target.closest('.subscription-chat-modal')) {
+            closeSubscriptionChatModal();
+        }
+        // Removed popup-overlay closing logic as it's no longer used for these popups
     });
-}
+    const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
+    const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
+    if (clickableEyeIcon && ratingDetailsPopup) {
+        clickableEyeIcon.addEventListener('click', (event) => {
+            console.log('Eye icon clicked!');
+            event.stopPropagation();
+            if (ratingDetailsPopup.style.display === 'block') {
+                ratingDetailsPopup.style.display = 'none';
+            } else {
+                ratingDetailsPopup.style.display = 'block';
+            }
+        });
+        document.addEventListener('click', (event) => {
+            if (ratingDetailsPopup.style.display === 'block' &&
+                !clickableEyeIcon.contains(event.target) &&
+                !ratingDetailsPopup.contains(event.target)) {
+                console.log('Closing popup due to outside click.');
+                ratingDetailsPopup.style.display = 'none';
+            }
+        });
+    }
+    const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
+    if (needHelpDropdownWrapper) {
+        const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
+        const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
+        const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
+        const threatButton = document.getElementById('threat-button');
+        const ticketButton = document.getElementById('ticket-button');
+        if (needHelpToggleElement && needHelpDropdownMenu) {
+            needHelpToggleElement.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
+                    closeAllDropdowns();
+                }
+                closeAllThreatPopups();
+                needHelpDropdownMenu.classList.toggle('show');
+                if (needHelpDropdownMenu.classList.contains('show')) {
+                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
+                        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+                    });
+                    currentOpenDropdown = needHelpDropdownMenu;
+                    currentOpenDropdownToggle = needHelpToggleElement;
+                } else {
+                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                        button.style.animation = '';
+                    });
+                    closeAllDropdowns();
+                }
+            });
+            // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
+            if (needHelpChatAgentBtn ) {
+                needHelpChatAgentBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
+                    // Pass generic values for subscriptionId and subscriptionName
+                    openSubscriptionChatModal(null, null, event.target);
+                    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+                });
 
-if (escalatedTicketsPopupCloseBtn) {
+            }
+            /**needResolvedIssuesBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
+                // Pass generic values for subscriptionId and subscriptionName
+                openSubscriptionChatModal(null, null, event.target);
+                 threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
+                ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
+                closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+            });**/
 
-escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup);
+            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
+                // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
+                // NOTE: The new email listeners were added above this, so this general listener is still fine,
+                // but the separate, explicit listeners added earlier are safer.
+                if (button.id !== 'needHelpChatAgentBtn') {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
+                        // The specific email logic is now handled in the block above
+                        closeAllDropdowns();
+                    });
+                }
+            });
+        }
+    }
+    if (closeSubscriptionChatModalBtn) {
+        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
+    }
+    // Event listeners for new hover popups
+    if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
+        recentPurchasesCountSpan.addEventListener('mouseenter', () => {
+            recentPurchasesHoverList.innerHTML = ''; // Clear previous content
+            if (recentPurchasesData.length > 0) {
+                recentPurchasesData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
+                    recentPurchasesHoverList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No recent purchases in the last 6 months.';
+                recentPurchasesHoverList.appendChild(li);
+            }
+            recentPurchasesHoverPopup.classList.add('show');
+        });
+        recentPurchasesCountSpan.addEventListener('mouseleave', () => {
+            recentPurchasesHoverPopup.classList.remove('show');
+        });
+    }
 
-}
+    if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
+        nextRenewalsCountSpan.addEventListener('mouseenter', () => {
+            nextRenewalsHoverList.innerHTML = ''; // Clear previous content
+            if (nextRenewalsData.length > 0) {
+                // Sort the data by date before rendering
+                nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-if (escalatedTicketsPopup) {
+                nextRenewalsData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    // Apply flexbox styles directly to the list item for alignment
+                    li.style.display = 'flex';
+                    li.style.justifyContent = 'space-between';
+                    li.style.alignItems = 'center';
+                    li.style.padding = '8px 0'; // Add padding for visual separation
+                    li.style.borderBottom = '1px solid #eee'; // Keep border for separation
 
-escalatedTicketsPopup.addEventListener('click', (e) => {
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'app-name';
+                    nameSpan.textContent = item.name;
+                    nameSpan.style.flexBasis = '40%'; // Allocate space for name
+                    nameSpan.style.textAlign = 'left';
 
-if (e.target === escalatedTicketsPopup) { // Close on overlay click
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'renewal-date';
+                    dateSpan.textContent = item.date;
+                    dateSpan.style.flexBasis = '30%'; // Allocate space for date
+                    nameSpan.style.textAlign = 'center';
 
-closeEscalatedTicketsPopup();
+                    const revenueSpan = document.createElement('span');
+                    revenueSpan.className = 'app-revenue';
+                    revenueSpan.textContent = `$${item.revenue}`;
+                    revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
+                    revenueSpan.style.textAlign = 'right';
 
-}
+                    li.appendChild(nameSpan);
+                    li.appendChild(dateSpan);
+                    li.appendChild(revenueSpan);
+                    nextRenewalsHoverList.appendChild(li);
+                });
+                // Remove border from the last item
+                if (nextRenewalsHoverList.lastChild) {
+                    nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
+                }
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No upcoming renewals in the next 3 months.';
+                nextRenewalsHoverList.appendChild(li);
+            }
+            nextRenewalsHoverPopup.classList.add('show');
+        });
+        nextRenewalsCountSpan.addEventListener('mouseleave', () => {
+            nextRenewalsHoverPopup.classList.remove('show');
+        });
+    }
 
-});
-
-}
-
-
-if (resolvedHistoryPopupCloseBtn) {
-resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
-}
-if (resolvedHistoryPopup) {
-resolvedHistoryPopup.addEventListener('click', (e) => {
-if (e.target === resolvedHistoryPopup) { // Close on overlay click
-    closeResolvedHistoryPopup();
-}
-});
-}
-
-
-document.addEventListener('click', (event) => {
-if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
-closeAllDropdowns();
-}
-if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
-closeAllThreatPopups();
-}
-if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-!event.target.closest('.subscription-chat-modal')) {
-closeSubscriptionChatModal();
-}
-// Removed popup-overlay closing logic as it's no longer used for these popups
-});
-const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
-const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
-if (clickableEyeIcon && ratingDetailsPopup) {
-clickableEyeIcon.addEventListener('click', (event) => {
-console.log('Eye icon clicked!');
-event.stopPropagation();
-if (ratingDetailsPopup.style.display === 'block') {
-ratingDetailsPopup.style.display = 'none';
-} else {
-ratingDetailsPopup.style.display = 'block';
-}
-});
-document.addEventListener('click', (event) => {
-if (ratingDetailsPopup.style.display === 'block' &&
-!clickableEyeIcon.contains(event.target) &&
-!ratingDetailsPopup.contains(event.target)) {
-console.log('Closing popup due to outside click.');
-ratingDetailsPopup.style.display = 'none';
-}
-});
-}
-const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
-if (needHelpDropdownWrapper) {
-const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
-const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
-const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
-const threatButton = document.getElementById('threat-button');
-const ticketButton = document.getElementById('ticket-button');
-if (needHelpToggleElement && needHelpDropdownMenu) {
-needHelpToggleElement.addEventListener('click', (event) => {
-event.stopPropagation();
-if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-    closeAllDropdowns();
-}
-closeAllThreatPopups();
-needHelpDropdownMenu.classList.toggle('show');
-if (needHelpDropdownMenu.classList.contains('show')) {
-    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach((button, index) => {
-        button.style.animation = `fadeInSlideUp 0.3s ease-out forwards ${index * 0.1}s`;
+    // Event listener for the new refresh icon
+    refreshIcon.addEventListener('click', () => {
+        location.reload(); // Reload the entire page
     });
-    currentOpenDropdown = needHelpDropdownMenu;
-    currentOpenDropdownToggle = needHelpToggleElement;
-} else {
-    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-        button.style.animation = '';
-    });
-    closeAllDropdowns();
-}
-});
-// Add event listener for the "Chat with Agent" button inside the Need Help dropdown
-if (needHelpChatAgentBtn ) {
-needHelpChatAgentBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
-    // Pass generic values for subscriptionId and subscriptionName
-    openSubscriptionChatModal(null, null, event.target);
-    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-});
-
-}
-/**needResolvedIssuesBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
-    // Pass generic values for subscriptionId and subscriptionName
-    openSubscriptionChatModal(null, null, event.target);
-     threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
-    ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
-    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-});**/
-
-needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-// Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
-if (button.id !== 'needHelpChatAgentBtn') {
-    button.addEventListener('click', (event) => {
-        event.stopPropagation();
-        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-        closeAllDropdowns();
-    });
-}
-});
-}
-}
-if (closeSubscriptionChatModalBtn) {
-closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
-}
-// Event listeners for new hover popups
-if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
-recentPurchasesCountSpan.addEventListener('mouseenter', () => {
-recentPurchasesHoverList.innerHTML = ''; // Clear previous content
-if (recentPurchasesData.length > 0) {
-recentPurchasesData.forEach((item, index) => {
-    const li = document.createElement('li');
-    li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
-    recentPurchasesHoverList.appendChild(li);
-});
-} else {
-const li = document.createElement('li');
-li.textContent = 'No recent purchases in the last 6 months.';
-recentPurchasesHoverList.appendChild(li);
-}
-recentPurchasesHoverPopup.classList.add('show');
-});
-recentPurchasesCountSpan.addEventListener('mouseleave', () => {
-recentPurchasesHoverPopup.classList.remove('show');
-});
-}
-
-if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
-nextRenewalsCountSpan.addEventListener('mouseenter', () => {
-nextRenewalsHoverList.innerHTML = ''; // Clear previous content
-if (nextRenewalsData.length > 0) {
-// Sort the data by date before rendering
-nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-nextRenewalsData.forEach((item, index) => {
-    const li = document.createElement('li');
-    // Apply flexbox styles directly to the list item for alignment
-    li.style.display = 'flex';
-    li.style.justifyContent = 'space-between';
-    li.style.alignItems = 'center';
-    li.style.padding = '8px 0'; // Add padding for visual separation
-    li.style.borderBottom = '1px solid #eee'; // Keep border for separation
-
-    const nameSpan = document.createElement('span');
-    nameSpan.className = 'app-name';
-    nameSpan.textContent = item.name;
-    nameSpan.style.flexBasis = '40%'; // Allocate space for name
-    nameSpan.style.textAlign = 'left';
-
-    const dateSpan = document.createElement('span');
-    dateSpan.className = 'renewal-date';
-    dateSpan.textContent = item.date;
-    dateSpan.style.flexBasis = '30%'; // Allocate space for date
-    nameSpan.style.textAlign = 'center';
-
-    const revenueSpan = document.createElement('span');
-    revenueSpan.className = 'app-revenue';
-    revenueSpan.textContent = `$${item.revenue}`;
-    revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
-    revenueSpan.style.textAlign = 'right';
-
-    li.appendChild(nameSpan);
-    li.appendChild(dateSpan);
-    li.appendChild(revenueSpan);
-    nextRenewalsHoverList.appendChild(li);
-});
-// Remove border from the last item
-if (nextRenewalsHoverList.lastChild) {
-    nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
-}
-} else {
-const li = document.createElement('li');
-li.textContent = 'No upcoming renewals in the next 3 months.';
-nextRenewalsHoverList.appendChild(li);
-}
-nextRenewalsHoverPopup.classList.add('show');
-});
-nextRenewalsCountSpan.addEventListener('mouseleave', () => {
-nextRenewalsHoverPopup.classList.remove('show');
-});
-}
-
-// Event listener for the new refresh icon
-refreshIcon.addEventListener('click', () => {
-location.reload(); // Reload the entire page
-});
 });
 
 
@@ -2977,4 +3117,4 @@ setTimeout(() => {
 
     // Show the container
     container.style.display = 'block';
-}, 3000); 
+}, 3000);

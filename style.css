@@ -2506,4 +2506,60 @@ body {
     opacity: 1;
     visibility: visible;
     }
+
+.email-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.email-popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    width: 500px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.email-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.email-popup-subject {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.email-popup-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 0.9em;
+    resize: none;
+    background-color: #f8f9fa;
+}    
+    
     
