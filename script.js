@@ -1159,13 +1159,16 @@ const relevantTickets = ticketDetailsData.filter(dept => relevantDeptIds.has(dep
 const openTickets = relevantTickets.reduce((sum, dept) => sum + dept.openStatus, 0);
 
 const closedTickets = relevantTickets.reduce((sum, dept) => sum + dept.closedStatus, 0);
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+ 
+const totalClosedTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.closedStatus, 0);
 
 // Desk tickets based on relevant departments
 const openTicketsCountInCard = document.getElementById('openTicketsCount');
 const closedTicketsCountInCard = document.getElementById('closedTicketsCount');
-if(openTicketsCountInCard) openTicketsCountInCard.textContent = openTickets;
+if(openTicketsCountInCard) openTicketsCountInCard.textContent = totalOpenTickets;
 
-if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = closedTickets;
+if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = totalClosedTickets;
 
 
 // 6. Render the table with the new data
@@ -2894,7 +2897,7 @@ const showPopup = () => {
                     }
                 });
             }
-            
+           // closeThreatDetailsPopup();
             filterDataArrays(); 
             updateDashboard(anomaliesFilteredData);
             showToast("Submitted successfully!");
@@ -2911,7 +2914,11 @@ const showPopup = () => {
                         threatList.includes(comp) || !crossSellList.includes(comp)
                     );
                 }
-                showThreatDetailsPopup(remainingThreats, appId);
+                if (remainingThreats.length > 0) {
+                    showThreatDetailsPopup(remainingThreats, appId);
+                } else {
+                    closeThreatDetailsPopup(); // Explicitly close if the list is now empty
+                }
             } else if (type === 'ticket') {
                 let remainingTickets = [];
                 const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
@@ -2919,7 +2926,11 @@ const showPopup = () => {
                     const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
                     remainingTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
                 }
-                showEscalatedTicketsPopup(remainingTickets, appId);
+                 if (remainingTickets.length > 0) {
+                        showEscalatedTicketsPopup(remainingTickets, appId);
+                    } else {
+                        closeEscalatedTicketsPopup(); // Explicitly close if the list is now empty
+                    }
             }
             
             console.log("Attempting to find and highlight the row...");
