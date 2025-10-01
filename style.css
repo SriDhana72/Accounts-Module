@@ -2598,19 +2598,89 @@ body {
 .tag-feature-purchase {
     background: linear-gradient(to right, #e0f7fa, #b2ebf2);
     color: #00796b; /* Teal color for cross-sell */
+}  
+/* This makes the header our positioning anchor. It's required. */
+#controls-header {
+    position: relative;
 }
-/* --- 1. Base Styles for the Cross-Sell Flash Message Box --- */
-/* This styles the visible gift box/alert at the bottom of the widget */
+
+/* This positions the pop-up exactly where you asked. */
+#crossSellFlashMessageContainer {
+    display: none; /* Stays hidden by default */
+    position: absolute;
+    
+    /* YOUR REQUESTED VALUES */
+    margin-top: 51px;  /* This is the correct property for your margin-top request */
+    left: 920px;
+    top:10px; 
+    
+    /* THESE TWO LINES ARE ESSENTIAL to prevent blocking other buttons */
+    width: max-content; 
+    z-index: 10;
+}
+
+/* This is the visible green message box */
 .cross-sell-flash-message {
-    /* Anchors the hover-popup to this element */
-    position: relative;     
-    /* Styling for the alert */
-    background-color: #e6f7e9; /* Light Green background */
-    border: 1px solid #b3e6c3; /* Subtle green border */
-    color: #1a7f37; /* Dark green text */
-    padding: 10px 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    display: inline-block; /* This makes it respect the 'text-align: right' */
+    left:400px;
+}
+#crossSellFlashMessageContainer.visible {
+    display: block;
+    position: absolute;
+    top: 41%;
+    right: 440px;
+    margin-top: 8px;
+
+    z-index: 11; /* <-- ADD THIS LINE to bring it to the front */
+    
+    animation: sudden-appear 0.3s ease-out;
+}
+
+/* This wrapper stacks the buttons and notification vertically */
+.right-side-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Aligns both children to the right */
+    position: relative;
+}
+
+/* --- 1. Base Styles for the Cross-Sell Flash Message Box --- */
+/* This styles the text and icons INSIDE the bar */
+.cross-sell-flash-message {
+    position: relative;
+    z-index: 10;
+    
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    display: inline-block; /* This makes it respect the 'text-align: right' */
+    left:400px;
+    
+    /* THIS IS THE VALUE TO CHANGE */
+    margin-top: 35px; /* Increase this number to add more space */
+
+    color: #333333;
+    font-size: 0.85em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+#applicationTableContainer {
+    margin-top: 2rem; /* Adjust this value as needed */
+  }
+/* This styles the gift icon (green) */
+.cross-sell-flash-message .bi-gift-fill {
+    color: #28a745 !important; /* Green color for gift icon */
+    font-size: 1.1em; /* Slightly larger than text */
+    margin-right: 5px; /* Space between icon and text */
+}
+
+/* This styles the info/tooltip icon (green) */
+.cross-sell-flash-message .bi-info-circle-fill {
+    color: #28a745 !important; /* Green color for info icon */
+    font-size: 1.1em; /* Slightly larger than text */
+    margin-left: 5px; /* Space between text and icon */
 }
 
 .cross-sell-flash-message .alert-heading {
@@ -2704,5 +2774,75 @@ body {
     border-right: 10px solid transparent;
     border-top: 10px solid #ffffff;
 }
+/* Toast Notification Styles */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -100px); /* Start above the screen */
+    background-color: #28a745; /* Success green */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 10001; /* Make sure it's on top of everything */
+    opacity: 0;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.toast-notification.show {
+    transform: translate(-50%, 0); /* Slide down into view */
+    opacity: 1;
+}
+/* --- FINAL ROW HIGHLIGHT: OVERLAY METHOD --- */
+
+/* This makes the row a container for our overlay */
+.row-highlight-flash {
+    position: relative;
+  }
+  
+  /* This creates the colored overlay on top of the row */
+  .row-highlight-flash::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Puts the overlay on top of the cell content */
+    pointer-events: none; /* Allows you to click "through" the overlay */
+    
+    /* Apply the animation to this overlay */
+    animation: overlay-flash 2s ease-in-out;
+  }
+  
+  /* The new animation, which flashes the overlay's opacity */
+  @keyframes overlay-flash {
+    0% {
+      background-color: rgba(40, 167, 69, 0.3);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes sudden-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
     
     

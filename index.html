@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Health Overview</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="container-fluid px-4 py-3">
         <div class="container-section">
             <div class="account-details-main-box p-3 shadow-sm position-relative mb-4" style="border: 1px solid #e0e0e0;">
                 <div id="widgetLoaderOverlay" class="widget-loader-overlay show">
-    <div class="loader-container" role="status" aria-live="polite" aria-label="Loading content">
-        <div class="zoho-logo-loader">
-            <img src="images/zoho-logo.gif" alt="Zoho Animated Logo">
-        </div>
-        <span class="widget-loader-message">
-            • Made in India • Made for the World 🌐✨
-        </span>
-    </div>
-</div>                
+                    <div class="loader-container" role="status" aria-live="polite" aria-label="Loading content">
+                        <div class="zoho-logo-loader">
+                            <img src="images/zoho-logo.gif" alt="Zoho Animated Logo">
+                        </div>
+                        <span class="widget-loader-message">
+                            • Made in India • Made for the World 🌐✨
+                        </span>
+                    </div>
+                </div>                
                 <div class="account-info-content">
                     <h5 class="fw-bold mb-1 text-primary d-inline-block">zylker inc</h5>
-                    <span class="ms-2 me-2 fw-bold text-dark fs-">|</span> <span class="fw-bold text-dark fs-6">Peter</span>
-                    <i class="bi bi-arrow-clockwise ms-2 text-muted" id="refreshIcon" style="cursor: pointer;"></i> <!-- Refresh icon added here -->
+                    <span class="ms-2 me-2 fw-bold text-dark fs-6">|</span> <span class="fw-bold text-dark fs-6">Peter</span>
+                    <i class="bi bi-arrow-clockwise ms-2 text-muted" id="refreshIcon" style="cursor: pointer;"></i>
                     <p class="text-muted small mb-2">
                         <i class="bi bi-geo-alt-fill text-danger me-1"></i> North America
                     </p>
@@ -158,104 +157,99 @@
                             <i class="bi bi-chat-text-fill"></i> Chat with Agent (<span class="ai-text">AI</span>)
                         </button>
                     </div>
-                    </div>
-                </div>
-            </div>
-            <div><div class="container-section kpi-section">
-            <h5 class="fw-bold mb-4 text-primary">Key Performance Indicators</h5>
-            <div class="d-flex flex-wrap justify-content-around g-3">
-                <div class="card-section" id="criticalIssuesCard">
-                    <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
-                    <strong>Critical Issues</strong></p>
-                    <strong id="criticalIssuesCount">2</strong>
-                    <p>immediate concern</p>
-                </div>
-                <div class="card-section" id="warningSignsCard">
-                    <p><i class="bi bi-exclamation-triangle fs-4 me-2" style="color: #FFC107;"></i><strong>Warning Signs</strong></p>
-                    <strong id="warningSignsCount">2</strong>
-                    <p>Early signs of risk</p>
-                </div>
-                <div class="card-section" id="competitorExposureCard">
-                    <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 1.8em;"></i><strong>Competitor Exposure</strong></p>
-                    <strong id="competitorExposureCount">6</strong>
-                    <p>potential churn influence</p>
-                </div>
-                <div class="card-section" id="downgradeRisksCard">
-                    <p><i class="bi bi-graph-down-arrow fs-4 me-2" style="color: #800000;"></i><strong>Downgrade Risks</strong></p>
-                    <strong id="downgradeRisksCount">2</strong>
-                    <p>Requires immediate Attention</p>
-                </div>
-                
-                <div class="card-section" id="deskTicketsCard">
-                    <p>
-                        <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;"><strong>Desk Tickets</strong>
-                    </p>
-                    <div class="ticket-counts-wrapper">
-                        <div class="ticket-counts-labels d-flex justify-content-between align-items-center">
-                            <span class="open-label">Open</span>
-                            <span class="vertical-bar">|</span>
-                            <span class="closed-label">Closed</span>
-                        </div>
-                        <div class="ticket-counts-numbers d-flex justify-content-between">
-                            <span id="openTicketsCount"></span>
-                            <span id="closedTicketsCount"></span>
-                        </div>
-                    </div>
-                    <p>sentiment/volume/severity</p>
                 </div>
             </div>
         </div>
-            </div>
-            <hr />
-            <div class="d-flex align-items-center justify-content-between mb-4 flex-nowrap overflow-x-auto">
-                <div class="d-flex align-items-center flex-shrink-0">
-                    <h4 style="font-weight: 600; margin-bottom: 0;">
-                        <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
-                    </h4>
-                    <div class="arr-capsule-container d-flex align-items-center">
-                        <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
-                            <span class="arr-count" id="arrLessThan5kCount">0</span>
-                            <span class="arr-label">
-                                <i class="bi bi-chevron-left"></i>5k
-                            </span>
-                        </div>                    
-                        <div class="vertical-bar-arr"></div> <!-- New vertical bar -->                   
-                        <div class="arr-segment arr-greater-than-5k" id="arrGreaterThan5kSegment">
-                            <span class="arr-label">
-                                <i class="bi bi-chevron-right"></i>5k
-                            </span>
-                            <span class="arr-count" id="arrGreaterThan5kCount">0</span>
-                        </div>
-                    </div> 
-                </div>
-                <div class="Buttons-section">
-                    <button class="btn btn-light btns active" id="allAppsBtn">
-                        All Apps (<span id="allAppsCount">14</span>)
-                    </button>
-                    <button class="btn btn-light btns" id="crossSellBtn">
-                        <i class="bi bi-arrow-right-circle"></i>
-                        Cross-sell (<span id="crossSellCount">0</span>)
-                    </button>
-                    <button class="btn btn-light btns" id="downgradesBtn">
-                        <i class="bi bi-graph-down-arrow fs-5" style="color: #800000;"></i>
-                        Downgrades (<span id="downgradesCount">8</span>)
-                    </button>
-                    <button class="btn btn-light btns" id="competitorsBtn">
-                        <i class="bi bi-link-45deg text-primary align-middle" style="font-size: 1.5em;"></i>
-                        Competitors (<span id="competitorsCount">6</span>)
-                    </button>
-                    <div id="anomalies-table-section" >
-                    <button class="btn btn-light btns" id="anomaliesBtn">
-                        <i class="bi bi-exclamation-triangle" style="color: #FFC107;"></i>
-                        Anomalies (<span id="anomaliesCount">4</span>)
-                    </button>
+        <div>
+            <div class="container-section kpi-section">
+                <h5 class="fw-bold mb-4 text-primary">Key Performance Indicators</h5>
+                <div class="d-flex flex-wrap justify-content-around g-3">
+                    <div class="card-section" id="criticalIssuesCard">
+                        <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
+                        <strong>Critical Issues</strong></p>
+                        <strong id="criticalIssuesCount">2</strong>
+                        <p>immediate concern</p>
                     </div>
-                    <button class="btn btn-light btns" id="ticketDetailsBtn">
-                        <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 17px; height: 17px; vertical-align: middle;">
-                        Ticket Details
-                    </button>
+                    <div class="card-section" id="warningSignsCard">
+                        <p><i class="bi bi-exclamation-triangle fs-4 me-2" style="color: #FFC107;"></i><strong>Warning Signs</strong></p>
+                        <strong id="warningSignsCount">2</strong>
+                        <p>Early signs of risk</p>
+                    </div>
+                    <div class="card-section" id="competitorExposureCard">
+                        <p><i class="bi bi-link-45deg me-2 text-primary align-middle" style="font-size: 1.8em;"></i><strong>Competitor Exposure</strong></p>
+                        <strong id="competitorExposureCount">6</strong>
+                        <p>potential churn influence</p>
+                    </div>
+                    <div class="card-section" id="downgradeRisksCard">
+                        <p><i class="bi bi-graph-down-arrow fs-4 me-2" style="color: #800000;"></i><strong>Downgrade Risks</strong></p>
+                        <strong id="downgradeRisksCount">2</strong>
+                        <p>Requires immediate Attention</p>
+                    </div>
+                    <div class="card-section" id="deskTicketsCard">
+                        <p>
+                            <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;"><strong>Desk Tickets</strong>
+                        </p>
+                        <div class="ticket-counts-wrapper">
+                            <div class="ticket-counts-labels d-flex justify-content-between align-items-center">
+                                <span class="open-label">Open</span>
+                                <span class="vertical-bar">|</span>
+                                <span class="closed-label">Closed</span>
+                            </div>
+                            <div class="ticket-counts-numbers d-flex justify-content-between">
+                                <span id="openTicketsCount"></span>
+                                <span id="closedTicketsCount"></span>
+                            </div>
+                        </div>
+                        <p>sentiment/volume/severity</p>
+                    </div>
                 </div>
             </div>
+        </div>
+        <hr />
+
+        <div id="controls-header" class="d-flex align-items-center justify-content-between mb-5 flex-nowrap overflow-x-auto">
+            <div class="d-flex align-items-center flex-shrink-0">
+                <h4 style="font-weight: 600; margin-bottom: 0;">
+                    <i class="bi bi-search subscriptions-analysis-icon" style="font-size: 1.2em;"></i> Subscriptions Analysis
+                </h4>
+                <div class="arr-capsule-container d-flex align-items-center">
+                    <div class="arr-segment arr-less-than-5k" id="arrLessThan5kSegment">
+                        <span class="arr-count" id="arrLessThan5kCount">0</span>
+                        <span class="arr-label"><i class="bi bi-chevron-left"></i>5k</span>
+                    </div>                    
+                    <div class="vertical-bar-arr"></div>
+                    <div class="arr-segment arr-greater-than-5k" id="arrGreaterThan5kSegment">
+                        <span class="arr-label"><i class="bi bi-chevron-right"></i>5k</span>
+                        <span class="arr-count" id="arrGreaterThan5kCount">0</span>
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="right-side-wrapper">
+                <div class="Buttons-section">
+                    <button class="btn btn-light btns active" id="allAppsBtn">All Apps (<span id="allAppsCount">14</span>)</button>
+                    <button class="btn btn-light btns" id="crossSellBtn"><i class="bi bi-arrow-right-circle"></i> Cross-sell (<span id="crossSellCount">0</span>)</button>
+                    <button class="btn btn-light btns" id="downgradesBtn"><i class="bi bi-graph-down-arrow fs-5" style="color: #800000;"></i> Downgrades (<span id="downgradesCount">8</span>)</button>
+                    <button class="btn btn-light btns" id="competitorsBtn"><i class="bi bi-link-45deg text-primary align-middle" style="font-size: 1.5em;"></i> Competitors (<span id="competitorsCount">6</span>)</button>
+                    <div id="anomalies-table-section" >
+                        <button class="btn btn-light btns" id="anomaliesBtn"><i class="bi bi-exclamation-triangle" style="color: #FFC107;"></i> Anomalies (<span id="anomaliesCount">4</span>)</button>
+                    </div>
+                    <button class="btn btn-light btns" id="ticketDetailsBtn"><img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 17px; height: 17px; vertical-align: middle;"> Ticket Details</button>
+                </div>
+            </div>
+        </div>
+        <div id="crossSellFlashMessageContainer">
+            <div class="alert alert-info cross-sell-flash-message">
+                <div class="popup-wrapper">
+                <i class="bi bi-info-circle-fill me-2 clickable-gift-icon" id="crossSellFlashMessageTrigger"></i>
+                <div id="crossSellFlashMessagePopup" class="hover-popup cross-sell-tickets-popup">
+                    <h5>Cross-Sell Opportunities</h5>
+                    <ul id="crossSellFlashMessageList"></ul>
+                </div>
+                </div>
+                <span>Cross-Sell Detected</span>
+                <i class="bi bi-gift-fill ms-2"></i>
+              </div>
         </div>
         <div id="applicationTableContainer" class="table-responsive">
             <table class="table" id="applicationTable">
@@ -268,14 +262,14 @@
                         <th>ARR Trend</th>
                         <th>License</th>
                         <th>License Trend</th>
-<th>
-   <span class="header-text"> Competitors </span>
-   <small class="help-text">
-      <span class="text-success"> Cross-sell   </span> 
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
-      <span class="text-danger">   Threat </span>
-   </small>
-</th>
+                        <th>
+                           <span class="header-text"> Competitors </span>
+                           <small class="help-text">
+                              <span class="text-success"> Cross-sell   </span> 
+                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+                              <span class="text-danger">   Threat </span>
+                           </small>
+                        </th>
                         <th>Zoho Options</th>
                         <th>Actions</th>
                     </tr>
@@ -299,20 +293,8 @@
                 </tbody>
             </table>
         </div>
-        <div id="crossSellFlashMessageContainer" style="display: none;" class="mt-4">
-            <div class="alert alert-info cross-sell-flash-message">
-                <i class="bi bi-gift-fill me-2 fs-5" style="color: #00796b;"></i>
-                <span class="fw-bold">New Cross-Sell Opportunities Identified.</span>
-                <i class="bi bi-info-circle-fill ms-2 clickable-gift-icon" id="crossSellFlashMessageTrigger"></i>
-
-                <div id="crossSellFlashMessagePopup" class="hover-popup cross-sell-tickets-popup">
-                    <h5>Cross-Sell Opportunities</h5>
-                    <ul id="crossSellFlashMessageList">
-                        </ul>
-                </div>
-            </div>
-        </div>
     </div>
+
     <div id="subscriptionChatModal" class="subscription-chat-modal">
         <div class="subscription-chat-modal-header">
             <span>What's up dude 👋</span>
@@ -325,18 +307,14 @@
     <div id="threatDetailsPopup" class="threat-popup-overlay">
         <div class="threat-popup-content">
             <h4 class="threat-popup-title">Threat Details</h4>
-            <div id="threatListContainer" class="threat-list-container">
-                <!-- Dynamically populated -->
-            </div>
+            <div id="threatListContainer" class="threat-list-container"></div>
             <button id="threatPopupCloseBtn" class="threat-popup-close-btn">Close</button>
         </div>
     </div>
     <div id="escalatedTicketsPopup" class="escalated-tickets-popup-overlay">
         <div class="escalated-tickets-popup-content">
             <h4 class="escalated-tickets-popup-title">Escalated Tickets</h4>
-            <div id="escalatedTicketsListContainer" class="escalated-tickets-list-container">
-                <!-- Dynamically populated -->
-            </div>
+            <div id="escalatedTicketsListContainer" class="escalated-tickets-list-container"></div>
             <button id="escalatedTicketsPopupCloseBtn" class="escalated-tickets-popup-close-btn">Close</button>
         </div>
     </div>
@@ -353,9 +331,7 @@
     <div id="resolvedHistoryPopup" class="resolved-history-popup-overlay">
         <div class="resolved-history-popup-content">
             <h4 class="resolved-history-popup-title">Resolved History</h4>
-            <div id="resolvedHistoryListContainer" class="resolved-history-list-container">
-                <!-- Dynamically populated -->
-            </div>
+            <div id="resolvedHistoryListContainer" class="resolved-history-list-container"></div>
             <button id="resolvedHistoryPopupCloseBtn" class="resolved-history-popup-close-btn">Close</button>
         </div>
     </div>
@@ -374,9 +350,6 @@
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
-
-
-
-

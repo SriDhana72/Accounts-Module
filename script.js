@@ -2209,12 +2209,11 @@ function switchTab(selectedCategory, dataToRender = null) {
     currentArrFilter = 'all'; 
     activeSection = selectedCategory;
 
-    // ADDED: Logic to show/hide the cross-sell flash message
     if (crossSellFlashMessageContainer) {
-        if (selectedCategory === 'ticket-details') {
-            crossSellFlashMessageContainer.style.display = 'block';
+        if (selectedCategory === 'cross-sell') {
+            crossSellFlashMessageContainer.classList.add('visible');
         } else {
-            crossSellFlashMessageContainer.style.display = 'none';
+            crossSellFlashMessageContainer.classList.remove('visible');
         }
     }
 
@@ -2660,19 +2659,61 @@ function fillPopupList() {
         crossSellFlashMessageList.appendChild(li);
     }
 }
+let toastTimeout; // Manages the timer for the toast message
+
+/**
+ * Displays a temporary toast notification at the top of the screen.
+ * @param {string} message The message to display.
+ */
+function showToast(message) {
+    if (toastTimeout) {
+        clearTimeout(toastTimeout);
+    }
+
+    let toast = document.getElementById('toast-notification');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.className = 'toast-notification';
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add('show');
+
+    // Set a timeout to hide it after 1 second (1000ms)
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 1000); // CHANGED from 3000 to 1000
+}
+/**
+ * Calculates and sets the top position of the notification bar
+ * to keep it perfectly aligned below the main header.
+ */
+function positionNotificationBar() {
+    const headerSection = document.getElementById('subscriptions-header');
+    const notificationBar = document.getElementById('crossSellFlashMessageContainer');
+
+    if (headerSection && notificationBar) {
+        // Get the height of the header section
+        const headerHeight = headerSection.offsetHeight;
+        
+        // Position the notification bar 5px below the bottom of the header
+        notificationBar.style.top = (headerHeight + 5) + 'px'; 
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...');
     if (!initializeDOMElements()) {
         console.error('Failed to initialize DOM elements, stopping further initialization.');
         return;
     }
-
     // Show loader immediately
     showWidgetLoader();
 
-    setTimeout(()=>{
+    setTimeout(() => {
         hideWidgetLoader();
-    },3000);
+    }, 3000);
     // Simulate data loading delay
     setTimeout(() => {
         filterDataArrays();
@@ -2683,7 +2724,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allAppsBtn.classList.add('active');
         }
         startTypewriterSequence();
-    }, 3500); // Simulate 1 second loading time
+    }, 3500);
 
     // --- Primary Filter Button Listeners ---
     if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
@@ -2768,59 +2809,48 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketDetailsTableContainer.classList.add('fade-out'); 
         ticketDetailsTableContainer.style.display = 'none';
     }
-// --- Cross-Sell Hover Listener (Final Positioning Fix) ---
-const crossSellFlashMessageTrigger = document.getElementById('crossSellFlashMessageTrigger');
-if (crossSellFlashMessageTrigger && crossSellFlashMessagePopup) {
     
-    // This part is correct: move the popup to the body to avoid clipping.
-    document.body.appendChild(crossSellFlashMessagePopup);
+    // --- Cross-Sell Hover Listener (Final Positioning Fix) ---
+    const crossSellFlashMessageTrigger = document.getElementById('crossSellFlashMessageTrigger');
+    if (crossSellFlashMessageTrigger && crossSellFlashMessagePopup) {
+        
+        document.body.appendChild(crossSellFlashMessagePopup);
 
-    const showPopup = () => {
-        // 1. Populate the list with content
-        fillPopupList(); 
+const showPopup = () => {
+    fillPopupList(); 
+    crossSellFlashMessagePopup.style.display = 'block';
+    const popupHeight = crossSellFlashMessagePopup.offsetHeight;
+    const popupWidth = crossSellFlashMessagePopup.offsetWidth;
+    crossSellFlashMessagePopup.style.display = '';
+    const triggerRect = crossSellFlashMessageTrigger.getBoundingClientRect();
 
-        // 2. Force the element into the layout by setting display:block. It's still invisible (opacity:0).
-        crossSellFlashMessagePopup.style.display = 'block';
+    // --- THIS IS THE ONLY LINE THAT HAS CHANGED ---
+    // We removed the "- 8" to close the gap
+    const popupTop = triggerRect.top - popupHeight; 
 
-        // 3. NOW, measure its true height and width
-        const popupHeight = crossSellFlashMessagePopup.offsetHeight;
-        const popupWidth = crossSellFlashMessagePopup.offsetWidth;
+    const popupLeft = triggerRect.right - popupWidth;
+    
+    crossSellFlashMessagePopup.style.top = `${popupTop}px`;
+    crossSellFlashMessagePopup.style.left = `${popupLeft}px`;
+    setTimeout(() => {
+        crossSellFlashMessagePopup.classList.add('show');
+    }, 10); 
+};
 
-        // 4. Hide it again before we calculate and set the final position
-        crossSellFlashMessagePopup.style.display = '';
+        const hidePopup = () => {
+            setTimeout(() => {
+                if (!crossSellFlashMessageTrigger.matches(':hover') && !crossSellFlashMessagePopup.matches(':hover')) {
+                    crossSellFlashMessagePopup.classList.remove('show');
+                }
+            }, 100);
+        };
 
-        // 5. Get the trigger icon's position
-        const triggerRect = crossSellFlashMessageTrigger.getBoundingClientRect();
-
-        // 6. Calculate the final, correct position
-        const popupTop = triggerRect.top - popupHeight - 8; // 8px gap
-        const popupLeft = triggerRect.left + (triggerRect.width / 2) - (popupWidth / 2);
-
-        // 7. Apply the calculated position
-        crossSellFlashMessagePopup.style.top = `${popupTop}px`;
-        crossSellFlashMessagePopup.style.left = `${popupLeft}px`;
-
-        // 8. Use a tiny delay to ensure the new position is applied, then fade it in.
-        // This prevents any visual "jump".
-        setTimeout(() => {
-            crossSellFlashMessagePopup.classList.add('show');
-        }, 10); 
-    };
-
-    const hidePopup = () => {
-        setTimeout(() => {
-            if (!crossSellFlashMessageTrigger.matches(':hover') && !crossSellFlashMessagePopup.matches(':hover')) {
-                crossSellFlashMessagePopup.classList.remove('show');
-            }
-        }, 100);
-    };
-
-    crossSellFlashMessageTrigger.addEventListener('mouseenter', showPopup);
-    crossSellFlashMessageTrigger.addEventListener('mouseleave', hidePopup);
-    crossSellFlashMessagePopup.addEventListener('mouseenter', () => crossSellFlashMessagePopup.classList.add('show'));
-    crossSellFlashMessagePopup.addEventListener('mouseleave', hidePopup);
-}
-// --- End Cross-Sell Hover Listener ---
+        crossSellFlashMessageTrigger.addEventListener('mouseenter', showPopup);
+        crossSellFlashMessageTrigger.addEventListener('mouseleave', hidePopup);
+        crossSellFlashMessagePopup.addEventListener('mouseenter', () => crossSellFlashMessagePopup.classList.add('show'));
+        crossSellFlashMessagePopup.addEventListener('mouseleave', hidePopup);
+    }
+    // --- End Cross-Sell Hover Listener ---
 
     // --- Other Popups/Dropdowns/Modals ---
     if (threatPopupCloseBtn) {
@@ -2836,81 +2866,97 @@ if (crossSellFlashMessageTrigger && crossSellFlashMessagePopup) {
         resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
     }
 
-// REPLACE this entire block in your DOMContentLoaded function
-
-if (resolveNotesSubmitBtn) {
-    resolveNotesSubmitBtn.addEventListener('click', () => {
-        if (!currentItemToResolve) return;
-
-        const { type, appId, name, id, summary } = currentItemToResolve;
-        const notes = resolveNotesTextarea.value; 
-        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
-
-        // This logic updates your data arrays
-        if (type === 'threat') {
-            resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
-            const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-            if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
-        } else if (type === 'ticket') {
-            resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
-            ticketDetailsData.forEach(dept => {
-                const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
-                if (ticketIndex !== -1) { 
-                    dept.tickets[ticketIndex].status = 'Closed'; 
-                    // Find the original open ticket and remove its 'Escalation Request' tag to prevent it from reappearing
-                    const originalTicket = dept.tickets.find(tkt => tkt.id === id);
-                    if(originalTicket) {
-                        originalTicket.tags = originalTicket.tags.filter(tag => tag !== 'Escalation Request');
+    if (resolveNotesSubmitBtn) {
+        resolveNotesSubmitBtn.addEventListener('click', () => {
+            if (!currentItemToResolve) return;
+            console.log("--- STARTING SUBMIT PROCESS ---");
+    
+            const { type, appId, name, id, summary } = currentItemToResolve;
+            const notes = resolveNotesTextarea.value; 
+            const appForHistory = appData.find(app => app.id.toString() === appId.toString());
+    
+            if (type === 'threat') {
+                resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
+                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+                if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
+            } else if (type === 'ticket') {
+                resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
+                ticketDetailsData.forEach(dept => {
+                    const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
+                    if (ticketIndex !== -1) { 
+                        dept.tickets[ticketIndex].status = 'Closed'; 
+                        const originalTicket = dept.tickets.find(tkt => tkt.id === id);
+                        if(originalTicket) {
+                            originalTicket.tags = originalTicket.tags.filter(tag => tag !== 'Escalation Request');
+                        }
+                        dept.openStatus--; 
+                        dept.closedStatus++; 
                     }
-                    dept.openStatus--; 
-                    dept.closedStatus++; 
+                });
+            }
+            
+            filterDataArrays(); 
+            updateDashboard(anomaliesFilteredData);
+            showToast("Submitted successfully!");
+            
+            console.log("Closing popups and refreshing list...");
+            closeResolveNotesPopup();
+    
+            if (type === 'threat') {
+                const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+                const crossSellList = ['Mailchimp', 'Dropbox'];
+                let remainingThreats = [];
+                if (appForHistory && appForHistory.competitors) {
+                    remainingThreats = appForHistory.competitors.filter(comp => 
+                        threatList.includes(comp) || !crossSellList.includes(comp)
+                    );
                 }
-            });
-        }
-        
-        filterDataArrays(); 
-        updateDashboard(anomaliesFilteredData); // Refresh the main view behind the popup
-
-        // --- BEHAVIOR CHANGE STARTS HERE ---
-
-        // 1. Close ONLY the 'Enter Notes' popup
-        closeResolveNotesPopup();
-
-        // 2. Find the remaining items and REFRESH the list popup
-        if (type === 'threat') {
-            const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-            const crossSellList = ['Mailchimp', 'Dropbox'];
-            let remainingThreats = [];
-            if (appForHistory && appForHistory.competitors) {
-                remainingThreats = appForHistory.competitors.filter(comp => 
-                    threatList.includes(comp) || !crossSellList.includes(comp)
-                );
+                showThreatDetailsPopup(remainingThreats, appId);
+            } else if (type === 'ticket') {
+                let remainingTickets = [];
+                const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
+                if (relevantDept) {
+                    const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
+                    remainingTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
+                }
+                showEscalatedTicketsPopup(remainingTickets, appId);
             }
-            // Re-render the threat popup with the remaining threats
-            showThreatDetailsPopup(remainingThreats, appId);
-
-        } else if (type === 'ticket') {
-            let remainingTickets = [];
-            const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
-            if (relevantDept) {
-                const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
-                remainingTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
+            
+            console.log("Attempting to find and highlight the row...");
+            const rowToHighlight = document.querySelector(`tr[data-app-id='${appId}']`);
+    
+            if (rowToHighlight) {
+                console.log("SUCCESS: Found the row. Applying highlight.", rowToHighlight);
+                rowToHighlight.classList.add('row-highlight-flash');
+                setTimeout(() => {
+                    rowToHighlight.classList.remove('row-highlight-flash');
+                }, 2000);
+            } else {
+                console.error("FAILURE: Could not find the row with data-app-id:", appId);
             }
-            // Re-render the tickets popup with the remaining tickets
-            showEscalatedTicketsPopup(remainingTickets, appId);
-        }
-        // NOTE: The old lines that closed the main popups have been removed.
-    });
-}
-
-    if (escalatedTicketsPopupCloseBtn) { escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup); }
-    if (escalatedTicketsPopup) {
-        escalatedTicketsPopup.addEventListener('click', (e) => { if (e.target === escalatedTicketsPopup) { closeEscalatedTicketsPopup(); } });
+        });
     }
 
-    if (resolvedHistoryPopupCloseBtn) { resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup); }
+    if (escalatedTicketsPopupCloseBtn) { 
+        escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup); 
+    }
+    if (escalatedTicketsPopup) {
+        escalatedTicketsPopup.addEventListener('click', (e) => { 
+            if (e.target === escalatedTicketsPopup) { 
+                closeEscalatedTicketsPopup(); 
+            } 
+        });
+    }
+
+    if (resolvedHistoryPopupCloseBtn) { 
+        resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup); 
+    }
     if (resolvedHistoryPopup) {
-        resolvedHistoryPopup.addEventListener('click', (e) => { if (e.target === resolvedHistoryPopup) { closeResolvedHistoryPopup(); } });
+        resolvedHistoryPopup.addEventListener('click', (e) => { 
+            if (e.target === resolvedHistoryPopup) { 
+                closeResolvedHistoryPopup(); 
+            } 
+        });
     }
 
     // --- Document-wide Click Handlers ---
@@ -2933,7 +2979,11 @@ if (resolveNotesSubmitBtn) {
     if (clickableEyeIcon && ratingDetailsPopup) {
         clickableEyeIcon.addEventListener('click', (event) => {
             event.stopPropagation();
-            if (ratingDetailsPopup.style.display === 'block') { ratingDetailsPopup.style.display = 'none'; } else { ratingDetailsPopup.style.display = 'block'; }
+            if (ratingDetailsPopup.style.display === 'block') { 
+                ratingDetailsPopup.style.display = 'none'; 
+            } else { 
+                ratingDetailsPopup.style.display = 'block'; 
+            }
         });
         document.addEventListener('click', (event) => {
             if (ratingDetailsPopup.style.display === 'block' &&
@@ -2952,23 +3002,24 @@ if (resolveNotesSubmitBtn) {
         const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); 
         
         if (needHelpToggleElement && needHelpDropdownMenu) {
-                        const emailClientBtn = needHelpDropdownMenu.querySelector('.email-client');
-                        const emailPeerBtn = needHelpDropdownMenu.querySelector('.email-peer');
-            
-                        if (emailClientBtn) {
-                            emailClientBtn.addEventListener('click', (event) => {
-                                event.stopPropagation();
-                                showEmailPopup('client');
-                                closeAllDropdowns();
-                            });
-                        }
-                        if (emailPeerBtn) {
-                            emailPeerBtn.addEventListener('click', (event) => {
-                                event.stopPropagation();
-                                showEmailPopup('peer');
-                                closeAllDropdowns();
-                            });
-                        }
+            const emailClientBtn = needHelpDropdownMenu.querySelector('.email-client');
+            const emailPeerBtn = needHelpDropdownMenu.querySelector('.email-peer');
+
+            if (emailClientBtn) {
+                emailClientBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showEmailPopup('client');
+                    closeAllDropdowns();
+                });
+            }
+            if (emailPeerBtn) {
+                emailPeerBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showEmailPopup('peer');
+                    closeAllDropdowns();
+                });
+            }
+
             needHelpToggleElement.addEventListener('click', (event) => {
                 event.stopPropagation();
                 if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) { closeAllDropdowns(); }
@@ -2986,35 +3037,26 @@ if (resolveNotesSubmitBtn) {
                 }
             });
 
-            if (needHelpChatAgentBtn ) {
+            if (needHelpChatAgentBtn) {
                 needHelpChatAgentBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
                     openSubscriptionChatModal(null, null, event.target);
                     closeAllDropdowns(); 
                 });
             }
-
-            needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                // Email button logic is handled outside this loop (above)
-                if (button.id !== 'needHelpChatAgentBtn') {
-                    button.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        closeAllDropdowns();
-                    });
-                }
-            });
         }
     }
 
-    if (closeSubscriptionChatModalBtn) { closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal); }
+    if (closeSubscriptionChatModalBtn) { 
+        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal); 
+    }
 
     // --- Recent Purchases Hover ---
     if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
         recentPurchasesCountSpan.addEventListener('mouseenter', () => {
-            // ... (Logic for recent purchases hover)
             recentPurchasesHoverList.innerHTML = '';
             if (recentPurchasesData.length > 0) {
-                recentPurchasesData.forEach((item, index) => {
+                recentPurchasesData.forEach((item) => {
                     const li = document.createElement('li');
                     li.innerHTML = `<span class="app-name">${item.name}</span> <span class="app-revenue">$${item.revenue}</span>`;
                     recentPurchasesHoverList.appendChild(li);
@@ -3034,21 +3076,43 @@ if (resolveNotesSubmitBtn) {
     // --- Next Renewals Hover ---
     if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
         nextRenewalsCountSpan.addEventListener('mouseenter', () => {
-            // ... (Logic for next renewals hover)
             nextRenewalsHoverList.innerHTML = ''; 
             if (nextRenewalsData.length > 0) {
                 nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
-                nextRenewalsData.forEach((item, index) => {
+                nextRenewalsData.forEach((item) => {
                     const li = document.createElement('li');
-                    li.style.display = 'flex'; li.style.justifyContent = 'space-between'; li.style.alignItems = 'center'; li.style.padding = '8px 0'; li.style.borderBottom = '1px solid #eee'; 
-                    const nameSpan = document.createElement('span'); nameSpan.className = 'app-name'; nameSpan.textContent = item.name; nameSpan.style.flexBasis = '40%'; nameSpan.style.textAlign = 'left';
-                    const dateSpan = document.createElement('span'); dateSpan.className = 'renewal-date'; dateSpan.textContent = item.date; dateSpan.style.flexBasis = '30%'; nameSpan.style.textAlign = 'center';
-                    const revenueSpan = document.createElement('span'); revenueSpan.className = 'app-revenue'; revenueSpan.textContent = `$${item.revenue}`; revenueSpan.style.flexBasis = '30%'; revenueSpan.style.textAlign = 'right';
-                    li.appendChild(nameSpan); li.appendChild(dateSpan); li.appendChild(revenueSpan); nextRenewalsHoverList.appendChild(li);
+                    li.style.display = 'flex'; 
+                    li.style.justifyContent = 'space-between'; 
+                    li.style.alignItems = 'center'; 
+                    li.style.padding = '8px 0'; 
+                    li.style.borderBottom = '1px solid #eee'; 
+                    const nameSpan = document.createElement('span'); 
+                    nameSpan.className = 'app-name'; 
+                    nameSpan.textContent = item.name; 
+                    nameSpan.style.flexBasis = '40%'; 
+                    nameSpan.style.textAlign = 'left';
+                    const dateSpan = document.createElement('span'); 
+                    dateSpan.className = 'renewal-date'; 
+                    dateSpan.textContent = item.date; 
+                    dateSpan.style.flexBasis = '30%'; 
+                    dateSpan.style.textAlign = 'center';
+                    const revenueSpan = document.createElement('span'); 
+                    revenueSpan.className = 'app-revenue'; 
+                    revenueSpan.textContent = `$${item.revenue}`; 
+                    revenueSpan.style.flexBasis = '30%'; 
+                    revenueSpan.style.textAlign = 'right';
+                    li.appendChild(nameSpan); 
+                    li.appendChild(dateSpan); 
+                    li.appendChild(revenueSpan); 
+                    nextRenewalsHoverList.appendChild(li);
                 });
-                if (nextRenewalsHoverList.lastChild) { nextRenewalsHoverList.lastChild.style.borderBottom = 'none'; }
+                if (nextRenewalsHoverList.lastChild) { 
+                    nextRenewalsHoverList.lastChild.style.borderBottom = 'none'; 
+                }
             } else {
-                const li = document.createElement('li'); li.textContent = 'No upcoming renewals in the next 3 months.'; nextRenewalsHoverList.appendChild(li);
+                const li = document.createElement('li'); 
+                li.textContent = 'No upcoming renewals in the next 3 months.'; 
+                nextRenewalsHoverList.appendChild(li);
             }
             nextRenewalsHoverPopup.classList.add('show');
         });
@@ -3057,25 +3121,16 @@ if (resolveNotesSubmitBtn) {
         });
     }
 
-    // Event listener for the new refresh icon
+    // --- Event listener for the new refresh icon ---
     refreshIcon.addEventListener('click', () => {
-        location.reload(); // Reload the entire page
+        location.reload();
     });
-        // Add Event Listeners for the Email Popup Buttons
-        if (emailPopupCloseBtn) {
-            emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
-        }
-        if (emailPopupCopyBtn) {
-            emailPopupCopyBtn.addEventListener('click', copyEmailContent);
-        }
+    
+    // --- Add Event Listeners for the Email Popup Buttons ---
+    if (emailPopupCloseBtn) {
+        emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
+    }
+    if (emailPopupCopyBtn) {
+        emailPopupCopyBtn.addEventListener('click', copyEmailContent);
+    }
 });
-
-const loader = document.getElementById('widgetLoaderOverlay');
-const container = document.getElementById('container-id');
-setTimeout(() => {
-    // Hide the loader
-    loader.style.display = 'none';
-
-    // Show the container
-    container.style.display = 'block';
-}, 3000);
