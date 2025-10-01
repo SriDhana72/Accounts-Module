@@ -2836,42 +2836,72 @@ if (crossSellFlashMessageTrigger && crossSellFlashMessagePopup) {
         resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
     }
 
-    if (resolveNotesSubmitBtn) {
-        resolveNotesSubmitBtn.addEventListener('click', () => {
-            if (!currentItemToResolve) return;
-            // ... (rest of resolveNotesSubmitBtn logic)
-            // Assuming the full logic is present in your function block
-            
-            const { type, appId, name, id, summary } = currentItemToResolve;
-            const notes = resolveNotesTextarea.value; 
-            const appForHistory = appData.find(app => app.id.toString() === appId.toString());
+// REPLACE this entire block in your DOMContentLoaded function
 
-            if (type === 'threat') {
-                 // Add to history
-                resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
-                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-                if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
-            } else if (type === 'ticket') {
-                resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
-                ticketDetailsData.forEach(dept => {
-                    const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
-                    if (ticketIndex !== -1) { dept.tickets[ticketIndex].status = 'Closed'; dept.openStatus--; dept.closedStatus++; }
-                });
+if (resolveNotesSubmitBtn) {
+    resolveNotesSubmitBtn.addEventListener('click', () => {
+        if (!currentItemToResolve) return;
+
+        const { type, appId, name, id, summary } = currentItemToResolve;
+        const notes = resolveNotesTextarea.value; 
+        const appForHistory = appData.find(app => app.id.toString() === appId.toString());
+
+        // This logic updates your data arrays
+        if (type === 'threat') {
+            resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
+            const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+            if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
+        } else if (type === 'ticket') {
+            resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
+            ticketDetailsData.forEach(dept => {
+                const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
+                if (ticketIndex !== -1) { 
+                    dept.tickets[ticketIndex].status = 'Closed'; 
+                    // Find the original open ticket and remove its 'Escalation Request' tag to prevent it from reappearing
+                    const originalTicket = dept.tickets.find(tkt => tkt.id === id);
+                    if(originalTicket) {
+                        originalTicket.tags = originalTicket.tags.filter(tag => tag !== 'Escalation Request');
+                    }
+                    dept.openStatus--; 
+                    dept.closedStatus++; 
+                }
+            });
+        }
+        
+        filterDataArrays(); 
+        updateDashboard(anomaliesFilteredData); // Refresh the main view behind the popup
+
+        // --- BEHAVIOR CHANGE STARTS HERE ---
+
+        // 1. Close ONLY the 'Enter Notes' popup
+        closeResolveNotesPopup();
+
+        // 2. Find the remaining items and REFRESH the list popup
+        if (type === 'threat') {
+            const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
+            const crossSellList = ['Mailchimp', 'Dropbox'];
+            let remainingThreats = [];
+            if (appForHistory && appForHistory.competitors) {
+                remainingThreats = appForHistory.competitors.filter(comp => 
+                    threatList.includes(comp) || !crossSellList.includes(comp)
+                );
             }
-           
-            filterDataArrays(); 
-            updateCounts();     
-            
-            // Re-render table section if currently visible (optional optimization)
-            if (activeSection === 'anomalies') updateDashboard(anomaliesFilteredData);
-            if (activeSection === 'downgrades') updateDashboard(downgradesFilteredData);
+            // Re-render the threat popup with the remaining threats
+            showThreatDetailsPopup(remainingThreats, appId);
 
-            // Close popups
-            closeResolveNotesPopup();
-            if(type === 'threat') closeThreatDetailsPopup();
-            if(type === 'ticket') closeEscalatedTicketsPopup();
-        });
-    }
+        } else if (type === 'ticket') {
+            let remainingTickets = [];
+            const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
+            if (relevantDept) {
+                const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
+                remainingTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
+            }
+            // Re-render the tickets popup with the remaining tickets
+            showEscalatedTicketsPopup(remainingTickets, appId);
+        }
+        // NOTE: The old lines that closed the main popups have been removed.
+    });
+}
 
     if (escalatedTicketsPopupCloseBtn) { escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup); }
     if (escalatedTicketsPopup) {
