@@ -2560,6 +2560,149 @@ body {
     font-size: 0.9em;
     resize: none;
     background-color: #f8f9fa;
-}    
+}
+/* --- New Styles for Cross-Sell Opportunity Flash Message in Ticket Details --- */
+.ticket-dropdown-content .alert.alert-success {
+    /* Custom look for the success alert in the expanded row */
+    background-color: #e6f7e9; /* Light Green background */
+    border: 1px solid #b3e6c3; /* Subtle green border */
+    color: #1a7f37; /* Dark green text */
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.ticket-dropdown-content .alert-heading {
+    /* Ensure the heading is clearly visible */
+    color: #1a7f37;
+    font-size: 1.1em;
+}
+
+.ticket-dropdown-content .alert ul {
+    /* Style the list of opportunities inside the alert */
+    list-style: disc;
+    padding-left: 20px;
+    margin-top: 5px;
+}
+
+.ticket-dropdown-content .alert li {
+    /* Reset list item styles */
+    font-size: 0.9em;
+    color: #1a7f37;
+    line-height: 1.4;
+}
+
+/* New tag colors for Cross-Sell tags (optional, but good for visual distinction) */
+.tag-subscription-upgrade-request,
+.tag-integration-roadmap-enquiry,
+.tag-new-team-dept-expansion,
+.tag-feature-purchase {
+    background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+    color: #00796b; /* Teal color for cross-sell */
+}
+/* --- 1. Base Styles for the Cross-Sell Flash Message Box --- */
+/* This styles the visible gift box/alert at the bottom of the widget */
+.cross-sell-flash-message {
+    /* Anchors the hover-popup to this element */
+    position: relative;     
+    /* Styling for the alert */
+    background-color: #e6f7e9; /* Light Green background */
+    border: 1px solid #b3e6c3; /* Subtle green border */
+    color: #1a7f37; /* Dark green text */
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.cross-sell-flash-message .alert-heading {
+    color: #1a7f37;
+    font-size: 1.1em;
+}
+
+/* --- 2. Positioning and Appearance for the Hover Pop-up (Ticket List) --- */
+/* REPLACE your old .cross-sell-tickets-popup CSS with this */
+.hover-popup.cross-sell-tickets-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.hover-popup.cross-sell-tickets-popup::before {
+    content: '';
+    position: absolute;
+    /* Position arrow at the bottom-center of the popup */
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Arrow shape pointing down */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ffffff;
+}
+
+/* --- 4. Styling for the Content Inside the Pop-up List --- */
+.hover-popup.cross-sell-tickets-popup li {
+    padding: 0; /* Remove hover popup default padding */
+    border-bottom: none;
+    line-height: 1.3;
+}
+
+.hover-popup.cross-sell-tickets-popup li > div {
+    /* Styles the d-flex div holding ticket info */
+    border-bottom: 1px dashed #e0e0e0 !important;
+}
+
+.hover-popup.cross-sell-tickets-popup li:last-child > div {
+    border-bottom: none !important;
+}
+
+/* --- 5. New Cross-Sell Tag Colors (for the ticket items) --- */
+.tag-subscription-upgrade-request,
+.tag-integration-roadmap-enquiry,
+.tag-new-team-dept-expansion,
+.tag-feature-purchase {
+    background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+    color: #00796b; /* Teal color for cross-sell */
+}
+/* This styles the popup, which will be moved by JavaScript */
+#crossSellFlashMessagePopup {
+    position: fixed !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    /* --- FORCE THE WIDTH --- */
+    width: 500px !important;        /* Force the width */
+    max-width: none !important;     /* Remove any max-width restrictions */
+    
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999 !important;
+}
+#crossSellFlashMessagePopup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Animate to its final position */
+}
+/* This styles the arrow to point down from the popup */
+#crossSellFlashMessagePopup::before {
+    content: '';
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ffffff;
+}
     
     

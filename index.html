@@ -251,7 +251,7 @@
                     </button>
                     </div>
                     <button class="btn btn-light btns" id="ticketDetailsBtn">
-                        <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 24px; height: 24px; vertical-align: middle;">
+                        <img src="images/Zoho_Desk_img-removebg-preview.png" alt="desk icon" style="width: 17px; height: 17px; vertical-align: middle;">
                         Ticket Details
                     </button>
                 </div>
@@ -298,6 +298,19 @@
                 <tbody id="ticketDetailsTableBody">
                 </tbody>
             </table>
+        </div>
+        <div id="crossSellFlashMessageContainer" style="display: none;" class="mt-4">
+            <div class="alert alert-info cross-sell-flash-message">
+                <i class="bi bi-gift-fill me-2 fs-5" style="color: #00796b;"></i>
+                <span class="fw-bold">New Cross-Sell Opportunities Identified.</span>
+                <i class="bi bi-info-circle-fill ms-2 clickable-gift-icon" id="crossSellFlashMessageTrigger"></i>
+
+                <div id="crossSellFlashMessagePopup" class="hover-popup cross-sell-tickets-popup">
+                    <h5>Cross-Sell Opportunities</h5>
+                    <ul id="crossSellFlashMessageList">
+                        </ul>
+                </div>
+            </div>
         </div>
     </div>
     <div id="subscriptionChatModal" class="subscription-chat-modal">

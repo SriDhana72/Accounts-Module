@@ -458,59 +458,72 @@ tags.push('Security/Data Breach');
 if (lowerSummary.includes('evaluating alternatives') || lowerSummary.includes('looking elsewhere') || lowerSummary.includes('considering other options') || lowerSummary.includes('comparing solutions')) {
 tags.push('Evaluating Alternatives');
 }
+// --- NEW CROSS-SELL TAGS ---
+if (lowerSummary.includes('increase user count') || lowerSummary.includes('upgrade plan') || lowerSummary.includes('move to enterprise')) {
+tags.push('Subscription Upgrade Request');
+}
+if (lowerSummary.includes('integration') || lowerSummary.includes('connect to') || lowerSummary.includes('roadmap feature')) {
+tags.push('Integration / Roadmap enquiry');
+ }
+if (lowerSummary.includes('new department') || lowerSummary.includes('expand team') || lowerSummary.includes('need access for')) {
+tags.push('New Team/Dept Expansion');
+}
+if (lowerSummary.includes('feature purchase') || lowerSummary.includes('buy add-on') || lowerSummary.includes('license add-on')) {
+tags.push('Feature Purchase');
+}
 return tags;
 }
 const ticketDetailsData = [
-{
-id: 'dept-it-support',
-department: "IT Support",
-openStatus: 3,
-closedStatus: 2,
-openTicketOwnership: "Loganathan",
-executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
-tickets: [
-    { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department. Urgent!", url: "#", status: "Open" },
-    { id: "TKT-002-IT", summary: "Missing feature: unable to export reports to PDF. Repeated follow-up needed.", url: "#", status: "Open" },
-    { id: "TKT-003-IT", summary: "User is frustrated with slow support response times.", url: "#", status: "Open" },
-    { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", status: "Closed" },
-    { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", status: "Closed" }
-]
-},
-{
-id: 'dept-sales-ops',
-department: "Sales Operations",
-openStatus: 1,
-closedStatus: 0,
-openTicketOwnership: "Foumin",
-executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
-tickets: [
-    { id: "TKT-004-SO", summary: "CRM data sync failure with reporting tool, user considering competitor switch.", url: "#", status: "Open" }
-]
-},
-{
-id: 'dept-finance',
-department: "Finance",
-openStatus: 1,
-closedStatus: 0,
-openTicketOwnership: "Dhana",
-executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
-tickets: [
-    { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies, dissatisfaction with current system.", url: "#", status: "Open" }
-]
-},
-{
-id: 'dept-development',
-department: "Development",
-openStatus: 3,
-closedStatus: 0,
-openTicketOwnership: "Sivanesan",
-executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
-tickets: [
-    { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
-    { id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
-    { id: "TKT-008-DEV", summary: "Customer threatening to cancel due to security vulnerability. Trust concern raised.", url: "#", status: "Open" }
-]
-}
+    {
+        id: 'dept-it-support',
+        department: "IT Support",
+        openStatus: 3,
+        closedStatus: 2,
+        openTicketOwnership: "Loganathan",
+        executiveSummary: "High volume of open IT support tickets, with a focus on software bugs and user training requests. Requires urgent attention to reduce backlog.",
+        tickets: [
+            { id: "TKT-001-IT", summary: "Network connectivity issue in Sales department. Urgent!", url: "#", status: "Open" },
+            { id: "TKT-002-IT", summary: "Missing feature: unable to export reports to PDF. Repeated follow-up needed.", url: "#", status: "Open" },
+            { id: "TKT-003-IT", summary: "User requested to increase user count from 50 to 100 on their plan.", url: "#", status: "Open" },
+            { id: "TKT-CLOSED-001-IT", summary: "Resolved: User account lockout issue.", url: "#", status: "Closed" },
+            { id: "TKT-CLOSED-002-IT", summary: "Completed: Software update for design team.", url: "#", status: "Closed" }
+        ]
+    },
+    {
+        id: 'dept-sales-ops',
+        department: "Sales Operations",
+        openStatus: 1,
+        closedStatus: 0,
+        openTicketOwnership: "Foumin",
+        executiveSummary: "A single open ticket related to CRM data synchronization impacting sales reporting accuracy. Critical for end-of-quarter metrics.",
+        tickets: [
+            { id: "TKT-004-SO", summary: "CRM data sync failure, client asked about integration with their external ERP system on the roadmap feature.", url: "#", status: "Open" }
+        ]
+    },
+    {
+        id: 'dept-finance',
+        department: "Finance",
+        openStatus: 1,
+        closedStatus: 0,
+        openTicketOwnership: "Dhana",
+        executiveSummary: "Outstanding query on invoice reconciliation. Requires clarification to close monthly books.",
+        tickets: [
+            { id: "TKT-005-FIN", summary: "Query on Q2 invoice reconciliation discrepancies, dissatisfaction with current system.", url: "#", status: "Open" }
+        ]
+    },
+    {
+        id: 'dept-development',
+        department: "Development",
+        openStatus: 3,
+        closedStatus: 0,
+        openTicketOwnership: "Sivanesan",
+        executiveSummary: "Multiple active bugs reported in the latest software release. Prioritization and swift resolution are essential to maintain user satisfaction.",
+        tickets: [
+            { id: "TKT-006-DEV", summary: "Critical bug in user authentication module leading to service outage. Users experiencing access issue.", url: "#", status: "Open" },
+            { id: "TKT-007-DEV", "summary": "UI bug: button misaligned on dashboard page, product regret reported, evaluating alternatives.", url: "#", "status": "Open" },
+            { id: "TKT-008-DEV", summary: "New marketing lead needs immediate access for new department launch, need help provisioning.", url: "#", status: "Open" }
+        ]
+    }
 ];
 ticketDetailsData.forEach(dept => {
 dept.tickets.forEach(ticket => {
@@ -564,6 +577,10 @@ let recentPurchasesHoverPopup = null;
 let nextRenewalsHoverPopup = null;
 let recentPurchasesHoverList = null;
 let nextRenewalsHoverList = null;
+let crossSellFlashMessageContainer = null;
+let crossSellFlashMessagePopup = null;
+let crossSellFlashMessageList = null;
+let crossSellFlashMessageTrigger = null;
 
 let threatDetailsPopup = null;
 let threatListContainer = null;
@@ -768,6 +785,10 @@ escalatedTicketsPopupCloseBtn = document.getElementById('escalatedTicketsPopupCl
 resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
 resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
 resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
+crossSellFlashMessageContainer = document.getElementById('crossSellFlashMessageContainer');
+crossSellFlashMessageTrigger = document.getElementById('crossSellFlashMessageTrigger');
+crossSellFlashMessagePopup = document.getElementById('crossSellFlashMessagePopup');
+crossSellFlashMessageList = document.getElementById('crossSellFlashMessageList');
 // New elements for Email Popup
 emailPopupOverlay = document.getElementById('emailPopupOverlay');
 emailPopupTitle = document.getElementById('emailPopupTitle');
@@ -1077,7 +1098,6 @@ recentPurchasesData = recentPurchasesToDisplay.map(app => ({
 name: app.application, 
 revenue: app.monthlyData[app.monthlyData.length - 1].revenue 
 }));
-
 // 3. Update Upcoming Renewals
 const threeMonthsFromNow = new Date();
 threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
@@ -1603,18 +1623,26 @@ if (actionDropdownMenu.classList.contains('show')) {
     closeAllDropdowns();
 }
 });
+// Find this block inside the renderApplicationTable function and replace it.
 actionDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-button.addEventListener('click', (event) => {
-    event.stopPropagation();
-    console.log(`${button.textContent.trim()} clicked!`);
-    if (button.classList.contains('connect-us')) {
-        const subscriptionId = button.dataset.subscriptionId;
-        const subscriptionName = button.dataset.subscriptionName;
-        console.log(`Opening chat for Subscription ID: ${subscriptionId}, Name: ${subscriptionName}`);
-        openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
-    }
-    closeAllDropdowns();
-});
+    button.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents the row from collapsing
+
+        // ADDED: Check which email button was clicked
+        if (button.classList.contains('email-peer')) {
+            showEmailPopup('peer');
+        } else if (button.classList.contains('email-client')) {
+            showEmailPopup('client');
+        } 
+        // This part for the chat button was already there
+        else if (button.classList.contains('connect-us')) {
+            const subscriptionId = button.dataset.subscriptionId;
+            const subscriptionName = button.dataset.subscriptionName;
+            openSubscriptionChatModal(subscriptionId, subscriptionName, event.target);
+        }
+        
+        closeAllDropdowns(); // Close dropdown after action
+    });
 });
 }
 const threatPopupWrapper = row.querySelector('.threat-popup-wrapper');
@@ -2171,168 +2199,145 @@ if (arrowSpan) arrowSpan.textContent = '▲';
 ticketDetailsTableBody.appendChild(row);
 });
 }
+// REPLACE your entire switchTab function with this one
 function switchTab(selectedCategory, dataToRender = null) {
-closeAllDropdowns();
-closeAllThreatPopups();
-closeSubscriptionChatModal();
-clearAllButtonHighlights();
-clearAllArrSegmentHighlights(); // Clear ARR filter highlight
-currentArrFilter = 'all'; // Reset ARR filter state
-// Update the activeSection variable
-activeSection = selectedCategory;
+    closeAllDropdowns();
+    closeAllThreatPopups();
+    closeSubscriptionChatModal();
+    clearAllButtonHighlights();
+    clearAllArrSegmentHighlights(); 
+    currentArrFilter = 'all'; 
+    activeSection = selectedCategory;
 
-// Apply fade-out effect to current visible container
-if (applicationTableContainer && applicationTableContainer.style.display !== 'none') {
-applicationTableContainer.classList.add('fade-out');
-}
-if (ticketDetailsTableContainer && ticketDetailsTableContainer.style.display !== 'none') {
-ticketDetailsTableContainer.classList.add('fade-out');
-}
-// Wait for fade-out transition to complete before changing content
-setTimeout(() => {
-// Hide current content after fade-out
-if (applicationTableContainer) {
-applicationTableContainer.style.display = 'none';
-if (applicationTableBody) applicationTableBody.innerHTML = '';
-if (applicationTableHeader) {
-applicationTableHeader.style.display = 'none';
-}
-}
-if (ticketDetailsTableContainer) {
-ticketDetailsTableContainer.style.display = 'none';
-}
-// Render new content and apply fade-in
-switch (selectedCategory) {
-case 'cross-sell':
-if (crossSellBtn) crossSellBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
+    // ADDED: Logic to show/hide the cross-sell flash message
+    if (crossSellFlashMessageContainer) {
+        if (selectedCategory === 'ticket-details') {
+            crossSellFlashMessageContainer.style.display = 'block';
+        } else {
+            crossSellFlashMessageContainer.style.display = 'none';
+        }
     }
-}
-renderApplicationTable(crossSellFilteredData);
-activeSection = 'cross-sell';
-updateCounts();
-break;
-case 'all-apps':
-if (allAppsBtn) allAppsBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
+
+    if (applicationTableContainer && applicationTableContainer.style.display !== 'none') {
+        applicationTableContainer.classList.add('fade-out');
     }
-}
-// This single function now refreshes all KPIs and renders the correct table
-updateDashboard(appData); 
-activeSection = 'all-apps';
-break;
-case 'downgrades':
-if (downgradesBtn) downgradesBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
+    if (ticketDetailsTableContainer && ticketDetailsTableContainer.style.display !== 'none') {
+        ticketDetailsTableContainer.classList.add('fade-out');
     }
-}
-renderApplicationTable(downgradesFilteredData);
-activeSection = 'downgrades';
-updateCounts();
-break;
-case 'competitors':
-if (competitorsBtn) competitorsBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
-    }
-}
-renderApplicationTable(competitorsFilteredData);
-activeSection = 'competitors';
-updateCounts();
-break;
-case 'anomalies':
-if (anomaliesBtn) anomaliesBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
-    }
-}
-renderApplicationTable(dataToRender || anomaliesFilteredData);
-activeSection = 'anomalies';
-if (dataToRender !== null) {
-    updateCounts(dataToRender.length);
-} else {
-    updateCounts();
-}
-break;
-case 'ticket-details':
-if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
-if (ticketDetailsTableContainer) {
-    ticketDetailsTableContainer.style.display = 'block';
-    ticketDetailsTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    ticketDetailsTableContainer.classList.add('fade-in');
-}
-renderTicketDetailsTable();
-activeSection = 'ticket-details';
-updateCounts();
-break;
-case 'arr-less-than-5k':
-if (arrLessThan5kSegment) arrLessThan5kSegment.classList.add('active-arr-filter');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
-    }
-}
-renderApplicationTable(arrLessThan5kFilteredData);
-activeSection = 'arr-less-than-5k';
-updateCounts();
-break;
-case 'arr-greater-than-5k':
-if (arrGreaterThan5kSegment) arrGreaterThan5kSegment.classList.add('active-arr-filter');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
-    }
-    }
-renderApplicationTable(arrGreaterThan5kFilteredData);
-activeSection = 'arr-greater-than-5k';
-updateCounts();
-break;
-default:
-console.warn('Unknown category selected:', selectedCategory);
-if (allAppsBtn) allAppsBtn.classList.add('active');
-if (applicationTableContainer) {
-    applicationTableContainer.style.display = 'block';
-    applicationTableContainer.classList.remove('fade-out'); // Remove fade-out before fade-in
-    applicationTableContainer.classList.add('fade-in');
-    if (applicationTableHeader) {
-        applicationTableHeader.style.display = 'table-header-group';
-    }
-}
-renderApplicationTable(allAppsFilteredData);
-activeSection = 'all-apps';
-updateCounts();
-break;
-}
-}, 300); // This delay should match the CSS transition duration for fade-out
+    
+    setTimeout(() => {
+        if (applicationTableContainer) {
+            applicationTableContainer.style.display = 'none';
+            if (applicationTableBody) applicationTableBody.innerHTML = '';
+            if (applicationTableHeader) {
+                applicationTableHeader.style.display = 'none';
+            }
+        }
+        if (ticketDetailsTableContainer) {
+            ticketDetailsTableContainer.style.display = 'none';
+        }
+
+        switch (selectedCategory) {
+            case 'cross-sell':
+                if (crossSellBtn) crossSellBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(crossSellFilteredData);
+                activeSection = 'cross-sell';
+                updateCounts();
+                break;
+            case 'all-apps':
+                if (allAppsBtn) allAppsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                updateDashboard(appData); 
+                activeSection = 'all-apps';
+                break;
+            case 'downgrades':
+                if (downgradesBtn) downgradesBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(downgradesFilteredData);
+                activeSection = 'downgrades';
+                updateCounts();
+                break;
+            case 'competitors':
+                if (competitorsBtn) competitorsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(competitorsFilteredData);
+                activeSection = 'competitors';
+                updateCounts();
+                break;
+            case 'anomalies':
+                if (anomaliesBtn) anomaliesBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(dataToRender || anomaliesFilteredData);
+                activeSection = 'anomalies';
+                if (dataToRender !== null) {
+                    updateCounts(dataToRender.length);
+                } else {
+                    updateCounts();
+                }
+                break;
+            case 'ticket-details':
+                if (ticketDetailsBtn) ticketDetailsBtn.classList.add('active');
+                if (ticketDetailsTableContainer) {
+                    ticketDetailsTableContainer.style.display = 'block';
+                    ticketDetailsTableContainer.classList.remove('fade-out');
+                    ticketDetailsTableContainer.classList.add('fade-in');
+                }
+                renderTicketDetailsTable();
+                activeSection = 'ticket-details';
+                updateCounts();
+                break;
+            default:
+                if (allAppsBtn) allAppsBtn.classList.add('active');
+                if (applicationTableContainer) {
+                    applicationTableContainer.style.display = 'block';
+                    applicationTableContainer.classList.remove('fade-out');
+                    applicationTableContainer.classList.add('fade-in');
+                    if (applicationTableHeader) {
+                        applicationTableHeader.style.display = 'table-header-group';
+                    }
+                }
+                renderApplicationTable(allAppsFilteredData);
+                activeSection = 'all-apps';
+                updateCounts();
+                break;
+        }
+    }, 300); 
 }
 function clearAllButtonHighlights() {
 const allBtns = document.querySelectorAll('.btns');
@@ -2610,7 +2615,51 @@ if (popupContent) {
 }
 }
 }
+/**
+ * Finds all tickets with cross-sell tags and populates the flash message popup.
+ */
+function fillPopupList() {
+    if (!crossSellFlashMessageList) return;
 
+    // Define which tags are considered cross-sell opportunities
+    const crossSellTags = [
+        'Subscription Upgrade Request',
+        'Integration / Roadmap enquiry',
+        'New Team/Dept Expansion',
+        'Feature Purchase'
+    ];
+
+    const opportunities = [];
+    // Iterate through all departments and their tickets
+    ticketDetailsData.forEach(dept => {
+        dept.tickets.forEach(ticket => {
+            // Check if any of a ticket's tags are in our cross-sell list
+            if (ticket.tags.some(tag => crossSellTags.includes(tag))) {
+                opportunities.push(ticket);
+            }
+        });
+    });
+
+    // Clear any previous list items
+    crossSellFlashMessageList.innerHTML = '';
+
+    if (opportunities.length > 0) {
+        opportunities.forEach(ticket => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <span class="ticket-summary small">${ticket.summary}</span>
+                    <a href="${ticket.url}" target="_blank" class="ticket-id text-primary small">${ticket.id}</a>
+                </div>
+            `;
+            crossSellFlashMessageList.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No specific cross-sell tickets found.';
+        crossSellFlashMessageList.appendChild(li);
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...');
     if (!initializeDOMElements()) {
@@ -2633,10 +2682,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (allAppsBtn) { // Set the initial active button
             allAppsBtn.classList.add('active');
         }
-        //hideWidgetLoader(); // Hide loader after content is loaded
         startTypewriterSequence();
     }, 3500); // Simulate 1 second loading time
 
+    // --- Primary Filter Button Listeners ---
     if (allAppsBtn) allAppsBtn.addEventListener('click', () => {
         switchTab('all-apps');
         highlightActiveCard(null);
@@ -2667,6 +2716,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (arrGreaterThan5kSegment) {
         arrGreaterThan5kSegment.addEventListener('click', () => handleArrFilterClick('greaterThan5k'));
     }
+
+    // --- KPI Card Listeners ---
     if (criticalIssuesCard) {
         criticalIssuesCard.addEventListener('click', () => {
             switchTab('anomalies', anomaliesCriticalOnlyData);
@@ -2703,54 +2754,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deskTicketsCard.style.cursor = 'pointer';
     }
     
-    // ====================================================================
-    // ⬇️ START: NEW EMAIL POPUP LISTENERS ⬇️
-    // ====================================================================
-
-    // General Email Popup Listeners (Close and Copy)
-    if (emailPopupCopyBtn) {
-        emailPopupCopyBtn.addEventListener('click', copyEmailContent);
-    }
-    if (emailPopupCloseBtn) {
-        emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
-    }
-    if (emailPopupOverlay) {
-        emailPopupOverlay.addEventListener('click', (e) => {
-            if (e.target === emailPopupOverlay) {
-                closeEmailPopup(); // Close when clicking the overlay itself
-            }
-        });
-    }
-
-    // Need Help Dropdown Email Buttons
-    const needHelpDropdownMenu = document.getElementById('need-help-dropdown-menu'); 
-    if (needHelpDropdownMenu) {
-        // Find Email to Client button and add listener
-        const emailClientBtn = needHelpDropdownMenu.querySelector('.glass-button.email-client');
-        if (emailClientBtn) {
-            emailClientBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                showEmailPopup('client'); 
-                closeAllDropdowns();
-            });
-        }
-
-        // Find Email to Peer button and add listener
-        const emailPeerBtn = needHelpDropdownMenu.querySelector('.glass-button.email-peer');
-        if (emailPeerBtn) {
-            emailPeerBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                showEmailPopup('peer'); 
-                closeAllDropdowns();
-            });
-        }
-    }
-    
-    // ====================================================================
-    // ⬆️ END: NEW EMAIL POPUP LISTENERS ⬆️
-    // ====================================================================
-
-    // Initial state: ensure applicationTableContainer is visible and not fading
+    // --- Initial State Management ---
     if (applicationTableContainer) {
         applicationTableContainer.classList.remove('fade-out', 'd-none');
         applicationTableContainer.classList.add('fade-in');
@@ -2760,19 +2764,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     if (ticketDetailsTableContainer) {
-        ticketDetailsTableContainer.classList.remove('fade-in'); // Ensure it's not fading in initially
-        ticketDetailsTableContainer.classList.add('fade-out'); // Keep it hidden initially
+        ticketDetailsTableContainer.classList.remove('fade-in'); 
+        ticketDetailsTableContainer.classList.add('fade-out'); 
         ticketDetailsTableContainer.style.display = 'none';
     }
+// --- Cross-Sell Hover Listener (Final Positioning Fix) ---
+const crossSellFlashMessageTrigger = document.getElementById('crossSellFlashMessageTrigger');
+if (crossSellFlashMessageTrigger && crossSellFlashMessagePopup) {
+    
+    // This part is correct: move the popup to the body to avoid clipping.
+    document.body.appendChild(crossSellFlashMessagePopup);
 
+    const showPopup = () => {
+        // 1. Populate the list with content
+        fillPopupList(); 
+
+        // 2. Force the element into the layout by setting display:block. It's still invisible (opacity:0).
+        crossSellFlashMessagePopup.style.display = 'block';
+
+        // 3. NOW, measure its true height and width
+        const popupHeight = crossSellFlashMessagePopup.offsetHeight;
+        const popupWidth = crossSellFlashMessagePopup.offsetWidth;
+
+        // 4. Hide it again before we calculate and set the final position
+        crossSellFlashMessagePopup.style.display = '';
+
+        // 5. Get the trigger icon's position
+        const triggerRect = crossSellFlashMessageTrigger.getBoundingClientRect();
+
+        // 6. Calculate the final, correct position
+        const popupTop = triggerRect.top - popupHeight - 8; // 8px gap
+        const popupLeft = triggerRect.left + (triggerRect.width / 2) - (popupWidth / 2);
+
+        // 7. Apply the calculated position
+        crossSellFlashMessagePopup.style.top = `${popupTop}px`;
+        crossSellFlashMessagePopup.style.left = `${popupLeft}px`;
+
+        // 8. Use a tiny delay to ensure the new position is applied, then fade it in.
+        // This prevents any visual "jump".
+        setTimeout(() => {
+            crossSellFlashMessagePopup.classList.add('show');
+        }, 10); 
+    };
+
+    const hidePopup = () => {
+        setTimeout(() => {
+            if (!crossSellFlashMessageTrigger.matches(':hover') && !crossSellFlashMessagePopup.matches(':hover')) {
+                crossSellFlashMessagePopup.classList.remove('show');
+            }
+        }, 100);
+    };
+
+    crossSellFlashMessageTrigger.addEventListener('mouseenter', showPopup);
+    crossSellFlashMessageTrigger.addEventListener('mouseleave', hidePopup);
+    crossSellFlashMessagePopup.addEventListener('mouseenter', () => crossSellFlashMessagePopup.classList.add('show'));
+    crossSellFlashMessagePopup.addEventListener('mouseleave', hidePopup);
+}
+// --- End Cross-Sell Hover Listener ---
+
+    // --- Other Popups/Dropdowns/Modals ---
     if (threatPopupCloseBtn) {
         threatPopupCloseBtn.addEventListener('click', closeThreatDetailsPopup);
     }
     if (threatDetailsPopup) {
         threatDetailsPopup.addEventListener('click', (e) => {
-            if (e.target === threatDetailsPopup) { // Close only if overlay is clicked
-                closeThreatDetailsPopup();
-            }
+            if (e.target === threatDetailsPopup) { closeThreatDetailsPopup(); }
         });
     }
 
@@ -2783,106 +2839,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.addEventListener('click', () => {
             if (!currentItemToResolve) return;
-
+            // ... (rest of resolveNotesSubmitBtn logic)
+            // Assuming the full logic is present in your function block
+            
             const { type, appId, name, id, summary } = currentItemToResolve;
             const notes = resolveNotesTextarea.value; 
             const appForHistory = appData.find(app => app.id.toString() === appId.toString());
 
             if (type === 'threat') {
                  // Add to history
-                resolvedItemsHistory.push({
-                    type: 'threat',
-                    appName: appForHistory?.application,
-                    name: name,
-                    notes: notes,
-                    resolvedAt: new Date()
-                });
-
-                // Find the app and update its competitors
+                resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
                 const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-                if (appIndex !== -1) {
-                    appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name);
-                }
+                if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
             } else if (type === 'ticket') {
-                resolvedItemsHistory.push({
-                    type: 'ticket',
-                    appName: appForHistory?.application,
-                    summary: summary,
-                    id: id,
-                    notes: notes,
-                    resolvedAt: new Date()
-                });
-                
-                // Find the ticket in the source data and update its status
+                resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
                 ticketDetailsData.forEach(dept => {
                     const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
-                    if (ticketIndex !== -1) {
-                        dept.tickets[ticketIndex].status = 'Closed'; // Change status
-                        // Decrement open count and increment closed count
-                        dept.openStatus--;
-                        dept.closedStatus++;
-                    }
+                    if (ticketIndex !== -1) { dept.tickets[ticketIndex].status = 'Closed'; dept.openStatus--; dept.closedStatus++; }
                 });
             }
            
-            // --- UPDATE LOGIC ---
-            filterDataArrays(); // Recalculate all filtered data arrays
-            updateCounts();     // Update counts on KPI cards and filter buttons
+            filterDataArrays(); 
+            updateCounts();     
             
-            // --- Targeted DOM Update for the expanded row ---
-            const expandedRow = document.querySelector(`.expanded-row[data-parent-app-id="${appId}"]`);
-            if (expandedRow) {
-                const updatedApp = appData.find(app => app.id.toString() === appId.toString());
-
-                if (type === 'threat') {
-                     let updatedThreatCompetitors = [];
-                    const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
-                    if (updatedApp.competitors && updatedApp.competitors.length > 0) {
-                        updatedApp.competitors.forEach(comp => {
-                            if (threatList.includes(comp) || !['Mailchimp', 'Dropbox'].includes(comp)) {
-                                updatedThreatCompetitors.push(comp);
-                            }
-                        });
-                    }
-                    const threatTrigger = expandedRow.querySelector('.threat-details-trigger');
-                    if (threatTrigger) {
-                        threatTrigger.dataset.threats = JSON.stringify(updatedThreatCompetitors);
-                        const badge = threatTrigger.querySelector('.badge');
-                        if (updatedThreatCompetitors.length > 0) {
-                            if(badge) badge.textContent = updatedThreatCompetitors.length;
-                            threatTrigger.disabled = false;
-                        } else {
-                            if(badge) badge.remove();
-                            threatTrigger.disabled = true;
-                        }
-                    }
-                } else if (type === 'ticket') {
-                    const relevantDept = ticketDetailsData.find(dept => dept.id === updatedApp.relevantDepartmentId);
-                    let updatedEscalatedTickets = [];
-                    if (relevantDept) {
-                         updatedEscalatedTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open' && tkt.tags.includes('Escalation Request'));
-                    }
-                    const ticketTrigger = expandedRow.querySelector('.escalated-tickets-trigger');
-                    if (ticketTrigger) {
-                        ticketTrigger.dataset.tickets = JSON.stringify(updatedEscalatedTickets);
-                        const badge = ticketTrigger.querySelector('.badge');
-                        if (updatedEscalatedTickets.length > 0) {
-                            if(badge) badge.textContent = updatedEscalatedTickets.length;
-                            ticketTrigger.disabled = false;
-                        } else {
-                            if(badge) badge.remove();
-                            ticketTrigger.disabled = true;
-                        }
-                    }
-                }
-
-                 // Show resolved checkmark icon
-                const resolvedIcon = expandedRow.querySelector('.resolved-history-trigger');
-                if (resolvedIcon) {
-                    resolvedIcon.style.display = 'inline-block';
-                }
-            }
-
+            // Re-render table section if currently visible (optional optimization)
+            if (activeSection === 'anomalies') updateDashboard(anomaliesFilteredData);
+            if (activeSection === 'downgrades') updateDashboard(downgradesFilteredData);
 
             // Close popups
             closeResolveNotesPopup();
@@ -2891,39 +2873,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (escalatedTicketsPopupCloseBtn) {
-
-        escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup);
-
-    }
-
+    if (escalatedTicketsPopupCloseBtn) { escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup); }
     if (escalatedTicketsPopup) {
-
-        escalatedTicketsPopup.addEventListener('click', (e) => {
-
-            if (e.target === escalatedTicketsPopup) { // Close on overlay click
-
-                closeEscalatedTicketsPopup();
-
-            }
-
-        });
-
+        escalatedTicketsPopup.addEventListener('click', (e) => { if (e.target === escalatedTicketsPopup) { closeEscalatedTicketsPopup(); } });
     }
 
-
-    if (resolvedHistoryPopupCloseBtn) {
-        resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
-    }
+    if (resolvedHistoryPopupCloseBtn) { resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup); }
     if (resolvedHistoryPopup) {
-        resolvedHistoryPopup.addEventListener('click', (e) => {
-            if (e.target === resolvedHistoryPopup) { // Close on overlay click
-                closeResolvedHistoryPopup();
-            }
-        });
+        resolvedHistoryPopup.addEventListener('click', (e) => { if (e.target === resolvedHistoryPopup) { closeResolvedHistoryPopup(); } });
     }
 
-
+    // --- Document-wide Click Handlers ---
     document.addEventListener('click', (event) => {
         if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
             closeAllDropdowns();
@@ -2935,42 +2895,53 @@ document.addEventListener('DOMContentLoaded', () => {
             !event.target.closest('.subscription-chat-modal')) {
             closeSubscriptionChatModal();
         }
-        // Removed popup-overlay closing logic as it's no longer used for these popups
     });
+
+    // --- Eye Icon / Rating Popup ---
     const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
     const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
     if (clickableEyeIcon && ratingDetailsPopup) {
         clickableEyeIcon.addEventListener('click', (event) => {
-            console.log('Eye icon clicked!');
             event.stopPropagation();
-            if (ratingDetailsPopup.style.display === 'block') {
-                ratingDetailsPopup.style.display = 'none';
-            } else {
-                ratingDetailsPopup.style.display = 'block';
-            }
+            if (ratingDetailsPopup.style.display === 'block') { ratingDetailsPopup.style.display = 'none'; } else { ratingDetailsPopup.style.display = 'block'; }
         });
         document.addEventListener('click', (event) => {
             if (ratingDetailsPopup.style.display === 'block' &&
                 !clickableEyeIcon.contains(event.target) &&
                 !ratingDetailsPopup.contains(event.target)) {
-                console.log('Closing popup due to outside click.');
                 ratingDetailsPopup.style.display = 'none';
             }
         });
     }
+
+    // --- Need Help Dropdown ---
     const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');
     if (needHelpDropdownWrapper) {
         const needHelpToggleElement = needHelpDropdownWrapper.querySelector('.action-toggle-element');
         const needHelpDropdownMenu = needHelpDropdownWrapper.querySelector('.action-dropdown-menu');
-        const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); // Get the specific chat button
-        const threatButton = document.getElementById('threat-button');
-        const ticketButton = document.getElementById('ticket-button');
+        const needHelpChatAgentBtn = document.getElementById('needHelpChatAgentBtn'); 
+        
         if (needHelpToggleElement && needHelpDropdownMenu) {
+                        const emailClientBtn = needHelpDropdownMenu.querySelector('.email-client');
+                        const emailPeerBtn = needHelpDropdownMenu.querySelector('.email-peer');
+            
+                        if (emailClientBtn) {
+                            emailClientBtn.addEventListener('click', (event) => {
+                                event.stopPropagation();
+                                showEmailPopup('client');
+                                closeAllDropdowns();
+                            });
+                        }
+                        if (emailPeerBtn) {
+                            emailPeerBtn.addEventListener('click', (event) => {
+                                event.stopPropagation();
+                                showEmailPopup('peer');
+                                closeAllDropdowns();
+                            });
+                        }
             needHelpToggleElement.addEventListener('click', (event) => {
                 event.stopPropagation();
-                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) {
-                    closeAllDropdowns();
-                }
+                if (currentOpenDropdown && currentOpenDropdown !== needHelpDropdownMenu) { closeAllDropdowns(); }
                 closeAllThreatPopups();
                 needHelpDropdownMenu.classList.toggle('show');
                 if (needHelpDropdownMenu.classList.contains('show')) {
@@ -2980,55 +2951,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentOpenDropdown = needHelpDropdownMenu;
                     currentOpenDropdownToggle = needHelpToggleElement;
                 } else {
-                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                        button.style.animation = '';
-                    });
+                    needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => { button.style.animation = ''; });
                     closeAllDropdowns();
                 }
             });
-            // Add event listener for the "Chat with Agent" button inside the Need Help dropdown
+
             if (needHelpChatAgentBtn ) {
                 needHelpChatAgentBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    console.log(`'Chat with Agent' clicked from Need Help dropdown!`);
-                    // Pass generic values for subscriptionId and subscriptionName
                     openSubscriptionChatModal(null, null, event.target);
-                    closeAllDropdowns(); // Close the Need Help dropdown after opening chat
+                    closeAllDropdowns(); 
                 });
-
             }
-            /**needResolvedIssuesBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                console.log(`'Resolved Issues' clicked from Need Help dropdown!`);
-                // Pass generic values for subscriptionId and subscriptionName
-                openSubscriptionChatModal(null, null, event.target);
-                 threatButton.addEventListener('click', () => showMessage('Threat option was selected!'));
-                ticketButton.addEventListener('click', () => showMessage('Ticket option was selected!'));
-                closeAllDropdowns(); // Close the Need Help dropdown after opening chat
-            });**/
 
             needHelpDropdownMenu.querySelectorAll('.glass-button').forEach(button => {
-                // Ensure this doesn't re-add listener to needHelpChatAgentBtn if it already has one
-                // NOTE: The new email listeners were added above this, so this general listener is still fine,
-                // but the separate, explicit listeners added earlier are safer.
+                // Email button logic is handled outside this loop (above)
                 if (button.id !== 'needHelpChatAgentBtn') {
                     button.addEventListener('click', (event) => {
                         event.stopPropagation();
-                        console.log(`${button.textContent.trim()} clicked from Need Help dropdown!`);
-                        // The specific email logic is now handled in the block above
                         closeAllDropdowns();
                     });
                 }
             });
         }
     }
-    if (closeSubscriptionChatModalBtn) {
-        closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal);
-    }
-    // Event listeners for new hover popups
+
+    if (closeSubscriptionChatModalBtn) { closeSubscriptionChatModalBtn.addEventListener('click', closeSubscriptionChatModal); }
+
+    // --- Recent Purchases Hover ---
     if (recentPurchasesCountSpan && recentPurchasesHoverPopup && recentPurchasesHoverList) {
         recentPurchasesCountSpan.addEventListener('mouseenter', () => {
-            recentPurchasesHoverList.innerHTML = ''; // Clear previous content
+            // ... (Logic for recent purchases hover)
+            recentPurchasesHoverList.innerHTML = '';
             if (recentPurchasesData.length > 0) {
                 recentPurchasesData.forEach((item, index) => {
                     const li = document.createElement('li');
@@ -3047,53 +3001,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Next Renewals Hover ---
     if (nextRenewalsCountSpan && nextRenewalsHoverPopup && nextRenewalsHoverList) {
         nextRenewalsCountSpan.addEventListener('mouseenter', () => {
-            nextRenewalsHoverList.innerHTML = ''; // Clear previous content
+            // ... (Logic for next renewals hover)
+            nextRenewalsHoverList.innerHTML = ''; 
             if (nextRenewalsData.length > 0) {
-                // Sort the data by date before rendering
                 nextRenewalsData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
                 nextRenewalsData.forEach((item, index) => {
                     const li = document.createElement('li');
-                    // Apply flexbox styles directly to the list item for alignment
-                    li.style.display = 'flex';
-                    li.style.justifyContent = 'space-between';
-                    li.style.alignItems = 'center';
-                    li.style.padding = '8px 0'; // Add padding for visual separation
-                    li.style.borderBottom = '1px solid #eee'; // Keep border for separation
-
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'app-name';
-                    nameSpan.textContent = item.name;
-                    nameSpan.style.flexBasis = '40%'; // Allocate space for name
-                    nameSpan.style.textAlign = 'left';
-
-                    const dateSpan = document.createElement('span');
-                    dateSpan.className = 'renewal-date';
-                    dateSpan.textContent = item.date;
-                    dateSpan.style.flexBasis = '30%'; // Allocate space for date
-                    nameSpan.style.textAlign = 'center';
-
-                    const revenueSpan = document.createElement('span');
-                    revenueSpan.className = 'app-revenue';
-                    revenueSpan.textContent = `$${item.revenue}`;
-                    revenueSpan.style.flexBasis = '30%'; // Allocate space for revenue
-                    revenueSpan.style.textAlign = 'right';
-
-                    li.appendChild(nameSpan);
-                    li.appendChild(dateSpan);
-                    li.appendChild(revenueSpan);
-                    nextRenewalsHoverList.appendChild(li);
+                    li.style.display = 'flex'; li.style.justifyContent = 'space-between'; li.style.alignItems = 'center'; li.style.padding = '8px 0'; li.style.borderBottom = '1px solid #eee'; 
+                    const nameSpan = document.createElement('span'); nameSpan.className = 'app-name'; nameSpan.textContent = item.name; nameSpan.style.flexBasis = '40%'; nameSpan.style.textAlign = 'left';
+                    const dateSpan = document.createElement('span'); dateSpan.className = 'renewal-date'; dateSpan.textContent = item.date; dateSpan.style.flexBasis = '30%'; nameSpan.style.textAlign = 'center';
+                    const revenueSpan = document.createElement('span'); revenueSpan.className = 'app-revenue'; revenueSpan.textContent = `$${item.revenue}`; revenueSpan.style.flexBasis = '30%'; revenueSpan.style.textAlign = 'right';
+                    li.appendChild(nameSpan); li.appendChild(dateSpan); li.appendChild(revenueSpan); nextRenewalsHoverList.appendChild(li);
                 });
-                // Remove border from the last item
-                if (nextRenewalsHoverList.lastChild) {
-                    nextRenewalsHoverList.lastChild.style.borderBottom = 'none';
-                }
+                if (nextRenewalsHoverList.lastChild) { nextRenewalsHoverList.lastChild.style.borderBottom = 'none'; }
             } else {
-                const li = document.createElement('li');
-                li.textContent = 'No upcoming renewals in the next 3 months.';
-                nextRenewalsHoverList.appendChild(li);
+                const li = document.createElement('li'); li.textContent = 'No upcoming renewals in the next 3 months.'; nextRenewalsHoverList.appendChild(li);
             }
             nextRenewalsHoverPopup.classList.add('show');
         });
@@ -3106,8 +3031,14 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshIcon.addEventListener('click', () => {
         location.reload(); // Reload the entire page
     });
+        // Add Event Listeners for the Email Popup Buttons
+        if (emailPopupCloseBtn) {
+            emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
+        }
+        if (emailPopupCopyBtn) {
+            emailPopupCopyBtn.addEventListener('click', copyEmailContent);
+        }
 });
-
 
 const loader = document.getElementById('widgetLoaderOverlay');
 const container = document.getElementById('container-id');
