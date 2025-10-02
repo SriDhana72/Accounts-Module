@@ -2827,5 +2827,36 @@ body {
       transform: scale(1);
     }
   }
+  /* Styling for the individual cross-sell opportunity items within the popup */
+.cross-sell-opportunity-item {
+    border-left: 5px solid #28a745; /* Green border on the left */
+    padding-left: 10px; /* Space between the border and content */
+    margin-bottom: 8px; /* Space between items */
+    border-radius: 4px; 
+    transition: background-color 0.2s ease;
+    /* Ensure no vertical margin collapse with the top/bottom element */
+    padding-top: 1px;
+    padding-bottom: 1px; 
+}
+
+/* Ensure the list wrapper itself has no padding, and reset the list item styling */
+#crossSellFlashMessageList {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none; /* Remove default bullets */
+}
+
+/* Reset default li behavior that conflicts with the item div */
+#crossSellFlashMessageList li {
+    padding: 0;
+    border-bottom: none !important; /* Remove any dashed lines inherited from generic hover-popup li */
+}
+
+/* Adjust the direct inner content wrapper to use the new padding */
+#crossSellFlashMessageList .d-flex {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-right: 5px !important; /* Adjust right padding if needed */
+}
     
     

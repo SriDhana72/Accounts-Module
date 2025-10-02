@@ -2649,10 +2649,12 @@ function fillPopupList() {
         opportunities.forEach(ticket => {
             const li = document.createElement('li');
             li.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center p-2">
-                    <span class="ticket-summary small">${ticket.summary}</span>
-                    <a href="${ticket.url}" target="_blank" class="ticket-id text-primary small">${ticket.id}</a>
-                </div>
+    <div class="cross-sell-opportunity-item">
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <span class="ticket-summary small">${ticket.summary}</span>
+            <a href="${ticket.url}" target="_blank" class="ticket-id text-primary small">${ticket.id}</a>
+        </div>
+    </div>
             `;
             crossSellFlashMessageList.appendChild(li);
         });
