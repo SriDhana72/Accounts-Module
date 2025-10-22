@@ -55,6 +55,62 @@ function updateHealthScore(score) {
         healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
     }
 }
+/**
+ * Updates the display of the NPS score widget based on the average score.
+ *
+ * @param {Array} data The dataset of apps (e.g., allAppsFilteredData) to calculate the avg NPS from.
+ */
+function updateNpsScore(data) {
+    if (!npsScoreValue || !npsScoreStatus || !npsScoreCheck || !npsScoreCircle) {
+        console.error('NPS score elements not found. Cannot update NPS display.');
+        return; // Exit if elements are missing
+    }
+
+    // 1. Calculate average NPS
+    let totalNps = 0;
+    let count = 0;
+    data.forEach(app => {
+        if (typeof app.npsScore === 'number') {
+            totalNps += app.npsScore;
+            count++;
+        }
+    });
+
+    const avgNps = (count > 0) ? (totalNps / count) : 0;
+    const avgNpsFixed = avgNps.toFixed(1); // e.g., "6.7"
+
+    // 2. Set the numeric value
+    npsScoreValue.textContent = avgNpsFixed;
+
+    // 3. Reset all dynamic classes
+    npsScoreCircle.classList.remove('health-score-high-gradient', 'health-score-fair-gradient', 'health-score-low-gradient', 'health-score-neutral-gradient');
+    npsScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
+    npsScoreCheck.classList.remove('bi-check-circle-fill', 'bi-exclamation-triangle-fill', 'bi-x-circle-fill', 'text-success', 'text-warning', 'text-danger');
+
+    // 4. Apply styles and text based on the average score
+    if (avgNps > 5) {
+        // High satisfaction
+        npsScoreCircle.classList.add('health-score-high-gradient');
+        npsScoreStatus.textContent = 'High satisfaction';
+        npsScoreStatus.classList.add('text-success');
+        npsScoreCheck.classList.add('bi-check-circle-fill', 'text-success');
+        npsScoreCheck.style.display = 'inline-block';
+    } else if (avgNps >= 2) {
+        // Fair satisfaction (2-5 inclusive)
+        npsScoreCircle.classList.add('health-score-fair-gradient');
+        npsScoreStatus.textContent = 'Fair satisfaction';
+        npsScoreStatus.classList.add('text-warning');
+        npsScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning');
+        npsScoreCheck.style.display = 'inline-block';
+    } else {
+        // Low satisfaction (< 2)
+        npsScoreCircle.classList.add('health-score-low-gradient');
+        npsScoreStatus.textContent = 'Low satisfaction';
+        npsScoreStatus.classList.add('text-danger');
+        npsScoreCheck.classList.add('bi-x-circle-fill', 'text-danger');
+        npsScoreCheck.style.display = 'inline-block';
+    }
+}
 let appData = [
 {
 id: 1,
@@ -70,6 +126,7 @@ details: [],
 relevantDepartmentId: 'dept-sales-ops',
 createdTime: '2023-01-15T10:00:00Z',
 lastInvoiceDate: '2025-07-01', // Dummy data for recent purchase
+npsScore: 7,
 nextRenewalDate: '2025-10-15', // Dummy data for next renewal
 monthlyData: [
     { month: 'M1', seats: 30, change: '0', revenue: 1500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -96,6 +153,7 @@ details: [],
 relevantDepartmentId: 'dept-sales-ops',
 createdTime: '2023-02-01T11:00:00Z',
 lastInvoiceDate: '2025-06-20',
+npsScore: 8,
 nextRenewalDate: '2025-11-01',
 monthlyData: [
     { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'Medium' },
@@ -122,6 +180,7 @@ details: [],
 relevantDepartmentId: 'dept-sales-ops',
 createdTime: '2023-03-10T12:00:00Z',
 lastInvoiceDate: '2025-05-10',
+npsScore: 9,
 nextRenewalDate: '2026-03-10',
 monthlyData: [
     { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
@@ -146,6 +205,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2023-04-05T13:00:00Z',
 lastInvoiceDate: '2025-04-01',
+npsScore: 7,
 nextRenewalDate: '2025-09-05',
 monthlyData: [
     { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
@@ -172,6 +232,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2023-05-20T14:00:00Z',
 lastInvoiceDate: '2025-03-15',
+npsScore: 8,
 nextRenewalDate: '2025-08-20',
 monthlyData: [
     { month: 'M1', seats: 50, change: '0', revenue: 2500, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
@@ -198,6 +259,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2023-06-10T15:00:00Z',
 lastInvoiceDate: '2025-02-28',
+npsScore: 6,
 nextRenewalDate: '2025-09-10',
 monthlyData: [
     { month: 'M1', seats: 25, change: '0', revenue: 1250, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -222,6 +284,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2023-07-01T16:00:00Z',
 lastInvoiceDate: '2025-01-20',
+npsScore: 6,
 nextRenewalDate: '2025-12-01',
 monthlyData: [
     { month: 'M1', seats: 40, change: '0', revenue: 2000, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -246,6 +309,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-01-10T12:00:00Z',
 lastInvoiceDate: '2025-07-05',
+npsScore: 10,
 nextRenewalDate: '2025-10-10',
 monthlyData: [
     { month: 'M1', seats: 45, change: '0', revenue: 4500, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -270,6 +334,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-02-14T13:00:00Z',
 lastInvoiceDate: '2025-06-10',
+npsScore: 7,
 nextRenewalDate: '2026-02-14',
 monthlyData: [
     { month: 'M1', seats: 29, change: '0', revenue: 2900, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Medium' },
@@ -294,6 +359,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-04-20T15:00:00Z',
 lastInvoiceDate: '2025-07-22',
+npsScore: 9,
 nextRenewalDate: '2025-09-20',
 monthlyData: [
     { month: 'M1', seats: 100, change: '0', revenue: 500, revenueChange: '0', competitorIntegrations: 'Dropbox', zohoConversionOpportunities: 'High' },
@@ -318,6 +384,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-05-01T16:00:00Z',
 lastInvoiceDate: '2025-01-05',
+npsScore: 6,
 nextRenewalDate: '2026-05-01',
 monthlyData: [
     { month: 'M1', seats: 75, change: '0', revenue: 7500, revenueChange: '0', competitorIntegrations: 'Medium' },
@@ -344,6 +411,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-06-10T17:00:00Z',
 lastInvoiceDate: '2025-07-12',
+npsScore: 9,
 nextRenewalDate: '2025-08-10',
 monthlyData: [
     { month: 'M1', seats: 45, change: '0', revenue: 450, revenueChange: '0', competitorIntegrations: 'None', zohoConversionOpportunities: 'Low' },
@@ -368,6 +436,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-07-01T18:00:00Z',
 lastInvoiceDate: '2025-07-01',
+npsScore: 5,
 nextRenewalDate: '2025-09-01',
 monthlyData: [
     { month: 'M1', seats: 80, change: '0', revenue: 800, revenueChange: '0', competitorIntegrations: 'Google Meet', zohoConversionOpportunities: 'High' },
@@ -394,6 +463,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2024-07-15T19:00:00Z',
 lastInvoiceDate: '2025-06-25',
+npsScore: 10,
 nextRenewalDate: '2025-11-15',
 monthlyData: [
     { month: 'M1', seats: 140, change: '0', revenue: 1400, revenueChange: '0', competitorIntegrations: 'Outlook', zohoConversionOpportunities: 'Medium' },
@@ -530,6 +600,7 @@ dept.tickets.forEach(ticket => {
 ticket.tags = assignTagsFromSummary(ticket.summary);
 });
 });
+
 let applicationTableContainer = null;
 let ticketDetailsTableContainer = null;
 let applicationTableBody = null;
@@ -568,6 +639,11 @@ let currentOpenDropdown = null;
 let currentOpenDropdownToggle = null;
 let currentOpenThreatPopup = null;
 let currentOpenThreatPopupToggle = null;
+let healthScoreFlipper = null;
+let npsScoreValue = null;
+let npsScoreStatus = null;
+let npsScoreCheck = null;
+let npsScoreCircle = null;
 const npsScore = 70;
 // New elements for popups
 let recentPurchasesCountSpan = null;
@@ -755,6 +831,12 @@ healthScoreCircle = document.getElementById('healthScoreCircle');
 healthScoreValue = document.getElementById('healthScoreValue');
 healthScoreStatus = document.getElementById('healthScoreStatus');
 healthScoreCheck = document.getElementById('healthScoreCheck');
+// START: ADD THESE NEW LINES
+healthScoreFlipper = document.getElementById('healthScoreFlipper');
+npsScoreValue = document.getElementById('npsScoreValue');
+npsScoreStatus = document.getElementById('npsScoreStatus');
+npsScoreCheck = document.getElementById('npsScoreCheck');
+npsScoreCircle = document.getElementById('npsScoreCircle');
 subscriptionChatModal = document.getElementById('subscriptionChatModal');
 closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
 subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
@@ -1131,6 +1213,7 @@ totalScore = Math.round(scoreSum / data.length);
 totalScore = 100; // Default to 100 if no data
 }
 updateHealthScore(totalScore);
+updateNpsScore(data);
 
 // 5. Update KPI Cards & Filter Button Counts
 const dataIds = new Set(data.map(app => app.id));
@@ -2008,7 +2091,14 @@ expandedRow.innerHTML = `
 </div>
 </div>
 <div class="${competitorAnomalyColClass} p-2 border-start border-end"> <!-- Changed to col-md-3 -->
-<h6 class="mb-2 fw-bold">Competitor Integrations</h1>
+<div class="expanded-column-header">
+        <h6 class="mb-2 fw-bold">Competitor Integrations</h6>
+        
+        <div class="nps-score-expanded-container">
+            <span class="nps-score-expanded-value">${app.npsScore !== undefined ? app.npsScore : 'N/A'}</span>
+            <span class="nps-score-expanded-pill">NPS Score</span>
+        </div>
+    </div>
 <p class="small text-muted mb-3">
 ${competitorIntegrationsContent}
 </p>
@@ -2729,6 +2819,14 @@ document.addEventListener('DOMContentLoaded', () => {
             allAppsBtn.classList.add('active');
         }
         startTypewriterSequence();
+
+        // START: ADD THIS BLOCK
+        // Start the 2-second flip timer for the health score widget
+        if (healthScoreFlipper) {
+            setInterval(() => {
+                healthScoreFlipper.classList.toggle('is-flipped');
+            }, 2000); // Flips every 2 seconds
+        }
     }, 3500);
 
     // --- Primary Filter Button Listeners ---

@@ -92,15 +92,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="health-score-widget d-flex align-items-center">
-                    <div class="d-flex flex-column align-items-start me-2">
-                        <span class="fw-bold text-dark mb-0">Health Score</span>
-                        <div class="d-flex align-items-center"> <span id="healthScoreStatus" class="fw-bold text-dark small text-success">Excellent</span>
-                            <i id="healthScoreCheck" class="bi ms-1 fs-5 bi-check-circle-fill text-success" style="display: inline-block;"></i>
+                
+                <div class="health-score-flipper-container">
+                    <div class="health-score-flipper" id="healthScoreFlipper">
+                        
+                        <div class="health-score-card health-score-front">
+                            <div class="d-flex flex-column align-items-start me-2">
+                                <span class="fw-bold text-dark mb-0">Health Score</span>
+                                <div class="d-flex align-items-center">
+                                    <span id="healthScoreStatus" class="fw-bold text-dark small text-success">Healthy</span>
+                                    <i id="healthScoreCheck" class="bi ms-1 fs-5 bi-check-circle-fill text-success" style="display: inline-block;"></i>
+                                </div>
+                            </div>
+                            <div id="healthScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center health-score-green-gradient">
+                                <span id="healthScoreValue" class="fw-bold fs-4">98</span>
+                            </div>
                         </div>
-                    </div>
-                    <div id="healthScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center health-score-green-gradient">
-                        <span id="healthScoreValue" class="fw-bold fs-4">98</span>
+
+                        <div class="health-score-card health-score-back">
+                            <div class="d-flex flex-column align-items-start me-2">
+                                <span class="fw-bold text-dark mb-0">NPS Score</span>
+                                <div class="d-flex align-items-center">
+                                    <span id="npsScoreStatus" class="fw-bold text-dark small">...</span>
+                                    <i id="npsScoreCheck" class="bi ms-1 fs-5" style="display: none;"></i>
+                                </div>
+                            </div>
+                            <div id="npsScoreCircle" class="health-score-circle d-flex align-items-center justify-content-center health-score-neutral-gradient">
+                                <span id="npsScoreValue" class="fw-bold fs-4">...</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="combined-info-card-container">

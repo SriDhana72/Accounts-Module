@@ -872,6 +872,7 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color 0.3s ease-in-out;
     background: linear-gradient(135deg, #a8e6cf, #6ee7b7);
+    flex-shrink: 0;
     }
     .health-score-green-gradient {
     background: linear-gradient(135deg, #74e493, #38c172);
@@ -2672,7 +2673,6 @@ body {
 }
 
 /* --- 2. Positioning and Appearance for the Hover Pop-up (Ticket List) --- */
-/* REPLACE your old .cross-sell-tickets-popup CSS with this */
 .hover-popup.cross-sell-tickets-popup.show {
     opacity: 1;
     visibility: visible;
@@ -2858,5 +2858,135 @@ body {
     padding-bottom: 5px !important;
     padding-right: 5px !important; /* Adjust right padding if needed */
 }
+
+/* === START: HEALTH SCORE FLIPPER STYLES === */
+
+/* This container takes the place of the old .health-score-widget.
+  It sets the scene and positions the flipper.
+*/
+.health-score-flipper-container {
+    padding: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    
+    /* Set perspective for 3D effect */
+    perspective: 1000px;
+    
+    /* Define the size of the flipper area */
+    /* Adjust width/height as needed to match the content */
+    width: 220px; 
+    height: 84px; /* 60px circle + 2 * 1rem padding */
+}
+
+/* This is the inner element that actually rotates.
+*/
+.health-score-flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+/* This class is added by JavaScript to trigger the flip.
+*/
+.health-score-flipper.is-flipped {
+    transform: rotateY(180deg);
+}
+
+/* This is the shared style for the front and back faces.
+  It's based on the original .health-score-widget styles (d-flex, align-items-center).
+*/
+.health-score-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+    
+    /* These are from the original .health-score-widget */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content */
+}
+.health-score-card .small {
+    white-space: nowrap;
+}
+/* The front face (Health Score).
+*/
+.health-score-front {
+    /* No transform needed, it's the default view */
+}
+
+/* The back face (NPS Score).
+  It's pre-rotated 180 degrees.
+*/
+.health-score-back {
+    transform: rotateY(180deg);
+}
+
+/* New gradient styles for NPS score circle.
+  You can change these colors.
+*/
+.health-score-high-gradient {
+    background: linear-gradient(135deg, #74e493, #38c172); /* Same as green */
+}
+.health-score-fair-gradient {
+    background: linear-gradient(135deg, #eec88a, #ffb300); /* Same as yellow */
+}
+.health-score-low-gradient {
+    background: linear-gradient(135deg, #ff8a80, #e53935); /* Same as red */
+}
+.health-score-neutral-gradient {
+    background: linear-gradient(135deg, #e0e0e0, #bdbdbd); /* Default gray */
+}
+
+
+/* === END: HEALTH SCORE FLIPPER STYLES === */
+
+
+/* === START: EXPANDED ROW NPS SCORE STYLES === */
+
+.expanded-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* margin-bottom: 8px; */ /* The existing <p> tag provides margin */
+}
+
+.expanded-column-header h6 {
+    margin-bottom: 0 !important; /* Remove bottom margin from h6 */
+}
+
+.nps-score-expanded-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.nps-score-expanded-value {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #1a2b4d;
+    line-height: 1;
+}
+
+.nps-score-expanded-pill {
+    font-size: 0.65em;
+    font-weight: 600;
+    color: #495057;
+    background-color: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 10px;
+    line-height: 1;
+}
+
+/* === END: EXPANDED ROW NPS SCORE STYLES === */
+
     
     
