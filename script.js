@@ -1610,8 +1610,14 @@ if (app.monthlyData.length >= 2) {
             arrTrendIconHtml = `<i class="bi bi-graph-down text-danger"></i>`;
             arrPercentageClass = 'text-danger';
         } else {
-            arrTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
+            // Replaced dash icon with "Neutral" pill for 0.0% change
+            arrTrendIconHtml = `
+                <div class="usage-bar-container bg-usage-Neutral-Usage" style="width: 65px; height: 25px;">
+                    <span class="usage-bar-text">Neutral</span>
+                </div>
+            `;
             arrPercentageClass = 'text-muted';
+            arrPercentageChangeHtml = '0.0%'; // Ensure it still shows 0.0%
         }
     } else if (currentArrValue > 0) {
         arrPercentageChangeHtml = `+Inf%`;
@@ -2515,7 +2521,7 @@ function startTypewriterSequence() {
 const summaries = [
 { id: 'summary-subscription', text: 'The overall health score of this account is classified as healthy, indicating a positive status.' },
 { id: 'summary-potential', text: 'A user is evaluating the product "Analytics" with a lead type of "MQL". The user has received several emails with different subjects, including "Unlock $100 in wallet credits" and "Tu Período Gratuito de Zoho Analytics llego a su fin!". The user has opened 4 of the 6 emails, with the most opened being "Introducción al Potencial de Zoho Analytics" with 3 opens.' },
-{ id: 'summary-hygiene', text: "A lead, jrodriguez@gmail.com, was contacted by Aziz Chafi, Sales Director at Zoho, on 2025-08-27. The lead mentioned being part of a corporate account with PAE. Pasos Al Exito. A call was made to Bekki Grimm, the lead's owner, on 2025-08-27. Previous attempts were made to contact the lead, including multiple emails and calls, with no response. The lead was marked as Closed Lost on 2024-10-24." }
+{ id: 'summary-hygiene', text: "A lead, jrodriguez@gmail.com, was contacted by Aziz Chafi, Sales Director at Zoho, on August 27, 2025. The lead mentioned being part of a corporate account with PAE (Pasos Al Éxito). A call was made to Bekki Grimm, the lead’s owner, on August 27, 2025. Previous attempts were made to contact the lead through multiple emails and calls, but there was no response. The lead was eventually marked as Closed Lost on October 24, 2024." }
 ];
 
 let summaryIndex = 0;
