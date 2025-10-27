@@ -1009,7 +1009,7 @@ if (app.monthlyData.length >= 6) {
         isCritical = true;
     }
 }
-if (totalInactiveApps > 4) { // Use the defined totalInactiveApps
+if (totalInactiveApps > 1) { // Use the defined totalInactiveApps
     isCritical = true;
 }
 if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
