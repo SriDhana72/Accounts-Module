@@ -956,16 +956,28 @@ return currentMonthData ? currentMonthData.revenue : 0;
 }
 function filterDataArrays() {
 allAppsFilteredData = appData;
+// --- START: MODIFIED CROSS-SELL LOGIC ---
+
+// Define the list of competitors that count as "cross-sell" opportunities
+const crossSellList = ['Mailchimp', 'Dropbox'];
+
+// The old logic for finding the initial app is no longer needed for cross-sell,
+// but we'll keep it in case it's used elsewhere (though it doesn't seem to be).
 let initialSignupApp = null;
 let earliestTime = Infinity;
 appData.forEach(app => {
-const appCreatedTime = new Date(app.createdTime).getTime();
-if (appCreatedTime < earliestTime) {
-    earliestTime = appCreatedTime;
-    initialSignupApp = app;
-}
+    const appCreatedTime = new Date(app.createdTime).getTime();
+    if (appCreatedTime < earliestTime) {
+        earliestTime = appCreatedTime;
+        initialSignupApp = app;
+    }
 });
-crossSellFilteredData = appData.filter(app => app.id !== initialSignupApp.id);
+
+// NEW LOGIC: Filter for apps whose competitor list includes an item from crossSellList
+crossSellFilteredData = appData.filter(app => 
+    app.competitors && app.competitors.some(comp => crossSellList.includes(comp))
+);
+// --- END: MODIFIED CROSS-SELL LOGIC ---
 const problematicTicketTagsList = [
 "Dissatisfaction/Complaint", "Escalation Request", "Repeated Follow-up",
 "Slow Support / Delay", "Feature Gap", "Cancel Threat/Churn Threat",
