@@ -959,7 +959,7 @@ allAppsFilteredData = appData;
 // --- START: MODIFIED CROSS-SELL LOGIC ---
 
 // Define the list of competitors that count as "cross-sell" opportunities
-const crossSellList = ['Mailchimp', 'Dropbox'];
+const crossSellList = ['mailchimp', 'dropbox'];
 
 // The old logic for finding the initial app is no longer needed for cross-sell,
 // but we'll keep it in case it's used elsewhere (though it doesn't seem to be).
@@ -975,7 +975,7 @@ appData.forEach(app => {
 
 // NEW LOGIC: Filter for apps whose competitor list includes an item from crossSellList
 crossSellFilteredData = appData.filter(app => 
-    app.competitors && app.competitors.some(comp => crossSellList.includes(comp))
+    app.competitors && app.competitors.some(comp => crossSellList.includes(comp.toLowerCase()))
 );
 // --- END: MODIFIED CROSS-SELL LOGIC ---
 const problematicTicketTagsList = [
@@ -1246,7 +1246,6 @@ if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellCount;
 if (downgradesCountSpan) downgradesCountSpan.textContent = downgradeCount;
 if (competitorsCountSpan) competitorsCountSpan.textContent = competitorCount;
 if (anomaliesCountSpan) anomaliesCountSpan.textContent = anomaliesCount;
-
 const relevantDeptIds = new Set(data.map(app => app.relevantDepartmentId));
 
 const relevantTickets = ticketDetailsData.filter(dept => relevantDeptIds.has(dept.id));
@@ -1265,7 +1264,7 @@ if(openTicketsCountInCard) openTicketsCountInCard.textContent = totalOpenTickets
 
 if(closedTicketsCountInCard) closedTicketsCountInCard.textContent = totalClosedTickets;
 
-
+updateCounts(anomaliesCount);
 // 6. Render the table with the new data
 renderApplicationTable(data);
 }
@@ -1330,6 +1329,41 @@ arrGreaterThan5kCountSpan.style.color = '#28a745'; /* Ensure green color */
 // Update new card counts with fixed numbers
 if (recentPurchasesCountSpan) recentPurchasesCountSpan.textContent = recentPurchasesData.length;
 if (nextRenewalsCountSpan) nextRenewalsCountSpan.textContent = nextRenewalsData.length;
+// Helper function to toggle the class
+const toggleBtnHighlight = (btnElement, count) => {
+    if (btnElement) { // Check if the button element exists
+        
+        // !!! DEBUGGING LINE !!!
+        console.log(`Checking button: ${btnElement.id}, Count: ${count}`);
+
+        if (count > 0) {
+            btnElement.classList.add('btns-highlight');
+        } else {
+            btnElement.classList.remove('btns-highlight');
+        }
+    }
+};
+
+// Get the counts. We use the array lengths as the source of truth.
+const crossSellCount = crossSellFilteredData.length;
+const downgradesCount = downgradesFilteredData.length;
+const competitorsCount = competitorsFilteredData.length;
+
+// For anomalies, we need to respect the 'specificAnomaliesCount' if it's passed
+let anomaliesCount;
+if (specificAnomaliesCount !== null) {
+    anomaliesCount = specificAnomaliesCount;
+} else {
+    anomaliesCount = anomaliesFilteredData.length;
+}
+
+// Apply the highlight logic to each button
+toggleBtnHighlight(crossSellBtn, crossSellCount);
+toggleBtnHighlight(downgradesBtn, downgradesCount);
+toggleBtnHighlight(competitorsBtn, competitorsCount);
+toggleBtnHighlight(anomaliesBtn, anomaliesCount);
+
+// --- END: ADD THIS NEW HIGHLIGHT LOGIC ---
 }
 function getStatusTagHtml(status) {
 let colorClass = '';

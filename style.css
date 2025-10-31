@@ -2987,6 +2987,13 @@ body {
 }
 
 /* === END: EXPANDED ROW NPS SCORE STYLES === */
+/* === START: BUTTON HIGHLIGHT STYLE (REVISED) === */
 
+/* This class will be added by JavaScript to buttons with a count > 0 */
+.Buttons-section .btns.btns-highlight {
+    border: 1.5px solid #ec7884 !important; /* Red border */
+}
+
+/* === END: BUTTON HIGHLIGHT STYLE (REVISED) === */
     
     
