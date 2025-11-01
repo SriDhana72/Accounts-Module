@@ -2995,5 +2995,193 @@ body {
 }
 
 /* === END: BUTTON HIGHLIGHT STYLE (REVISED) === */
+/* === START: NEW CHAT MODAL STYLES === */
+
+/* --- Modal --- */
+.subscription-chat-modal {
+    background: #ffffff; /* Solid white background */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    backdrop-filter: none; /* Remove blur */
+    -webkit-backdrop-filter: none;
+    width: 320px; /* Slightly wider */
+    height: 450px; /* Taller */
+}
+
+/* --- Header --- */
+.subscription-chat-modal-header {
+    background: #f7f9fe; /* Light blue/purple background from screenshot */
+    border-bottom: 1px solid #e9ecef;
+    color: #212529; /* Dark text */
+    padding: 12px 15px; /* Adjust padding */
+}
+
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-header-avatar {
+    width: 12px;
+    height: 12px;
+    background-color: #7c5cff; /* Purple dot */
+    border-radius: 50%;
+}
+
+.chat-header-status {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.chat-header-status .fw-bold {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.chat-status-online {
+    font-size: 0.75em;
+    color: #28a745; /* Green */
+}
+.chat-status-online .bi {
+    font-size: 0.8em; /* Make the green dot smaller */
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+/* --- Body --- */
+.subscription-chat-modal-body {
+    flex-grow: 1;
+    width: 100%;
+    border: none;
+    display: flex; /* Changed to flex */
+    flex-direction: column; /* To stack messages */
+    gap: 15px;
+    padding: 15px;
+    overflow-y: auto; /* Allow scrolling */
+    background-color: #f8f9fa; /* Light gray chat background */
+}
+
+/* Hide the old iframe if it's still there */
+.subscription-chat-iframe {
+    display: none;
+}
+
+/* --- Chat Bubbles --- */
+.chat-message-group-bot {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+.chat-message-group-user {
+    display: flex;
+    flex-direction: row-reverse; /* User message on the right */
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.chat-avatar-bot {
+    width: 12px;
+    height: 12px; 
+    border-radius: 50%;
+    background-color: #7c5cff;
+    flex-shrink: 0;
+    margin-top: 18px; 
+}
+
+.chat-message-details {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+.chat-message-sender {
+    font-size: 0.75em;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+.chat-message-group-user .chat-message-sender {
+    text-align: right; /* Align user sender text to the right */
+}
+
+
+.chat-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat-bubble-bot {
+    background-color: #ffffff; /* Bot bubble is white */
+    border: 1px solid #e9ecef;
+    border-top-left-radius: 0; /* Flat corner to connect to avatar */
+    color: #333;
+}
+
+.chat-bubble-user {
+    background-color: #0d6efd; /* User bubble is blue */
+    border-top-right-radius: 0;
+    color: #ffffff;
+}
+
+/* --- Footer --- */
+.subscription-chat-modal-footer {
+    padding: 15px;
+    background-color: #ffffff;
+    border-top: 1px solid #e9ecef;
+    position: relative;
+}
+
+.chat-modal-input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    padding: 0 50px 0 0; /* Make space for send button */
+    font-size: 0.9em;
+    outline: none;
+}
+.chat-modal-input::placeholder {
+    color: #6c757d;
+}
+
+.chat-modal-send-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+.chat-modal-send-btn:hover {
+    background-color: #0b5ed7;
+}
+.chat-modal-send-btn .bi {
+    font-size: 1em;
+    line-height: 1;
+    margin-left: 2px; /* Center the icon */
+}
+
+.chat-modal-enter-label {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7em;
+    color: #adb5bd;
+    background: #fff;
+    padding: 0 5px;
+}
+
+/* === END: NEW CHAT MODAL STYLES === */
     
     

@@ -839,7 +839,9 @@ npsScoreCheck = document.getElementById('npsScoreCheck');
 npsScoreCircle = document.getElementById('npsScoreCircle');
 subscriptionChatModal = document.getElementById('subscriptionChatModal');
 closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
-subscriptionChatIframe = document.getElementById('subscriptionChatIframe');
+chatModalBody = document.getElementById('chatModalBody');
+chatModalInput = document.getElementById('chatModalInput');
+chatModalSendBtn = document.getElementById('chatModalSendBtn');
 competitorExposureCountElement = document.getElementById('competitorExposureCount');
 downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
 recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
@@ -1382,7 +1384,7 @@ const getRandomUsageValue = () => {
 const categories = [
 'Major Decline', 
 'Minor Decline', 
-'Neutral Usage', 
+'Neutral', 
 'Minor Increase', 
 'Major Increase'
 ];
@@ -1395,7 +1397,7 @@ case 'Major Decline':
 case 'Minor Decline':
     // Range: -10 to -1
     return Math.floor(Math.random() * 10) - 10;
-case 'Neutral Usage':
+case 'Neutral':
     return 0;
 case 'Minor Increase':
     // Range: 1 to 10
@@ -1449,14 +1451,9 @@ const getRandomUsageTrend = () => {
     ];
     return trends[Math.floor(Math.random() * trends.length)];
 };
-let lastMonthUsageValue = 'N/A'; // To store M6 usage value
 let monthlyDataHtml = app.monthlyData.map((month, index) => {
-    const randomUsageValue = getRandomUsageValue();
-    const randomUsageTrend = getRandomUsageTrend();
-
-    if (month.month === 'M6') {
-        lastMonthUsageValue = randomUsageValue;
-    }
+    const usageValue = parseInt(month.change); // Use the actual seat change
+    const usageTrend = usageValue > 0 ? { icon: 'bi-graph-up', class: 'text-success' } : usageValue < 0 ? { icon: 'bi-graph-down', class: 'text-danger' } : { icon: 'bi-dash-lg', class: 'text-muted' };
 
     let changeIcon = '';
     let changeClass = 'text-muted';
@@ -1506,8 +1503,8 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     return `
 <tr>
 <td>${month.month}</td>
-<td>${randomUsageValue}</td>
-<td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
+<td>${usageValue}</td>
+<td><i class="bi ${usageTrend.icon} ${usageTrend.class}"></i></td>
 <td>${month.seats}</td>
 <td class="${changeClass}">${changeIcon} ${month.change}</td>
 <td>
@@ -1566,49 +1563,44 @@ if (app.license.includes('Downgraded')) {
     licenseTrendIconHtml = `<i class="bi bi-dash-lg text-muted"></i>`;
 }
 
+// --- START: NEW FIXED USAGE LOGIC ---
+
 let usageCategory = '';
 let usageBackgroundColorClass = '';
-const usageValue = parseInt(lastMonthUsageValue);
+let trendPercentage = 0;
 
-if (usageValue < -10) {
+// 1. Get M1 and M6 seat counts
+const m1Seats = app.monthlyData[0].seats;
+const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
+
+// 2. Calculate percentage change
+if (m1Seats > 0) {
+    trendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+} else if (m6Seats > 0) {
+    trendPercentage = 100.0; // Started from 0, so it's a 100% increase
+} else {
+    trendPercentage = 0.0; // Started at 0 and ended at 0
+}
+
+// 3. Assign category and color based on percentage
+if (trendPercentage < -10) {
     usageCategory = 'Major Decline';
     usageBackgroundColorClass = 'bg-usage-Major-Decline';
-} else if (usageValue >= -10 && usageValue < 0) {
+} else if (trendPercentage < 0) {
     usageCategory = 'Minor Decline';
     usageBackgroundColorClass = 'bg-usage-Minor-Decline';
-} else if (usageValue === 0) {
-    usageCategory = 'Neutral Usage';
+} else if (trendPercentage === 0) {
+    usageCategory = 'Neutral';
     usageBackgroundColorClass = 'bg-usage-Neutral-Usage';
-} else if (usageValue > 0 && usageValue <= 10) {
+} else if (trendPercentage <= 10) {
     usageCategory = 'Minor Increase';
     usageBackgroundColorClass = 'bg-usage-Minor-Increase';
-} else if (usageValue > 10) {
+} else { // > 10
     usageCategory = 'Major Increase';
     usageBackgroundColorClass = 'bg-usage-Major-Increase';
-} else {
-     usageCategory = 'N/A';
-     usageBackgroundColorClass = 'bg-usage-Neutral-Usage';
 }
 
-let trendPercentage = 0;
-switch (usageCategory) {
-    case 'Major Decline':
-        trendPercentage = -(Math.floor(Math.random() * 15) + 11); // -11% to -25%
-        break;
-    case 'Minor Decline':
-        trendPercentage = -(Math.floor(Math.random() * 10) + 1); // -1% to -10%
-        break;
-    case 'Neutral Usage':
-        trendPercentage = 0;
-        break;
-    case 'Minor Increase':
-        trendPercentage = Math.floor(Math.random() * 10) + 1; // 1% to 10%
-        break;
-    case 'Major Increase':
-        trendPercentage = Math.floor(Math.random() * 15) + 11; // 11% to 25%
-        break;
-}
-
+// 4. Define the trend icon and class based on the same percentage
 let trendClass = 'text-muted';
 let trendIcon = 'bi-dash-lg';
 
@@ -1620,13 +1612,15 @@ if (trendPercentage < 0) {
     trendIcon = 'bi-graph-up';
 }
 
+// 5. Build the HTML for the trend icon
 const usageTrendHtml = `
     <div class="usage-trend-container ${trendClass}">
         <i class="bi ${trendIcon}"></i>
-        <span>${trendPercentage}%</span>
+        <span>${trendPercentage.toFixed(1)}%</span>
     </div>
 `;
 
+// 6. Build the final HTML for the "Usage" column cell
 const usageHtml = `
     <div class="usage-cell-content">
         <div class="usage-bar-container ${usageBackgroundColorClass}">
@@ -1635,6 +1629,7 @@ const usageHtml = `
         ${usageTrendHtml}
     </div>
 `;
+// --- END: NEW FIXED USAGE LOGIC ---
 
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
 const currentArr = currentMonthData ? currentMonthData.revenue : 'N/A';
@@ -1922,8 +1917,8 @@ const getRandomUsageTrend = () => {
     return trends[Math.floor(Math.random() * trends.length)];
 };
 let monthlyDataHtml = app.monthlyData.map((month, index) => {
-    const randomUsageValue = getRandomUsageValue();
-    const randomUsageTrend = getRandomUsageTrend();
+    const usageValue = parseInt(month.change);
+    const usageTrend = usageValue > 0 ? { icon: 'bi-graph-up', class: 'text-success' } : usageValue < 0 ? { icon: 'bi-graph-down', class: 'text-danger' } : { icon: 'bi-dash-lg', class: 'text-muted' };
     let changeIcon = '';
     let changeClass = 'text-muted';
     if (month.change.includes('+')) {
@@ -1973,8 +1968,8 @@ let monthlyDataHtml = app.monthlyData.map((month, index) => {
     return `
 <tr>
 <td>${month.month}</td>
-<td>${randomUsageValue}</td>
-<td><i class="bi ${randomUsageTrend.icon} ${randomUsageTrend.class}"></i></td>
+<td>${usageValue}</td>
+<td><i class="bi ${usageTrend.icon} ${usageTrend.class}"></i></td>
 <td>${month.seats}</td>
 <td class="${changeClass}">${changeIcon} ${month.change}</td>
 <td>
@@ -2536,23 +2531,32 @@ console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`
 }
 let subscriptionChatModal = null;
 let closeSubscriptionChatModalBtn = null;
-let subscriptionChatIframe = null;
+let chatModalBody = null;
+let chatModalInput = null;
+let chatModalSendBtn = null;
 function openSubscriptionChatModal(subscriptionId, subscriptionName, clickedButton) {
-if (!subscriptionChatModal || !subscriptionChatIframe || !clickedButton) {
-console.error('Chat modal elements or clicked button not found!');
-return;
-}
-// Set generic values if not provided (for "Need Help" button)
-const chatSubscriptionId = subscriptionId || 'N/A';
-const chatSubscriptionName = subscriptionName || 'General Inquiry';
-subscriptionChatIframe.src = `chat_iframe_content.html?subscriptionId=${chatSubscriptionId}&subscriptionName=${encodeURIComponent(chatSubscriptionName)}`;
-subscriptionChatModal.classList.add('show');
+    if (!subscriptionChatModal) {
+        console.error('Chat modal element not found!');
+        return;
+    }
+    // We no longer need to set the iframe src. We just show the modal.
+    subscriptionChatModal.classList.add('show');
 }
 function closeSubscriptionChatModal() {
-if (subscriptionChatModal) {
-subscriptionChatModal.classList.remove('show');
-subscriptionChatIframe.src = '';
-}
+    if (subscriptionChatModal) {
+        subscriptionChatModal.classList.remove('show');
+    }
+    
+    // Clear the chat history when closing, but leave the first (welcome) message
+    if (chatModalBody) {
+        while (chatModalBody.children.length > 1) {
+            chatModalBody.removeChild(chatModalBody.lastChild);
+        }
+    }
+    // Also clear the input field
+    if (chatModalInput) {
+        chatModalInput.value = '';
+    }
 }
 function switchAnamoly(){
 switchTab('anomalies');
@@ -3207,6 +3211,20 @@ const showPopup = () => {
                     closeAllDropdowns(); 
                 });
             }
+            // === START: ADD NEW CHAT LISTENERS ===
+            if (chatModalSendBtn) {
+                chatModalSendBtn.addEventListener('click', handleChatSend);
+            }
+            if (chatModalInput) {
+                chatModalInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Stop it from adding a new line
+                        handleChatSend();
+                    }
+                });
+            }
+            // === END: ADD NEW CHAT LISTENERS ===
+
         }
     }
 
@@ -3288,7 +3306,6 @@ const showPopup = () => {
     refreshIcon.addEventListener('click', () => {
         location.reload();
     });
-    
     // --- Add Event Listeners for the Email Popup Buttons ---
     if (emailPopupCloseBtn) {
         emailPopupCloseBtn.addEventListener('click', closeEmailPopup);
@@ -3296,4 +3313,72 @@ const showPopup = () => {
     if (emailPopupCopyBtn) {
         emailPopupCopyBtn.addEventListener('click', copyEmailContent);
     }
+    // === START: NEW CHAT HELPER FUNCTIONS ===
+    // These functions live inside DOMContentLoaded
+
+    /**
+     * Adds a new message bubble to the chat window.
+     * @param {string} message The text content of the message.
+     * @param {string} sender 'bot' or 'user'.
+     */
+    function addChatMessage(message, sender) {
+        if (!chatModalBody) return;
+
+        let messageGroup;
+
+        if (sender === 'bot') {
+            // Create bot message group
+            messageGroup = document.createElement('div');
+            messageGroup.className = 'chat-message-group-bot';
+            messageGroup.innerHTML = `
+                <div class="chat-avatar-bot"></div>
+                <div class="chat-message-details">
+                    <span class="chat-message-sender">Arivu • Just now</span>
+                    <div class="chat-bubble chat-bubble-bot">
+                        ${message}
+                    </div>
+                </div>
+            `;
+        } else {
+            // Create user message group
+            messageGroup = document.createElement('div');
+            messageGroup.className = 'chat-message-group-user';
+            messageGroup.innerHTML = `
+                <div class="chat-message-details">
+                    <span class="chat-message-sender">You • Just now</span>
+                    <div class="chat-bubble chat-bubble-user">
+                        ${message}
+                    </div>
+                </div>
+            `;
+        }
+
+        chatModalBody.appendChild(messageGroup);
+        
+        // Scroll to the bottom
+        chatModalBody.scrollTop = chatModalBody.scrollHeight;
+    }
+
+    /**
+     * Handles sending a message from the user input.
+     */
+    function handleChatSend() {
+        if (!chatModalInput) return;
+        
+        const message = chatModalInput.value.trim();
+        if (message === '') return; // Don't send empty messages
+
+        // 1. Add the user's message
+        addChatMessage(message, 'user');
+
+        // 2. Clear the input
+        chatModalInput.value = '';
+
+        // 3. Add the bot's hardcoded reply after a short delay
+        setTimeout(() => {
+            addChatMessage("I’m in training right now, dude. Will catch up soon!", 'bot');
+        }, 500); // 500ms delay
+    }
+
+    // === END: NEW CHAT HELPER FUNCTIONS ===
 });
