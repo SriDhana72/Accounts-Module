@@ -3333,7 +3333,7 @@ const showPopup = () => {
             messageGroup.innerHTML = `
                 <div class="chat-avatar-bot"></div>
                 <div class="chat-message-details">
-                    <span class="chat-message-sender">Arivu • Just now</span>
+                    <span class="chat-message-sender">Akavu(அகவு)~360• Just now</span>
                     <div class="chat-bubble chat-bubble-bot">
                         ${message}
                     </div>
