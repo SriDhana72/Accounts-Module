@@ -1,58 +1,54 @@
 /**
  * Updates the display of the health score widget based on the given score.
  * This function dynamically changes the circle's background color,
- * the textual status (Excellent, Good, Poor), and the accompanying icon.
- *
- * It relies on the following global DOM element variables to be defined and assigned
- * in another script (e.g., script.js) before this function is called:
- * - healthScoreCircle (HTML div for the circular background)
- * - healthScoreValue (HTML span for the numeric score)
- * - healthScoreStatus (HTML span for the status text like 'Excellent')
- * - healthScoreCheck (HTML i tag for the Bootstrap icon)
+ * the textual status, and the accompanying icon based on new ranges.
  *
  * @param {number} score The health score value (e.g., 87, 75, 45).
  */
 function updateHealthScore(score) {
-    // Perform null checks to ensure DOM elements are available before attempting to manipulate them.
-    // If any element is null, log an error and exit the function.
+    // Perform null checks to ensure DOM elements are available
     if (!healthScoreValue || !healthScoreCircle || !healthScoreStatus || !healthScoreCheck) {
-        console.error('Health score elements not found. Cannot update health score display. Ensure they are correctly initialized in initializeDOMElements() in script.js and that healthScore.js is loaded BEFORE script.js in index.html.');
+        console.error('Health score elements not found. Cannot update health score display.');
         return; // Exit if elements are missing
     }
 
-    // Set the numeric value of the health score in the designated span.
+    // Set the numeric value of the health score
     healthScoreValue.textContent = score;
 
     // --- Reset all existing dynamic classes before applying new ones ---
-    // This prevents residual styles from previous score updates.
-    healthScoreCircle.classList.remove('health-score-green-gradient', 'health-score-yellow-gradient', 'health-score-red-gradient');
-    healthScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
-    // Also remove existing icon classes and text colors.
+    healthScoreCircle.classList.remove('health-score-green-gradient', 'health-score-yellow-gradient', 'health-score-red-gradient', 'health-score-highrisk-gradient');    healthScoreStatus.classList.remove('text-success', 'text-warning', 'text-danger');
     healthScoreCheck.classList.remove('bi-check-circle-fill', 'bi-exclamation-triangle-fill', 'bi-x-circle-fill', 'text-success', 'text-warning', 'text-danger');
 
 
-    // --- Apply styles and text based on the score range ---
-    if (score >= 70) {
-        // Score is Healthy (70-100)
-        healthScoreCircle.classList.add('health-score-green-gradient'); // Apply green gradient
-        healthScoreStatus.textContent = 'Healthy'; // Set status text
-        healthScoreStatus.classList.add('text-success'); // Apply Bootstrap success text color
-        healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success'); // Apply green checkmark icon
-        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+    // --- Apply styles and text based on the NEW score ranges ---
+    if (score >= 80) {
+        // Healthy (80-100)
+        healthScoreCircle.classList.add('health-score-green-gradient');
+        healthScoreStatus.textContent = 'Healthy';
+        healthScoreStatus.classList.add('text-success');
+        healthScoreCheck.classList.add('bi-check-circle-fill', 'text-success');
+        healthScoreCheck.style.display = 'inline-block';
+    } else if (score >= 60) {
+        // At Risk (60-79)
+        healthScoreCircle.classList.add('health-score-yellow-gradient');
+        healthScoreStatus.textContent = 'At Risk';
+        healthScoreStatus.classList.add('text-warning');
+        healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning');
+        healthScoreCheck.style.display = 'inline-block';
     } else if (score >= 40) {
-        // Score is At Risk (40-69)
-        healthScoreCircle.classList.add('health-score-yellow-gradient'); // Apply yellow gradient
-        healthScoreStatus.textContent = 'At Risk'; // Set status text
-        healthScoreStatus.classList.add('text-warning'); // Apply Bootstrap warning text color
-        healthScoreCheck.classList.add('bi-exclamation-triangle-fill', 'text-warning'); // Apply yellow warning icon
-        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+        // High Risk (40-59)
+        healthScoreCircle.classList.add('health-score-highrisk-gradient'); // NEW Dark Orange gradient
+        healthScoreStatus.textContent = 'High Risk';
+        healthScoreStatus.classList.add('text-danger'); // Keep text red
+        healthScoreCheck.classList.add('bi-exclamation-octagon-fill', 'text-danger'); // NEW Octagon icon, keep it red
+        healthScoreCheck.style.display = 'inline-block';
     } else {
-        // Score is Critical (< 40)
-        healthScoreCircle.classList.add('health-score-red-gradient'); // Apply red gradient
-        healthScoreStatus.textContent = 'Critical'; // Set status text
-        healthScoreStatus.classList.add('text-danger'); // Apply Bootstrap danger text color
-        healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Apply red 'x' icon
-        healthScoreCheck.style.display = 'inline-block'; // Ensure the icon is visible
+        // Critical (0-39)
+        healthScoreCircle.classList.add('health-score-red-gradient');
+        healthScoreStatus.textContent = 'Critical';
+        healthScoreStatus.classList.add('text-danger');
+        healthScoreCheck.classList.add('bi-x-circle-fill', 'text-danger'); // Red 'x' icon
+        healthScoreCheck.style.display = 'inline-block';
     }
 }
 /**
@@ -989,112 +985,148 @@ const problematicTicketTagsList = [
 const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === deptId);
 // Declare totalInactiveApps here
 const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
+const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
+// --- START: NEW CRITICAL ISSUE LOGIC ---
 anomaliesCriticalOnlyData = appData.filter(app => {
-let isCritical = false;
-const latestMonthChange = app.monthlyData.length >= 6 ? parseInt(app.monthlyData[5].change) : null;
-if (app.license.includes('Downgraded') && latestMonthChange !== null && latestMonthChange < 0) {
-    isCritical = true;
-}
-if (app.usage === 'Low' && app.license.includes('Downgraded')) {
-    isCritical = true;
-}
-let totalRecentDecline = 0;
-const startIndex = app.monthlyData.length - 3;
-const relevantMonths = startIndex >= 0 ? app.monthlyData.slice(startIndex) : [];
-if (relevantMonths.length === 3) {
-    relevantMonths.forEach(month => {
-        const change = parseInt(month.change);
-        if (change < 0) {
-            totalRecentDecline += change;
+    let isCritical = false;
+
+    // Rule 1: Low product usage (Usage decline > 10%)
+    let trendPercentage = 0;
+    if (app.monthlyData.length > 0) {
+        const m1Seats = app.monthlyData[0].seats;
+        const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
+        if (m1Seats > 0) {
+            trendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+        } else if (m6Seats > 0) {
+            trendPercentage = 100.0;
         }
-    });
-}
-if (totalRecentDecline <= -3) {
-    isCritical = true;
-}
-if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
-    isCritical = true;
-}
-let maxSeatsLast6Months = 0;
-if (app.monthlyData.length >= 6) {
-    const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-    maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-    if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.40) {
-        isCritical = true;
     }
-}
-if (totalInactiveApps > 1) { // Use the defined totalInactiveApps
-    isCritical = true;
-}
-if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-    const m6Revenue = app.monthlyData[5].revenue;
-    const m3Revenue = app.monthlyData[2].revenue;
-    if (m3Revenue > 0) {
-        const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-        if (percentageChange < -0.40) {
+    if (trendPercentage < -10) { isCritical = true; }
+
+    // Rule 2: High inactivity (More than 1 inactive app on account)
+    if (totalInactiveApps > 1) { isCritical = true; }
+
+    // Rule 3: Serious concerns raised (Critical Tags)
+    const criticalTags = [
+        'cancel threat/churn threat',
+        'competitor switch',
+        'product regret',
+        'service outage/emergency',
+        'security/data breach',
+        'evaluating alternatives'
+    ];
+    const relevantDepartment = findDepartment(app.relevantDepartmentId);
+    if (relevantDepartment) {
+        const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+        const hasCriticalTag = openTicketsInDept.some(tkt =>
+            tkt.tags.some(tag => criticalTags.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+        );
+        if (hasCriticalTag) { isCritical = true; }
+    }
+
+    // Rule 4: Revenue declining (Drop > 40% M3 vs M6)
+    if (app.monthlyData.length >= 6) {
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m3Revenue > 0) {
+            const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
+            if (revenueChange < -0.40) { isCritical = true; }
+        }
+    }
+
+    // Rule 5: Seat usage drop (Drop > 40%)
+    if (app.monthlyData.length >= 6) {
+        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+        const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+        if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.60) { // < 60% is a 40% drop
             isCritical = true;
         }
     }
-}
-const relevantDepartment = findDepartment(app.relevantDepartmentId);
-if (relevantDepartment && relevantDepartment.openStatus > 3) {
-    isCritical = true;
-}
-if (relevantDepartment) {
-    const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-    const hasCriticalProblematicTag = openTicketsInDept.some(tkt =>
-        tkt.tags.some(tag => ['cancel threat/churn threat', 'competitor switch', 'service outage/emergency', 'security/data breach'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-    );
-    if (hasCriticalProblematicTag) {
+
+    // Rule 6: Overloaded support (Account has > 20 open tickets)
+    if (totalOpenTickets > 20) { isCritical = true; }
+
+    // Rule 7: Payment failures (5 or more)
+    if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
         isCritical = true;
     }
-}
-return isCritical;
+    
+    return isCritical;
 });
+// --- END: NEW CRITICAL ISSUE LOGIC ---
+// --- START: NEW WARNING SIGN LOGIC ---
 anomaliesWarningOnlyData = appData.filter(app => {
-const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
-if (isAlreadyCritical) return false;
-let isWarning = false;
-if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
-    (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
-    isWarning = true;
-}
-let maxSeatsLast6Months = 0;
-if (app.monthlyData.length >= 6) {
-    const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-    maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-    if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.70) {
-        isWarning = true;
-    }
-}
-if (totalInactiveApps > 2) { // Use the defined totalInactiveApps
-    isWarning = true;
-}
-if (app.monthlyData.length >= 6 && app.monthlyData[2] && app.monthlyData[5]) {
-    const m6Revenue = app.monthlyData[5].revenue;
-    const m3Revenue = app.monthlyData[2].revenue;
-    if (m3Revenue > 0) {
-        const percentageChange = (m6Revenue - m3Revenue) / m3Revenue;
-        if (percentageChange < -0.30) {
-            isWarning = true;
+    const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
+    if (isAlreadyCritical) return false; // Don't flag if already Critical
+
+    let isWarning = false;
+
+    // Rule 1: Reduced usage (Minor decline = -1% to -10%)
+    let trendPercentage = 0;
+    if (app.monthlyData.length > 0) {
+        const m1Seats = app.monthlyData[0].seats;
+        const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
+        if (m1Seats > 0) {
+            trendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+        } else if (m6Seats > 0) {
+            trendPercentage = 100.0;
         }
     }
-}
-const relevantDepartment = findDepartment(app.relevantDepartmentId);
-if (relevantDepartment && relevantDepartment.openStatus > 1) {
-    isWarning = true;
-}
-if (relevantDepartment) {
-    const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-    const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
-        tkt.tags.some(tag => ['dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 'slow support / delay', 'feature gap', 'product regret', 'evaluating alternatives'].includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-    );
-    if (hasWarningProblematicTag) {
+    if (trendPercentage >= -10 && trendPercentage < 0) { isWarning = true; }
+
+    // Rule 2: Some disengagement (Exactly 1 inactive app on account)
+    if (totalInactiveApps === 1) { isWarning = true; }
+
+    // Rule 3: Support concerns (Warning Tags)
+    const warningTags = [
+        'dissatisfaction/complaint',
+        'escalation request',
+        'repeated follow-up',
+        'slow support / delay',
+        'feature gap'
+    ];
+    const relevantDepartment = findDepartment(app.relevantDepartmentId);
+    if (relevantDepartment) {
+        const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
+        const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
+            tkt.tags.some(tag => warningTags.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+        );
+        if (hasWarningProblematicTag) { isWarning = true; }
+    }
+
+    // Rule 4: Revenue decline (ARR drop <= 40%)
+    if (app.monthlyData.length >= 6) {
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m3Revenue > 0) {
+            const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
+            // Flag as warning if there's a drop, but it's not critical (>= -0.40)
+            if (revenueChange < 0 && revenueChange >= -0.40) { isWarning = true; }
+        }
+    }
+
+    // Rule 5: Seat usage (between 40% and 70%)
+    if (app.monthlyData.length >= 6) {
+        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
+        const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
+        if (maxSeatsLast6Months > 0) {
+            const usagePercent = app.seats / maxSeatsLast6Months;
+            if (usagePercent > 0.40 && usagePercent < 0.70) { isWarning = true; }
+        }
+    }
+
+    // Rule 6: Payment failures (< 5 days)
+    if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
+        (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
         isWarning = true;
     }
-}
-return isWarning;
+
+    // Rule 7: High support volume (15 to 20 open tickets)
+    if (totalOpenTickets >= 15 && totalOpenTickets <= 20) { isWarning = true; }
+
+    return isWarning;
 });
+// --- END: NEW WARNING SIGN LOGIC ---
 downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
 competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
 const anomaliesSet = new Set();
@@ -1226,7 +1258,7 @@ totalScore = Math.round(scoreSum / data.length);
 } else {
 totalScore = 100; // Default to 100 if no data
 }
-updateHealthScore(totalScore);
+updateHealthScore(45);
 updateNpsScore(data);
 
 // 5. Update KPI Cards & Filter Button Counts
@@ -1246,6 +1278,46 @@ if (downgradeRisksCountElement) downgradeRisksCountElement.textContent = downgra
 if (allAppsCountSpan) allAppsCountSpan.textContent = data.length;
 if (crossSellCountSpan) crossSellCountSpan.textContent = crossSellCount;
 if (downgradesCountSpan) downgradesCountSpan.textContent = downgradeCount;
+// Note: The 'npsScore' const (set to 70) is already available globally
+
+// 2. Start with a base score of 100
+let calculatedScore = 100;
+
+// 3. Apply Critical Issues penalties
+if (criticalCount >= 4) {
+    calculatedScore -= 50;
+} else if (criticalCount >= 2) { // 2 to 3
+    calculatedScore -= 40;
+} else if (criticalCount === 1) {
+    calculatedScore -= 25;
+}
+
+// 4. Apply Warning Signs penalties
+if (warningCount >= 9) {
+    calculatedScore -= 25;
+} else if (warningCount >= 6) { // 6 to 8
+    calculatedScore -= 15;
+} else if (warningCount >= 3) { // 3 to 5
+    calculatedScore -= 10;
+} else if (warningCount >= 1) { // 1 to 2
+    calculatedScore -= 5;
+}
+
+// 5. Apply NPS / Sentiment penalties
+if (npsScore < 20) {
+    calculatedScore -= 20; // Low satisfaction
+} else if (npsScore <= 50) { // 20 to 50
+    calculatedScore -= 10; // Neutral to fair
+}
+// No penalty if NPS > 50 (Healthy)
+
+// 6. Ensure the final score is not below 0
+const finalScore = Math.max(0, calculatedScore);
+
+// 7. Update the health score display with the final calculated score
+updateHealthScore(finalScore);
+
+updateNpsScore(data); // This updates the flipper
 if (competitorsCountSpan) competitorsCountSpan.textContent = competitorCount;
 if (anomaliesCountSpan) anomaliesCountSpan.textContent = anomaliesCount;
 const relevantDeptIds = new Set(data.map(app => app.relevantDepartmentId));
