@@ -952,6 +952,44 @@ function calculateTotalArr(app) {
 const currentMonthData = app.monthlyData[app.monthlyData.length - 1];
 return currentMonthData ? currentMonthData.revenue : 0;
 }
+// Helper to check for competitor threats (not cross-sell)
+function hasCompetitorThreat(app) {
+    const crossSellList = ['mailchimp', 'dropbox']; // Your cross-sell list
+    if (!app.competitors || app.competitors.length === 0) {
+        return false;
+    }
+    // A "threat" is any competitor NOT in the cross-sell list
+    return app.competitors.some(comp => !crossSellList.includes(comp.toLowerCase()));
+}
+
+// Helper to get ticket counts by a specific tag
+function getTicketCountByTag(relevantDepartment, tagToFind) {
+    if (!relevantDepartment) return 0;
+    const normalizedTag = tagToFind.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
+    let count = 0;
+    relevantDepartment.tickets.forEach(ticket => {
+        if (ticket.status === 'Open' && ticket.tags.some(tag => tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-') === normalizedTag)) {
+            count++;
+        }
+    });
+    return count;
+}
+
+// Helper to check for ANY anomaly tickets (Critical or Warning)
+function hasAnomalyTickets(relevantDepartment) {
+    if (!relevantDepartment) return false;
+    const anomalyTags = [
+        // Critical Tags
+        'cancel threat/churn threat', 'competitor switch', 'product regret', 'service outage/emergency',
+        'security/data breach', 'evaluating alternatives',
+        // Warning Tags
+        'dissatisfaction/complaint', 'escalation request', 'repeated follow-up', 
+        'slow support / delay', 'feature gap'
+    ];
+    return relevantDepartment.tickets.some(tkt =>
+        tkt.status === 'Open' && tkt.tags.some(tag => anomalyTags.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
+    );
+}
 function filterDataArrays() {
 allAppsFilteredData = appData;
 // --- START: MODIFIED CROSS-SELL LOGIC ---
@@ -986,36 +1024,77 @@ const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === de
 // Declare totalInactiveApps here
 const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
 const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
-// --- START: NEW CRITICAL ISSUE LOGIC ---
+// --- START: NEW CRITICAL ISSUE LOGIC (COMBINED) ---
 anomaliesCriticalOnlyData = appData.filter(app => {
     let isCritical = false;
 
-    // Rule 1: Low product usage (Usage decline > 10%)
-    let trendPercentage = 0;
+    // --- Calculate metrics for rules ---
+    const isInactive = app.status === 'Inactive';
+    const relevantDepartment = findDepartment(app.relevantDepartmentId);
+
+    // 6-month seat trend % (M6 vs M1)
+    let usageTrendPercentage = 0;
     if (app.monthlyData.length > 0) {
         const m1Seats = app.monthlyData[0].seats;
         const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
         if (m1Seats > 0) {
-            trendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
-        } else if (m6Seats > 0) {
-            trendPercentage = 100.0;
+            usageTrendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+        } else if (m6Seats > 0) { usageTrendPercentage = 100.0; }
+    }
+    const isMajorUsageDrop = usageTrendPercentage < -10; // Rule: "above minus 10%"
+    const isLicenseDrop20 = usageTrendPercentage < -20;
+    const isLicenseDrop10 = usageTrendPercentage < -10;
+
+    // 3-month revenue trend % (M6 vs M3)
+    let isArrDrop10 = false;
+    let isArrDrop20 = false;
+    if (app.monthlyData.length >= 6) {
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m3Revenue > 0) {
+            const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
+            if (revenueChange < -0.40) { isCritical = true; } // (Existing Rule 4)
+            if (revenueChange < -0.20) { isArrDrop20 = true; } // >20% drop
+            if (revenueChange < -0.10) { isArrDrop10 = true; } // >10% drop
         }
     }
-    if (trendPercentage < -10) { isCritical = true; }
+    
+    const hasThreat = hasCompetitorThreat(app);
+    const featureGapCount = getTicketCountByTag(relevantDepartment, 'feature-gap');
+    const hasPaymentIssue = app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5;
+    const isLowNPS = npsScore < 20; // Using global npsScore
+    const hasAnyAnomalyTickets = hasAnomalyTickets(relevantDepartment);
 
-    // Rule 2: High inactivity (More than 1 inactive app on account)
-    if (totalInactiveApps > 1) { isCritical = true; }
+    // Consecutive drops (last 3 months: M4, M5, M6)
+    let consecutiveUsageDrop = false;
+    let consecutiveArrDrop = false;
+    if (app.monthlyData.length >= 6) {
+        const m4Change = parseInt(app.monthlyData[3].change);
+        const m5Change = parseInt(app.monthlyData[4].change);
+        const m6Change = parseInt(app.monthlyData[5].change);
+        if (m4Change < 0 && m5Change < 0 && m6Change < 0) {
+            consecutiveUsageDrop = true;
+        }
+        
+        const m4Revenue = app.monthlyData[3].revenue;
+        const m5Revenue = app.monthlyData[4].revenue;
+        const m6Revenue = app.monthlyData[5].revenue;
+        const m3Revenue = app.monthlyData[2].revenue;
+        if (m4Revenue < m3Revenue && m5Revenue < m4Revenue && m6Revenue < m5Revenue) {
+            consecutiveArrDrop = true;
+        }
+    }
+    
+    // --- Apply ALL Critical Rules ---
 
-    // Rule 3: Serious concerns raised (Critical Tags)
+    // (Existing Rule 1) Low product usage
+    if (isMajorUsageDrop) { isCritical = true; }
+
+    // (Existing Rule 3) Serious concerns raised (Critical Tags)
     const criticalTags = [
-        'cancel threat/churn threat',
-        'competitor switch',
-        'product regret',
-        'service outage/emergency',
-        'security/data breach',
-        'evaluating alternatives'
+        'cancel threat/churn threat', 'competitor switch', 'product regret',
+        'service outage/emergency', 'security/data breach', 'evaluating alternatives'
     ];
-    const relevantDepartment = findDepartment(app.relevantDepartmentId);
     if (relevantDepartment) {
         const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
         const hasCriticalTag = openTicketsInDept.some(tkt =>
@@ -1024,17 +1103,7 @@ anomaliesCriticalOnlyData = appData.filter(app => {
         if (hasCriticalTag) { isCritical = true; }
     }
 
-    // Rule 4: Revenue declining (Drop > 40% M3 vs M6)
-    if (app.monthlyData.length >= 6) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (revenueChange < -0.40) { isCritical = true; }
-        }
-    }
-
-    // Rule 5: Seat usage drop (Drop > 40%)
+    // (Existing Rule 5) Seat usage drop > 40%
     if (app.monthlyData.length >= 6) {
         const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
         const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
@@ -1043,47 +1112,62 @@ anomaliesCriticalOnlyData = appData.filter(app => {
         }
     }
 
-    // Rule 6: Overloaded support (Account has > 20 open tickets)
+    // (Existing Rule 6) Overloaded support
     if (totalOpenTickets > 20) { isCritical = true; }
 
-    // Rule 7: Payment failures (5 or more)
-    if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) {
-        isCritical = true;
-    }
+    // (Existing Rule 7) Payment failures
+    if (hasPaymentIssue) { isCritical = true; }
     
+    // --- ADDED: NEW LOGIC RULES ---
+    if (isInactive && isArrDrop20) { isCritical = true; }
+    if (isInactive && isMajorUsageDrop) { isCritical = true; }
+    if (isArrDrop20 && isMajorUsageDrop) { isCritical = true; }
+    if ((isArrDrop20 || isLicenseDrop20) && isMajorUsageDrop) { isCritical = true; }
+    if (isInactive && hasThreat) { isCritical = true; }
+    if (isArrDrop10 && featureGapCount >= 2) { isCritical = true; }
+    if (hasThreat && (isArrDrop10 || isLicenseDrop10)) { isCritical = true; }
+    if (hasPaymentIssue && (isArrDrop10 || isLicenseDrop10)) { isCritical = true; }
+    if (hasPaymentIssue && hasThreat) { isCritical = true; }
+    if (isLowNPS && hasAnyAnomalyTickets) { isCritical = true; }
+    if (consecutiveUsageDrop) { isCritical = true; }
+    if (consecutiveArrDrop) { isCritical = true; }
+    // Note: consecutiveLicenseDrop is the same as consecutiveUsageDrop
+
     return isCritical;
 });
 // --- END: NEW CRITICAL ISSUE LOGIC ---
-// --- START: NEW WARNING SIGN LOGIC ---
+// --- START: NEW WARNING SIGN LOGIC (COMBINED) ---
 anomaliesWarningOnlyData = appData.filter(app => {
     const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
-    if (isAlreadyCritical) return false; // Don't flag if already Critical
+  //  if (isAlreadyCritical) return false; // Don't flag if already Critical
 
     let isWarning = false;
 
-    // Rule 1: Reduced usage (Minor decline = -1% to -10%)
-    let trendPercentage = 0;
+    // --- Calculate metrics for rules ---
+    const isLowNPS = npsScore < 20;
+
+    // 6-month seat trend % (M6 vs M1)
+    let usageTrendPercentage = 0;
     if (app.monthlyData.length > 0) {
         const m1Seats = app.monthlyData[0].seats;
         const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
         if (m1Seats > 0) {
-            trendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
-        } else if (m6Seats > 0) {
-            trendPercentage = 100.0;
-        }
+            usageTrendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+        } else if (m6Seats > 0) { usageTrendPercentage = 100.0; }
     }
-    if (trendPercentage >= -10 && trendPercentage < 0) { isWarning = true; }
+    
+    // --- Apply ALL Warning Rules ---
 
-    // Rule 2: Some disengagement (Exactly 1 inactive app on account)
+    // (New Rule 1) Reduced usage (Minor decline = -1% to -10%)
+    if (usageTrendPercentage >= -10 && usageTrendPercentage < 0) { isWarning = true; }
+
+    // (New Rule 2) Some disengagement (Exactly 1 inactive app on account)
     if (totalInactiveApps === 1) { isWarning = true; }
 
-    // Rule 3: Support concerns (Warning Tags)
+    // (New Rule 3) Support concerns (Warning Tags)
     const warningTags = [
-        'dissatisfaction/complaint',
-        'escalation request',
-        'repeated follow-up',
-        'slow support / delay',
-        'feature gap'
+        'dissatisfaction/complaint', 'escalation request', 'repeated follow-up',
+        'slow support / delay', 'feature gap'
     ];
     const relevantDepartment = findDepartment(app.relevantDepartmentId);
     if (relevantDepartment) {
@@ -1094,7 +1178,7 @@ anomaliesWarningOnlyData = appData.filter(app => {
         if (hasWarningProblematicTag) { isWarning = true; }
     }
 
-    // Rule 4: Revenue decline (ARR drop <= 40%)
+    // (New Rule 4) Revenue decline (ARR drop <= 40%)
     if (app.monthlyData.length >= 6) {
         const m6Revenue = app.monthlyData[5].revenue;
         const m3Revenue = app.monthlyData[2].revenue;
@@ -1105,7 +1189,7 @@ anomaliesWarningOnlyData = appData.filter(app => {
         }
     }
 
-    // Rule 5: Seat usage (between 40% and 70%)
+    // (New Rule 5) Seat usage (between 40% and 70%)
     if (app.monthlyData.length >= 6) {
         const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
         const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
@@ -1114,18 +1198,29 @@ anomaliesWarningOnlyData = appData.filter(app => {
             if (usagePercent > 0.40 && usagePercent < 0.70) { isWarning = true; }
         }
     }
-
-    // Rule 6: Payment failures (< 5 days)
+    
+    // (New Rule 6) Payment failures (< 5 days)
     if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
         (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
         isWarning = true;
     }
 
-    // Rule 7: High support volume (15 to 20 open tickets)
+    // (New Rule 7) High support volume (15 to 20 open tickets)
     if (totalOpenTickets >= 15 && totalOpenTickets <= 20) { isWarning = true; }
 
+    // (New Rule 8) Low NPS (without other critical anomaly tickets)
+    if (isLowNPS) { isWarning = true; }
+    // ... (This is the end of Rule 8: Low NPS)
+if (isLowNPS) { isWarning = true; }
+
+// --- START: ADD THIS NEW RULE ---
+// Rule 9: Inactive for less than 6 months
+if (app.status === 'Inactive' && app.inactiveMonths < 6) {
+    isWarning = true;
+}
     return isWarning;
 });
+// --- END: NEW WARNING SIGN LOGIC (COMBINED) ---
 // --- END: NEW WARNING SIGN LOGIC ---
 downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
 competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
@@ -1655,6 +1750,7 @@ if (m1Seats > 0) {
 }
 
 // 3. Assign category and color based on percentage
+let styleOverride = '';
 if (trendPercentage < -10) {
     usageCategory = 'Major Decline';
     usageBackgroundColorClass = 'bg-usage-Major-Decline';
@@ -1664,6 +1760,7 @@ if (trendPercentage < -10) {
 } else if (trendPercentage === 0) {
     usageCategory = 'Neutral';
     usageBackgroundColorClass = 'bg-usage-Neutral-Usage';
+    styleOverride = 'style="width: 65px;"';
 } else if (trendPercentage <= 10) {
     usageCategory = 'Minor Increase';
     usageBackgroundColorClass = 'bg-usage-Minor-Increase';
@@ -1695,7 +1792,7 @@ const usageTrendHtml = `
 // 6. Build the final HTML for the "Usage" column cell
 const usageHtml = `
     <div class="usage-cell-content">
-        <div class="usage-bar-container ${usageBackgroundColorClass}">
+        <div class="usage-bar-container ${usageBackgroundColorClass}" ${styleOverride}>
             <span class="usage-bar-text">${usageCategory}</span>
         </div>
         ${usageTrendHtml}
