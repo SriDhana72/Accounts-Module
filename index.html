@@ -92,7 +92,30 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="notification-bell-wrapper">
+                    <i class="bi bi-bell-fill notification-bell-icon" id="notificationBell">
+                        <span class="notification-badge" id="notificationBadge">7</span>
+                    </i>
+                    <div class="notification-panel" id="notificationPanel">
+                        <div class="notification-header">
+                            <h6>Notifications</h6>
+                            <div class="notification-filter-wrapper">
+                                <button class="notification-filter-btn" id="notificationFilterBtn">
+                                    <span>All</span> <i class="bi bi-chevron-down"></i>
+                                </button>
+                                <div class="notification-filter-dropdown" id="notificationFilterDropdown">
+                                    <button class="filter-option active" data-filter="all">All</button>
+                                    <button class="filter-option" data-filter="unread">Unread</button>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="notification-list" id="notificationList">
+                            </ul>
+                        <div class="notification-footer">
+                            <button class="notification-show-more" id="notificationShowMore">Show More</button>
+                        </div>
+                    </div>
+                </div>                
                 <div class="health-score-flipper-container">
                     <div class="health-score-flipper" id="healthScoreFlipper">
                         

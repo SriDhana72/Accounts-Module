@@ -2871,7 +2871,7 @@ body {
     padding: 1rem;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 50px;
     z-index: 10;
     
     /* Set perspective for 3D effect */
@@ -3189,6 +3189,202 @@ body {
 .health-score-highrisk-gradient {
     background: linear-gradient(135deg, #ff9a40, #c15b00); /* Dark Orange Gradient */
 }
+/* === START: NOTIFICATION BELL STYLES === */
+
+.notification-bell-wrapper {
+    position: absolute;
+    top: 1rem; /* 16px */
+    right: 1.25rem; /* 20px */
+    z-index: 11; /* it's on top of the health score */
+}
+
+.notification-bell-icon {
+    font-size: 1.3rem;
+    color: #6c757d;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+}
+.notification-bell-icon:hover {
+    color: #333;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.55em;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 1px solid white;
+}
+
+.notification-panel {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: -30px;
+    width: 320px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1001;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    overflow: hidden;
+}
+.notification-panel.show {
+    display: flex;
+}
+
+.notification-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.notification-header h6 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 340px; /* approx 7 items * 48px */
+    overflow-y: auto;
+    transition: max-height 0.3s ease;
+}
+
+.notification-list li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 0.8rem; /* Smaller font size */
+    line-height: 1.4;
+    color: #333;
+}
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.notification-list .notification-time {
+    font-size: 0.7rem; /* Even smaller font */
+    color: #6c757d;
+    display: block;
+    margin-top: 2px;
+}
+
+.notification-footer {
+    padding: 10px;
+    background-color: #f8f9fa;
+    text-align: center;
+    border-top: 1px solid #f0f0f0;
+}
+
+.notification-show-more {
+    background: none;
+    border: none;
+    color: #0d6efd;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px;
+}
+.notification-list.show-all-notifications + .notification-footer {
+    display: none; /* Hide "Show More" after it's clicked */
+}
+
+/* === END: NOTIFICATION BELL STYLES === */
+/* === START: NOTIFICATION FILTER STYLES === */
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-filter-wrapper {
+    position: relative;
+}
+
+.notification-filter-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.notification-filter-btn:hover {
+    background-color: #e9e9e9;
+}
+.notification-filter-btn .bi {
+    font-size: 0.7em;
+}
+
+.notification-filter-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    width: 100px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1002;
+    padding: 5px;
+    display: none; /* Hidden by default */
+}
+.notification-filter-dropdown.show {
+    display: block;
+}
+/* Adding a transition to the base li element */
+.notification-list li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 0.8rem; /* Smaller font size */
+    line-height: 1.4;
+    color: #333;
+    transition: background-color 0.5s ease, border-color 0.5s ease; /* <-- ADD THIS LINE */
+}
+
+/* This is the new highlight style */
+.notification-list li.is-new {
+    background-color: #f0f7ff; /* Faint blue background */
+    border-left: 3px solid #0d6efd; /* Thin blue border on the left */
+}
+.filter-option {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.filter-option:hover {
+    background-color: #f5f5f5;
+}
+.filter-option.active {
+    font-weight: 600;
+    color: #0d6efd;
+}
+/* === END: NOTIFICATION FILTER STYLES === */
 
     
     

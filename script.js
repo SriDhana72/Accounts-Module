@@ -473,6 +473,96 @@ monthlyData: [
 ];
 // Remove "Workplace", "Cliq", "Expense", "Payroll", "Invoice", and "Creator" applications to get 14 apps
 appData = appData.filter(app => !['Workplace', 'Cliq', 'Expense', 'Payroll', 'Invoice', 'Creator'].includes(app.application));
+// === START: MODIFIED DUMMY NOTIFICATION DATA ===
+const dummyNotifications = [
+    { text: "CRM Plus status changed to 'Inactive'.", time: "2025-11-03 09:15 AM", isRead: false },
+    { text: "A new critical issue 'Revenue declining' was detected for 'Inventory'.", time: "2025-11-03 08:30 AM", isRead: false },
+    { text: "NPS Score dropped to '1' for 'Sites'.", time: "2025-11-02 04:20 PM", isRead: false },
+    { text: "A new warning 'Seat usage' was detected for 'Desk'.", time: "2025-11-02 02:11 PM", isRead: true },
+    { text: "Payment failure detected for 'Voice'.", time: "2025-11-02 10:05 AM", isRead: true },
+    { text: "New 'Feature Gap' ticket received for 'CRM Plus'.", time: "2025-11-01 03:00 PM", isRead: true },
+    { text: "Competitor 'Dropbox' detected for 'WorkDrive'.", time: "2025-11-01 11:45 AM", isRead: true },
+    // --- These will be hidden by "Show More" ---
+    { text: "'Voice' status changed to 'Inactive'.", time: "2025-10-31 05:30 PM", isRead: true },
+    { text: "'Desk' status changed to 'Inactive'.", time: "2025-10-31 05:30 PM", isRead: true },
+    { text: "'Inventory' status changed to 'Inactive'.", time: "2025-10-31 05:30 PM", isRead: true }
+];
+// === END: MODIFIED DUMMY NOTIFICATION DATA ===
+/**
+ * Populates the notification panel based on a filter.
+ * @param {string} filter - 'all' or 'unread'
+ * @param {boolean} showAll - true to ignore the 7-item limit
+ */
+function renderNotifications(filter = 'all', showAll = false) {
+    if (!notificationList || !notificationBadge || !notificationShowMore) return;
+
+    // --- START: NEW BADGE & HIGHLIGHT LOGIC ---
+
+    // 1. Get today's date string
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const todayString = `${year}-${month}-${day}`; // e.g., "2025-11-03"
+
+    // 2. Count "today's" unread notifications for the badge
+    const todaysUnreadCount = dummyNotifications.filter(n => n.time.startsWith(todayString) && !n.isRead).length;
+
+    // 3. Set the badge
+    notificationBadge.textContent = todaysUnreadCount;
+    if (todaysUnreadCount === 0) {
+         notificationBadge.style.display = 'none';
+    } else {
+         notificationBadge.style.display = 'flex';
+    }
+    // --- END: NEW BADGE & HIGHLIGHT LOGIC ---
+
+
+    // 4. Filter data for the list
+    let filteredData;
+    if (filter === 'unread') {
+        filteredData = dummyNotifications.filter(n => !n.isRead);
+    } else { // 'all'
+        filteredData = dummyNotifications;
+    }
+
+    // 5. Clear the list
+    notificationList.innerHTML = '';
+
+    // 6. Render the new list
+    const itemsToRender = showAll ? filteredData : filteredData.slice(0, 7);
+
+    if (itemsToRender.length === 0) {
+        notificationList.innerHTML = '<li class="notification-no-items">No notifications to show.</li>';
+    }
+
+    itemsToRender.forEach(notif => {
+        const li = document.createElement('li');
+
+        // Add 'is-read' class if true
+        if (notif.isRead) {
+            li.classList.add('is-read');
+        }
+
+        // --- ADD 'is-new' CLASS FOR HIGHLIGHT ---
+        if (notif.time.startsWith(todayString)) {
+            li.classList.add('is-new');
+        }
+
+        li.innerHTML = `
+            ${notif.text}
+            <span class="notification-time">${notif.time}</span>
+        `;
+        notificationList.appendChild(li);
+    });
+
+    // 7. Update "Show More" button
+    if (showAll || filter === 'unread' || filteredData.length <= 7) {
+        notificationShowMore.style.display = 'none';
+    } else {
+        notificationShowMore.style.display = 'block';
+    }
+}
 function assignInitialAppStatus(data) {
 data.forEach(app => {
 if (app.paymentFailureCount > 0 || app.pauseScheduledCount > 0) {
@@ -640,6 +730,14 @@ let npsScoreValue = null;
 let npsScoreStatus = null;
 let npsScoreCheck = null;
 let npsScoreCircle = null;
+// === START: ADD NOTIFICATION VARIABLES ===
+let notificationBell = null;
+let notificationPanel = null;
+let notificationList = null;
+let notificationShowMore = null;
+let notificationBadge = null;
+let notificationFilterBtn = null;
+let notificationFilterDropdown = null;
 const npsScore = 70;
 // New elements for popups
 let recentPurchasesCountSpan = null;
@@ -838,6 +936,16 @@ chatModalBody = document.getElementById('chatModalBody');
 chatModalInput = document.getElementById('chatModalInput');
 chatModalSendBtn = document.getElementById('chatModalSendBtn');
 chatModalHeader = document.querySelector('.subscription-chat-modal-header');
+// === START: INITIALIZE NOTIFICATION ELEMENTS ===
+notificationBell = document.getElementById('notificationBell');
+console.log('Inside initializeDOMElements, notificationBell is:', notificationBell);
+notificationPanel = document.getElementById('notificationPanel');
+notificationList = document.getElementById('notificationList');
+notificationShowMore = document.getElementById('notificationShowMore');
+notificationBadge = document.getElementById('notificationBadge');
+notificationFilterBtn = document.getElementById('notificationFilterBtn');
+notificationFilterDropdown = document.getElementById('notificationFilterDropdown');
+// === END: INITIALIZE NOTIFICATION ELEMENTS ===
 closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
 competitorExposureCountElement = document.getElementById('competitorExposureCount');
 downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
@@ -2549,7 +2657,6 @@ ticketDetailsTableBody.appendChild(row);
 function switchTab(selectedCategory, dataToRender = null) {
     closeAllDropdowns();
     closeAllThreatPopups();
-    closeSubscriptionChatModal();
     clearAllButtonHighlights();
     clearAllArrSegmentHighlights(); 
     currentArrFilter = 'all'; 
@@ -3081,6 +3188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allAppsBtn.classList.add('active');
         }
         startTypewriterSequence();
+        renderNotifications('all');
 
         // START: ADD THIS BLOCK
         // Start the 2-second flip timer for the health score widget
@@ -3340,6 +3448,14 @@ const showPopup = () => {
         if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
             closeAllThreatPopups();
         }
+        if (notificationPanel && notificationPanel.classList.contains('show') && 
+            !event.target.closest('.notification-bell-wrapper')) {
+            notificationPanel.classList.remove('show');
+        }
+        if (notificationFilterDropdown && notificationFilterDropdown.classList.contains('show') &&
+        !event.target.closest('.notification-filter-wrapper')) {
+        notificationFilterDropdown.classList.remove('show');
+    }
     });
 
     // --- Eye Icon / Rating Popup ---
@@ -3583,6 +3699,90 @@ const showPopup = () => {
     }
 
     // === END: NEW CHAT HELPER FUNCTIONS ===
+
+    if (notificationBell) {
+        notificationBell.addEventListener('click', (event) => {
+            event.stopPropagation();
+    
+            // Close other dropdowns
+            closeAllDropdowns();
+            closeAllThreatPopups();
+            notificationFilterDropdown.classList.remove('show');
+    
+            // Toggle this panel
+            notificationPanel.classList.toggle('show');
+    
+            // --- START: NEW "MARK AS READ" LOGIC ---
+            if (notificationPanel.classList.contains('show')) {
+                // Get all visible new items
+                const newItems = notificationList.querySelectorAll('li.is-new');
+    
+                // Get today's date
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                const day = today.getDate().toString().padStart(2, '0');
+                const todayString = `${year}-${month}-${day}`;
+    
+                // Mark them as "read" in the data array
+                dummyNotifications.forEach(notif => {
+                    if (notif.time.startsWith(todayString)) {
+                        notif.isRead = true;
+                    }
+                });
+    
+                // After 2 seconds, remove the badge and the highlight
+                setTimeout(() => {
+                    notificationBadge.textContent = '0';
+                    notificationBadge.style.display = 'none';
+                    newItems.forEach(item => {
+                        item.classList.remove('is-new');
+                    });
+                }, 2000); // 2-second delay
+            }
+    });
+}
+if (notificationShowMore) {
+    notificationShowMore.addEventListener('click', (event) => {
+        event.stopPropagation();
+        // Re-render with the 'all' filter and the 'showAll' flag
+        renderNotifications('all', true); 
+    });
+}
+
+// --- START:FILTER BLOCK ---
+if (notificationFilterBtn) {
+    notificationFilterBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        notificationFilterDropdown.classList.toggle('show');
+    });
+}
+
+if (notificationFilterDropdown) {
+    // Add listener to the options inside the dropdown
+    notificationFilterDropdown.addEventListener('click', (event) => {
+        if (event.target.classList.contains('filter-option')) {
+            event.stopPropagation();
+
+            const filterType = event.target.dataset.filter; // 'all' or 'unread'
+
+            // Update button text
+            notificationFilterBtn.querySelector('span').textContent = event.target.textContent;
+
+            // Update active state
+            notificationFilterDropdown.querySelectorAll('.filter-option').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // --- NEW LOGIC ---
+            // Re-render the list with the chosen filter
+            renderNotifications(filterType);
+
+            // Close dropdown
+            notificationFilterDropdown.classList.remove('show');
+        }
+    });
+}
+// --- END:FILTER BLOCK ---
     // === START: CHAT MODAL CLOSE BUTTON ===
 if (closeSubscriptionChatModalBtn) {
     closeSubscriptionChatModalBtn.addEventListener('click', () => {
