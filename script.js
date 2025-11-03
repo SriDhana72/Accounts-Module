@@ -176,7 +176,7 @@ details: [],
 relevantDepartmentId: 'dept-sales-ops',
 createdTime: '2023-03-10T12:00:00Z',
 lastInvoiceDate: '2025-05-10',
-npsScore: 9,
+npsScore: 8,
 nextRenewalDate: '2026-03-10',
 monthlyData: [
     { month: 'M1', seats: 30, change: '0', revenue: 3000, revenueChange: '0', competitorIntegrations: 'Low' },
@@ -201,7 +201,7 @@ details: [],
 relevantDepartmentId: 'dept-it-support',
 createdTime: '2023-04-05T13:00:00Z',
 lastInvoiceDate: '2025-04-01',
-npsScore: 7,
+npsScore: 1,
 nextRenewalDate: '2025-09-05',
 monthlyData: [
     { month: 'M1', seats: 41, change: '0', revenue: 410, revenueChange: '0', competitorIntegrations: 'Mailchimp', zohoConversionOpportunities: 'High' },
@@ -687,8 +687,7 @@ let emailPopupSubject = null;
 let emailPopupBodyContent = null;
 let emailPopupCopyBtn = null;
 let emailPopupCloseBtn = null;
-
-
+let chatModalHeader = null;
 // 1. Function to show the email modal and populate content
 function showEmailPopup(type) {
     if (!emailPopupOverlay || !emailPopupTitle || !emailPopupSubject || !emailPopupBodyContent) {
@@ -838,6 +837,8 @@ closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatMo
 chatModalBody = document.getElementById('chatModalBody');
 chatModalInput = document.getElementById('chatModalInput');
 chatModalSendBtn = document.getElementById('chatModalSendBtn');
+chatModalHeader = document.querySelector('.subscription-chat-modal-header');
+closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
 competitorExposureCountElement = document.getElementById('competitorExposureCount');
 downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
 recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
@@ -1024,127 +1025,167 @@ const findDepartment = (deptId) => ticketDetailsData.find(dept => dept.id === de
 // Declare totalInactiveApps here
 const totalInactiveApps = appData.filter(app => app.status === 'Inactive').length;
 const totalOpenTickets = ticketDetailsData.reduce((sum, dept) => sum + dept.openStatus, 0);
-// --- START: NEW CRITICAL ISSUE LOGIC (COMBINED) ---
-anomaliesCriticalOnlyData = appData.filter(app => {
-    let isCritical = false;
+// --- START: NEW ADVANCED CRITICAL ISSUE LOGIC ---
+anomaliesCriticalOnlyData = (() => { // Use an IIFE to manage scope
+    const criticalAppSet = new Set(); // Use a Set to avoid duplicates
 
-    // --- Calculate metrics for rules ---
-    const isInactive = app.status === 'Inactive';
-    const relevantDepartment = findDepartment(app.relevantDepartmentId);
+    // --- STAGE 1: Identify all "Problem Apps" for multi-app rules ---
+    const inactiveApps = [];
+    const arrDecline20Apps = [];
+    const majorUsageDropApps = [];
+    const paymentIssueApps = [];
+    const competitorThreatApps = [];
+    const lowNPSApps = [];
+    const anomalyTicketApps = [];
+    const consecutiveUsageDropApps = [];
+    const consecutiveArrDropApps = [];
+    const arrDecline10Apps = []; // For rules needing "> 10%" drop
 
-    // 6-month seat trend % (M6 vs M1)
-    let usageTrendPercentage = 0;
-    if (app.monthlyData.length > 0) {
-        const m1Seats = app.monthlyData[0].seats;
-        const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
-        if (m1Seats > 0) {
-            usageTrendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
-        } else if (m6Seats > 0) { usageTrendPercentage = 100.0; }
-    }
-    const isMajorUsageDrop = usageTrendPercentage < -10; // Rule: "above minus 10%"
-    const isLicenseDrop20 = usageTrendPercentage < -20;
-    const isLicenseDrop10 = usageTrendPercentage < -10;
+    appData.forEach(app => {
+        const relevantDepartment = findDepartment(app.relevantDepartmentId);
 
-    // 3-month revenue trend % (M6 vs M3)
-    let isArrDrop10 = false;
-    let isArrDrop20 = false;
-    if (app.monthlyData.length >= 6) {
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m3Revenue > 0) {
-            const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
-            if (revenueChange < -0.40) { isCritical = true; } // (Existing Rule 4)
-            if (revenueChange < -0.20) { isArrDrop20 = true; } // >20% drop
-            if (revenueChange < -0.10) { isArrDrop10 = true; } // >10% drop
-        }
-    }
-    
-    const hasThreat = hasCompetitorThreat(app);
-    const featureGapCount = getTicketCountByTag(relevantDepartment, 'feature-gap');
-    const hasPaymentIssue = app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5;
-    const isLowNPS = npsScore < 20; // Using global npsScore
-    const hasAnyAnomalyTickets = hasAnomalyTickets(relevantDepartment);
-
-    // Consecutive drops (last 3 months: M4, M5, M6)
-    let consecutiveUsageDrop = false;
-    let consecutiveArrDrop = false;
-    if (app.monthlyData.length >= 6) {
-        const m4Change = parseInt(app.monthlyData[3].change);
-        const m5Change = parseInt(app.monthlyData[4].change);
-        const m6Change = parseInt(app.monthlyData[5].change);
-        if (m4Change < 0 && m5Change < 0 && m6Change < 0) {
-            consecutiveUsageDrop = true;
+        // --- Calculate metrics ---
+        let usageTrendPercentage = 0;
+        if (app.monthlyData.length > 0) {
+            const m1Seats = app.monthlyData[0].seats;
+            const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
+            if (m1Seats > 0) {
+                usageTrendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+            } else if (m6Seats > 0) { usageTrendPercentage = 100.0; }
         }
         
-        const m4Revenue = app.monthlyData[3].revenue;
-        const m5Revenue = app.monthlyData[4].revenue;
-        const m6Revenue = app.monthlyData[5].revenue;
-        const m3Revenue = app.monthlyData[2].revenue;
-        if (m4Revenue < m3Revenue && m5Revenue < m4Revenue && m6Revenue < m5Revenue) {
-            consecutiveArrDrop = true;
+        let revenueChange = 0;
+        if (app.monthlyData.length >= 6) {
+            const m6Revenue = app.monthlyData[5].revenue;
+            const m3Revenue = app.monthlyData[2].revenue;
+            if (m3Revenue > 0) {
+                revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
+            }
         }
+
+        // --- Sort apps into groups ---
+        if (app.status === 'Inactive') { inactiveApps.push(app); }
+        if (revenueChange < -0.20) { arrDecline20Apps.push(app); }
+        if (revenueChange < -0.10) { arrDecline10Apps.push(app); } // For 10% rules
+        if (usageTrendPercentage < -10) { majorUsageDropApps.push(app); }
+        if (app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5) { paymentIssueApps.push(app); }
+        if (hasCompetitorThreat(app)) { competitorThreatApps.push(app); }
+        if (app.npsScore < 2) { lowNPSApps.push(app); } // Use this app's NPS score
+        if (hasAnomalyTickets(relevantDepartment)) { anomalyTicketApps.push(app); }
+
+        // Consecutive checks
+        if (app.monthlyData.length >= 6) {
+            const m4Change = parseInt(app.monthlyData[3].change);
+            const m5Change = parseInt(app.monthlyData[4].change);
+            const m6Change = parseInt(app.monthlyData[5].change);
+            if (m4Change < 0 && m5Change < 0 && m6Change < 0) {
+                consecutiveUsageDropApps.push(app);
+            }
+            
+            const m4Revenue = app.monthlyData[3].revenue;
+            const m5Revenue = app.monthlyData[4].revenue;
+            const m6Revenue = app.monthlyData[5].revenue;
+            const m3Revenue = app.monthlyData[2].revenue;
+            if (m4Revenue < m3Revenue && m5Revenue < m4Revenue && m6Revenue < m5Revenue) {
+                consecutiveArrDropApps.push(app);
+            }
+        }
+    });
+
+    // --- STAGE 2: Check multi-app combinations and populate the Set ---
+    
+    // Helper to add all apps from a group to the set
+    const addGroupToCritical = (appGroup) => {
+        appGroup.forEach(app => criticalAppSet.add(app));
+    };
+
+    if (inactiveApps.length > 0 && arrDecline20Apps.length > 0) {
+        addGroupToCritical(inactiveApps);
+        addGroupToCritical(arrDecline20Apps);
+    }
+    if (inactiveApps.length > 0 && majorUsageDropApps.length > 0) {
+        addGroupToCritical(inactiveApps);
+        addGroupToCritical(majorUsageDropApps);
+    }
+    if (arrDecline20Apps.length > 0 && majorUsageDropApps.length > 0) {
+        addGroupToCritical(arrDecline20Apps);
+        addGroupToCritical(majorUsageDropApps);
+    }
+    if (inactiveApps.length > 0 && competitorThreatApps.length > 0) {
+        addGroupToCritical(inactiveApps);
+        addGroupToCritical(competitorThreatApps);
+    }
+    if (paymentIssueApps.length > 0 && arrDecline10Apps.length > 0) { // Using 10% drop for "ARR Drop"
+        addGroupToCritical(paymentIssueApps);
+        addGroupToCritical(arrDecline10Apps);
+    }
+    if (lowNPSApps.length > 0 && anomalyTicketApps.length > 0) {
+        addGroupToCritical(lowNPSApps);
+        addGroupToCritical(anomalyTicketApps);
+    }
+    if (consecutiveUsageDropApps.length > 0) {
+        addGroupToCritical(consecutiveUsageDropApps);
+    }
+    if (consecutiveArrDropApps.length > 0) {
+        addGroupToCritical(consecutiveArrDropApps);
     }
     
-    // --- Apply ALL Critical Rules ---
+    // --- STAGE 3: Check single-app combinations (Type 1) ---
+    appData.forEach(app => {
+        // If it's already critical, skip to save time
+        if (criticalAppSet.has(app)) return; 
 
-    // (Existing Rule 1) Low product usage
-    if (isMajorUsageDrop) { isCritical = true; }
-
-    // (Existing Rule 3) Serious concerns raised (Critical Tags)
-    const criticalTags = [
-        'cancel threat/churn threat', 'competitor switch', 'product regret',
-        'service outage/emergency', 'security/data breach', 'evaluating alternatives'
-    ];
-    if (relevantDepartment) {
-        const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
-        const hasCriticalTag = openTicketsInDept.some(tkt =>
-            tkt.tags.some(tag => criticalTags.includes(tag.toLowerCase().replace(/ /g, '-').replace(/\//g, '-')))
-        );
-        if (hasCriticalTag) { isCritical = true; }
-    }
-
-    // (Existing Rule 5) Seat usage drop > 40%
-    if (app.monthlyData.length >= 6) {
-        const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
-        const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
-        if (maxSeatsLast6Months > 0 && (app.seats / maxSeatsLast6Months) < 0.60) { // < 60% is a 40% drop
-            isCritical = true;
+        // Calculate this app's specific metrics
+        let usageTrendPercentage = 0;
+        if (app.monthlyData.length > 0) {
+            const m1Seats = app.monthlyData[0].seats;
+            const m6Seats = app.monthlyData[app.monthlyData.length - 1].seats;
+            if (m1Seats > 0) {
+                usageTrendPercentage = ((m6Seats - m1Seats) / m1Seats) * 100;
+            } else if (m6Seats > 0) { usageTrendPercentage = 100.0; }
         }
-    }
+        const isMajorUsageDrop = usageTrendPercentage < -10;
+        const isLicenseDrop20 = usageTrendPercentage < -20;
+        const isLicenseDrop10 = usageTrendPercentage < -10;
 
-    // (Existing Rule 6) Overloaded support
-    if (totalOpenTickets > 20) { isCritical = true; }
+        let isArrDrop20 = false;
+        let isArrDrop10 = false;
+        if (app.monthlyData.length >= 6) {
+            const m6Revenue = app.monthlyData[5].revenue;
+            const m3Revenue = app.monthlyData[2].revenue;
+            if (m3Revenue > 0) {
+                const revenueChange = (m6Revenue - m3Revenue) / m3Revenue;
+                if (revenueChange < -0.20) { isArrDrop20 = true; }
+                if (revenueChange < -0.10) { isArrDrop10 = true; }
+            }
+        }
+        
+        const relevantDepartment = findDepartment(app.relevantDepartmentId);
+        const featureGapCount = getTicketCountByTag(relevantDepartment, 'feature-gap');
+        const hasThreat = hasCompetitorThreat(app);
+        const hasPaymentIssue = app.paymentFailureCount >= 5 || app.pauseScheduledCount >= 5;
 
-    // (Existing Rule 7) Payment failures
-    if (hasPaymentIssue) { isCritical = true; }
-    
-    // --- ADDED: NEW LOGIC RULES ---
-    if (isInactive && isArrDrop20) { isCritical = true; }
-    if (isInactive && isMajorUsageDrop) { isCritical = true; }
-    if (isArrDrop20 && isMajorUsageDrop) { isCritical = true; }
-    if ((isArrDrop20 || isLicenseDrop20) && isMajorUsageDrop) { isCritical = true; }
-    if (isInactive && hasThreat) { isCritical = true; }
-    if (isArrDrop10 && featureGapCount >= 2) { isCritical = true; }
-    if (hasThreat && (isArrDrop10 || isLicenseDrop10)) { isCritical = true; }
-    if (hasPaymentIssue && (isArrDrop10 || isLicenseDrop10)) { isCritical = true; }
-    if (hasPaymentIssue && hasThreat) { isCritical = true; }
-    if (isLowNPS && hasAnyAnomalyTickets) { isCritical = true; }
-    if (consecutiveUsageDrop) { isCritical = true; }
-    if (consecutiveArrDrop) { isCritical = true; }
-    // Note: consecutiveLicenseDrop is the same as consecutiveUsageDrop
+        // Apply "Type 1" (same service) rules
+        if ((isArrDrop20 || isLicenseDrop20) && isMajorUsageDrop) { criticalAppSet.add(app); }
+        if (isArrDrop10 && featureGapCount >= 2) { criticalAppSet.add(app); }
+        if (hasThreat && (isArrDrop10 || isLicenseDrop10)) { criticalAppSet.add(app); }
+        if (hasPaymentIssue && hasThreat) { criticalAppSet.add(app); }
+    });
 
-    return isCritical;
-});
-// --- END: NEW CRITICAL ISSUE LOGIC ---
-// --- START: NEW WARNING SIGN LOGIC (COMBINED) ---
+    // Finally, return the array of critical apps
+    return Array.from(criticalAppSet);
+})();
+// --- END: NEW ADVANCED CRITICAL ISSUE LOGIC ---
+// --- START: NEW WARNING SIGN LOGIC (REVISED) ---
 anomaliesWarningOnlyData = appData.filter(app => {
-    const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
-  //  if (isAlreadyCritical) return false; // Don't flag if already Critical
-
+    // We remove this check to allow an app to be in both lists:
+    // const isAlreadyCritical = anomaliesCriticalOnlyData.some(criticalApp => criticalApp.id === app.id);
+    // if (isAlreadyCritical) return false;
     let isWarning = false;
-
     // --- Calculate metrics for rules ---
-    const isLowNPS = npsScore < 20;
+    const isLowNPS = app.npsScore < 2; // Use this app's NPS score
+    const relevantDepartment = findDepartment(app.relevantDepartmentId);
+    const hasAnyAnomalyTickets = hasAnomalyTickets(relevantDepartment); // Check for anomaly tickets
 
     // 6-month seat trend % (M6 vs M1)
     let usageTrendPercentage = 0;
@@ -1158,18 +1199,17 @@ anomaliesWarningOnlyData = appData.filter(app => {
     
     // --- Apply ALL Warning Rules ---
 
-    // (New Rule 1) Reduced usage (Minor decline = -1% to -10%)
+    // Rule 1: Reduced usage (Minor decline = -1% to -10%)
     if (usageTrendPercentage >= -10 && usageTrendPercentage < 0) { isWarning = true; }
 
-    // (New Rule 2) Some disengagement (Exactly 1 inactive app on account)
+    // Rule 2: Some disengagement (Exactly 1 inactive app on account)
     if (totalInactiveApps === 1) { isWarning = true; }
 
-    // (New Rule 3) Support concerns (Warning Tags)
+    // Rule 3: Support concerns (Warning Tags)
     const warningTags = [
         'dissatisfaction/complaint', 'escalation request', 'repeated follow-up',
         'slow support / delay', 'feature gap'
     ];
-    const relevantDepartment = findDepartment(app.relevantDepartmentId);
     if (relevantDepartment) {
         const openTicketsInDept = relevantDepartment.tickets.filter(tkt => tkt.status === 'Open');
         const hasWarningProblematicTag = openTicketsInDept.some(tkt =>
@@ -1178,7 +1218,7 @@ anomaliesWarningOnlyData = appData.filter(app => {
         if (hasWarningProblematicTag) { isWarning = true; }
     }
 
-    // (New Rule 4) Revenue decline (ARR drop <= 40%)
+    // Rule 4: Revenue decline (ARR drop <= 40%)
     if (app.monthlyData.length >= 6) {
         const m6Revenue = app.monthlyData[5].revenue;
         const m3Revenue = app.monthlyData[2].revenue;
@@ -1189,7 +1229,7 @@ anomaliesWarningOnlyData = appData.filter(app => {
         }
     }
 
-    // (New Rule 5) Seat usage (between 40% and 70%)
+    // Rule 5: Seat usage (between 40% and 70%)
     if (app.monthlyData.length >= 6) {
         const seatsInLast6Months = app.monthlyData.slice(-6).map(m => m.seats);
         const maxSeatsLast6Months = Math.max(...seatsInLast6Months);
@@ -1199,29 +1239,26 @@ anomaliesWarningOnlyData = appData.filter(app => {
         }
     }
     
-    // (New Rule 6) Payment failures (< 5 days)
+    // Rule 6: Payment failures (< 5 days)
     if ((app.paymentFailureCount > 0 && app.paymentFailureCount < 5) ||
         (app.pauseScheduledCount > 0 && app.pauseScheduledCount < 5)) {
         isWarning = true;
     }
 
-    // (New Rule 7) High support volume (15 to 20 open tickets)
+    // Rule 7: High support volume (15 to 20 open tickets)
     if (totalOpenTickets >= 15 && totalOpenTickets <= 20) { isWarning = true; }
 
-    // (New Rule 8) Low NPS (without other critical anomaly tickets)
-    if (isLowNPS) { isWarning = true; }
-    // ... (This is the end of Rule 8: Low NPS)
-if (isLowNPS) { isWarning = true; }
+    // Rule 8: Low NPS (ONLY if it's not already a critical "Low NPS + Anomaly" issue)
+    if (isLowNPS && !hasAnyAnomalyTickets) { isWarning = true; }
 
-// --- START: ADD THIS NEW RULE ---
-// Rule 9: Inactive for less than 6 months
-if (app.status === 'Inactive' && app.inactiveMonths < 6) {
-    isWarning = true;
-}
+    // Rule 9: Inactive for less than 6 months
+    if (app.status === 'Inactive' && app.inactiveMonths < 6) {
+        isWarning = true;
+    }
+
     return isWarning;
 });
-// --- END: NEW WARNING SIGN LOGIC (COMBINED) ---
-// --- END: NEW WARNING SIGN LOGIC ---
+// --- END: NEW WARNING SIGN LOGIC (REVISED) ---
 downgradesFilteredData = appData.filter(app => app.license.includes('Downgraded'));
 competitorsFilteredData = appData.filter(app => app.competitors && app.competitors.length > 0);
 const anomaliesSet = new Set();
@@ -1792,7 +1829,7 @@ const usageTrendHtml = `
 // 6. Build the final HTML for the "Usage" column cell
 const usageHtml = `
     <div class="usage-cell-content">
-        <div class="usage-bar-container ${usageBackgroundColorClass}" ${styleOverride}>
+        <div class="usage-bar-container ${usageBackgroundColorClass}">
             <span class="usage-bar-text">${usageCategory}</span>
         </div>
         ${usageTrendHtml}
@@ -3303,10 +3340,6 @@ const showPopup = () => {
         if (currentOpenThreatPopup && !event.target.closest('.threat-popup-container') && !event.target.closest('.threat-popup-wrapper')) {
             closeAllThreatPopups();
         }
-        if (subscriptionChatModal && subscriptionChatModal.classList.contains('show') &&
-            !event.target.closest('.subscription-chat-modal')) {
-            closeSubscriptionChatModal();
-        }
     });
 
     // --- Eye Icon / Rating Popup ---
@@ -3550,4 +3583,60 @@ const showPopup = () => {
     }
 
     // === END: NEW CHAT HELPER FUNCTIONS ===
+    // === START: CHAT MODAL CLOSE BUTTON ===
+if (closeSubscriptionChatModalBtn) {
+    closeSubscriptionChatModalBtn.addEventListener('click', () => {
+        closeSubscriptionChatModal();
+    });
+}
+// === END: CHAT MODAL CLOSE BUTTON ===
+    // === START: DRAGGABLE CHAT MODAL LOGIC ===
+
+if (chatModalHeader && subscriptionChatModal) {
+    let isDragging = false;
+    let offsetX, offsetY;
+
+// When mouse is pressed down on the header
+chatModalHeader.addEventListener('mousedown', (e) => {
+    isDragging = true;
+
+    // Get the chat modal's current position
+    const rect = subscriptionChatModal.getBoundingClientRect();
+
+    // Calculate the offset from the top-left corner
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    // --- THIS IS THE NEW PART ---
+    // Instantly switch from "bottom/right" to "top/left" positioning
+    // This prevents the chat window from jumping.
+    subscriptionChatModal.style.transform = 'none'; 
+    subscriptionChatModal.style.top = `${rect.top}px`;
+    subscriptionChatModal.style.left = `${rect.left}px`;
+    subscriptionChatModal.style.bottom = 'auto'; // Unset bottom
+    subscriptionChatModal.style.right = 'auto';  // Unset right
+    // --- END OF NEW PART ---
+
+    // Prevent text selection while dragging
+    e.preventDefault(); 
 });
+
+    // When mouse moves
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        // Set the new top/left position based on mouse move and offset
+        subscriptionChatModal.style.left = `${e.clientX - offsetX}px`;
+        subscriptionChatModal.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    // When mouse is released
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+}
+
+// === END: DRAGGABLE CHAT MODAL LOGIC ===
+
+});
+    
