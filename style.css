@@ -166,7 +166,7 @@ body {
     }
     .card-section p:first-child strong {
     font-size: 0.95em;
-    font-weight: 600;
+    font-weight: 500;
     }
     #deskTicketsCard p:first-child {
     display: flex;
@@ -246,7 +246,7 @@ body {
     border: 1px solid #e9ecef;
     border-radius: 35px;
     padding: 1rem;
-    min-height: 145px;
+    min-height: 110px;
     flex-basis: calc(20% - 15px);
     max-width: calc(20% - 15px);
     min-width: 150px;
@@ -399,7 +399,7 @@ body {
     #applicationTable thead th {
     background: transparent;
     color: #1a1d1f;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.95em;
     border-bottom: 1px solid #dee2e6;
     }
@@ -890,7 +890,7 @@ body {
     padding: 1rem !important;
     }
     .account-details-main-box h5.fw-bold {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     }
     .account-details-main-box p.small.text-secondary {
     font-size: 1rem;
@@ -3197,13 +3197,17 @@ body {
     right: 1.25rem; /* 20px */
     z-index: 11; /* it's on top of the health score */
 }
-
-.notification-bell-icon {
-    font-size: 1.3rem;
-    color: #6c757d;
+.notification-icon-container {
+    position: relative; /* Badge is positioned relative to this */
     cursor: pointer;
-    position: relative;
-    transition: color 0.2s ease;
+    width: 24px; /* Set the size of your icon */
+    height: 24px; /* Set the size of your icon */
+}
+
+.notification-bell-gif {
+    width: 100%; /* Fill the container */
+    height: 100%;
+    display: block; /* Removes any bottom space */
 }
 .notification-bell-icon:hover {
     color: #333;
@@ -3385,6 +3389,65 @@ body {
     color: #0d6efd;
 }
 /* === END: NOTIFICATION FILTER STYLES === */
+/* === START: EXECUTIVE SUMMARY HOVER-EXPAND (NEW ATTEMPT) === */
 
-    
-    
+/* 1. Bouncing animation for the arrow */
+@keyframes bounce-arrow {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(3px);
+    }
+    60% {
+        transform: translateY(2px);
+    }
+}
+
+.summary-hover-wrapper {
+    position: relative;
+    text-align: left;
+}
+
+/* 2. This is the container for the arrow icon */
+.summary-expand-trigger {
+    width: fit-content; 
+    margin: 0 auto;     
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 3. This is the arrow icon itself */
+#summaryArrow {
+    display: inline-block;
+    font: normal normal normal 1.1rem/1 "Bootstrap-Icons"; /* Use the icon font */
+    font-weight: bold;
+    color: #0d6efd;
+    animation: bounce-arrow 2s infinite;
+    transition: color 0.2s ease;
+}
+
+/* 4. This injects the icon shape */
+#summaryArrow::before {
+    content: "\f282"; /* This is the character code for "bi-chevrons-down" */
+}
+
+/* 5. The hidden content */
+.summary-collapsible-content {
+    display: none;
+    padding-top: 4px; /* Fixes the hover gap */
+}
+
+/* 6. HOVER LOGIC */
+.summary-expand-trigger:hover + .summary-collapsible-content,
+.summary-collapsible-content:hover {
+    display: block;
+}
+
+/* 7. Stop animation on hover */
+.summary-expand-trigger:hover #summaryArrow {
+    animation: none;
+    color: #0a58ca; /* Darken on hover */
+}
+
+/* === END: EXECUTIVE SUMMARY HOVER-EXPAND (NEW ATTEMPT) === */
