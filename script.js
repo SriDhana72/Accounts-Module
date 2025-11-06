@@ -937,7 +937,6 @@ chatModalBody = document.getElementById('chatModalBody');
 chatModalInput = document.getElementById('chatModalInput');
 chatModalSendBtn = document.getElementById('chatModalSendBtn');
 chatModalHeader = document.querySelector('.subscription-chat-modal-header');
-summaryHoverWrapper = document.querySelector('.summary-hover-wrapper');
 // === START: INITIALIZE NOTIFICATION ELEMENTS ===
 notificationBell = document.getElementById('notificationBell');
 console.log('Inside initializeDOMElements, notificationBell is:', notificationBell);
@@ -2847,7 +2846,6 @@ console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`
 let subscriptionChatModal = null;
 let closeSubscriptionChatModalBtn = null;
 let chatRefreshBtn = null;
-let summaryHoverWrapper = null;
 let summaryHoverTimer = null;
 let chatModalBody = null;
 let chatModalInput = null;
@@ -3885,25 +3883,39 @@ chatModalHeader.addEventListener('mousedown', (e) => {
     });
 }
 // === END: DRAGGABLE CHAT MODAL LOGIC ===
-// === START: EXECUTIVE SUMMARY 3-SECOND DELAY LOGIC ===
-if (summaryHoverWrapper) {
-    summaryHoverWrapper.addEventListener('mouseenter', () => {
-        // If a "hide" timer is running, cancel it
-        if (summaryHoverTimer) {
-            clearTimeout(summaryHoverTimer);
-        }
-        // Show the content
-        summaryHoverWrapper.classList.add('summary-is-open');
-    });
+// === START: EXECUTIVE SUMMARY HOVER LOGIC ===
+{ // Use a block to keep variables local
+    const wrapper = document.getElementById('summaryWrapper');
+    const arrow = document.getElementById('summaryArrow');
+    const content = document.getElementById('summaryContent');
+    let hoverTimer = null;
 
-    summaryHoverWrapper.addEventListener('mouseleave', () => {
-        // Start a new 3-second timer to hide the content
-        summaryHoverTimer = setTimeout(() => {
-            summaryHoverWrapper.classList.remove('summary-is-open');
-        }, 3000); // 3000ms = 3 seconds
-    });
+    if (wrapper && arrow && content) {
+        
+        const showSummary = () => {
+            if (hoverTimer) clearTimeout(hoverTimer);
+            wrapper.classList.add('summary-is-open');
+        };
+
+        const hideSummary = () => {
+            hoverTimer = setTimeout(() => {
+                wrapper.classList.remove('summary-is-open');
+            }, 3000); // 3-second delay
+        };
+
+        // 1. Hovering the ARROW shows it
+        arrow.addEventListener('mouseenter', showSummary);
+        
+        // 2. Hovering the CONTENT itself keeps it open
+        content.addEventListener('mouseenter', showSummary);
+
+        // 3. Leaving the ARROW starts the hide timer
+        arrow.addEventListener('mouseleave', hideSummary);
+
+        // 4. Leaving the CONTENT starts the hide timer
+        content.addEventListener('mouseleave', hideSummary);
+    }
 }
-// === END: EXECUTIVE SUMMARY 3-SECOND DELAY LOGIC ===
-
+// === END: EXECUTIVE SUMMARY HOVER LOGIC ===
 });
     

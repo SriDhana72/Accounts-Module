@@ -3419,71 +3419,64 @@ body {
     color: #0d6efd;
 }
 /* === END: NOTIFICATION FILTER STYLES === */
-/* === START: EXECUTIVE SUMMARY HOVER-EXPAND (NEW ATTEMPT) === */
+/* === START: EXECUTIVE SUMMARY HOVER-EXPAND (RESET) === */
 
 /* 1. Bouncing animation for the arrow */
 @keyframes bounce-arrow {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(3px);
-    }
-    60% {
-        transform: translateY(2px);
-    }
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(3px); }
+    60% { transform: translateY(2px); }
 }
 
-.summary-hover-wrapper {
+/* 2. The main wrapper */
+.summary-wrapper {
     position: relative;
     text-align: left;
 }
 
-/* 2. This is the container for the arrow icon */
+/* 3. This is the container for the arrow icon */
 .summary-expand-trigger {
-    width: fit-content; 
-    margin: 0 auto;     
-    text-align: center;
-    cursor: pointer;
+    text-align: center; /* This centers the arrow */
+    cursor: default; /* The wrapper is NOT clickable */
 }
 
-/* 3. This is the arrow icon itself */
+/* 4. This is the arrow icon itself */
 #summaryArrow {
     display: inline-block;
-    font: normal normal normal 1.1rem/1 "Bootstrap-Icons"; /* Use the icon font */
-    font-weight: bold;
+    font: normal normal normal 1.1rem/1 "Bootstrap-Icons";
     color: #0d6efd;
+    font-weight: bold;
+    cursor: pointer; /* The ICON is clickable */
     animation: bounce-arrow 2s infinite;
     transition: color 0.2s ease;
 }
 
-/* 4. This injects the icon shape */
+/* 5. This injects the icon shape */
 #summaryArrow::before {
-    content: "\f282"; /* This is the character code for "bi-chevrons-down" */
+    content: "\f282"; /* "bi-chevron-down" */
 }
 
-/* 5. The hidden content */
+/* 6. The hidden content */
 .summary-collapsible-content {
-    padding-top: 4px;
     overflow: hidden;
     max-height: 0; /* Collapsed by default */
+    padding-top: 4px;
     transition: max-height 0.3s ease-out; /* Smooth slide */
-}
-/* 6. NEW JAVASCRIPT-DRIVEN HOVER LOGIC */
-.summary-hover-wrapper.summary-is-open .summary-collapsible-content {
-    max-height: 100px; /* Animate open to this height */
-}
-/* 7. Stop animation on hover */
-.summary-expand-trigger:hover #summaryArrow {
-    animation: none;
-    color: #0a58ca; /* Darken on hover */
-}
-/* 8. Stop animation on hover */
-.summary-hover-wrapper.summary-is-open .summary-expand-trigger .bi-chevron-down {
-    animation: none !important;
+    cursor: default; /* The content is not clickable */
 }
 
-/* === END: EXECUTIVE SUMMARY HOVER-EXPAND (NEW ATTEMPT) === */
+/* 7. The "Open" state (controlled by JS) */
+.summary-wrapper.summary-is-open .summary-collapsible-content {
+    max-height: 200px; /* Animate open to this height */
+}
+
+/* 8. Stop animation on hover */
+.summary-wrapper.summary-is-open #summaryArrow {
+    animation: none;
+    color: #0a58ca;
+}
+
+/* === END: EXECUTIVE SUMMARY HOVER-EXPAND (RESET) === */
 /* === START: CHAT SUGGESTION BUBBLE STYLES === */
 
 .chat-suggestion-bubbles {
