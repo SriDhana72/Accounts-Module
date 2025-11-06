@@ -3042,7 +3042,7 @@ body {
 .chat-header-avatar {
     width: 12px;
     height: 12px;
-    background-color: #7c5cff; /* Purple dot */
+    background-color: #166534;
     border-radius: 50%;
 }
 
@@ -3062,7 +3062,7 @@ body {
     color: #28a745; /* Green */
 }
 .chat-status-online .bi {
-    font-size: 0.8em; /* Make the green dot smaller */
+    font-size: 0.7em; /* Make the green dot smaller */
     margin-right: 3px;
     vertical-align: middle;
 }
@@ -3102,7 +3102,7 @@ body {
     width: 12px;
     height: 12px; 
     border-radius: 50%;
-    background-color: #7c5cff;
+    background-color: #166534;
     flex-shrink: 0;
     margin-top: 18px; 
 }
@@ -3161,8 +3161,8 @@ body {
     padding: 10px 15px; /* Padding for the outer footer */
     background-color: #ffffff;
     border-top: 1px solid #f0f0f0;
-    border-bottom-left-radius: 15px;  /* Match the modal's radius */
-    border-bottom-right-radius: 15px; /* Match the modal's radius */
+    border-bottom-left-radius: 15px;  
+    border-bottom-right-radius: 15px; 
 }
 
 .chat-input-bar {
@@ -3170,8 +3170,8 @@ body {
     align-items: center;
     gap: 8px;
     background-color: #ffffff;
-    border: 1.5px solid #7c5cff; /* Purple border from screenshot */
-    border-radius: 12px; /* Rounded corners for the bar */
+    border: 1.5px solid #166534;
+    border-radius: 12px; 
     padding: 8px 12px;
 }
 
