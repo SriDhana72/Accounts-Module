@@ -932,10 +932,12 @@ npsScoreCheck = document.getElementById('npsScoreCheck');
 npsScoreCircle = document.getElementById('npsScoreCircle');
 subscriptionChatModal = document.getElementById('subscriptionChatModal');
 closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
+chatRefreshBtn = document.getElementById('chatRefreshBtn');
 chatModalBody = document.getElementById('chatModalBody');
 chatModalInput = document.getElementById('chatModalInput');
 chatModalSendBtn = document.getElementById('chatModalSendBtn');
 chatModalHeader = document.querySelector('.subscription-chat-modal-header');
+summaryHoverWrapper = document.querySelector('.summary-hover-wrapper');
 // === START: INITIALIZE NOTIFICATION ELEMENTS ===
 notificationBell = document.getElementById('notificationBell');
 console.log('Inside initializeDOMElements, notificationBell is:', notificationBell);
@@ -946,7 +948,7 @@ notificationBadge = document.getElementById('notificationBadge');
 notificationFilterBtn = document.getElementById('notificationFilterBtn');
 notificationFilterDropdown = document.getElementById('notificationFilterDropdown');
 // === END: INITIALIZE NOTIFICATION ELEMENTS ===
-closeSubscriptionChatModalBtn = document.getElementById('closeSubscriptionChatModal');
+
 competitorExposureCountElement = document.getElementById('competitorExposureCount');
 downgradeRisksCountElement = document.getElementById('downgradeRisksCount');
 recentPurchasesCountSpan = document.getElementById('recentPurchasesCount');
@@ -2844,6 +2846,9 @@ console.log(`Current classes on ${activeCardElementId}: ${activeCard.className}`
 }
 let subscriptionChatModal = null;
 let closeSubscriptionChatModalBtn = null;
+let chatRefreshBtn = null;
+let summaryHoverWrapper = null;
+let summaryHoverTimer = null;
 let chatModalBody = null;
 let chatModalInput = null;
 let chatModalSendBtn = null;
@@ -2855,12 +2860,11 @@ function openSubscriptionChatModal(subscriptionId, subscriptionName, clickedButt
     // We no longer need to set the iframe src. We just show the modal.
     subscriptionChatModal.classList.add('show');
 }
-function closeSubscriptionChatModal() {
-    if (subscriptionChatModal) {
-        subscriptionChatModal.classList.remove('show');
-    }
-    
-    // Clear the chat history when closing, but leave the first (welcome) message
+/**
+ * Clears the chat history and input, resetting it to the welcome message.
+ */
+function refreshChat() {
+    // Clear the chat history, but leave the first (welcome) message
     if (chatModalBody) {
         while (chatModalBody.children.length > 1) {
             chatModalBody.removeChild(chatModalBody.lastChild);
@@ -2870,6 +2874,16 @@ function closeSubscriptionChatModal() {
     if (chatModalInput) {
         chatModalInput.value = '';
     }
+}
+
+/**
+ * Closes the modal AND refreshes the chat.
+ */
+function closeSubscriptionChatModal() {
+    if (subscriptionChatModal) {
+        subscriptionChatModal.classList.remove('show');
+    }
+    refreshChat(); // Call the new refresh function
 }
 function switchAnamoly(){
 switchTab('anomalies');
@@ -3531,7 +3545,7 @@ const showPopup = () => {
             }
             // === START: ADD NEW CHAT LISTENERS ===
             if (chatModalSendBtn) {
-                chatModalSendBtn.addEventListener('click', handleChatSend);
+                chatModalSendBtn.addEventListener('click', () => handleChatSend());
             }
             if (chatModalInput) {
                 chatModalInput.addEventListener('keydown', (event) => {
@@ -3542,6 +3556,17 @@ const showPopup = () => {
                 });
             }
             // === END: ADD NEW CHAT LISTENERS ===
+            // === START: ADD THIS NEW BUBBLE LISTENER ===
+        if (chatModalBody) {
+            chatModalBody.addEventListener('click', (event) => {
+                // Check if the user clicked on a suggestion pill
+                if (event.target.classList.contains('chat-suggestion-pill')) {
+                    const message = event.target.textContent;
+                    handleChatSend(message); // Pass the bubble's text
+                }
+            });
+        }
+        // === END: ADD THIS NEW BUBBLE LISTENER ===
 
         }
     }
@@ -3676,27 +3701,43 @@ const showPopup = () => {
         // Scroll to the bottom
         chatModalBody.scrollTop = chatModalBody.scrollHeight;
     }
+    // === START: ADD THIS NEW ARRAY ===
+    const botReplies = [
+        "I'M IN TRAINING DUDE.. WILL CATCH UP SOON",
+        "I'm still learning! I'll be able to answer you properly very soon.",
+        "I can't handle requests just yet, but I'm learning fast! I'll be ready to assist shortly."
+    ];
+    // === END: ADD THIS NEW ARRAY ===
 
-    /**
-     * Handles sending a message from the user input.
-     */
-    function handleChatSend() {
-        if (!chatModalInput) return;
-        
-        const message = chatModalInput.value.trim();
-        if (message === '') return; // Don't send empty messages
+/**
+ * Handles sending a message from the user input or a suggestion bubble.
+ * @param {string} [messageText] - Optional. The text from a suggestion bubble.
+ */
+function handleChatSend(messageText) {
+    if (!chatModalInput) return;
 
-        // 1. Add the user's message
-        addChatMessage(message, 'user');
+    // Use the provided message or get it from the input field
+    const message = messageText || chatModalInput.value.trim();
 
-        // 2. Clear the input
+    if (message === '') return; // Don't send empty messages
+
+    // 1. Add the user's message
+    addChatMessage(message, 'user');
+
+    // 2. Clear the input field (only if we didn't get text from a bubble)
+    if (!messageText) {
         chatModalInput.value = '';
-
-        // 3. Add the bot's hardcoded reply after a short delay
-        setTimeout(() => {
-            addChatMessage("I’m in training right now, dude. Will catch up soon!", 'bot');
-        }, 500); // 500ms delay
     }
+
+// 3. Add a random bot reply after a short delay
+setTimeout(() => {
+    // Pick a random reply
+    const randomIndex = Math.floor(Math.random() * botReplies.length);
+    const randomReply = botReplies[randomIndex];
+
+    addChatMessage(randomReply, 'bot');
+}, 500); // 500ms delay
+}
 
     // === END: NEW CHAT HELPER FUNCTIONS ===
 
@@ -3790,6 +3831,14 @@ if (closeSubscriptionChatModalBtn) {
     });
 }
 // === END: CHAT MODAL CLOSE BUTTON ===
+// === START: CHAT MODAL REFRESH BUTTON ===
+if (chatRefreshBtn) {
+    chatRefreshBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Stop the header from dragging
+        refreshChat();
+    });
+}
+// === END: CHAT MODAL REFRESH BUTTON ===
     // === START: DRAGGABLE CHAT MODAL LOGIC ===
 
 if (chatModalHeader && subscriptionChatModal) {
@@ -3835,8 +3884,26 @@ chatModalHeader.addEventListener('mousedown', (e) => {
         isDragging = false;
     });
 }
-
 // === END: DRAGGABLE CHAT MODAL LOGIC ===
+// === START: EXECUTIVE SUMMARY 3-SECOND DELAY LOGIC ===
+if (summaryHoverWrapper) {
+    summaryHoverWrapper.addEventListener('mouseenter', () => {
+        // If a "hide" timer is running, cancel it
+        if (summaryHoverTimer) {
+            clearTimeout(summaryHoverTimer);
+        }
+        // Show the content
+        summaryHoverWrapper.classList.add('summary-is-open');
+    });
+
+    summaryHoverWrapper.addEventListener('mouseleave', () => {
+        // Start a new 3-second timer to hide the content
+        summaryHoverTimer = setTimeout(() => {
+            summaryHoverWrapper.classList.remove('summary-is-open');
+        }, 3000); // 3000ms = 3 seconds
+    });
+}
+// === END: EXECUTIVE SUMMARY 3-SECOND DELAY LOGIC ===
 
 });
     
