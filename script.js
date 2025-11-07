@@ -3672,9 +3672,9 @@ const showPopup = () => {
             messageGroup = document.createElement('div');
             messageGroup.className = 'chat-message-group-bot';
             messageGroup.innerHTML = `
-                <div class="chat-avatar-bot"></div>
-                <div class="chat-message-details">
-                    <span class="chat-message-sender">Akavu(அகவு)~360• Just now</span>
+            <img src="images/Chatbot.png" alt="Bot Avatar" class="chat-avatar-bot">
+            <div class="chat-message-details">
+                    <span class="chat-message-sender">Viyan-வியன் 360• Just now</span>
                     <div class="chat-bubble chat-bubble-bot">
                         ${message}
                     </div>
@@ -3701,7 +3701,7 @@ const showPopup = () => {
     }
     // === START: ADD THIS NEW ARRAY ===
     const botReplies = [
-        "I'M IN TRAINING DUDE.. WILL CATCH UP SOON",
+        "I’m still in training, but do not worry, greatness is buffering! Try again later. 😄",
         "I'm still learning! I'll be able to answer you properly very soon.",
         "I can't handle requests just yet, but I'm learning fast! I'll be ready to assist shortly."
     ];
