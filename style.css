@@ -1346,6 +1346,13 @@ body {
     color: #a0522d;
     font-weight: bold;
     }
+    .status-tag-resolved-inactive {
+        background: linear-gradient(to right, #ffe0b2, #ffcc80); /* Same color as inactive */
+        color: #a0522d; /* Same color as inactive */
+        font-weight: bold;
+        text-decoration: line-through; /* The strikethrough */
+        text-decoration-thickness: 2px; /* Make the line a bit thicker */
+    }
     .status-tag-renewal-risk {
     background-color: #f8d7da;
     color: #721c24;

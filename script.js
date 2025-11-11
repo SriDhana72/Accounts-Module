@@ -1285,6 +1285,7 @@ anomaliesCriticalOnlyData = (() => { // Use an IIFE to manage scope
         if (isArrDrop10 && featureGapCount >= 2) { criticalAppSet.add(app); }
         if (hasThreat && (isArrDrop10 || isLicenseDrop10)) { criticalAppSet.add(app); }
         if (hasPaymentIssue && hasThreat) { criticalAppSet.add(app); }
+        if (hasPaymentIssue && isMajorUsageDrop) { criticalAppSet.add(app); }
     });
 
     // Finally, return the array of critical apps
@@ -1449,11 +1450,11 @@ activeSection = 'arr-filter-active'; // A custom state to show no main category 
 function updateDashboard(data) {
 // 1. Update Total ARR
 const totalArr = appData.reduce((sum, app) => {
-    // Only include the revenue if the status is NOT 'Inactive' AND NOT empty
-    if (app.status !== 'Inactive' && app.status !== '') {
+    // Whitelist: Only include revenue from these specific statuses
+    if (app.status === 'Active' || app.status === 'Renewal risk detected') {
         return sum + calculateTotalArr(app);
     }
-    return sum; // Exclude 'Inactive' and resolved (empty) apps
+    return sum; // Exclude 'Inactive', 'Resolved Inactive', and empty status
 }, 0);
 const totalArrValueElement = document.querySelector('.info-section.arr-section .main-value .value');
 if (totalArrValueElement) {
@@ -1693,17 +1694,22 @@ toggleBtnHighlight(anomaliesBtn, anomaliesCount);
 // --- END: ADD THIS NEW HIGHLIGHT LOGIC ---
 }
 function getStatusTagHtml(status) {
-let colorClass = '';
-let displayText = status;
-if (status === 'Active') {
-colorClass = 'status-tag-active';
-} else if (status === 'Inactive') {
-colorClass = 'status-tag-inactive';
-} else if (status === 'Renewal risk detected') {
-colorClass = 'status-tag-renewal-risk';
-displayText = 'Renewal risk';
-}
-return `<span class="status-tag ${colorClass}">${displayText}</span>`;
+    let colorClass = '';
+    let displayText = status;
+
+    if (status === 'Active') {
+        colorClass = 'status-tag-active';
+    } else if (status === 'Inactive') {
+        colorClass = 'status-tag-inactive';
+    } else if (status === 'Resolved Inactive') {
+        colorClass = 'status-tag-resolved-inactive';
+        displayText = 'Inactive'; // The text is still "Inactive"
+    } else if (status === 'Renewal risk detected') {
+        colorClass = 'status-tag-renewal-risk';
+        displayText = 'Renewal risk'; // Shorten the text
+    }
+
+    return `<span class="status-tag ${colorClass}">${displayText}</span>`;
 }
 const getRandomUsageValue = () => {
 const categories = [
@@ -1743,8 +1749,8 @@ return;
 if (activeSection === 'anomalies') {
     data.sort((a, b) => {
         // Check if an app is "resolved" (has an empty status)
-        const aIsResolved = a.status === '';
-        const bIsResolved = b.status === '';
+        const aIsResolved = a.status === 'Resolved Inactive'; 
+        const bIsResolved = b.status === 'Resolved Inactive'; 
 
         if (aIsResolved && !bIsResolved) {
             return 1;  // 'a' (resolved) goes after 'b' (not resolved)
@@ -3467,7 +3473,7 @@ const showPopup = () => {
                 // Find the app and change its status
                 const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
                 if (appIndex !== -1) { 
-                    appData[appIndex].status = '';
+                    appData[appIndex].status = 'Resolved Inactive';
                 }
                 // Close the specific popup
                 closeInactiveAppPopup();
