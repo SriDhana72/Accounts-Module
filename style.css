@@ -3570,3 +3570,83 @@ body {
     background-color: #dee2e6;
 }
 /* === END: INACTIVE APP POPUP STYLES === */
+/* === START: VELOCITY WIDGET STYLES === */
+
+/* This positions the new widget container */
+.velocity-grid {
+    position: absolute;
+    top: 0;
+    /* Positioned 10px to the left of the health score (right: 50px + 220px + 10px = 280px) */
+    right: 280px; 
+    width: 400px; /* Set a width for the container */
+    padding: 0.5rem; /* Match the health score's top padding */
+    padding-right: 0;
+}
+
+/* This is the grid for the 2 new cards */
+.velocity-grid .widget-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem; /* 16px gap */
+}
+
+.velocity-grid .widget-card {
+    padding: 0.75rem; 
+    border-radius: 1rem;
+    position: relative;
+}
+.velocity-grid .widget-card:first-child {
+    text-align: right;
+}
+/* This adds the vertical bar to the first card */
+.velocity-grid .widget-card:first-child::after {
+    content: "";
+    position: absolute;
+    top: 15%; /* Start 15% from the top */
+    bottom: 15%; /* End 15% from the bottom */
+    right: -0.5rem; /* Position in the middle of the 1rem gap */
+    width: 1px;
+    background-color: #a9b0c9; 
+}
+
+.velocity-grid .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom:0.15rem; /* 12px */
+}
+.velocity-grid .widget-card:first-child .card-header {
+    justify-content: flex-end;
+}
+/* Adjusted font to match "Health Score" title */
+.velocity-grid .card-title {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: #4b5563;
+    white-space: nowrap;
+}
+
+.velocity-grid .card-icon {
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+    color: #9ca3af;
+    stroke-width: 1.5;
+}
+
+/* Adjusted font to match "Health Score" number */
+.velocity-grid .metric-value {
+    font-size: 1.0rem; /* 24px (matches fs-4) */
+    line-height: 2rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* Adjusted font to match "Healthy" status text */
+.velocity-grid .metric-context {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+    color: #6b7285;
+}
+/* === END: VELOCITY WIDGET STYLES === */
