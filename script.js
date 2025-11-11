@@ -3098,11 +3098,14 @@ if (relevantHistory.length > 0) {
     const timestamp = item.resolvedAt.toLocaleString('en-US', {
         month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
-    const resolvedItemName = item.type === 'threat'
-
-? `Threat: ${item.name}`
-
-: `Ticket: ${item.summary}`;
+    let resolvedItemName = '';
+    if (item.type === 'threat') {
+        resolvedItemName = `Threat: ${item.name}`;
+    } else if (item.type === 'ticket') {
+        resolvedItemName = `Ticket: ${item.summary}`;
+    } else if (item.type === 'inactive') {
+        resolvedItemName = `Inactive App: ${item.appName}`;
+    }
 
     historyItem.innerHTML = `
         <div class="resolved-item-header">
