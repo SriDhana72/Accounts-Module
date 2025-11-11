@@ -1448,7 +1448,13 @@ activeSection = 'arr-filter-active'; // A custom state to show no main category 
 */
 function updateDashboard(data) {
 // 1. Update Total ARR
-const totalArr = data.reduce((sum, app) => sum + calculateTotalArr(app), 0);
+const totalArr = appData.reduce((sum, app) => {
+    // Only include the revenue if the status is NOT 'Inactive' AND NOT empty
+    if (app.status !== 'Inactive' && app.status !== '') {
+        return sum + calculateTotalArr(app);
+    }
+    return sum; // Exclude 'Inactive' and resolved (empty) apps
+}, 0);
 const totalArrValueElement = document.querySelector('.info-section.arr-section .main-value .value');
 if (totalArrValueElement) {
 totalArrValueElement.textContent = `$${totalArr.toLocaleString()}`;
@@ -1733,6 +1739,21 @@ console.log('Starting to render application table with', data.length, 'items');
 if (!applicationTableBody) {
 console.error("Application table body element (applicationTableBody) not found!");
 return;
+}
+if (activeSection === 'anomalies') {
+    data.sort((a, b) => {
+        // Check if an app is "resolved" (has an empty status)
+        const aIsResolved = a.status === '';
+        const bIsResolved = b.status === '';
+
+        if (aIsResolved && !bIsResolved) {
+            return 1;  // 'a' (resolved) goes after 'b' (not resolved)
+        }
+        if (!aIsResolved && bIsResolved) {
+            return -1; // 'a' (not resolved) goes before 'b' (resolved)
+        }
+        return 0; // Keep original order for all other cases
+    });
 }
 applicationTableBody.innerHTML = '';
 expandedRowId = null;
