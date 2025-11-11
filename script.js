@@ -766,6 +766,9 @@ let currentItemToResolve = null; // To store {appId, threatName}
 let escalatedTicketsPopup = null;
 let escalatedTicketsListContainer = null;
 let escalatedTicketsPopupCloseBtn = null;
+let inactiveAppPopup = null;
+let inactiveAppListContainer = null;
+let inactiveAppPopupCloseBtn = null;
 
 let resolvedHistoryPopup = null;
 let resolvedHistoryListContainer = null;
@@ -972,6 +975,9 @@ escalatedTicketsPopup = document.getElementById('escalatedTicketsPopup');
 escalatedTicketsListContainer = document.getElementById('escalatedTicketsListContainer');
 
 escalatedTicketsPopupCloseBtn = document.getElementById('escalatedTicketsPopupCloseBtn');
+inactiveAppPopup = document.getElementById('inactiveAppPopup');
+inactiveAppListContainer = document.getElementById('inactiveAppListContainer');
+inactiveAppPopupCloseBtn = document.getElementById('inactiveAppPopupCloseBtn');
 resolvedHistoryPopup = document.getElementById('resolvedHistoryPopup');
 resolvedHistoryListContainer = document.getElementById('resolvedHistoryListContainer');
 resolvedHistoryPopupCloseBtn = document.getElementById('resolvedHistoryPopupCloseBtn');
@@ -2178,11 +2184,23 @@ if (isAnomalous && activeSection === 'anomalies') {
             }
             const escalatedTicketsCount = escalatedTickets.length;
             const escalatedTicketsBadge = escalatedTicketsCount > 0
-                ? `<span class="badge bg-danger rounded-pill">${escalatedTicketsCount}</span>`
-                : '';
-
-      // Encode tickets for data attribute
-            const ticketsDataAttribute = `data-tickets='${JSON.stringify(escalatedTickets)}'`;
+            ? `<span class="badge bg-danger rounded-pill">${escalatedTicketsCount}</span>`
+            : '';
+    
+          // Encode tickets for data attribute
+                const ticketsDataAttribute = `data-tickets='${JSON.stringify(escalatedTickets)}'`;
+    
+        // === START: NEW "INACTIVE" BUTTON LOGIC ===
+        let inactiveAppButtonHtml = '';
+        if (app.status === 'Inactive') {          
+            inactiveAppButtonHtml = `
+                <button class="glass-button inactive-app-trigger d-flex justify-content-between align-items-center" data-app-id="${app.id}" data-app-name="${app.application}">
+                    <span>
+                        <i class="bi bi-pause-circle"></i> Inactive App
+                    </span>
+                </button>
+            `;
+        }
 
     const resolvedItemsForApp = resolvedItemsHistory.filter(item => item.appName === app.application);
     const showResolvedIcon = resolvedItemsForApp.length > 0 ? 'inline-block' : 'none';
@@ -2209,6 +2227,7 @@ if (isAnomalous && activeSection === 'anomalies') {
                         </span>
                         ${escalatedTicketsBadge}
                             </button>
+                            ${inactiveAppButtonHtml}
                     </div>
                 </div>
             </div>
@@ -2494,6 +2513,16 @@ if (threatDetailsTrigger) {
                 showEscalatedTicketsPopup(tickets, appId);
             });
         }
+        // === START: ADD THIS LISTENER ===
+    const inactiveAppTrigger = expandedRow.querySelector('.inactive-app-trigger');
+    if (inactiveAppTrigger) {
+        inactiveAppTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const appId = e.currentTarget.dataset.appId;
+            const appName = e.currentTarget.dataset.appName;
+            showInactiveAppPopup(appName, appId);
+        });
+    }
 // Add listener for the new resolved history trigger
 const resolvedHistoryTrigger = expandedRow.querySelector('.resolved-history-trigger');
 if (resolvedHistoryTrigger) {
@@ -3020,7 +3049,37 @@ function closeEscalatedTicketsPopup() {
         escalatedTicketsPopup.style.display = 'none';
     }
 }
+/**
+ * Shows the popup for resolving an inactive app.
+ * @param {string} appName The name of the app (e.g., "CRM Plus").
+ * @param {string} appId The ID of the app.
+ */
+function showInactiveAppPopup(appName, appId) {
+    if (!inactiveAppPopup || !inactiveAppListContainer) return;
 
+    inactiveAppListContainer.innerHTML = ''; // Clear
+
+    const appItem = document.createElement('div');
+    appItem.className = 'inactive-app-item';
+    appItem.setAttribute('data-app-id', appId);
+    appItem.innerHTML = `
+        <span class="inactive-app-name">${appName}</span>
+        <button class="threat-resolve-btn">Resolve</button>
+    `;
+    inactiveAppListContainer.appendChild(appItem);
+
+    appItem.querySelector('.threat-resolve-btn').addEventListener('click', () => {
+        showResolveNotesPopup({ type: 'inactive', appId: appId, name: appName });
+    });
+
+    inactiveAppPopup.style.display = 'flex';
+}
+
+function closeInactiveAppPopup() {
+    if (inactiveAppPopup) {
+        inactiveAppPopup.style.display = 'none';
+    }
+}
 
 
 function showResolvedHistoryPopup(appName, triggerElement) {
@@ -3379,6 +3438,16 @@ const showPopup = () => {
                     }
                 });
             }
+            else if (type === 'inactive') {
+                resolvedItemsHistory.push({ type: 'inactive', appName: name, notes: notes, resolvedAt: new Date() });
+                // Find the app and change its status
+                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+                if (appIndex !== -1) { 
+                    appData[appIndex].status = '';
+                }
+                // Close the specific popup
+                closeInactiveAppPopup();
+            }
            // closeThreatDetailsPopup();
             filterDataArrays(); 
             updateDashboard(anomaliesFilteredData);
@@ -3437,6 +3506,16 @@ const showPopup = () => {
         escalatedTicketsPopup.addEventListener('click', (e) => { 
             if (e.target === escalatedTicketsPopup) { 
                 closeEscalatedTicketsPopup(); 
+            } 
+        });
+    }
+    if (inactiveAppPopupCloseBtn) { 
+        inactiveAppPopupCloseBtn.addEventListener('click', closeInactiveAppPopup); 
+    }
+    if (inactiveAppPopup) {
+        inactiveAppPopup.addEventListener('click', (e) => { 
+            if (e.target === inactiveAppPopup) { 
+                closeInactiveAppPopup(); 
             } 
         });
     }
