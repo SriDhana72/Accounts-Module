@@ -1761,6 +1761,43 @@ if (activeSection === 'anomalies') {
         return 0; // Keep original order for all other cases
     });
 }
+// === START: ADDING THIS NEW SORTING BLOCK FOR 'all-apps' ===
+else if (activeSection === 'all-apps') {
+    // This function assigns a "weight" to each status for sorting
+    const getStatusWeight = (status) => {
+        switch (status) {
+            case 'Active':
+                return 1;
+            case 'Renewal risk detected':
+                return 2;
+            case 'Inactive':
+                return 3;
+            default: // 'Resolved Inactive' and ''
+                return 4;
+        }
+    };
+
+    data.sort((a, b) => {
+        const weightA = getStatusWeight(a.status);
+        const weightB = getStatusWeight(b.status);
+
+        // Primary sort: by status weight
+        if (weightA < weightB) {
+            return -1; // a comes first
+        }
+        if (weightA > weightB) {
+            return 1; // b comes first
+        }
+
+        // Secondary sort: if both are 'Inactive', sort by inactiveMonths
+        if (weightA === 3 && weightB === 3 && a.inactiveMonths && b.inactiveMonths) {
+            return a.inactiveMonths - b.inactiveMonths; // Ascending order
+        }
+
+        return 0; // Keep original order for all other ties
+    });
+}
+// === END: NEW SORTING BLOCK FOR 'all-apps' ===
 applicationTableBody.innerHTML = '';
 expandedRowId = null;
 if (data.length === 0) {
