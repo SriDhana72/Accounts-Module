@@ -30,10 +30,11 @@ function calculateAverageVelocity(data, dateField1, dateField2) {
 
 /**
  * Animates text into an element word by word.
- * @param {HTMLElement} element - The DOM element to update.
+ * @param {HTMLElement} element - The DOM element (the <span>) to update.
  * @param {string} text - The full text to animate.
  */
 function animateValue(element, text) {
+    if (!element) return; // Add a check
     element.innerHTML = ''; // Use innerHTML
     const words = text.split(' '); // Split "27.1 Days" into ["27.1", "Days"]
     let index = 0;
@@ -58,15 +59,17 @@ function animateValue(element, text) {
 }
 /**
  * Updates a widget card with the calculated data and comparison.
- * @param {string} type - 'sales' or 'payment'
+ * @param {string} type - 'buying' or 'payment'
  * @param {number} currentAvg - The average for the current period
  * @param {number} industryAvg - The industry average to compare against
  */
 function updateWidget(type, currentAvg, industryAvg) {
-    const valueEl = document.getElementById(`${type}-velocity-value`);
+    // Get the new element IDs
+    const valueElText = document.getElementById(`${type}-velocity-value`);
+    const valueElArrow = document.getElementById(`${type}-velocity-arrow`);
     const contextEl = document.getElementById(`${type}-velocity-context`);
 
-    if (!valueEl || !contextEl) {
+    if (!valueElText || !contextEl || !valueElArrow) {
         console.error(`Elements for type '${type}' not found.`);
         return;
     }
@@ -75,31 +78,38 @@ function updateWidget(type, currentAvg, industryAvg) {
     let percentageDiff = 0;
     let status = 'avg'; // 'faster', 'slower', 'avg'
     let statusText = `vs ${industryAvg} Days avg`; // Default text
+    let arrowIcon = 'bi-dash-lg'; // Default neutral icon
 
     if (currentAvg < industryAvg) {
         // Faster (good)
         percentageDiff = ((industryAvg - currentAvg) / industryAvg) * 100;
         status = 'faster';
-        statusText = `${percentageDiff.toFixed(0)}% Faster than average`; // NEW TEXT
+        statusText = `${percentageDiff.toFixed(0)}% Faster than average`;
+        arrowIcon = 'bi-arrow-up'; // Green UP arrow
     } else if (currentAvg > industryAvg) {
         // Slower (bad)
         percentageDiff = ((currentAvg - industryAvg) / industryAvg) * 100;
         status = 'slower';
-        statusText = `${percentageDiff.toFixed(0)}% Slower than average`; // NEW TEXT
+        statusText = `${percentageDiff.toFixed(0)}% Slower than average`;
+        arrowIcon = 'bi-arrow-down'; // Red DOWN arrow
     }
 
     // 2. Update DOM
-    animateValue(valueEl, `${currentAvg} Days`); // The account's average (will be black)
-    contextEl.textContent = statusText; // The new context text
+    animateValue(valueElText, `${currentAvg} Days`); // Animate the text
+    contextEl.textContent = statusText; // Set context text
 
-    // 3. Reset and apply color classes TO THE CONTEXT
-    valueEl.classList.remove('metric-faster', 'metric-slower'); // Clear old rules
-    contextEl.classList.remove('metric-faster', 'metric-slower'); // Reset context
+    // 3. Reset and apply classes for Arrow and Context
+    valueElArrow.classList.remove('metric-faster', 'metric-slower', 'bi-arrow-up', 'bi-arrow-down', 'bi-dash-lg');
+    contextEl.classList.remove('metric-faster', 'metric-slower');
+
+    valueElArrow.classList.add(arrowIcon); // Add the correct icon class
 
     if (status === 'faster') {
-        contextEl.classList.add('metric-faster'); // Apply to context
+        contextEl.classList.add('metric-faster');
+        valueElArrow.classList.add('metric-faster'); // Color the arrow green
     } else if (status === 'slower') {
-        contextEl.classList.add('metric-slower'); // Apply to context
+        contextEl.classList.add('metric-slower');
+        valueElArrow.classList.add('metric-slower'); // Color the arrow red
     }
 }
 
@@ -136,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Calculate Sales Velocity
     const salesAvg = calculateAverageVelocity(mockSalesData, 'created_time', 'closing_date');
     // Pass the industry average instead of the record count
-    updateWidget('sales', salesAvg, INDUSTRY_AVG_SALES);
+    updateWidget('buying', salesAvg, INDUSTRY_AVG_SALES);
 
     // Calculate Payment Velocity
     const paymentAvg = calculateAverageVelocity(mockPaymentData, 'invoice_date', 'paid_date');

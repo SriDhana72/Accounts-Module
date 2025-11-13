@@ -220,26 +220,39 @@
                     <div class="velocity-grid">
                         <div class="widget-grid">
                             
-                            <div class="widget-card">
-                                <div class="card-header">
-                                    <h2 class="card-title">Avg. Lead to Customer</h2>
-                                </div>
-                                <div>
-                                    <div class="metric-value" id="sales-velocity-value">-- Days</div>
-                                    <div class="metric-context" id="sales-velocity-context"></div>
-                                </div>
-                            </div>
-    
-                            <div class="widget-card">
-                                <div class="card-header">
-                                    <h2 class="card-title">Avg. Time to Payment</h2>
-                                </div>
-                                <div>
-                                    <div class="metric-value" id="payment-velocity-value">-- Days</div>
-                                    <div class="metric-context" id="payment-velocity-context"></div>
-                                </div>
-                            </div>
-    
+<!-- Card 1: Buying Velocity -->
+<div class="widget-card" id="buying-velocity-card"> <!-- Added ID -->
+    <div class="card-header">
+        <h2 class="card-title">Buying Velocity</h2> <!-- RENAMED -->
+        <i class="bi bi-info-circle velocity-tooltip-icon"> <!-- NEW TOOLTIP -->
+            <div class="velocity-tooltip">This represents the average time compared to the industry benchmark</div>
+        </i>
+    </div>
+    <div>
+        <div class="metric-value">
+            <i class="bi metric-arrow" id="buying-velocity-arrow"></i> <!-- UPDATED ID -->
+            <span id="buying-velocity-value">-- Days</span> <!-- UPDATED ID -->
+        </div>
+        <div class="metric-context" id="buying-velocity-context"></div> <!-- UPDATED ID -->
+    </div>
+</div>
+
+<!-- Card 2: Payment Velocity -->
+<div class="widget-card" id="payment-velocity-card"> <!-- Added ID -->
+    <div class="card-header">
+        <h2 class="card-title">Payment Velocity</h2>
+        <i class="bi bi-info-circle velocity-tooltip-icon"> <!-- NEW TOOLTIP -->
+            <div class="velocity-tooltip">This represents the average time compared to the industry benchmark</div>
+        </i>
+    </div>
+    <div>
+        <div class="metric-value">
+            <i class="bi metric-arrow" id="payment-velocity-arrow"></i>
+            <span id="payment-velocity-value">-- Days</span>
+        </div>
+        <div class="metric-context" id="payment-velocity-context"></div>
+    </div>
+</div>
                         </div>
                     </div>
                     </div>
