@@ -3434,12 +3434,6 @@ body {
     height: 32px !important; /* Force the size */
     transition: transform 0.2s ease;
 }
-
-/* 5. This injects the icon shape */
-#summaryArrow::before {
-    content: "\f282"; 
-}
-
 /* 6. The hidden content */
 .summary-collapsible-content {
     overflow: hidden;
@@ -3729,3 +3723,47 @@ body {
     margin-left: 0; /* Remove the old centering margin */
 }
 /* === END: ADD THIS NEW BLOCK === */
+/* Custom animation for the bouncing double arrow */
+@keyframes bounceDouble {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-6px); /* Bounces up slightly */
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* The container for the arrow */
+#summaryArrow.arrow-container {
+    width: 32px;  
+    height: 32px;
+    margin: 0 auto;
+    cursor: pointer;
+    animation: bounceDouble 2s infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The SVG Styling */
+.arrow-svg {
+    width: 100%;
+    height: 100%;
+    stroke: #5592f3; 
+    fill: none;
+    transition: transform 0.3s ease;
+}
+
+/* When the summary is open (hovered) */
+.summary-wrapper.summary-is-open #summaryArrow {
+    animation: none; /* Stop bouncing */
+}
+
+/* Optional: Rotate arrow when open to indicate 'collapse' (Visual feedback) */
+.summary-wrapper.summary-is-open .arrow-svg {
+    transform: rotate(180deg);
+    stroke: #0a58ca; 
+}
