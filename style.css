@@ -1994,10 +1994,9 @@ body {
     }
     
     .zoho-logo-loader img {
-    width: 100px;
-    height: 100px;
+    width: 165px;
+    height: 160px;
     object-fit: contain;
-    margin-bottom: 2rem;
     }
     
     /* Loader Styles */
@@ -2062,12 +2061,6 @@ body {
     .zoho-logo-loader {
         width: 150px;
         height: 80px;
-    }
-    
-    .zoho-logo-loader img {
-        width: 100px;
-        height: 100px;
-        object-fit: contain; /* Ensures the image fits without distortion */
     }
      
     .loader-message {
@@ -3424,24 +3417,25 @@ body {
 
 /* 3. This is the container for the arrow icon */
 .summary-expand-trigger {
-    text-align: center; /* This centers the arrow */
-    cursor: default; /* The wrapper is NOT clickable */
+    width: fit-content; 
+    margin: 0 auto;     
+    text-align: center;
+    cursor: pointer;
 }
-
+.summary-expand-trigger:hover #summaryArrow {
+    transform: scale(1.1);
+}
 /* 4. This is the arrow icon itself */
 #summaryArrow {
     display: inline-block;
-    font: normal normal normal 1.1rem/1 "Bootstrap-Icons";
-    color: #0d6efd;
-    font-weight: bold;
-    cursor: pointer; /* The ICON is clickable */
-    animation: bounce-arrow 2s infinite;
-    transition: color 0.2s ease;
+    width: 32px !important;  /* Force the size */
+    height: 32px !important; /* Force the size */
+    transition: transform 0.2s ease;
 }
 
 /* 5. This injects the icon shape */
 #summaryArrow::before {
-    content: "\f282"; /* "bi-chevron-down" */
+    content: "\f282"; 
 }
 
 /* 6. The hidden content */
@@ -3450,7 +3444,7 @@ body {
     max-height: 0; /* Collapsed by default */
     padding-top: 4px;
     transition: max-height 0.3s ease-out; /* Smooth slide */
-    cursor: default; /* The content is not clickable */
+    cursor: default;
 }
 
 /* 7. The "Open" state (controlled by JS) */
@@ -3570,18 +3564,29 @@ body {
     background-color: #dee2e6;
 }
 /* === END: INACTIVE APP POPUP STYLES === */
-/* === START: VELOCITY WIDGET STYLES === */
-
-/* This positions the new widget container */
-.velocity-grid {
-    position: absolute;
-    top: 0;
-    /* Positioned 10px to the left of the health score (right: 50px + 220px + 10px = 280px) */
-    right: 280px; 
-    width: 400px; /* Set a width for the container */
-    padding: 0.5rem; /* Match the health score's top padding */
-    padding-right: 0;
+/* === START: KPI HEADER LAYOUT === */
+.kpi-header {
+    display: flex;
+    justify-content: space-between; /* Title on left, widgets on right */
+    align-items: flex-start; /* Aligns them to the top */
+    margin-bottom: 2.0rem; /* Space below the header */
 }
+
+.kpi-header h5 {
+    margin-bottom: 0 !important; /* Remove margin from h5 */
+    margin-top: 0.5rem; /* Add a little top margin to align with widgets */
+}
+/* === END: KPI HEADER LAYOUT === */
+.velocity-grid {
+    width: 400px; /* Keep the width we had */
+    flex-shrink: 0; /* Stop it from shrinking */
+}
+.kpi-header h5 {
+    margin-bottom: 0 !important; /* Remove margin from h5 */
+    margin-top: 0.5rem; /* Add a little top margin to align with widgets */
+}
+/* === END: KPI HEADER LAYOUT === */
+/* === START: VELOCITY WIDGET STYLES === */
 
 /* This is the grid for the 2 new cards */
 .velocity-grid .widget-grid {
@@ -3602,8 +3607,8 @@ body {
 .velocity-grid .widget-card:first-child::after {
     content: "";
     position: absolute;
-    top: 15%; /* Start 15% from the top */
-    bottom: 15%; /* End 15% from the bottom */
+    top: 10%; 
+    bottom: 10%;
     right: -0.5rem; /* Position in the middle of the 1rem gap */
     width: 1px;
     background-color: #a9b0c9; 
@@ -3650,3 +3655,37 @@ body {
     color: #6b7285;
 }
 /* === END: VELOCITY WIDGET STYLES === */
+/* === START: VELOCITY COMPARISON STYLES (REVISED) === */
+
+/* This colors the CONTEXT text green */
+.velocity-grid .metric-context.metric-faster {
+    color: #166534; /* Dark Green */
+}
+
+/* This colors the CONTEXT text red */
+.velocity-grid .metric-context.metric-slower {
+    color: #dc3545; /* Red */
+}
+
+/* Adjust the context text size */
+.velocity-grid .metric-context {
+    font-size: 0.8rem; /* 12.8px */
+    font-weight: 500; /* Make it a bit bolder */
+}
+
+/* === END: VELOCITY COMPARISON STYLES (REVISED) === */
+/* This styles the "Days" text to be greyed out */
+.velocity-grid .metric-value .metric-unit {
+    color: #6b7285; 
+    font-weight: 500; 
+}
+.velocity-grid .metric-value {
+    color: #111827 !important;
+}
+/* === START: CATEGORY VERTICAL BAR STYLE === */
+.vertical-bar-in-category {
+    color: #ced4da; /* A light grey color */
+    margin: 0 5px;
+    font-weight: 300; /* Makes the bar thin */
+}
+/* === END: CATEGORY VERTICAL BAR STYLE === */

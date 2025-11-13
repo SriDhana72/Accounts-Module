@@ -1810,6 +1810,7 @@ data.forEach((app) => {
 const row = document.createElement('tr');
 row.setAttribute('data-app-id', app.id);
 row.className = 'clickable-row';
+const randomId = '1234567890123'; // Static 13-digit placeholder ID
 let crossSellCompetitors = [];
 let threatCompetitors = [];
 const crossSellList = ['Mailchimp', 'Dropbox'];
@@ -2089,7 +2090,7 @@ row.innerHTML = `
 <td><span class="expand-toggle-arrow">▼</span></td>
 <td style="min-width: 200px;">
 ${appStatusArrowHtml}${app.application} ${getStatusTagHtml(appStatus)}<br>
-<span class="application-category">${app.category}</span>
+<span class="application-category">${app.category} <span class="vertical-bar-in-category">|</span> ${randomId}</span>
 ${inactiveInfoHtml} <!-- Insert inactive info here -->
 </td>
 <td>${usageHtml}</td>
