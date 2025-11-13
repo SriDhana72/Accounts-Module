@@ -1380,6 +1380,13 @@ competitorsFilteredData = appData.filter(app => app.competitors && app.competito
 const anomaliesSet = new Set();
 anomaliesCriticalOnlyData.forEach(app => anomaliesSet.add(app));
 anomaliesWarningOnlyData.forEach(app => anomaliesSet.add(app));
+// Check the history and force those apps to stay in the anomalies list
+resolvedItemsHistory.forEach(historyItem => {
+    const app = appData.find(a => a.application === historyItem.appName);
+    if (app) {
+        anomaliesSet.add(app);
+    }
+});
 anomaliesFilteredData = Array.from(anomaliesSet);
 arrLessThan5kFilteredData = appData.filter(app => calculateTotalArr(app) < 5000);
 arrGreaterThan5kFilteredData = appData.filter(app => calculateTotalArr(app) >= 5000);
@@ -1702,8 +1709,8 @@ function getStatusTagHtml(status) {
     } else if (status === 'Inactive') {
         colorClass = 'status-tag-inactive';
     } else if (status === 'Resolved Inactive') {
-        colorClass = 'status-tag-resolved-inactive';
-        displayText = 'Inactive'; // The text is still "Inactive"
+        colorClass = 'status-tag-inactive'; // Use the standard inactive class
+        displayText = 'Inactive <span class="resolved-label">#manually resolved</span>'; // Added the new label
     } else if (status === 'Renewal risk detected') {
         colorClass = 'status-tag-renewal-risk';
         displayText = 'Renewal risk'; // Shorten the text
@@ -1746,21 +1753,30 @@ if (!applicationTableBody) {
 console.error("Application table body element (applicationTableBody) not found!");
 return;
 }
+// --- START: NEW ANOMALY SORTING LOGIC ---
 if (activeSection === 'anomalies') {
-    data.sort((a, b) => {
-        // Check if an app is "resolved" (has an empty status)
-        const aIsResolved = a.status === 'Resolved Inactive'; 
-        const bIsResolved = b.status === 'Resolved Inactive'; 
 
-        if (aIsResolved && !bIsResolved) {
-            return 1;  // 'a' (resolved) goes after 'b' (not resolved)
+    const getSortWeight = (app) => {
+        // Check if this app has any resolution history
+        const isResolved = resolvedItemsHistory.some(item => item.appName === app.application) || app.status === 'Resolved Inactive';
+
+        if (isResolved) {
+            return 3;  // 3. Resolved apps go to the very bottom
         }
-        if (!aIsResolved && bIsResolved) {
-            return -1; // 'a' (not resolved) goes before 'b' (resolved)
+        if (app.status === 'Inactive') {
+            return 2;  // 2. Unresolved Inactive apps are above them
         }
-        return 0; // Keep original order for all other cases
+        return 1; // 1. All other active anomalies are at the top
+    };
+
+    data.sort((a, b) => {
+        const weightA = getSortWeight(a);
+        const weightB = getSortWeight(b);
+
+        return weightA - weightB; // Sorts by 1, then 2, then 3
     });
 }
+// --- END: NEW ANOMALY SORTING LOGIC ---
 // === START: ADDING THIS NEW SORTING BLOCK FOR 'all-apps' ===
 else if (activeSection === 'all-apps') {
     // This function assigns a "weight" to each status for sorting
@@ -2075,9 +2091,12 @@ const appStatus = app.status;
 // New: Inactive status and cancellation reason display
 let inactiveInfoHtml = '';
 if (appStatus === 'Inactive' && app.inactiveMonths && app.cancellationReason) {
+    // Check for pluralization (month vs months)
+    const monthText = app.inactiveMonths === 1 ? 'month' : 'months';
+    
     inactiveInfoHtml = `
         <div class="inactive-info-container">
-            <span class="inactive-months-text">Inactive for ${app.inactiveMonths} months</span>
+            <span class="inactive-months-text">${app.inactiveMonths} ${monthText} inactive</span>
             <i class="bi bi-info-circle-fill info-tooltip-icon">
                 <div class="cancellation-reason-tooltip">
                     ${app.cancellationReason}
@@ -3477,125 +3496,123 @@ const showPopup = () => {
     if (resolveNotesCancelBtn) {
         resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
     }
+    // --- Resolved History Popup Listeners ---
+    if (resolvedHistoryPopupCloseBtn) {
+        resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup);
+    }
+    
+    // Optional: Close when clicking outside the white box (on the overlay)
+    if (resolvedHistoryPopup) {
+        resolvedHistoryPopup.addEventListener('click', (e) => {
+            if (e.target === resolvedHistoryPopup) {
+                closeResolvedHistoryPopup();
+            }
+        });
+    }
 
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.addEventListener('click', () => {
             if (!currentItemToResolve) return;
-            console.log("--- STARTING SUBMIT PROCESS ---");
     
             const { type, appId, name, id, summary } = currentItemToResolve;
             const notes = resolveNotesTextarea.value; 
             const appForHistory = appData.find(app => app.id.toString() === appId.toString());
     
+            // 1. ADD THE RESOLUTION TO HISTORY & MODIFY SOURCE DATA
             if (type === 'threat') {
                 resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
-                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
-                if (appIndex !== -1) { appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); }
-            } else if (type === 'ticket') {
-                resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
-                ticketDetailsData.forEach(dept => {
-                    const ticketIndex = dept.tickets.findIndex(tkt => tkt.id === id);
-                    if (ticketIndex !== -1) { 
-                        dept.tickets[ticketIndex].status = 'Closed'; 
-                        const originalTicket = dept.tickets.find(tkt => tkt.id === id);
-                        if(originalTicket) {
-                            originalTicket.tags = originalTicket.tags.filter(tag => tag !== 'Escalation Request');
-                        }
-                        dept.openStatus--; 
-                        dept.closedStatus++; 
-                    }
-                });
-            }
-            else if (type === 'inactive') {
-                resolvedItemsHistory.push({ type: 'inactive', appName: name, notes: notes, resolvedAt: new Date() });
-                // Find the app and change its status
+                // --- FIX: REMOVE THE COMPETITOR FROM THE DATA ---
                 const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
                 if (appIndex !== -1) { 
-                    appData[appIndex].status = 'Resolved Inactive';
+                    appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); 
                 }
-                // Close the specific popup
-                closeInactiveAppPopup();
+    
+            } else if (type === 'ticket') {
+                resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
+                
+                // --- FIX START: ACTUALLY CLOSE THE TICKET IN DATA ---
+                // Iterate through departments to find the ticket and update its status
+                ticketDetailsData.forEach(dept => {
+                    const ticketToClose = dept.tickets.find(t => t.id === id);
+                    
+                    // If found and it's currently Open
+                    if (ticketToClose && ticketToClose.status === 'Open') {
+                        ticketToClose.status = 'Closed'; // Set status to Closed
+                        
+                        // Update the counters for the department
+                        if (dept.openStatus > 0) dept.openStatus--;
+                        dept.closedStatus++;
+                    }
+                });
+    
+            } else if (type === 'inactive') {
+                resolvedItemsHistory.push({ type: 'inactive', appName: name, notes: notes, resolvedAt: new Date() });
+                const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
+                if (appIndex !== -1) { 
+                    appData[appIndex].status = 'Resolved Inactive'; 
+                }
             }
-           // closeThreatDetailsPopup();
-            filterDataArrays(); 
-            updateDashboard(anomaliesFilteredData);
-            showToast("Submitted successfully!");
-            
-            console.log("Closing popups and refreshing list...");
+    
+            // 2. CLOSE THE NOTES POPUP
             closeResolveNotesPopup();
     
+            // 3. --- FIX: REFRESH THE ANOMALY POPUPS (DON'T JUST CLOSE) ---
             if (type === 'threat') {
+                // Re-check for remaining unresolved threats for this app
                 const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
                 const crossSellList = ['Mailchimp', 'Dropbox'];
                 let remainingThreats = [];
                 if (appForHistory && appForHistory.competitors) {
                     remainingThreats = appForHistory.competitors.filter(comp => 
-                        threatList.includes(comp) || !crossSellList.includes(comp)
+                        (threatList.includes(comp) || !crossSellList.includes(comp)) &&
+                        !resolvedItemsHistory.some(item => item.type === 'threat' && item.appName === appForHistory.application && item.name === comp)
                     );
                 }
+                // If items are left, refresh the popup. If not, close it.
                 if (remainingThreats.length > 0) {
                     showThreatDetailsPopup(remainingThreats, appId);
                 } else {
-                    closeThreatDetailsPopup(); // Explicitly close if the list is now empty
+                    closeThreatDetailsPopup();
                 }
             } else if (type === 'ticket') {
+                // Re-check for remaining unresolved escalated tickets
                 let remainingTickets = [];
                 const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
                 if (relevantDept) {
                     const openTickets = relevantDept.tickets.filter(tkt => tkt.status === 'Open');
-                    remainingTickets = openTickets.filter(tkt => tkt.tags.includes('Escalation Request'));
+                    remainingTickets = openTickets.filter(tkt => 
+                        tkt.tags.includes('Escalation Request') &&
+                        !resolvedItemsHistory.some(item => item.type === 'ticket' && item.id === tkt.id)
+                    );
                 }
+                // If items are left, refresh the popup. If not, close it.
                  if (remainingTickets.length > 0) {
                         showEscalatedTicketsPopup(remainingTickets, appId);
                     } else {
-                        closeEscalatedTicketsPopup(); // Explicitly close if the list is now empty
+                        closeEscalatedTicketsPopup();
                     }
+            } else if (type === 'inactive') {
+                // This popup only has one item, so we always close it
+                closeInactiveAppPopup();
             }
-            
-            console.log("Attempting to find and highlight the row...");
-            const rowToHighlight = document.querySelector(`tr[data-app-id='${appId}']`);
     
-            if (rowToHighlight) {
-                console.log("SUCCESS: Found the row. Applying highlight.", rowToHighlight);
-                rowToHighlight.classList.add('row-highlight-flash');
-                setTimeout(() => {
-                    rowToHighlight.classList.remove('row-highlight-flash');
-                }, 2000);
-            } else {
-                console.error("FAILURE: Could not find the row with data-app-id:", appId);
-            }
-        });
-    }
-
-    if (escalatedTicketsPopupCloseBtn) { 
-        escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup); 
-    }
-    if (escalatedTicketsPopup) {
-        escalatedTicketsPopup.addEventListener('click', (e) => { 
-            if (e.target === escalatedTicketsPopup) { 
-                closeEscalatedTicketsPopup(); 
-            } 
-        });
-    }
-    if (inactiveAppPopupCloseBtn) { 
-        inactiveAppPopupCloseBtn.addEventListener('click', closeInactiveAppPopup); 
-    }
-    if (inactiveAppPopup) {
-        inactiveAppPopup.addEventListener('click', (e) => { 
-            if (e.target === inactiveAppPopup) { 
-                closeInactiveAppPopup(); 
-            } 
-        });
-    }
-
-    if (resolvedHistoryPopupCloseBtn) { 
-        resolvedHistoryPopupCloseBtn.addEventListener('click', closeResolvedHistoryPopup); 
-    }
-    if (resolvedHistoryPopup) {
-        resolvedHistoryPopup.addEventListener('click', (e) => { 
-            if (e.target === resolvedHistoryPopup) { 
-                closeResolvedHistoryPopup(); 
-            } 
+            // 4. NOW, REFRESH THE MAIN UI DATA AND COUNTS
+            filterDataArrays(); // This will now get the correct, updated anomaly lists
+            switchTab('anomalies'); // This refreshes the 'Anomalies' tab AND calls updateCounts()
+            showToast("Submitted successfully!"); // Show success message
+    
+            // 5. HIGHLIGHT THE ROW
+            setTimeout(() => {
+                const rowToHighlight = document.querySelector(`tr[data-app-id='${appId}']`);
+                if (rowToHighlight) {
+                    rowToHighlight.classList.add('row-highlight-flash');
+                    setTimeout(() => {
+                        rowToHighlight.classList.remove('row-highlight-flash');
+                    }, 2000);
+                } else {
+                    console.error("FAILURE: Could not find the row with data-app-id:", appId);
+                }
+            }, 350);
         });
     }
 
