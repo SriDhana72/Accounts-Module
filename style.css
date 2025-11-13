@@ -312,7 +312,7 @@ body {
     display: block;
     }
     .container-section > div:first-of-type {
-    margin-bottom: 0;
+    margin-bottom: 28px;
     }
     .Buttons-section {
     display: flex;
@@ -3574,7 +3574,7 @@ body {
 
 .kpi-header h5 {
     margin-bottom: 0 !important; /* Remove margin from h5 */
-    margin-top: 0.5rem; /* Add a little top margin to align with widgets */
+    margin-top: 0; /* Add a little top margin to align with widgets */
 }
 /* === END: KPI HEADER LAYOUT === */
 
@@ -3583,7 +3583,7 @@ body {
 .velocity-grid {
     width: 400px;
     flex-shrink: 0;
-    margin-top: -0.5rem;
+    margin-top: -1.50rem;
 }
 
 /* This is the grid for the 2 new cards */
