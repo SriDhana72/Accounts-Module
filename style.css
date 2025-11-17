@@ -3767,3 +3767,70 @@ body {
     transform: rotate(180deg);
     stroke: #0a58ca; 
 }
+/* === START: ANIMATED BELL ICON STYLES === */
+/* Custom animation for the ringing bell */
+@keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(15deg); }
+    30% { transform: rotate(-15deg); }
+    45% { transform: rotate(10deg); }
+    60% { transform: rotate(-10deg); }
+    75% { transform: rotate(5deg); }
+    90% { transform: rotate(-5deg); }
+}
+
+/* --- Icon Container (Matches ID: #notificationBell) --- */
+#notificationBell.notification-icon-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 32px; /* Set a fixed size */
+    height: 32px; /* Set a fixed size */
+    transition: transform 0.3s ease;
+}
+
+#notificationBell.notification-icon-container:hover {
+    transform: scale(1.1);
+}
+
+/* --- Bell Icon Styling --- */
+#notificationBell .bell-svg {
+    width: 100%;
+    height: 100%;
+    color: black;
+    transform-origin: top center;
+    animation: ring 2s ease-in-out infinite; 
+    display: block; /* Fixes alignment */
+}
+
+/* Stop animation when panel is open */
+.notification-panel.show + #notificationBell .bell-svg {
+    animation: none;
+}
+
+/* --- Original Number Badge Styling --- */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.55em;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 1px solid white;
+}
+
+/* === END: NEW ANIMATED BELL STYLES === */
+:root {
+    /* 1rem = 16px. Bell is 32x32px */
+    --bell-size: 1.75rem;
+    --dot-size: 0.5rem; 
+    --dot-offset: 0.15rem; 
+}

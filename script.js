@@ -107,6 +107,51 @@ function updateNpsScore(data) {
         npsScoreCheck.style.display = 'inline-block';
     }
 }
+/**
+ * Gets the current time in the format YYYY-MM-DD HH:MM AM/PM
+ * @returns {string} The formatted timestamp
+ */
+function getFormattedCurrentTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    const strHours = hours.toString().padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${strHours}:${minutes} ${ampm}`;
+}
+/**
+ * Finds all tickets with cross-sell tags.
+ * @returns {Array} An array of ticket objects.
+ */
+function findCrossSellTickets() {
+    // Define which tags are considered cross-sell opportunities
+    const crossSellTags = [
+        'Subscription Upgrade Request',
+        'Integration / Roadmap enquiry',
+        'New Team/Dept Expansion',
+        'Feature Purchase'
+    ];
+
+    const opportunities = [];
+    // Iterate through all departments and their tickets
+    ticketDetailsData.forEach(dept => {
+        dept.tickets.forEach(ticket => {
+            // Check if any of a ticket's tags are in our cross-sell list
+            if (ticket.tags.some(tag => crossSellTags.includes(tag))) {
+                opportunities.push(ticket);
+            }
+        });
+    });
+    return opportunities;
+}
 let appData = [
 {
 id: 1,
@@ -3240,24 +3285,8 @@ if (popupContent) {
 function fillPopupList() {
     if (!crossSellFlashMessageList) return;
 
-    // Define which tags are considered cross-sell opportunities
-    const crossSellTags = [
-        'Subscription Upgrade Request',
-        'Integration / Roadmap enquiry',
-        'New Team/Dept Expansion',
-        'Feature Purchase'
-    ];
-
-    const opportunities = [];
-    // Iterate through all departments and their tickets
-    ticketDetailsData.forEach(dept => {
-        dept.tickets.forEach(ticket => {
-            // Check if any of a ticket's tags are in our cross-sell list
-            if (ticket.tags.some(tag => crossSellTags.includes(tag))) {
-                opportunities.push(ticket);
-            }
-        });
-    });
+    // Use the new helper function to get the list
+    const opportunities = findCrossSellTickets();
 
     // Clear any previous list items
     crossSellFlashMessageList.innerHTML = '';
@@ -3342,6 +3371,18 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Rendering initial table for "All Apps"');
         updateArrCapsuleCounts(); // Set the capsule counts which are static
         updateDashboard(appData); // Load the entire dashboard with all data initially
+        const crossSellOpportunities = findCrossSellTickets();
+        if (crossSellOpportunities.length > 0) {
+            const formattedTime = getFormattedCurrentTime(); // Use your time helper
+            const plural = crossSellOpportunities.length > 1 ? 'opportunities' : 'opportunity';
+            
+            dummyNotifications.unshift({
+                text: `New! ${crossSellOpportunities.length} cross-sell ${plural} detected in open tickets.`,
+                time: formattedTime,
+                isRead: false
+            });
+        }
+        // --- (END) NEW CROSS-SELL NOTIFICATION LOGIC ---
         if (allAppsBtn) { // Set the initial active button
             allAppsBtn.classList.add('active');
         }
@@ -3518,47 +3559,70 @@ const showPopup = () => {
             const notes = resolveNotesTextarea.value; 
             const appForHistory = appData.find(app => app.id.toString() === appId.toString());
     
+            // --- (START) NEW NOTIFICATION LOGIC ---
+            const formattedTime = getFormattedCurrentTime();
+            let notificationText = '';
+            // --- (END) NEW NOTIFICATION LOGIC ---
+
             // 1. ADD THE RESOLUTION TO HISTORY & MODIFY SOURCE DATA
             if (type === 'threat') {
                 resolvedItemsHistory.push({ type: 'threat', appName: appForHistory?.application, name: name, notes: notes, resolvedAt: new Date() });
-                // --- FIX: REMOVE THE COMPETITOR FROM THE DATA ---
                 const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
                 if (appIndex !== -1) { 
                     appData[appIndex].competitors = appData[appIndex].competitors.filter(c => c !== name); 
                 }
-    
+                
+                // --- (START) NEW NOTIFICATION LOGIC ---
+                notificationText = `Resolved 'Threat' (${name}) for app: ${appForHistory?.application}.`;
+                // --- (END) NEW NOTIFICATION LOGIC ---
+
             } else if (type === 'ticket') {
                 resolvedItemsHistory.push({ type: 'ticket', appName: appForHistory?.application, summary: summary, id: id, notes: notes, resolvedAt: new Date() });
                 
-                // --- FIX START: ACTUALLY CLOSE THE TICKET IN DATA ---
-                // Iterate through departments to find the ticket and update its status
+                // FIX: Actually close the ticket in data
                 ticketDetailsData.forEach(dept => {
                     const ticketToClose = dept.tickets.find(t => t.id === id);
-                    
-                    // If found and it's currently Open
                     if (ticketToClose && ticketToClose.status === 'Open') {
-                        ticketToClose.status = 'Closed'; // Set status to Closed
-                        
-                        // Update the counters for the department
+                        ticketToClose.status = 'Closed';
                         if (dept.openStatus > 0) dept.openStatus--;
                         dept.closedStatus++;
                     }
                 });
-    
+
+                // --- (START) NEW NOTIFICATION LOGIC ---
+                notificationText = `Resolved 'Escalated Ticket' for app: ${appForHistory?.application}.`;
+                // --- (END) NEW NOTIFICATION LOGIC ---
+
             } else if (type === 'inactive') {
                 resolvedItemsHistory.push({ type: 'inactive', appName: name, notes: notes, resolvedAt: new Date() });
                 const appIndex = appData.findIndex(app => app.id.toString() === appId.toString());
                 if (appIndex !== -1) { 
                     appData[appIndex].status = 'Resolved Inactive'; 
                 }
+
+                // --- (START) NEW NOTIFICATION LOGIC ---
+                notificationText = `Resolved 'Inactive' status for app: ${name}.`;
+                // --- (END) NEW NOTIFICATION LOGIC ---
             }
     
-            // 2. CLOSE THE NOTES POPUP
+            // --- (START) NEW NOTIFICATION LOGIC ---
+            // 2. CREATE AND ADD THE NEW NOTIFICATION
+            if (notificationText) {
+                const newNotification = {
+                    text: notificationText,
+                    time: formattedTime,
+                    isRead: false
+                };
+                // Add to the top of the array
+                dummyNotifications.unshift(newNotification);
+            }
+            // --- (END) NEW NOTIFICATION LOGIC ---
+
+            // 3. CLOSE THE NOTES POPUP
             closeResolveNotesPopup();
     
-            // 3. --- FIX: REFRESH THE ANOMALY POPUPS (DON'T JUST CLOSE) ---
+            // 4. REFRESH THE ANOMALY POPUPS
             if (type === 'threat') {
-                // Re-check for remaining unresolved threats for this app
                 const threatList = ['Active campaign', 'Zoom', 'Microsoft Teams', 'Google Drive', 'Sqauare POS'];
                 const crossSellList = ['Mailchimp', 'Dropbox'];
                 let remainingThreats = [];
@@ -3568,14 +3632,12 @@ const showPopup = () => {
                         !resolvedItemsHistory.some(item => item.type === 'threat' && item.appName === appForHistory.application && item.name === comp)
                     );
                 }
-                // If items are left, refresh the popup. If not, close it.
                 if (remainingThreats.length > 0) {
                     showThreatDetailsPopup(remainingThreats, appId);
                 } else {
                     closeThreatDetailsPopup();
                 }
             } else if (type === 'ticket') {
-                // Re-check for remaining unresolved escalated tickets
                 let remainingTickets = [];
                 const relevantDept = ticketDetailsData.find(dept => dept.id === appForHistory.relevantDepartmentId);
                 if (relevantDept) {
@@ -3585,23 +3647,26 @@ const showPopup = () => {
                         !resolvedItemsHistory.some(item => item.type === 'ticket' && item.id === tkt.id)
                     );
                 }
-                // If items are left, refresh the popup. If not, close it.
                  if (remainingTickets.length > 0) {
                         showEscalatedTicketsPopup(remainingTickets, appId);
                     } else {
                         closeEscalatedTicketsPopup();
                     }
             } else if (type === 'inactive') {
-                // This popup only has one item, so we always close it
                 closeInactiveAppPopup();
             }
     
-            // 4. NOW, REFRESH THE MAIN UI DATA AND COUNTS
-            filterDataArrays(); // This will now get the correct, updated anomaly lists
-            switchTab('anomalies'); // This refreshes the 'Anomalies' tab AND calls updateCounts()
-            showToast("Submitted successfully!"); // Show success message
+            // 5. REFRESH THE MAIN UI DATA AND COUNTS
+            filterDataArrays(); 
+            switchTab('anomalies'); 
+            showToast("Submitted successfully!"); 
     
-            // 5. HIGHLIGHT THE ROW
+            // --- (START) NEW NOTIFICATION LOGIC ---
+            // 6. RE-RENDER THE NOTIFICATION LIST (AND BADGE)
+            renderNotifications('all');
+            // --- (END) NEW NOTIFICATION LOGIC ---
+
+            // 7. HIGHLIGHT THE ROW
             setTimeout(() => {
                 const rowToHighlight = document.querySelector(`tr[data-app-id='${appId}']`);
                 if (rowToHighlight) {
@@ -3615,7 +3680,6 @@ const showPopup = () => {
             }, 350);
         });
     }
-
     // --- Document-wide Click Handlers ---
     document.addEventListener('click', (event) => {
         if (currentOpenDropdown && !event.target.closest('.action-dropdown-menu') && !event.target.closest('.action-toggle-element')) {
