@@ -928,6 +928,10 @@ let resolvedItemsHistory = JSON.parse(localStorage.getItem('resolvedHistory')) |
 let notesConnectorH1 = null; // (NEW) Connector Horizontal 1
 let notesConnectorV = null; // (NEW) Connector Vertical
 let notesConnectorH2 = null; // (NEW) Connector Horizontal 2
+let notesConnectorDot1 = null; // (NEW)
+let notesConnectorDot2 = null; // (NEW)
+let notesConnectorDot3 = null; // (NEW)
+let notesConnectorDot4 = null; // (NEW)
 let currentOpenAnomalyPopup = null; // (NEW) To track the first popup
 
 let expandedRowId = null; // Define expandedRowId
@@ -1128,6 +1132,10 @@ resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
 notesConnectorH1 = document.getElementById('notesConnectorH1'); 
 notesConnectorV = document.getElementById('notesConnectorV'); 
 notesConnectorH2 = document.getElementById('notesConnectorH2'); 
+notesConnectorDot1 = document.getElementById('notesConnectorDot1'); // (NEW)
+notesConnectorDot2 = document.getElementById('notesConnectorDot2'); // (NEW)
+notesConnectorDot3 = document.getElementById('notesConnectorDot3'); // (NEW)
+notesConnectorDot4 = document.getElementById('notesConnectorDot4'); // (NEW)
 escalatedTicketsPopup = document.getElementById('escalatedTicketsPopup');
 
 escalatedTicketsListContainer = document.getElementById('escalatedTicketsListContainer');
@@ -3234,100 +3242,133 @@ function showResolveNotesPopup(item, buttonElement) {
     const btnRect = buttonElement.getBoundingClientRect();
     const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
 
-// 4. --- DEFINE ANIMATION COORDINATES ---
-    //    (Start) -> H1 -> V -> H2 -> (End)
-    
+    // 4. --- DEFINE ANIMATION COORDINATES ---
     const H1_START_LEFT = btnRect.right;
     const H1_START_TOP = btnRect.top + (btnRect.height / 2);
-    const H1_WIDTH = 75; // <-- Updated from your screenshot
+    const H1_WIDTH = 107; 
 
     const V_START_LEFT = H1_START_LEFT + H1_WIDTH;
     const V_START_TOP = H1_START_TOP;
-    const V_HEIGHT = 61; // <-- Updated from your screenshot
+    const V_HEIGHT = 90; 
 
     const H2_START_LEFT = V_START_LEFT;
     const H2_START_TOP = V_START_TOP - V_HEIGHT;
-    const H2_WIDTH = 84; // <-- Updated from your screenshot
+    const H2_WIDTH = 106; 
 
-    // Popup starts at the end of the blue line
     const POPUP_LEFT = H2_START_LEFT + H2_WIDTH;
-    // Align popup vertically with the end of the blue line
-    const POPUP_TOP = H2_START_TOP - 110; // This offset was correct
+    const POPUP_TOP = H2_START_TOP - 110;
     
-    // 5. --- APPLY ANIMATION ---
+    const DOT_OFFSET = 6;
+    const DOT1_LEFT = H1_START_LEFT - DOT_OFFSET;
+    const DOT1_TOP = H1_START_TOP - DOT_OFFSET;
     
-    // 5a. Slide the first popup
-    parentPopupContent.classList.add('slide-left');
-
-    // 5b. Position and animate H1 (red)
-    notesConnectorH1.style.left = `${H1_START_LEFT}px`;
-    notesConnectorH1.style.top = `${H1_START_TOP}px`;
-    notesConnectorH1.style.width = `${H1_WIDTH}px`;
-    notesConnectorH1.style.opacity = '1';
-
-    // 5c. Position and animate V (red)
-    // We set its top to the *end* position and its bottom to the *start*
-    notesConnectorV.style.left = `${V_START_LEFT}px`;
-    notesConnectorV.style.top = `${H2_START_TOP}px`; // This is the top-most point
-    notesConnectorV.style.height = `${V_HEIGHT}px`;
-    notesConnectorV.style.opacity = '1';
-
-    // 5d. Position and animate H2 (blue)
-    notesConnectorH2.style.left = `${H2_START_LEFT}px`;
-    notesConnectorH2.style.top = `${H2_START_TOP}px`;
-    notesConnectorH2.style.width = `${H2_WIDTH}px`;
-    notesConnectorH2.style.opacity = '1';
+    const DOT2_LEFT = V_START_LEFT - DOT_OFFSET;
+    const DOT2_TOP = V_START_TOP - DOT_OFFSET;
     
-    // 5e. Position the "Notes" popup
-    notesPopupContent.style.left = `${POPUP_LEFT}px`;
-    notesPopupContent.style.top = `${POPUP_TOP}px`;
-    notesPopupContent.style.transform = 'none';
-
-    // 5f. Show the main overlay
+    const DOT3_LEFT = H2_START_LEFT - DOT_OFFSET;
+    const DOT3_TOP = H2_START_TOP - DOT_OFFSET;
+    
+    const DOT4_LEFT = POPUP_LEFT - DOT_OFFSET;
+    const DOT4_TOP = H2_START_TOP - DOT_OFFSET;
+    
+    // 5. --- APPLY ANIMATION (SEQUENTIALLY) ---
+    
+    // 5a. Show the main overlay
     resolveNotesPopup.style.display = 'flex';
 
-    // 5g. Trigger the "Notes" popup animation (it has a delay)
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            notesPopupContent.classList.add('is-visible');
-        });
-    });
+    // 5b. Slide the first popup (Time: 0ms)
+    parentPopupContent.classList.add('slide-left');
+    
+    // 5c. Animate H1 + Dot1 (Time: 400ms)
+    setTimeout(() => {
+        notesConnectorH1.style.left = `${H1_START_LEFT}px`;
+        notesConnectorH1.style.top = `${H1_START_TOP - 2}px`;
+        notesConnectorH1.style.width = `${H1_WIDTH}px`;
+        notesConnectorH1.style.opacity = '1';
+
+        notesConnectorDot1.style.left = `${DOT1_LEFT}px`;
+        notesConnectorDot1.style.top = `${DOT1_TOP}px`;
+        notesConnectorDot1.style.opacity = '1';
+    }, 400); // Wait for slide to finish
+
+    // 5d. Animate V + Dot2 (Time: 600ms)
+    setTimeout(() => {
+        notesConnectorV.style.left = `${V_START_LEFT - 2}px`;
+        notesConnectorV.style.top = `${H2_START_TOP}px`; 
+        notesConnectorV.style.height = `${V_HEIGHT}px`;
+        notesConnectorV.style.opacity = '1';
+        
+        notesConnectorDot2.style.left = `${DOT2_LEFT}px`;
+        notesConnectorDot2.style.top = `${DOT2_TOP}px`;
+        notesConnectorDot2.style.opacity = '1';
+    }, 600); // 200ms after H1
+
+    // 5e. Animate H2 + Dot3 (Time: 800ms)
+    setTimeout(() => {
+        notesConnectorH2.style.left = `${H2_START_LEFT}px`;
+        notesConnectorH2.style.top = `${H2_START_TOP - 2}px`;
+        notesConnectorH2.style.width = `${H2_WIDTH}px`;
+        notesConnectorH2.style.opacity = '1';
+
+        notesConnectorDot3.style.left = `${DOT3_LEFT}px`;
+        notesConnectorDot3.style.top = `${DOT3_TOP}px`;
+        notesConnectorDot3.style.opacity = '1';
+    }, 800); // 200ms after V
+
+    // 5f. Animate Popup + Dot4 (Time: 1000ms)
+    setTimeout(() => {
+        notesPopupContent.style.left = `${POPUP_LEFT}px`;
+        notesPopupContent.style.top = `${POPUP_TOP}px`;
+        notesPopupContent.style.transform = 'none';
+
+        notesConnectorDot4.style.left = `${DOT4_LEFT}px`;
+        notesConnectorDot4.style.top = `${DOT4_TOP}px`;
+        
+        notesPopupContent.classList.add('is-visible');
+        notesConnectorDot4.style.opacity = '1';
+    }, 1000); // 200ms after H2
 }
 function closeResolveNotesPopup() {
-    // 1. Hide the "Notes" popup and its overlay
+    // 1. Hide the "Notes" popup
     if (resolveNotesPopup) {
         const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
         if (notesPopupContent) {
             notesPopupContent.classList.remove('is-visible');
         }
         
+        // (NEW) Hide overlay *after* popup fade-out (0.3s)
         setTimeout(() => {
             resolveNotesPopup.style.display = 'none';
-        }, 400); // Wait for transition
+        }, 300); 
     }
 
-    // 2. Hide ALL connector lines
-    if (notesConnectorH1) {
-        notesConnectorH1.style.width = '0';
-        notesConnectorH1.style.opacity = '0';
-    }
-    if (notesConnectorV) {
-        notesConnectorV.style.height = '0';
-        notesConnectorV.style.opacity = '0';
-    }
-    if (notesConnectorH2) {
-        notesConnectorH2.style.width = '0';
-        notesConnectorH2.style.opacity = '0';
-    }
+    // 2. Hide ALL connector lines (instantly)
+    if (notesConnectorH1) notesConnectorH1.style.opacity = '0';
+    if (notesConnectorV) notesConnectorV.style.opacity = '0';
+    if (notesConnectorH2) notesConnectorH2.style.opacity = '0';
+    
+    // 3. Hide ALL dots (instantly)
+    if (notesConnectorDot1) notesConnectorDot1.style.opacity = '0';
+    if (notesConnectorDot2) notesConnectorDot2.style.opacity = '0';
+    if (notesConnectorDot3) notesConnectorDot3.style.opacity = '0';
+    if (notesConnectorDot4) notesConnectorDot4.style.opacity = '0';
 
-    // 3. Slide the first popup back
+    // 4. Slide the first popup back (instantly)
     if (currentOpenAnomalyPopup) {
         currentOpenAnomalyPopup.classList.remove('slide-left');
         currentOpenAnomalyPopup = null;
     }
     
-    // 4. Clear the context
+    // 5. Clear the context
     currentItemToResolve = null;
+    
+    // 6. (NEW) Reset line widths/heights for next animation
+    //    We do this after the animations are finished
+    setTimeout(() => {
+        if (notesConnectorH1) notesConnectorH1.style.width = '0';
+        if (notesConnectorV) notesConnectorV.style.height = '0';
+        if (notesConnectorH2) notesConnectorH2.style.width = '0';
+    }, 400);
 }
 function showThreatDetailsPopup(threats, appId) {
 if (!threatDetailsPopup || !threatListContainer) return;
@@ -3364,8 +3405,6 @@ threatDetailsPopup.style.display = 'none';
 }
 closeResolveNotesPopup();
 }
-
-
 function showEscalatedTicketsPopup(tickets, appId) {
     if (!escalatedTicketsPopup || !escalatedTicketsListContainer) return;
 

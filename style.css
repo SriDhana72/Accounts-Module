@@ -3986,9 +3986,50 @@ body {
     animation: notification-fade-in 0.3s ease-out forwards;
     opacity: 0; /* Start hidden before animation */
 }
-/* === START: NEW POPUP FLOW STYLES === */
+/* --- 1. Base styles for the lines --- */
+.notes-connector-line-h,
+.notes-connector-line-v {
+    position: absolute;
+    opacity: 0;
+    z-index: 1055; 
+    background-color: #0d6efd;
+    transition: all 0.2s ease-out; /* All lines take 0.2s to draw */
+}
 
-/* --- 2. "Notes" Popup (Modified) --- */
+/* --- 2. Horizontal "Pipe" lines --- */
+.notes-connector-line-h {
+    height: 4px; /* Thickness */
+    width: 0; /* Start at 0 width */
+    transform-origin: left;
+    background: linear-gradient(to right, #0b5ed7, #0d6efd 60%, #5ea1ff 100%);
+    border-radius: 5px;
+}
+
+/* --- 3. Vertical "Pipe" lines --- */
+.notes-connector-line-v {
+    width: 4px; /* Thickness */
+    height: 0; /* Start at 0 height */
+    transform-origin: bottom;
+    background: linear-gradient(to top, #0b5ed7, #0d6efd 60%, #5ea1ff 100%);
+    border-radius: 5px;
+}
+
+/* --- 4. Connector Dots --- */
+.notes-connector-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border: 3px solid #0d6efd; 
+    border-radius: 50%;
+    z-index: 1056; 
+    opacity: 0; 
+    /* (NEW) Dots will appear/disappear instantly with their line */
+    transition: opacity 0.1s ease-out; 
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* --- 5. "Notes" Popup (No delay here) --- */
 .resolve-notes-popup-content {
     background-color: #fff;
     padding: 20px;
@@ -3997,38 +4038,33 @@ body {
     width: 350px;
     max-width: 90%;
     position: absolute;
-
-    /* --- Modified Animation Styles --- */
     opacity: 0;
     visibility: hidden;
-    /* Start further to the right, and slightly up */
     transform: translateX(20px) translateY(-5px); 
-    transition: opacity 0.3s ease-out 0.2s, transform 0.3s ease-out 0.2s, visibility 0.3s 0.2s; /* <-- Note the 0.2s DELAY */
+    /* (NEW) JS will control when this animation plays */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
 }
-/* --- 3. "Notes" Popup Visible State (Modified) --- */
+
+/* --- 6. "Notes" Popup Visible State --- */
 .resolve-notes-popup-content.is-visible {
     opacity: 1;
     visibility: visible;
-    transform: translateX(0) translateY(0); /* Animate to final spot */
+    transform: translateX(0) translateY(0);
 }
-/* --- 4. First-Level Popups (Threat, Ticket, Inactive) --- */
 
-/* Base style for all first-level popups */
+/* --- 7. First-Level Popups (Slide-left) --- */
 .threat-popup-content,
 .escalated-tickets-popup-content,
 .inactive-app-popup-content {
-    /* Add a transition for the slide effect */
-    transition: transform 0.4s ease-out;
+    transition: transform 0.4s ease-out; /* This is the FIRST animation */
 }
-
-/* New "slide-left" class that JS will add */
 .threat-popup-content.slide-left,
 .escalated-tickets-popup-content.slide-left,
 .inactive-app-popup-content.slide-left {
-    /* Move the popup 180px to the left */
     transform: translateX(-180px);
 }
-/* --- 5. "Notes" Popup Button (Disabled) --- */
+
+/* --- 8. "Notes" Popup Button (Disabled) --- */
 .resolve-notes-submit-btn:disabled {
     background-color: #e9ecef;
     color: #adb5bd;
@@ -4039,60 +4075,3 @@ body {
     color: #adb5bd;
 }
 /* === END: NEW POPUP FLOW STYLES === */
-/* --- 1. Base styles for the new lines --- */
-.notes-connector-line-h,
-.notes-connector-line-v {
-    position: absolute;
-    opacity: 0;
-    z-index: 1055; /* Below notes, above overlay */
-    transition: all 0.2s ease-out;
-    background-color: #0d6efd; /* (NEW) All lines are blue */
-}
-
-/* --- 2. Horizontal lines --- */
-.notes-connector-line-h {
-    height: 4px; /* (NEW) Increased thickness */
-    width: 0; /* Start at 0 width */
-    transform-origin: left;
-}
-
-/* --- 3. Vertical lines --- */
-.notes-connector-line-v {
-    width: 4px; /* (NEW) Increased thickness */
-    height: 0; /* Start at 0 height */
-    transform-origin: bottom; /* Animates upwards */
-}
-
-/* --- 4. Colors (now just delays) --- */
-#notesConnectorH1 {
-    /* background-color: #dc3545; (REMOVED) */
-    transition-delay: 0.4s; /* H1 animates first */
-}
-#notesConnectorV {
-    /* background-color: #dc3545; (REMOVED) */
-    transition-delay: 0.5s; /* V animates second */
-}
-#notesConnectorH2 {
-    /* background-color: #0d6efd; (REMOVED) */
-    transition-delay: 0.6s; /* H2 animates third */
-}
-
-/* --- 5. "Notes" Popup (delay its animation) --- */
-.resolve-notes-popup-content {
-    /* ... all existing styles ... */
-    
-    /* --- Modified Animation Styles --- */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(20px) translateY(-5px); 
-    /* This animation now starts AFTER the line is drawn */
-    transition: opacity 0.3s ease-out 0.7s, transform 0.3s ease-out 0.7s, visibility 0.3s 0.7s; 
-}
-
-/* --- 6. First-Level Popups (Slide-left) --- */
-/* This rule should already exist from our previous step */
-.threat-popup-content.slide-left,
-.escalated-tickets-popup-content.slide-left,
-.inactive-app-popup-content.slide-left {
-    transform: translateX(-180px);
-}
