@@ -925,7 +925,9 @@ let resolvedHistoryListContainer = null;
 let resolvedHistoryPopupCloseBtn = null;
 // Load history from localStorage on startup
 let resolvedItemsHistory = JSON.parse(localStorage.getItem('resolvedHistory')) || [];
-let notesConnectorLine = null; // (NEW) The animated connector line
+let notesConnectorH1 = null; // (NEW) Connector Horizontal 1
+let notesConnectorV = null; // (NEW) Connector Vertical
+let notesConnectorH2 = null; // (NEW) Connector Horizontal 2
 let currentOpenAnomalyPopup = null; // (NEW) To track the first popup
 
 let expandedRowId = null; // Define expandedRowId
@@ -1123,7 +1125,9 @@ resolveNotesPopup = document.getElementById('resolveNotesPopup');
 resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
 resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
 resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
-notesConnectorLine = document.getElementById('notesConnectorLine');
+notesConnectorH1 = document.getElementById('notesConnectorH1'); 
+notesConnectorV = document.getElementById('notesConnectorV'); 
+notesConnectorH2 = document.getElementById('notesConnectorH2'); 
 escalatedTicketsPopup = document.getElementById('escalatedTicketsPopup');
 
 escalatedTicketsListContainer = document.getElementById('escalatedTicketsListContainer');
@@ -3212,63 +3216,83 @@ typeNextSummary(); // Start the sequence
  * (NEW) Shows the "Enter Notes" popup with a connector line animation.
  */
 function showResolveNotesPopup(item, buttonElement) {
-    if (!resolveNotesPopup || !notesConnectorLine || !buttonElement) return;
+    if (!resolveNotesPopup || !notesConnectorH1 || !notesConnectorV || !notesConnectorH2 || !buttonElement) return;
 
-    // 1. Store the item to be resolved
+    // 1. Store item and prep UI
     currentItemToResolve = item;
-    
-    // 2. Clear textarea and disable submit button
     if(resolveNotesTextarea) resolveNotesTextarea.value = '';
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.disabled = true;
     }
     
-    // 3. Find the parent popup (e.g., "Threat Details")
+    // 2. Find parent popup
     const parentPopupContent = buttonElement.closest('.threat-popup-content, .escalated-tickets-popup-content, .inactive-app-popup-content');
     if (!parentPopupContent) return;
-
-    // Store this so we can slide it back later
     currentOpenAnomalyPopup = parentPopupContent;
 
-    // 4. Get positions
+    // 3. Get positions
     const btnRect = buttonElement.getBoundingClientRect();
     const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
 
-    // 5. --- ANIMATION ---
+// 4. --- DEFINE ANIMATION COORDINATES ---
+    //    (Start) -> H1 -> V -> H2 -> (End)
     
-// 5a. Slide the first popup to the left
-parentPopupContent.classList.add('slide-left');
+    const H1_START_LEFT = btnRect.right;
+    const H1_START_TOP = btnRect.top + (btnRect.height / 2);
+    const H1_WIDTH = 75; // <-- Updated from your screenshot
 
-// 5b. Position and animate the connector line
-const connectorLeft = btnRect.right;
-const connectorTop = btnRect.top + (btnRect.height / 2);
-notesConnectorLine.style.left = `${connectorLeft}px`;
-notesConnectorLine.style.top = `${connectorTop}px`;
+    const V_START_LEFT = H1_START_LEFT + H1_WIDTH;
+    const V_START_TOP = H1_START_TOP;
+    const V_HEIGHT = 61; // <-- Updated from your screenshot
 
-// Set width and opacity to trigger animation
-notesConnectorLine.style.width = '180px'; // The long line
-notesConnectorLine.style.opacity = '1';
+    const H2_START_LEFT = V_START_LEFT;
+    const H2_START_TOP = V_START_TOP - V_HEIGHT;
+    const H2_WIDTH = 84; // <-- Updated from your screenshot
 
-// 5c. Position the "Notes" popup
-// It starts at the end of the long connector line
-const notesPopupLeft = connectorLeft + 180; // 180px line
-notesPopupContent.style.left = `${notesPopupLeft}px`;
-notesPopupContent.style.top = `${connectorTop - 25}px`; // Align with popup top
-notesPopupContent.style.transform = 'none';
-    // 5d. Show the main overlay
+    // Popup starts at the end of the blue line
+    const POPUP_LEFT = H2_START_LEFT + H2_WIDTH;
+    // Align popup vertically with the end of the blue line
+    const POPUP_TOP = H2_START_TOP - 110; // This offset was correct
+    
+    // 5. --- APPLY ANIMATION ---
+    
+    // 5a. Slide the first popup
+    parentPopupContent.classList.add('slide-left');
+
+    // 5b. Position and animate H1 (red)
+    notesConnectorH1.style.left = `${H1_START_LEFT}px`;
+    notesConnectorH1.style.top = `${H1_START_TOP}px`;
+    notesConnectorH1.style.width = `${H1_WIDTH}px`;
+    notesConnectorH1.style.opacity = '1';
+
+    // 5c. Position and animate V (red)
+    // We set its top to the *end* position and its bottom to the *start*
+    notesConnectorV.style.left = `${V_START_LEFT}px`;
+    notesConnectorV.style.top = `${H2_START_TOP}px`; // This is the top-most point
+    notesConnectorV.style.height = `${V_HEIGHT}px`;
+    notesConnectorV.style.opacity = '1';
+
+    // 5d. Position and animate H2 (blue)
+    notesConnectorH2.style.left = `${H2_START_LEFT}px`;
+    notesConnectorH2.style.top = `${H2_START_TOP}px`;
+    notesConnectorH2.style.width = `${H2_WIDTH}px`;
+    notesConnectorH2.style.opacity = '1';
+    
+    // 5e. Position the "Notes" popup
+    notesPopupContent.style.left = `${POPUP_LEFT}px`;
+    notesPopupContent.style.top = `${POPUP_TOP}px`;
+    notesPopupContent.style.transform = 'none';
+
+    // 5f. Show the main overlay
     resolveNotesPopup.style.display = 'flex';
 
-    // 5e. Trigger the "Notes" popup animation (it has a built-in delay)
+    // 5g. Trigger the "Notes" popup animation (it has a delay)
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             notesPopupContent.classList.add('is-visible');
         });
     });
 }
-
-/**
- * (NEW) Closes the "Enter Notes" popup and reverses the animation.
- */
 function closeResolveNotesPopup() {
     // 1. Hide the "Notes" popup and its overlay
     if (resolveNotesPopup) {
@@ -3277,27 +3301,34 @@ function closeResolveNotesPopup() {
             notesPopupContent.classList.remove('is-visible');
         }
         
-        // Hide overlay after animation finishes
         setTimeout(() => {
             resolveNotesPopup.style.display = 'none';
         }, 400); // Wait for transition
     }
 
-    // 2. Hide the connector line
-    if (notesConnectorLine) {
-        notesConnectorLine.style.width = '0';
-        notesConnectorLine.style.opacity = '0';
+    // 2. Hide ALL connector lines
+    if (notesConnectorH1) {
+        notesConnectorH1.style.width = '0';
+        notesConnectorH1.style.opacity = '0';
     }
-    // 3. Slide the first popup back to its original position
+    if (notesConnectorV) {
+        notesConnectorV.style.height = '0';
+        notesConnectorV.style.opacity = '0';
+    }
+    if (notesConnectorH2) {
+        notesConnectorH2.style.width = '0';
+        notesConnectorH2.style.opacity = '0';
+    }
+
+    // 3. Slide the first popup back
     if (currentOpenAnomalyPopup) {
-        currentOpenAnomalyPopup.classList.remove('slide-left'); // <-- ADD THIS LINE BACK
+        currentOpenAnomalyPopup.classList.remove('slide-left');
         currentOpenAnomalyPopup = null;
     }
     
     // 4. Clear the context
     currentItemToResolve = null;
 }
-
 function showThreatDetailsPopup(threats, appId) {
 if (!threatDetailsPopup || !threatListContainer) return;
 
