@@ -108,14 +108,18 @@ function updateNpsScore(data) {
     }
 }
 /**
- * Gets the current time in the format YYYY-MM-DD HH:MM AM/PM
+ * Gets the current time in the format: Month date year HH:MM AM/PM
+ * e.g., "Nov 17 2025 01:30 PM"
  * @returns {string} The formatted timestamp
  */
 function getFormattedCurrentTime() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const day = now.getDate().toString().padStart(2, '0');
+    
+    // Array of month shortcuts
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[now.getMonth()]; // Get 'Nov' instead of '11'
     
     let hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -125,7 +129,44 @@ function getFormattedCurrentTime() {
     hours = hours ? hours : 12; // The hour '0' should be '12'
     const strHours = hours.toString().padStart(2, '0');
     
-    return `${year}-${month}-${day} ${strHours}:${minutes} ${ampm}`;
+    // New format: e.g., "Nov 17 2025 01:30 PM"
+    return `${month} ${day} ${year} ${strHours}:${minutes} ${ampm}`;
+}
+/**
+ * Applies the saved resolution history to the main data arrays (appData, ticketDetailsData)
+ * This ensures resolved items stay resolved after a page refresh.
+ */
+function applyResolutionHistory() {
+    if (resolvedItemsHistory.length === 0) return; // Nothing to do
+
+    console.log(`Applying ${resolvedItemsHistory.length} saved resolutions from localStorage...`);
+    
+    resolvedItemsHistory.forEach(item => {
+        const appForHistory = appData.find(app => app.application === item.appName);
+        
+        if (item.type === 'inactive') {
+            if (appForHistory) {
+                appForHistory.status = 'Resolved Inactive'; // <--- THIS IS THE KEY
+            }
+        } 
+        else if (item.type === 'threat') {
+            if (appForHistory) {
+                // Remove the competitor from the app's data
+                appForHistory.competitors = appForHistory.competitors.filter(c => c !== item.name);
+            }
+        } 
+        else if (item.type === 'ticket') {
+            // Find and close the ticket in the data
+            ticketDetailsData.forEach(dept => {
+                const ticketToClose = dept.tickets.find(t => t.id === item.id);
+                if (ticketToClose && ticketToClose.status === 'Open') {
+                    ticketToClose.status = 'Closed';
+                    if (dept.openStatus > 0) dept.openStatus--;
+                    dept.closedStatus++;
+                }
+            });
+        }
+    });
 }
 /**
  * Finds all tickets with cross-sell tags.
@@ -518,8 +559,10 @@ monthlyData: [
 ];
 // Remove "Workplace", "Cliq", "Expense", "Payroll", "Invoice", and "Creator" applications to get 14 apps
 appData = appData.filter(app => !['Workplace', 'Cliq', 'Expense', 'Payroll', 'Invoice', 'Creator'].includes(app.application));
-// === START: MODIFIED DUMMY NOTIFICATION DATA ===
-const dummyNotifications = [
+// === START: MODIFIED DUMMY NOTIFICATION DATA (WITH LOCALSTORAGE) ===
+
+// 1. Define the default list (for first-time users)
+const defaultNotifications = [
     { text: "CRM Plus status changed to 'Inactive'.", time: "2025-11-03 09:15 AM", isRead: false },
     { text: "A new critical issue 'Revenue declining' was detected for 'Inventory'.", time: "2025-11-03 08:30 AM", isRead: false },
     { text: "NPS Score dropped to '1' for 'Sites'.", time: "2025-11-02 04:20 PM", isRead: false },
@@ -532,7 +575,23 @@ const dummyNotifications = [
     { text: "'Desk' status changed to 'Inactive'.", time: "2025-10-31 05:30 PM", isRead: true },
     { text: "'Inventory' status changed to 'Inactive'.", time: "2025-10-31 05:30 PM", isRead: true }
 ];
-// === END: MODIFIED DUMMY NOTIFICATION DATA ===
+
+// 2. Try to load saved notifications from memory
+let dummyNotifications = [];
+try {
+    const savedNotifications = localStorage.getItem('dummyNotifications');
+    if (savedNotifications) {
+        dummyNotifications = JSON.parse(savedNotifications);
+    } else {
+        // If no memory, use the default list and save it
+        dummyNotifications = defaultNotifications;
+        localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
+    }
+} catch (e) {
+    // If memory is corrupt, use default list
+    dummyNotifications = defaultNotifications;
+}
+// === END: MODIFIED DUMMY NOTIFICATION DATA (WITH LOCALSTORAGE) ===
 /**
  * Populates the notification panel based on a filter.
  * @param {string} filter - 'all' or 'unread'
@@ -543,15 +602,24 @@ function renderNotifications(filter = 'all', showAll = false) {
 
     // --- START: NEW BADGE & HIGHLIGHT LOGIC ---
 
-    // 1. Get today's date string
+    // 1. Get today's date in BOTH formats
     const today = new Date();
     const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
-    const todayString = `${year}-${month}-${day}`; // e.g., "2025-11-03"
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[today.getMonth()];
+    
+    // This is the string we'll use to check if a notification is "today"
+    const newTodayString = `${month} ${day} ${year}`; // e.g., "Nov 17 2025"
+    // This is the OLD format, for backward compatibility with your mock data
+    const oldTodayString = `${year}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${day}`; // e.g., "2025-11-17"
+
 
     // 2. Count "today's" unread notifications for the badge
-    const todaysUnreadCount = dummyNotifications.filter(n => n.time.startsWith(todayString) && !n.isRead).length;
+    const todaysUnreadCount = dummyNotifications.filter(n => {
+        // Check if the time starts with the NEW format OR the OLD format
+        return (n.time.startsWith(newTodayString) || n.time.startsWith(oldTodayString)) && !n.isRead;
+    }).length;
 
     // 3. Set the badge
     notificationBadge.textContent = todaysUnreadCount;
@@ -589,14 +657,41 @@ function renderNotifications(filter = 'all', showAll = false) {
             li.classList.add('is-read');
         }
 
-        // --- ADD 'is-new' CLASS FOR HIGHLIGHT ---
-        if (notif.time.startsWith(todayString)) {
+        // --- (START) FIX: ADD 'is-new' CLASS FOR HIGHLIGHT ---
+        // Check if the time starts with the NEW format OR the OLD format
+        if (notif.time.startsWith(newTodayString) || notif.time.startsWith(oldTodayString)) {
             li.classList.add('is-new');
         }
+        // --- (END) FIX ---
+
+
+        // --- (START) DATE RE-FORMATTING ---
+        let displayTime = notif.time;
+        try {
+            // Check if the time is in the OLD format (YYYY-MM-DD...)
+            if (/^\d{4}-\d{2}-\d{2}/.test(notif.time)) {
+                const parts = notif.time.split(' '); // [ "2025-11-03", "08:30", "AM" ]
+                const datePart = parts[0].split('-'); // [ "2025", "11", "03" ]
+                const timePart = parts.slice(1).join(' '); // "08:30 AM"
+                
+                const year = datePart[0];
+                const monthIndex = parseInt(datePart[1]) - 1; // 11 -> 10 (for November)
+                const day = datePart[2];
+                
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const month = monthNames[monthIndex];
+
+                // Re-assemble into new format
+                displayTime = `${month} ${day} ${year} ${timePart}`;
+            }
+        } catch (e) {
+            displayTime = notif.time;
+        }
+        // --- (END) DATE RE-FORMATTING ---
 
         li.innerHTML = `
             ${notif.text}
-            <span class="notification-time">${notif.time}</span>
+            <span class="notification-time">${displayTime}</span>
         `;
         notificationList.appendChild(li);
     });
@@ -818,7 +913,8 @@ let inactiveAppPopupCloseBtn = null;
 let resolvedHistoryPopup = null;
 let resolvedHistoryListContainer = null;
 let resolvedHistoryPopupCloseBtn = null;
-let resolvedItemsHistory = []; // Generic history storage
+// Load history from localStorage on startup
+let resolvedItemsHistory = JSON.parse(localStorage.getItem('resolvedHistory')) || [];
 
 let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
@@ -3367,22 +3463,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
     // Simulate data loading delay
     setTimeout(() => {
+        // Apply localStorage memory before filtering data
+        applyResolutionHistory();
         filterDataArrays();
         console.log('Rendering initial table for "All Apps"');
-        updateArrCapsuleCounts(); // Set the capsule counts which are static
-        updateDashboard(appData); // Load the entire dashboard with all data initially
-        const crossSellOpportunities = findCrossSellTickets();
-        if (crossSellOpportunities.length > 0) {
-            const formattedTime = getFormattedCurrentTime(); // Use your time helper
-            const plural = crossSellOpportunities.length > 1 ? 'opportunities' : 'opportunity';
+        updateArrCapsuleCounts(); 
+        updateDashboard(appData);
+// --- (START) NEW LOCALSTORAGE CROSS-SELL NOTIFICATION LOGIC ---
+        
+        // 1. Get all current cross-sell ticket IDs
+        const allCrossSellTickets = findCrossSellTickets();
+        const allCrossSellTicketIDs = new Set(allCrossSellTickets.map(t => t.id));
+
+        // 2. Get the list of IDs we've already notified about from browser "memory"
+        let notifiedTicketIDs = [];
+        try {
+            // We store them as a JSON string array: '["TKT-001", "TKT-002"]'
+            notifiedTicketIDs = JSON.parse(localStorage.getItem('crossSellNotifiedIDs')) || [];
+        } catch (e) {
+            notifiedTicketIDs = []; // Reset if data is corrupt
+        }
+        const notifiedSet = new Set(notifiedTicketIDs);
+
+        // 3. Find only the NEW tickets (current list minus the ones we've seen before)
+        const newOpportunities = allCrossSellTickets.filter(ticket => !notifiedSet.has(ticket.id));
+
+        // 4. If there are NEW ones, create a notification and update the "memory"
+        if (newOpportunities.length > 0) {
+            const formattedTime = getFormattedCurrentTime();
+            const plural = newOpportunities.length > 1 ? 'opportunities' : 'opportunity';
             
+            // Create notification for *only* the new ones
             dummyNotifications.unshift({
-                text: `New! ${crossSellOpportunities.length} cross-sell ${plural} detected in open tickets.`,
+                text: `New! ${newOpportunities.length} cross-sell ${plural} detected in open tickets.`,
                 time: formattedTime,
                 isRead: false
             });
+            localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
+            // 5. Update localStorage: Save the *full* list of current opportunities
+            // This ensures we don't re-notify about old ones next time.
+            localStorage.setItem('crossSellNotifiedIDs', JSON.stringify(Array.from(allCrossSellTicketIDs)));
+        } else if (allCrossSellTicketIDs.size > 0) {
+            // --- (START) THIS IS THE NEW LOGGING BLOCK ---
+            console.log(
+                `Cross-sell check: Found ${allCrossSellTicketIDs.size} opportunity/ies, but they were already in localStorage. No new notification created.`
+            );
         }
-        // --- (END) NEW CROSS-SELL NOTIFICATION LOGIC ---
+        // --- (END) NEW LOCALSTORAGE CROSS-SELL NOTIFICATION LOGIC ---
         if (allAppsBtn) { // Set the initial active button
             allAppsBtn.classList.add('active');
         }
@@ -3604,7 +3731,7 @@ const showPopup = () => {
                 notificationText = `Resolved 'Inactive' status for app: ${name}.`;
                 // --- (END) NEW NOTIFICATION LOGIC ---
             }
-    
+            localStorage.setItem('resolvedHistory', JSON.stringify(resolvedItemsHistory));   
             // --- (START) NEW NOTIFICATION LOGIC ---
             // 2. CREATE AND ADD THE NEW NOTIFICATION
             if (notificationText) {
@@ -3615,6 +3742,7 @@ const showPopup = () => {
                 };
                 // Add to the top of the array
                 dummyNotifications.unshift(newNotification);
+                localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
             }
             // --- (END) NEW NOTIFICATION LOGIC ---
 
@@ -3997,7 +4125,7 @@ setTimeout(() => {
                         notif.isRead = true;
                     }
                 });
-    
+                localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
                 // After 2 seconds, remove the badge and the highlight
                 setTimeout(() => {
                     notificationBadge.textContent = '0';
