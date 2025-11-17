@@ -3835,27 +3835,27 @@ const showPopup = () => {
         notificationFilterDropdown.classList.remove('show');
     }
     });
+// --- Eye Icon / Rating Popup ---
+const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
+const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
+if (clickableEyeIcon && ratingDetailsPopup) {
+    clickableEyeIcon.addEventListener('click', (event) => {
+        event.stopPropagation();
+        // Toggle the .show class
+        ratingDetailsPopup.classList.toggle('show');
+    });
+    document.addEventListener('click', (event) => {
+        // Check if the popup is shown
+        if (ratingDetailsPopup.classList.contains('show') &&
+            !clickableEyeIcon.contains(event.target) &&
+            !ratingDetailsPopup.contains(event.target)) {
+            
+            // Hide it by removing the class
+            ratingDetailsPopup.classList.remove('show');
 
-    // --- Eye Icon / Rating Popup ---
-    const clickableEyeIcon = document.querySelector('.clickable-eye-icon');
-    const ratingDetailsPopup = document.getElementById('ratingDetailsPopup');
-    if (clickableEyeIcon && ratingDetailsPopup) {
-        clickableEyeIcon.addEventListener('click', (event) => {
-            event.stopPropagation();
-            if (ratingDetailsPopup.style.display === 'block') { 
-                ratingDetailsPopup.style.display = 'none'; 
-            } else { 
-                ratingDetailsPopup.style.display = 'block'; 
-            }
-        });
-        document.addEventListener('click', (event) => {
-            if (ratingDetailsPopup.style.display === 'block' &&
-                !clickableEyeIcon.contains(event.target) &&
-                !ratingDetailsPopup.contains(event.target)) {
-                ratingDetailsPopup.style.display = 'none';
-            }
-        });
-    }
+        }
+    });
+}
 
     // --- Need Help Dropdown ---
     const needHelpDropdownWrapper = document.getElementById('need-help-dropdown-wrapper');

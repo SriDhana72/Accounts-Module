@@ -1080,10 +1080,10 @@ body {
     }
     }
     .clickable-eye-icon {
-    position: relative;
-    z-index: 2;
-    animation: pulse 1.5s infinite ease-in-out;
-    }
+        position: relative;
+        z-index: 2;
+        animation: pulse 1.5s infinite ease-in-out !important;
+        }
     .need-help-fab {
     animation: pulse 1.5s infinite ease-in-out;
     }
@@ -1362,65 +1362,81 @@ body {
     .expanded-content .action-toggle-button {
     display: none; /* Hide the button */
     }
-    /* Rating Details Popup Styles */
-    .rating-details-popup {
+    /* New wrapper for the eye icon to anchor the popup */
+.eye-popup-wrapper {
+    position: relative; /* This is the new anchor */
+    display: inline-block; /* Keeps it inline with the text */
+}
+    /*
+  This is the DEFAULT, HIDDEN state for the popup.
+  It is static and click-through.
+*/
+.rating-details-popup {
     position: absolute;
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(135deg, rgba(170, 180, 255, 0.08), rgba(140, 160, 255, 0.08)), #ffffff; /* Updated background */
+    background: linear-gradient(135deg, rgba(170, 180, 255, 0.08), rgba(140, 160, 255, 0.08)), #ffffff;
     border: 1px solid #e9ecef;
     border-radius: 12px;
-    padding: 5px; /* Reduced padding */
+    padding: 5px; 
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     z-index: 100;
-    display: none;
-    width: 193px; /* Updated width */
-    max-width: 194px; /* Updated max-width */
+    width: 193px; 
+    max-width: 194px; 
     white-space: normal;
-    opacity: 0;
-    animation: zoom-shake-animation 1s ease-out forwards;
     transform-origin: center center;
-    height: 132px; /* Reduced height */
-    }
-    /* Chat message tail for rating popup */
-    .rating-details-popup::before {
+    height: 132px; 
+
+    /* --- STATIC HIDING LOGIC (NO FADE/ANIMATION) --- */
+    display: block !important; /* Force display block */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important; /* Makes it "click-through" */
+    
+    /* --- FORCE-STOP ALL ANIMATIONS --- */
+    transition: none !important;
+    animation: none !important;
+}
+
+/* This is the VISIBLE state.
+  It appears instantly.
+*/
+.rating-details-popup.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important; /* Makes it clickable */
+}
+/* Arrow for the rating details popup */
+.rating-details-popup::before {
     content: '';
     position: absolute;
+    /* Position the arrow on the left side, centered vertically */
+    left: -10px; /* Adjust this to control how far it extends */
     top: 50%;
-    left: -10px;
     transform: translateY(-50%);
-    width: 0;
-    height: 0;
+    
+    /* Create the arrow shape using borders */
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid rgba(170, 180, 255, 0.08); /* Match popup background start color */
-    filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1));
-    }
-    /* New animation keyframes for zoom and shake */
-    @keyframes zoom-shake-animation {
-    0% {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.1) translateX(0);
-    }
-    20% {
-    opacity: 1;
-    transform: translateY(-50%) scale(0.4) translateX(-5px);
-    }
-    40% {
-    transform: translateY(-50%) scale(0.7) translateX(5px);
-    }
-    60% {
-    transform: translateY(-50%) scale(0.9) translateX(-3px);
-    }
-    80% {
-    transform: translateY(-50%) scale(1.05) translateX(3px);
-    }
-    100% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1) translateX(0);
-    }
-    }
+    border-right: 10px solid #e9ecef; /* Match popup border color */
+    
+    /* Make sure it's above the popup content but behind the popup border */
+    z-index: 99; /* Slightly less than popup's z-index */
+}
+
+/* Inner part of the arrow to match the popup background */
+.rating-details-popup::after {
+    content: '';
+    position: absolute;
+    left: -8px; /* Slightly less than ::before's left to create border effect */
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #ffffff; /* Match popup background color */
+    z-index: 101; /* Slightly more than popup's z-index to sit on top of the border */
+}
     .rating-details-popup .d-flex.flex-column { /* Target the outer d-flex for each point */
     margin-bottom: 0px; /* Reduced margin to remove space between points */
     }
