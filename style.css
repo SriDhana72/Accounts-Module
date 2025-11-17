@@ -2325,41 +2325,7 @@ body {
     z-index: 1060; /* Higher than threat popup */
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    }
-    /*
-  This creates the BORDER of the arrow.
-  It's a triangle pointing left, matching the popup's border color.
-*/
-.resolve-notes-popup-content::before {
-    content: '';
-    position: absolute;
-    top: 15px; /* Aligns arrow near the top, where the button is */
-    left: -10px; /* Sits in the 10px gap */
-    transform: translateY(-50%);
-    
-    /* Triangle shape */
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #ced4da; /* Match the popup/textarea border */
-}
-
-/*
-  This creates the FILL of the arrow.
-  It's a slightly smaller triangle that sits on top of the border.
-*/
-.resolve-notes-popup-content::after {
-    content: '';
-    position: absolute;
-    top: 15px; /* Aligns arrow near the top, where the button is */
-    left: -9px; /* 1px less than the border, to sit inside it */
-    transform: translateY(-50%);
-
-    /* Triangle shape */
-    border-top: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-right: 9px solid #fff; /* Match the popup background */
-}
-    
+    }    
     .resolve-notes-popup-content {
     background-color: #fff;
     padding: 20px;
@@ -4020,3 +3986,72 @@ body {
     animation: notification-fade-in 0.3s ease-out forwards;
     opacity: 0; /* Start hidden before animation */
 }
+/* === START: NEW POPUP FLOW STYLES === */
+
+/* --- 1. The Connector Line --- */
+#notesConnectorLine {
+    position: absolute;
+    height: 3px; /* Line thickness */
+    background-color: #0d6efd; /* Blue */
+    
+    /* Start hidden */
+    opacity: 0;
+    width: 0;
+    
+    /* Animation settings */
+    transition: width 0.4s ease-out, opacity 0.2s ease;
+    transform-origin: left;
+    z-index: 1055; /* Just below the notes popup */
+}
+
+/* --- 2. "Notes" Popup (Modified) --- */
+.resolve-notes-popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    width: 350px;
+    max-width: 90%;
+    position: absolute;
+
+    /* --- Modified Animation Styles --- */
+    opacity: 0;
+    visibility: hidden;
+    /* Start further to the right, and slightly up */
+    transform: translateX(20px) translateY(-5px); 
+    transition: opacity 0.3s ease-out 0.2s, transform 0.3s ease-out 0.2s, visibility 0.3s 0.2s; /* <-- Note the 0.2s DELAY */
+}
+/* --- 3. "Notes" Popup Visible State (Modified) --- */
+.resolve-notes-popup-content.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) translateY(0); /* Animate to final spot */
+}
+/* --- 4. First-Level Popups (Threat, Ticket, Inactive) --- */
+
+/* Base style for all first-level popups */
+.threat-popup-content,
+.escalated-tickets-popup-content,
+.inactive-app-popup-content {
+    /* Add a transition for the slide effect */
+    transition: transform 0.4s ease-out;
+}
+
+/* New "slide-left" class that JS will add */
+.threat-popup-content.slide-left,
+.escalated-tickets-popup-content.slide-left,
+.inactive-app-popup-content.slide-left {
+    /* Move the popup 180px to the left */
+    transform: translateX(-180px);
+}
+/* --- 5. "Notes" Popup Button (Disabled) --- */
+.resolve-notes-submit-btn:disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+.resolve-notes-submit-btn:disabled:hover {
+    background-color: #e9ecef;
+    color: #adb5bd;
+}
+/* === END: NEW POPUP FLOW STYLES === */

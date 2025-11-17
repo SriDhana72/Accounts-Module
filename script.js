@@ -925,6 +925,8 @@ let resolvedHistoryListContainer = null;
 let resolvedHistoryPopupCloseBtn = null;
 // Load history from localStorage on startup
 let resolvedItemsHistory = JSON.parse(localStorage.getItem('resolvedHistory')) || [];
+let notesConnectorLine = null; // (NEW) The animated connector line
+let currentOpenAnomalyPopup = null; // (NEW) To track the first popup
 
 let expandedRowId = null; // Define expandedRowId
 let expandedTicketRowId = null; // Define expandedTicketRowId
@@ -1121,6 +1123,7 @@ resolveNotesPopup = document.getElementById('resolveNotesPopup');
 resolveNotesTextarea = document.getElementById('resolveNotesTextarea');
 resolveNotesSubmitBtn = document.getElementById('resolveNotesSubmitBtn');
 resolveNotesCancelBtn = document.getElementById('resolveNotesCancelBtn');
+notesConnectorLine = document.getElementById('notesConnectorLine');
 escalatedTicketsPopup = document.getElementById('escalatedTicketsPopup');
 
 escalatedTicketsListContainer = document.getElementById('escalatedTicketsListContainer');
@@ -3205,68 +3208,93 @@ typeChar();
 typeNextSummary(); // Start the sequence
 }
 
+/**
+ * (NEW) Shows the "Enter Notes" popup with a connector line animation.
+ */
 function showResolveNotesPopup(item, buttonElement) {
-    if (!resolveNotesPopup) return;
+    if (!resolveNotesPopup || !notesConnectorLine || !buttonElement) return;
 
-    // Store the current item context to be used on submit
+    // 1. Store the item to be resolved
     currentItemToResolve = item;
     
-    // Clear the textarea from previous entries
+    // 2. Clear textarea and disable submit button
     if(resolveNotesTextarea) resolveNotesTextarea.value = '';
-
-    // --- (START) NEW: Disable submit button by default ---
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.disabled = true;
     }
-    // --- (END) NEW ---
+    
+    // 3. Find the parent popup (e.g., "Threat Details")
+    const parentPopupContent = buttonElement.closest('.threat-popup-content, .escalated-tickets-popup-content, .inactive-app-popup-content');
+    if (!parentPopupContent) return;
 
-    // --- NEW POSITIONING LOGIC ---
+    // Store this so we can slide it back later
+    currentOpenAnomalyPopup = parentPopupContent;
+
+    // 4. Get positions
+    const btnRect = buttonElement.getBoundingClientRect();
     const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
 
-    if (buttonElement) {
-        // Get the position of the "Resolve" button
-        const btnRect = buttonElement.getBoundingClientRect();
-        
-        // Position the popup content box
-        notesPopupContent.style.left = `${btnRect.right + 10}px`;
-        notesPopupContent.style.top = `${btnRect.top}px`;
-        
-        // Clear any old centering styles
-        notesPopupContent.style.transform = 'none';
+    // 5. --- ANIMATION ---
+    
+// 5a. Slide the first popup to the left
+parentPopupContent.classList.add('slide-left');
 
-    } else {
-        // Fallback to center if no button was passed
-        notesPopupContent.style.left = '50%';
-        notesPopupContent.style.top = '50%';
-        notesPopupContent.style.transform = 'translate(-50%, -50%)';
-    }
+// 5b. Position and animate the connector line
+const connectorLeft = btnRect.right;
+const connectorTop = btnRect.top + (btnRect.height / 2);
+notesConnectorLine.style.left = `${connectorLeft}px`;
+notesConnectorLine.style.top = `${connectorTop}px`;
 
-    // Show the notes popup overlay
+// Set width and opacity to trigger animation
+notesConnectorLine.style.width = '180px'; // The long line
+notesConnectorLine.style.opacity = '1';
+
+// 5c. Position the "Notes" popup
+// It starts at the end of the long connector line
+const notesPopupLeft = connectorLeft + 180; // 180px line
+notesPopupContent.style.left = `${notesPopupLeft}px`;
+notesPopupContent.style.top = `${connectorTop - 25}px`; // Align with popup top
+notesPopupContent.style.transform = 'none';
+    // 5d. Show the main overlay
     resolveNotesPopup.style.display = 'flex';
 
-    // --- (START) NEW & RELIABLE ANIMATION TRIGGER ---
-    // This forces the browser to apply the 'left'/'top' styles first,
-    // then apply the 'is-visible' class on the next animation frame.
+    // 5e. Trigger the "Notes" popup animation (it has a built-in delay)
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             notesPopupContent.classList.add('is-visible');
         });
     });
-    // --- (END) NEW & RELIABLE ANIMATION TRIGGER ---
 }
 
+/**
+ * (NEW) Closes the "Enter Notes" popup and reverses the animation.
+ */
 function closeResolveNotesPopup() {
+    // 1. Hide the "Notes" popup and its overlay
     if (resolveNotesPopup) {
-        // --- (START) NEW: Remove animation class ---
         const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
         if (notesPopupContent) {
             notesPopupContent.classList.remove('is-visible');
         }
-        // --- (END) NEW ---
-
-        resolveNotesPopup.style.display = 'none';
+        
+        // Hide overlay after animation finishes
+        setTimeout(() => {
+            resolveNotesPopup.style.display = 'none';
+        }, 400); // Wait for transition
     }
-    // Clear the context so we don't accidentally resolve the wrong item
+
+    // 2. Hide the connector line
+    if (notesConnectorLine) {
+        notesConnectorLine.style.width = '0';
+        notesConnectorLine.style.opacity = '0';
+    }
+    // 3. Slide the first popup back to its original position
+    if (currentOpenAnomalyPopup) {
+        currentOpenAnomalyPopup.classList.remove('slide-left'); // <-- ADD THIS LINE BACK
+        currentOpenAnomalyPopup = null;
+    }
+    
+    // 4. Clear the context
     currentItemToResolve = null;
 }
 
@@ -3303,6 +3331,7 @@ function closeThreatDetailsPopup() {
 if (threatDetailsPopup) {
 threatDetailsPopup.style.display = 'none';
 }
+closeResolveNotesPopup();
 }
 
 
@@ -3335,6 +3364,7 @@ function closeEscalatedTicketsPopup() {
     if (escalatedTicketsPopup) {
         escalatedTicketsPopup.style.display = 'none';
     }
+    closeResolveNotesPopup();
 }
 /**
  * Shows the popup for resolving an inactive app.
@@ -3366,6 +3396,7 @@ function closeInactiveAppPopup() {
     if (inactiveAppPopup) {
         inactiveAppPopup.style.display = 'none';
     }
+    closeResolveNotesPopup();
 }
 
 
