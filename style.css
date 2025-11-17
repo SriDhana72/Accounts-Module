@@ -2326,6 +2326,39 @@ body {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     }
+    /*
+  This creates the BORDER of the arrow.
+  It's a triangle pointing left, matching the popup's border color.
+*/
+.resolve-notes-popup-content::before {
+    content: '';
+    position: absolute;
+    top: 15px; /* Aligns arrow near the top, where the button is */
+    left: -10px; /* Sits in the 10px gap */
+    transform: translateY(-50%);
+    
+    /* Triangle shape */
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #ced4da; /* Match the popup/textarea border */
+}
+
+/*
+  This creates the FILL of the arrow.
+  It's a slightly smaller triangle that sits on top of the border.
+*/
+.resolve-notes-popup-content::after {
+    content: '';
+    position: absolute;
+    top: 15px; /* Aligns arrow near the top, where the button is */
+    left: -9px; /* 1px less than the border, to sit inside it */
+    transform: translateY(-50%);
+
+    /* Triangle shape */
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid #fff; /* Match the popup background */
+}
     
     .resolve-notes-popup-content {
     background-color: #fff;
@@ -2334,8 +2367,18 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.25);
     width: 350px;
     max-width: 90%;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-20px); /* Start 20px to the left */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
     }
-    
+    /* This class will be added by JS to trigger the animation */
+.resolve-notes-popup-content.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0); /* Slide to its final position */
+}
     .resolve-notes-popup-title {
     font-weight: 600;
     font-size: 1.4em;
@@ -2376,6 +2419,18 @@ body {
     .resolve-notes-submit-btn:hover {
     background-color: #0b5ed7;
     }
+    /* (NEW) Style for the submit button when it's disabled */
+.resolve-notes-submit-btn:disabled {
+    background-color: #e9ecef; /* Light grey background */
+    color: #adb5bd; /* Muted text color */
+    cursor: not-allowed; /* Show a "not-allowed" cursor */
+}
+
+/* (NEW) Make sure hover doesn't change it when disabled */
+.resolve-notes-submit-btn:disabled:hover {
+    background-color: #e9ecef; /* Stays light grey */
+    color: #adb5bd; /* Stays muted */
+}
     
     .resolve-notes-cancel-btn {
     background-color: #e9ecef;

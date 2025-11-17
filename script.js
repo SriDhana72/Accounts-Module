@@ -1469,8 +1469,9 @@ anomaliesWarningOnlyData = appData.filter(app => {
     // Rule 1: Reduced usage (Minor decline = -1% to -10%)
     if (usageTrendPercentage >= -10 && usageTrendPercentage < 0) { isWarning = true; }
 
-    // Rule 2: Some disengagement (Exactly 1 inactive app on account)
-    if (totalInactiveApps === 1) { isWarning = true; }
+// Rule 2: Some disengagement (Exactly 1 inactive app on account)
+    // This rule should ONLY flag the app that IS inactive.
+    if (totalInactiveApps === 1 && app.status === 'Inactive') { isWarning = true; }
 
     // Rule 3: Support concerns (Warning Tags)
     const warningTags = [
@@ -1512,8 +1513,13 @@ anomaliesWarningOnlyData = appData.filter(app => {
         isWarning = true;
     }
 
-    // Rule 7: High support volume (15 to 20 open tickets)
-    if (totalOpenTickets >= 15 && totalOpenTickets <= 20) { isWarning = true; }
+// Rule 7: High support volume (15 to 20 open tickets)
+    // This should only flag apps that HAVE open tickets.
+    if (totalOpenTickets >= 15 && totalOpenTickets <= 20) {
+        if (relevantDepartment && relevantDepartment.openStatus > 0) {
+             isWarning = true;
+        }
+    }
 
     // Rule 8: Low NPS (ONLY if it's not already a critical "Low NPS + Anomaly" issue)
     if (isLowNPS && !hasAnyAnomalyTickets) { isWarning = true; }
@@ -3199,23 +3205,69 @@ typeChar();
 typeNextSummary(); // Start the sequence
 }
 
-function showResolveNotesPopup(item) {
+function showResolveNotesPopup(item, buttonElement) {
     if (!resolveNotesPopup) return;
+
     // Store the current item context to be used on submit
     currentItemToResolve = item;
+    
     // Clear the textarea from previous entries
     if(resolveNotesTextarea) resolveNotesTextarea.value = '';
-    // Show the notes popup
-    resolveNotesPopup.style.display = 'flex';
-}
 
+    // --- (START) NEW: Disable submit button by default ---
+    if (resolveNotesSubmitBtn) {
+        resolveNotesSubmitBtn.disabled = true;
+    }
+    // --- (END) NEW ---
+
+    // --- NEW POSITIONING LOGIC ---
+    const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
+
+    if (buttonElement) {
+        // Get the position of the "Resolve" button
+        const btnRect = buttonElement.getBoundingClientRect();
+        
+        // Position the popup content box
+        notesPopupContent.style.left = `${btnRect.right + 10}px`;
+        notesPopupContent.style.top = `${btnRect.top}px`;
+        
+        // Clear any old centering styles
+        notesPopupContent.style.transform = 'none';
+
+    } else {
+        // Fallback to center if no button was passed
+        notesPopupContent.style.left = '50%';
+        notesPopupContent.style.top = '50%';
+        notesPopupContent.style.transform = 'translate(-50%, -50%)';
+    }
+
+    // Show the notes popup overlay
+    resolveNotesPopup.style.display = 'flex';
+
+    // --- (START) NEW & RELIABLE ANIMATION TRIGGER ---
+    // This forces the browser to apply the 'left'/'top' styles first,
+    // then apply the 'is-visible' class on the next animation frame.
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            notesPopupContent.classList.add('is-visible');
+        });
+    });
+    // --- (END) NEW & RELIABLE ANIMATION TRIGGER ---
+}
 
 function closeResolveNotesPopup() {
-if (resolveNotesPopup) {
-resolveNotesPopup.style.display = 'none';
-}
-// Clear the context so we don't accidentally resolve the wrong item
-currentItemToResolve = null;
+    if (resolveNotesPopup) {
+        // --- (START) NEW: Remove animation class ---
+        const notesPopupContent = resolveNotesPopup.querySelector('.resolve-notes-popup-content');
+        if (notesPopupContent) {
+            notesPopupContent.classList.remove('is-visible');
+        }
+        // --- (END) NEW ---
+
+        resolveNotesPopup.style.display = 'none';
+    }
+    // Clear the context so we don't accidentally resolve the wrong item
+    currentItemToResolve = null;
 }
 
 function showThreatDetailsPopup(threats, appId) {
@@ -3238,7 +3290,7 @@ threats.forEach(threatName => {
 
     // Add event listener for the resolve button
     threatItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
-        showResolveNotesPopup({ type: 'threat', appId: appId, name: threatName });
+        showResolveNotesPopup({ type: 'threat', appId: appId, name: threatName }, e.target);
     });
 });
 }
@@ -3270,8 +3322,8 @@ function showEscalatedTicketsPopup(tickets, appId) {
             `;
             escalatedTicketsListContainer.appendChild(ticketItem);
 
-            ticketItem.querySelector('.threat-resolve-btn').addEventListener('click', () => {
-                showResolveNotesPopup({ type: 'ticket', appId: appId, id: ticket.id, summary: ticket.summary });
+            ticketItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
+                showResolveNotesPopup({ type: 'ticket', appId: appId, id: ticket.id, summary: ticket.summary }, e.target);
             });
         });
     }
@@ -3303,8 +3355,8 @@ function showInactiveAppPopup(appName, appId) {
     `;
     inactiveAppListContainer.appendChild(appItem);
 
-    appItem.querySelector('.threat-resolve-btn').addEventListener('click', () => {
-        showResolveNotesPopup({ type: 'inactive', appId: appId, name: appName });
+    appItem.querySelector('.threat-resolve-btn').addEventListener('click', (e) => {
+        showResolveNotesPopup({ type: 'inactive', appId: appId, name: appName }, e.target);
     });
 
     inactiveAppPopup.style.display = 'flex';
@@ -3687,6 +3739,18 @@ const showPopup = () => {
             }
         });
     }
+    if (resolveNotesTextarea) {
+        resolveNotesTextarea.addEventListener('input', () => {
+            if (resolveNotesSubmitBtn) {
+                // Check if the textarea is empty (after trimming whitespace)
+                if (resolveNotesTextarea.value.trim() === '') {
+                    resolveNotesSubmitBtn.disabled = true;
+                } else {
+                    resolveNotesSubmitBtn.disabled = false;
+                }
+            }
+        });
+    }
 
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.addEventListener('click', () => {
@@ -3755,7 +3819,7 @@ const showPopup = () => {
                 localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
             }
             // --- (END) NEW NOTIFICATION LOGIC ---
-
+            resolveNotesPopup.querySelector('.resolve-notes-popup-content').classList.remove('is-visible');
             // 3. CLOSE THE NOTES POPUP
             closeResolveNotesPopup();
     
