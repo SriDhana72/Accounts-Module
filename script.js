@@ -615,11 +615,8 @@ function renderNotifications(filter = 'all', showAll = false) {
     const oldTodayString = `${year}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${day}`; // e.g., "2025-11-17"
 
 
-    // 2. Count "today's" unread notifications for the badge
-    const todaysUnreadCount = dummyNotifications.filter(n => {
-        // Check if the time starts with the NEW format OR the OLD format
-        return (n.time.startsWith(newTodayString) || n.time.startsWith(oldTodayString)) && !n.isRead;
-    }).length;
+// 2. Count "ALL" unread notifications for the badge
+const todaysUnreadCount = dummyNotifications.filter(n => !n.isRead).length;
 
     // 3. Set the badge
     notificationBadge.textContent = todaysUnreadCount;
@@ -649,22 +646,21 @@ function renderNotifications(filter = 'all', showAll = false) {
         notificationList.innerHTML = '<li class="notification-no-items">No notifications to show.</li>';
     }
 
-    itemsToRender.forEach(notif => {
+    itemsToRender.forEach((notif, index) => { // <-- Add 'index' here
         const li = document.createElement('li');
 
         // Add 'is-read' class if true
         if (notif.isRead) {
             li.classList.add('is-read');
         }
+// --- (START) HIGHLIGHT "NEW" (UNREAD + TODAY) ---
+const isToday = notif.time.startsWith(newTodayString) || notif.time.startsWith(oldTodayString);
 
-        // --- (START) FIX: ADD 'is-new' CLASS FOR HIGHLIGHT ---
-        // Check if the time starts with the NEW format OR the OLD format
-        if (notif.time.startsWith(newTodayString) || notif.time.startsWith(oldTodayString)) {
-            li.classList.add('is-new');
-        }
-        // --- (END) FIX ---
-
-
+// Add 'is-new' class ONLY if it's from today AND it's unread
+if (isToday && !notif.isRead) {
+    li.classList.add('is-new');
+}
+// --- (END) HIGHLIGHT "NEW" ---
         // --- (START) DATE RE-FORMATTING ---
         let displayTime = notif.time;
         try {
@@ -690,11 +686,25 @@ function renderNotifications(filter = 'all', showAll = false) {
         // --- (END) DATE RE-FORMATTING ---
 
         li.innerHTML = `
-            ${notif.text}
-            <span class="notification-time">${displayTime}</span>
-        `;
-        notificationList.appendChild(li);
-    });
+        ${notif.text}
+        <span class="notification-time">${displayTime}</span>
+    `;
+
+    // --- (START) ADD ANIMATION TO NEWLY SHOWN ITEMS ---
+    
+    // This checks if we are in "Show All" mode AND
+    // if the item's index is past the initial 7 visible items.
+    if (showAll && index >= 7) { 
+        li.classList.add('notification-item-appear');
+        
+        // This creates a nice staggered effect
+        const delay = (index - 7) * 0.05; // 50ms delay per item
+        li.style.animationDelay = `${delay}s`;
+    }
+    // --- (END) ADD ANIMATION ---
+
+    notificationList.appendChild(li);
+});
 
     // 7. Update "Show More" button
     if (showAll || filter === 'unread' || filteredData.length <= 7) {
@@ -4112,19 +4122,12 @@ setTimeout(() => {
                 // Get all visible new items
                 const newItems = notificationList.querySelectorAll('li.is-new');
     
-                // Get today's date
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                const day = today.getDate().toString().padStart(2, '0');
-                const todayString = `${year}-${month}-${day}`;
-    
-                // Mark them as "read" in the data array
-                dummyNotifications.forEach(notif => {
-                    if (notif.time.startsWith(todayString)) {
-                        notif.isRead = true;
-                    }
-                });
+// Mark ALL unread notifications as "read" in the data array
+dummyNotifications.forEach(notif => {
+    if (!notif.isRead) {
+        notif.isRead = true;
+    }
+});
                 localStorage.setItem('dummyNotifications', JSON.stringify(dummyNotifications));
                 // After 2 seconds, remove the badge and the highlight
                 setTimeout(() => {
@@ -4140,8 +4143,80 @@ setTimeout(() => {
 if (notificationShowMore) {
     notificationShowMore.addEventListener('click', (event) => {
         event.stopPropagation();
-        // Re-render with the 'all' filter and the 'showAll' flag
-        renderNotifications('all', true); 
+
+        // --- This new code appends items instead of re-rendering ---
+
+        if (!notificationList || !notificationFilterBtn) return;
+
+        // 1. Get current filter setting from the button's text
+        const activeFilterText = notificationFilterBtn.querySelector('span').textContent.toLowerCase();
+        const activeFilter = activeFilterText === 'unread' ? 'unread' : 'all';
+
+        // 2. Filter the full data array
+        let filteredData;
+        if (activeFilter === 'unread') {
+            filteredData = dummyNotifications.filter(n => !n.isRead);
+        } else { // 'all'
+            filteredData = dummyNotifications;
+        }
+
+        // 3. Find out how many items are *already* showing
+        const itemsAlreadyShown = notificationList.querySelectorAll('li').length;
+
+        // 4. Get only the items that are *not* yet shown
+        const itemsToAppend = filteredData.slice(itemsAlreadyShown);
+
+        if (itemsToAppend.length === 0) return; // Nothing to add
+
+        // 5. Get date strings for styling
+        const today = new Date();
+        const year = today.getFullYear();
+        const day = today.getDate().toString().padStart(2, '0');
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const month = monthNames[today.getMonth()];
+        const newTodayString = `${month} ${day} ${year}`;
+        const oldTodayString = `${year}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${day}`;
+
+        // 6. Loop through and append ONLY the new items
+        itemsToAppend.forEach((notif, index) => {
+            const li = document.createElement('li');
+
+            if (notif.isRead) li.classList.add('is-read');
+
+            const isToday = notif.time.startsWith(newTodayString) || notif.time.startsWith(oldTodayString);
+            if (isToday && !notif.isRead) li.classList.add('is-new');
+
+            // Date re-formatting
+            let displayTime = notif.time;
+            try {
+                if (/^\d{4}-\d{2}-\d{2}/.test(notif.time)) {
+                    const parts = notif.time.split(' ');
+                    const datePart = parts[0].split('-');
+                    const timePart = parts.slice(1).join(' ');
+                    const month = monthNames[parseInt(datePart[1]) - 1];
+                    displayTime = `${month} ${datePart[2]} ${datePart[0]} ${timePart}`;
+                }
+            } catch (e) { /* Use original time if parse fails */ }
+
+            li.innerHTML = `
+                ${notif.text}
+                <span class="notification-time">${displayTime}</span>
+            `;
+
+            // --- ADD ANIMATION ---
+            li.classList.add('notification-item-appear');
+            const delay = index * 0.05; // 50ms stagger per item
+            li.style.animationDelay = `${delay}s`;
+            
+            notificationList.appendChild(li);
+        });
+        notificationList.scrollTo({
+            top: notificationList.scrollHeight,
+            behavior: 'smooth'
+        });
+
+        // Hide the "Show More" button after it's clicked
+        notificationShowMore.style.display = 'none';
     });
 }
 
