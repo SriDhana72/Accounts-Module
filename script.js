@@ -3861,6 +3861,16 @@ const showPopup = () => {
             }
         });
     }
+    if (escalatedTicketsPopupCloseBtn) {
+        escalatedTicketsPopupCloseBtn.addEventListener('click', closeEscalatedTicketsPopup);
+    }
+    
+    // Optional: Close when clicking the overlay background
+    if (escalatedTicketsPopup) {
+        escalatedTicketsPopup.addEventListener('click', (e) => {
+            if (e.target === escalatedTicketsPopup) { closeEscalatedTicketsPopup(); }
+        });
+    }
 
     if (resolveNotesSubmitBtn) {
         resolveNotesSubmitBtn.addEventListener('click', () => {
