@@ -3452,14 +3452,12 @@ body {
 /* 2. The main wrapper */
 .summary-wrapper {
     position: relative;
-    text-align: left;
+    text-align: center;
 }
 
 /* 3. This is the container for the arrow icon */
 .summary-expand-trigger {
-    width: fit-content; 
-    margin: 0 auto;     
-    text-align: center;
+    display: inline-block; 
     cursor: pointer;
 }
 .summary-expand-trigger:hover #summaryArrow {
@@ -3468,16 +3466,16 @@ body {
 /* 4. This is the arrow icon itself */
 #summaryArrow {
     display: inline-block;
-    width: 32px !important;  /* Force the size */
-    height: 32px !important; /* Force the size */
+    width: 32px 
+    height: 32px 
     transition: transform 0.2s ease;
 }
 /* 6. The hidden content */
 .summary-collapsible-content {
     overflow: hidden;
-    max-height: 0; /* Collapsed by default */
+    max-height: 0;
     padding-top: 4px;
-    transition: max-height 0.3s ease-out; /* Smooth slide */
+    transition: max-height 0.3s ease-out; 
     cursor: default;
 }
 
@@ -4076,3 +4074,43 @@ body {
     color: #adb5bd;
 }
 /* === END: NEW POPUP FLOW STYLES === */
+/* --- Amazon Style 5-Star Rating Styles (UPDATED) --- */
+
+.rating-label {
+    font-size: 0.8rem;       
+    color: #212529;          
+    font-weight: 600;        /* Semi-bold for clear definition */
+    min-width: 85px;         /* Fixed width to align stars perfectly */
+    letter-spacing: 0.2px;   /* Subtle spacing for a premium look */
+}
+
+.amazon-stars {
+    display: flex;
+    gap: 2px;                /* Increased gap slightly for cleaner separation */
+    align-items: center;     
+}
+
+.amazon-stars .bi {
+    font-size: 0.8rem;       /* Matched to text size */
+    color: #ff9900;          /* Adjusted to a richer "Amazon Gold" orange */
+}
+.text-amazon-gold {
+    color: #ff9900 !important; /* Matches the star color */
+}
+/* Ensure the eye icon wrapper centers vertically with the new block */
+.eye-popup-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: 6px;       /* Added space between stars and eye */
+}
+/* Unified Gold Color for ALL stars (Inside and Outside) */
+.text-gold {
+    color: #ff9900 !important; /* Amazon Golden Yellow */
+}
+
+/* Update sizing for the outside stars container */
+.amazon-stars .bi {
+    font-size: 0.8rem;
+    /* Color is now handled by the .text-gold class in HTML */
+}

@@ -4494,9 +4494,10 @@ chatModalHeader.addEventListener('mousedown', (e) => {
         };
 
         const hideSummary = () => {
+            // Start a 1-second timer to close it
             hoverTimer = setTimeout(() => {
                 wrapper.classList.remove('summary-is-open');
-            }, 3000); // 3-second delay
+            }, 1000); // 1-second delay
         };
 
         // 1. Hovering the ARROW shows it
