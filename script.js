@@ -3823,6 +3823,15 @@ const showPopup = () => {
             if (e.target === threatDetailsPopup) { closeThreatDetailsPopup(); }
         });
     }
+    if (inactiveAppPopupCloseBtn) {
+        inactiveAppPopupCloseBtn.addEventListener('click', closeInactiveAppPopup);
+    }
+    // Optional: Close when clicking the grey background overlay
+    if (inactiveAppPopup) {
+        inactiveAppPopup.addEventListener('click', (e) => {
+            if (e.target === inactiveAppPopup) { closeInactiveAppPopup(); }
+        });
+    }
 
     if (resolveNotesCancelBtn) {
         resolveNotesCancelBtn.addEventListener('click', closeResolveNotesPopup);
