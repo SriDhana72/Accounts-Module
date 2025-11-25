@@ -4114,3 +4114,135 @@ body {
     font-size: 0.8rem;
     /* Color is now handled by the .text-gold class in HTML */
 }
+/* --- Velocity Benchmark Popup Styles --- */
+
+.velocity-analysis-icon {
+    color: #5592f3; 
+    font-size: 0.9rem;
+    margin-left: 8px;
+    cursor: pointer;
+    position: relative; /* Anchor for the popup */
+}
+
+/* --- Velocity Benchmark Popup Styles (FONT FIX) --- */
+
+.velocity-analysis-icon {
+    color: #5592f3; 
+    font-size: 0.9rem;
+    margin-left: 8px;
+    cursor: pointer;
+    position: relative; 
+}
+
+.velocity-benchmark-popup {
+    /* Hidden State */
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 280px; 
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    z-index: 1000; 
+    text-align: left;
+    
+    /* --- CRITICAL FONT FIXES --- */
+    font-style: normal !important;       /* Forces text to stand up straight */
+    font-family: 'Inter', sans-serif !important; /* Matches the rest of your widget */
+    font-weight: 400;                    /* Normal weight */
+    text-transform: none;                /* Ensures no accidental capitalization */
+    font-size: 0.85rem;
+    color: #333;
+    line-height: 1.5;
+    
+    /* Smooth Transition */
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+}
+
+/* Ensure children elements also inherit the normal style */
+.velocity-benchmark-popup * {
+    font-style: normal !important;
+}
+
+/* Arrow pointing down */
+.velocity-benchmark-popup::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent;
+}
+
+/* Show State (Hover) */
+.velocity-analysis-icon:hover .velocity-benchmark-popup {
+    opacity: 1;
+    visibility: visible;
+    bottom: 145%; 
+    pointer-events: auto;
+}
+
+/* --- SPECIAL FIX FOR PAYMENT VELOCITY (Right-Side Card) --- */
+#payment-velocity-card .velocity-benchmark-popup {
+    left: auto;       
+    right: -10px;     
+    transform: none;  
+}
+
+#payment-velocity-card .velocity-benchmark-popup::after {
+    left: auto;       
+    right: 14px;      
+    margin-left: 0;   
+}
+
+/* --- Internal Content Styles (Same as before) --- */
+.benchmark-section {
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 10px;
+}
+.benchmark-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.benchmark-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a2b4d;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+.benchmark-subtitle {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 6px;
+}
+.benchmark-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.benchmark-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    color: #495057;
+}
+.benchmark-highlight {
+    color: #198754;
+    font-weight: 600;
+}
