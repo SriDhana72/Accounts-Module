@@ -4246,3 +4246,47 @@ body {
     color: #198754;
     font-weight: 600;
 }
+/*   VELOCITY BENCHMARK CAROUSEL STYLES */
+/* 1. The "Window" that masks the sliding content */
+.benchmark-carousel-window {
+    overflow: hidden; /* Hides the part that slides out */
+    width: 100%;
+    position: relative;
+    margin-top: 10px;
+    border-top: 1px dashed #eee; /* Separator from the top static section */
+    padding-top: 10px;
+}
+
+/* 2. The "Track" that holds both slides side-by-side */
+.benchmark-slides-track {
+    display: flex;
+    width: 200%; /* Width is 200% because it holds 2 slides */
+    animation: slide-horizontal 4s infinite ease-in-out; /* The magic animation */
+}
+
+/* 3. The individual Slide */
+.benchmark-slide {
+    width: 50%; /* Each slide takes up half the track (100% of the window) */
+    flex-shrink: 0;
+    padding-right: 10px; /* Spacing to prevent text touching edge */
+    box-sizing: border-box;
+}
+
+/* 4. The Animation Keyframes */
+/* This moves the track left and right */
+@keyframes slide-horizontal {
+    0%, 45% {
+        transform: translateX(0); /* Show Slide 1 */
+    }
+    50%, 95% {
+        transform: translateX(-50%); /* Show Slide 2 */
+    }
+    100% {
+        transform: translateX(0); /* Loop back to Slide 1 */
+    }
+}
+
+/* Optional: Pause animation when hovering over the bottom area so user can read */
+.benchmark-carousel-window:hover .benchmark-slides-track {
+    animation-play-state: paused;
+}
