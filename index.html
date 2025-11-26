@@ -22,15 +22,9 @@
                 
                 <div class="notification-bell-wrapper">
                     <div id="notificationBell" class="notification-icon-container">
-                        
-                        <svg class="bell-svg" 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor" 
-                        stroke-width="1.5">
-                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.136 6 8.797 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                   </svg>
+                        <svg class="bell-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.136 6 8.797 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
                         <span class="notification-badge" id="notificationBadge">7</span>
                     </div>
                     <div class="notification-panel" id="notificationPanel">
@@ -46,13 +40,13 @@
                                 </div>
                             </div>
                         </div>
-                        <ul class="notification-list" id="notificationList">
-                            </ul>
+                        <ul class="notification-list" id="notificationList"></ul>
                         <div class="notification-footer">
                             <button class="notification-show-more" id="notificationShowMore">Show More</button>
                         </div>
                     </div>
                 </div>      
+                
                 <div class="account-info-content">
                     <h5 class="fw-bold mb-1 text-primary d-inline-block">zylker inc</h5>
                     <span class="ms-2 me-2 fw-bold text-dark fs-6">|</span> <span class="fw-bold text-dark fs-6">Peter</span>
@@ -135,7 +129,6 @@
                                     </div>
                                     <p class="rating-description">Historical ARR and expansion</p>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -145,14 +138,11 @@
                     </div>
                     <div class="d-flex flex-column mb-2">
                         <h6 class="fw-bold text-dark me-1 mb-2">Executive Summary:</h6>
-                        
                         <div class="ps-2 summary-wrapper" id="summaryWrapper">
-                            
                             <div class="small text-dark mb-1" style="line-height: 1.4; display: flex;">
                                 <strong style="min-width: 90px; flex-shrink: 0;">Subscription:</strong>
                                 <span id="summary-subscription"></span>
                             </div>
-                    
                             <div class="summary-expand-trigger">
                                 <div id="summaryArrow" class="arrow-container">
                                     <svg class="arrow-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +151,6 @@
                                     </svg>
                                 </div>
                             </div>
-                            
                             <div class="summary-collapsible-content" id="summaryContent">
                                 <div class="small text-dark mb-1" style="line-height: 1.4; display: flex;">
                                     <strong style="min-width: 90px; flex-shrink: 0;">Potential:</strong>
@@ -172,13 +161,12 @@
                                     <span id="summary-hygiene"></span>
                                 </div>
                             </div>
-                    
                         </div>
                     </div>
                 </div>
+
                 <div class="health-score-flipper-container">
                     <div class="health-score-flipper" id="healthScoreFlipper">
-                        
                         <div class="health-score-card health-score-front">
                             <div class="d-flex flex-column align-items-start me-2">
                                 <span class="fw-bold text-dark mb-0">Health Score</span>
@@ -191,7 +179,6 @@
                                 <span id="healthScoreValue" class="fw-bold fs-4">98</span>
                             </div>
                         </div>
-
                         <div class="health-score-card health-score-back">
                             <div class="d-flex flex-column align-items-start me-2">
                                 <span class="fw-bold text-dark mb-0">NPS Score</span>
@@ -204,9 +191,9 @@
                                 <span id="npsScoreValue" class="fw-bold fs-4">...</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
+
                 <div class="combined-info-card-container">
                     <div class="combined-info-card">
                         <div class="info-section arr-section">
@@ -242,6 +229,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="need-help-dropdown-wrapper" class="action-dropdown-wrapper">
                     <button class="action-toggle-element need-help-fab">
                         <i class="bi bi-question-circle-fill"></i>
@@ -264,6 +252,7 @@
                 </div>
             </div>
         </div>
+
         <div>
             <div class="container-section kpi-section">
                 <div class="kpi-header">
@@ -286,10 +275,10 @@
                                             
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>Industry: Software</span>
+                                                    <span>Industry: Software <small class="text-muted fw-normal">(Global)</small></span>
                                                     <span class="text-muted">Avg: 35d</span>
                                                 </div>
-                                                <div class="benchmark-subtitle">Fastest Moving Services:</div>
+                                                <div class="benchmark-subtitle">Broad industry average:</div>
                                                 <ul class="benchmark-list">
                                                     <li><span>1. CRM Plus</span> <span class="benchmark-highlight">18 Days</span></li>
                                                     <li><span>2. Analytics</span> <span class="benchmark-highlight">22 Days</span></li>
@@ -298,18 +287,21 @@
 
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>Region: North America</span>
+                                                    <span>Peer Benchmark: NA</span>
                                                     <span class="text-muted">Avg: 30d</span>
                                                 </div>
-                                                <div class="benchmark-subtitle">Zylker (27d) is <span class="text-success fw-bold">Top 15%</span></div>
+                                                <div class="benchmark-subtitle" style="font-size: 0.7rem; line-height: 1.2; color: #555;">
+                                                    <i>(Matched by Industry, Service Mix & ARR)</i>
+                                                </div>
+                                                <div class="benchmark-subtitle mt-1">Zylker (27d) is <span class="text-success fw-bold">Top 15%</span></div>
                                                 <ul class="benchmark-list">
-                                                    <li><span>Regional Leader:</span> <span>15 Days</span></li>
+                                                    <li><span>Peer Group Leader:</span> <span>15 Days</span></li>
                                                 </ul>
                                             </div>
 
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>ARR Range</span>
+                                                    <span>ARR Trend <small class="text-muted fw-normal">(Global Data)</small></span>
                                                 </div>
                                                 <ul class="benchmark-list">
                                                     <li><span>Up to 10k:</span> <span>20 Days</span></li>
@@ -317,7 +309,6 @@
                                                     <li><span>26k & above:</span> <span>55 Days</span></li>
                                                 </ul>
                                             </div>
-
                                         </div>
                                     </i>
                                 </div>
@@ -344,7 +335,7 @@
                                             
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>Industry: Software</span>
+                                                    <span>Industry: Software <small class="text-muted fw-normal">(Global)</small></span>
                                                     <span class="text-muted">Avg: 45d</span>
                                                 </div>
                                                 <div class="benchmark-subtitle">Payment trends by segment:</div>
@@ -357,18 +348,21 @@
 
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>Region: North America</span>
+                                                    <span>Peer Benchmark: NA</span>
                                                     <span class="text-muted">Avg: 25d</span>
                                                 </div>
-                                                <div class="benchmark-subtitle">Zylker (12d) is <span class="text-success fw-bold">Top 5%</span></div>
+                                                <div class="benchmark-subtitle" style="font-size: 0.7rem; line-height: 1.2; color: #555;">
+                                                    <i>(Matched by Industry, Service Mix & ARR)</i>
+                                                </div>
+                                                <div class="benchmark-subtitle mt-1">Zylker (12d) is <span class="text-success fw-bold">Top 5%</span></div>
                                                 <ul class="benchmark-list">
-                                                    <li><span>Regional Leader:</span> <span>8 Days</span></li>
+                                                    <li><span>Peer Group Leader:</span> <span>8 Days</span></li>
                                                 </ul>
                                             </div>
 
                                             <div class="benchmark-section">
                                                 <div class="benchmark-title">
-                                                    <span>ARR Range</span>
+                                                    <span>ARR Trend <small class="text-muted fw-normal">(Global Data)</small></span>
                                                 </div>
                                                 <ul class="benchmark-list">
                                                     <li><span>Up to 10k:</span> <span>10 Days</span></li>
@@ -376,7 +370,6 @@
                                                     <li><span>26k & above:</span> <span>45 Days</span></li>
                                                 </ul>
                                             </div>
-
                                         </div>
                                     </i>
                                 </div>
@@ -391,7 +384,8 @@
 
                         </div>
                     </div>
-                    </div>
+                </div>
+
                 <div class="d-flex flex-wrap justify-content-around g-3">
                     <div class="card-section" id="criticalIssuesCard">
                         <p> <i class="bi bi-exclamation-circle text-danger fs-4 me-2"></i>
